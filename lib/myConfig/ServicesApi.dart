@@ -28,8 +28,10 @@ class ServicesApi{
 
 
 
+              //========= New DataBase ebizdb=========//
 
-
+  static String basic_url="http://192.168.2.5:8383/";
+  static String new_login_url=basic_url + "hrms.service/encryption/getValidateUser?empCode=";
 
 
 }

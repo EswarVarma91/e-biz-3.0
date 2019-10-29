@@ -80,10 +80,10 @@ class _LoginState extends State<Login> {
                           style: TextStyle(fontSize: 14),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            icon: Icon(Icons.email,
+                            icon: Icon(Icons.fiber_pin,
                               color: Colors.grey,
                             ),
-                            hintText: 'Email',
+                            hintText: 'Employee Code',
                           ),
                         ),
                       ),
@@ -183,80 +183,56 @@ class _LoginState extends State<Login> {
     String email=_controller1.text.toString();
     String password=_controller2.text.toString();
     if(email.isEmpty){
-      Fluttertoast.showToast(msg: "Enter Email");
+      Fluttertoast.showToast(msg: "Enter EmpCode");
     }else if(password.isEmpty){
       Fluttertoast.showToast(msg: "Enter Password");
     }else {
       var response = await _makePostRequest(email, password);
-      LoginModel loginData = LoginModel.fromJson(response[0]);
-      if (loginData.cnt == 1) {
+      LoginModel loginData = LoginModel.fromJson(json.decode(response)[0]);
+      if (loginData.count == 1) {
         String email = _controller1.text;
-        print(email + "," + loginData.uId.toString() + "," +
-            loginData.fullName.toString() + "," +
-            loginData.uEmpCode.toString() + "," +
-            loginData.profileName.toString() + "," +
-            loginData.downTeamIds.toString() + "," +
-            loginData.userId.toString());
-        _writeData(
-            email,
-            loginData.uId,
-            loginData.fullName,
-            loginData.uEmpCode,
-            loginData.profileName,
-            loginData.downTeamIds,
-            loginData.userId);
+//        print(email + "," + loginData.userId.toString() + "," +
+//            loginData.fullName.toString() + "," +
+//            loginData.empCode.toString() + "," +
+//            loginData.profileName.toString() + "," +
+//            loginData.downTeamId.toString() + "," +
+//            loginData.departmentName.toString());
+        _writeData(email, loginData.userId, loginData.fullName, loginData.empCode, loginData.profileName,
+            loginData.downTeamId, loginData.departmentName,loginData.designation);
 
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('/'),
         );
-        setState(() => _isLoading = false);
-      }else if(loginData.cnt == 0){
+      }else if(loginData.count == 0){
         Fluttertoast.showToast(msg: "Please check the credentials.!");
-        setState(() => _isLoading = false);
       }
     }
   }
 
   _makePostRequest(String email,String password) async {
-    setState(() => _isLoading = true);
     try{
-      var response = await dio.post(ServicesApi.Login_Url,
-          data: {
-            "actionMode": "CheckUserLoginByCode",
-            "refCode": password.toString(),
-            "refName": email.toString()
-          },
-          options: Options(responseType: ResponseType.json,
-          ));
+      var response = await dio.post(ServicesApi.new_login_url+email+"&password="+password);
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.data);
-//      var responseJson =json.decode(response.data[0]);
-
         return response.data;
-
       } else if (response.statusCode == 401) {
-        setState(() => _isLoading = false);
         Fluttertoast.showToast(msg: "Incorrect Email/Password");
         throw Exception("Incorrect Email/Password");
       } else {
-        setState(() => _isLoading = false);
         Fluttertoast.showToast(msg: "Incorrect Email/Password");
         throw Exception('Authentication Error');
       }
     }on DioError catch(exception){
-      setState(() => _isLoading = false);
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-        setState(() => _isLoading = false);
         Fluttertoast.showToast(msg: "No Internet.!");
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception("Could'nt connect, please ensure you have a stable network.");
       } else {
-        setState(() => _isLoading = false);
         return null;
       }
     }
@@ -266,14 +242,16 @@ class _LoginState extends State<Login> {
 
 
 
-  void _writeData(String userEmail, int uId, String fullName, int uEmpCode, String profileName, String downTeamId,String userId) async{
+  void _writeData(String userEmail, int uId, String fullName, String uEmpCode, String profileName, String downTeamId,
+      String departmentName,String designation) async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
     preferences.setString("data", userEmail);
+    preferences.setString("userId", uId.toString());
     preferences.setString("fullname", fullName);
-    preferences.setInt("uEmpCode", uEmpCode);
-    preferences.setString("uId", uId.toString());
+    preferences.setString("uEmpCode", uEmpCode);
     preferences.setString("profileName", profileName.toString());
     preferences.setString("downTeamId", downTeamId.toString());
-    preferences.setString("userId", userId.toString());
+    preferences.setString("department",departmentName.toString());
+    preferences.setString("designation",designation.toString());
   }
 }

@@ -76,7 +76,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   getEmpCode() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      empCode = preferences.getInt("uEmpCode").toString();
+      empCode = preferences.getString("uEmpCode").toString();
       profilename = preferences.getString("profileName");
       fullname = preferences.getString("fullname");
       userId = preferences.getString("userId");

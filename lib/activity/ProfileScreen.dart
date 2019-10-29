@@ -10,15 +10,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen>{
-  String name='-',emailid='-',mobilenumber='-',department='-',designation='-';
-  int employCode=0;
+  String name='-',emailid='-',mobilenumber='-',department='-',designation='-',employCode="-";
 
    getAccountDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       name = preferences.getString("fullname");
-      emailid = preferences.getString("data");
-      employCode = preferences.getInt("uEmpCode");
+      employCode = preferences.getString("uEmpCode");
+      department = preferences.getString("department");
+      designation = preferences.getString("designation");
 //      print(downteam);
     });
   }
@@ -174,6 +174,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
+                            controller: TextEditingController(text: department),
                             enabled: _isEdit ? true : false,
                             decoration: InputDecoration(
                               labelText: "Department",
@@ -189,6 +190,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
+                            controller: TextEditingController(text: designation),
                             enabled: _isEdit ? true : false,
                               decoration: InputDecoration(
                                 labelText: "Designation",
