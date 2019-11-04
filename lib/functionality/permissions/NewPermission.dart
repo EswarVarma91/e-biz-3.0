@@ -381,21 +381,8 @@ class _NewPermissionState extends State<NewPermissions> {
       if (official == true) {
         pr.show();
         typeP = "Office";
-         response = await dio.post(ServicesApi.permissionsInsert,
+         response = await dio.post(ServicesApi.insertPermission,
             data: {
-//              "actionMode": "insert",
-//              "createdBy": fullname,
-//              "perDate": selectDate.toString(),
-//              "perFromTime": fromTime.toString(),
-//              "perPurpose": _controller1.text.toString(),
-//              "perStatus": 1,
-//              "perToTime": toTime.toString(),
-//              "perType": typeP,
-//              "toAddress": [
-//                "string"
-//              ],
-//              "uId": uidd.toString(),
-
               "vactionmode": "insert",
               "vperCreatedby": fullname,
               "vperDate": selectDate,
@@ -404,7 +391,6 @@ class _NewPermissionState extends State<NewPermissions> {
               "vperfromTime": fromTime.toString(),
               "vpertoTime": toTime.toString(),
               "vuId": uidd
-
             },
             options: Options(
               contentType: ContentType.parse('application/json'),));

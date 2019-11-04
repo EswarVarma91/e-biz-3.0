@@ -1,5 +1,5 @@
 class ReferedbyModel {
-  String uId;
+  int uId;
   String fullName;
   String u_emp_code;
 

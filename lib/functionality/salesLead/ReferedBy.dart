@@ -43,7 +43,6 @@ class _ReferedByState extends State<ReferedBy> {
     getUserID().then((val)=>setState((){
       uidd=val;
       getReferals();
-      print(uidd);
     }));
 
   }
@@ -88,7 +87,7 @@ class _ReferedByState extends State<ReferedBy> {
                   return Card(
                     child: ListTile (
                       onTap: (){
-                        Navigator.pop(context, fliterReferals[index].fullName+" "+fliterReferals[index].uId);
+                        Navigator.pop(context, fliterReferals[index].fullName+" USR_"+fliterReferals[index].uId.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),
@@ -113,15 +112,10 @@ class _ReferedByState extends State<ReferedBy> {
   getReferals() async {
     _isloading = false;
 //    var response=await dio.get(url);
-    var response = await dio.post(ServicesApi.Referedby_Url,
+    var response = await dio.post(ServicesApi.getData,
         data:
         {
-          "actionMode": "GetAllUserInfo",
-          "refCode": "string",
-          "refEnd":"String",
-          "refId": "String",
-          "refName": "String",
-          "refStart": "String"
+          "parameter1": "GetAllEmps"
         },
         options: Options(contentType: ContentType.parse('application/json'),
         ));
@@ -131,6 +125,8 @@ class _ReferedByState extends State<ReferedBy> {
 
         dataCheckList = (json.decode(response.data) as List).map((data) => new ReferedbyModel.fromJson(data)).toList();
         dataCheckList.removeWhere((item)=>item.uId.toString()==uidd.toString());
+        dataCheckList.removeWhere((item)=>item.fullName.toString()==null);
+        dataCheckList.removeWhere((item)=>item.fullName.toString().isEmpty);
 
         listReferals=dataCheckList;
         fliterReferals=dataCheckList;

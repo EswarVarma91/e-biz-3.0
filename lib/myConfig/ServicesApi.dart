@@ -13,6 +13,7 @@ class ServicesApi{
 
   static String insertLeave = basic_url + hrms_Service +"saveEmpLeave";
   static String cancelLeave = basic_url + hrms_Service + "update/leave/status";
+  static String cancelPermission = basic_url + hrms_Service + "update/Permission/status";
 
   static String insertPermission = basic_url + hrms_Service +"saveEmpPermission";
   static String checkLeaveStatus = basic_url + hrms_Service + "get/hruser/data";

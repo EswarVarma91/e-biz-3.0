@@ -1435,7 +1435,7 @@ class _PermissionsState extends State<Permissions> {
             options: Options(contentType: ContentType.parse('application/json'),
             ));
       }else if(i==2){
-        response = await dio.put(ServicesApi.cancelLeave,
+        response = await dio.post(ServicesApi.cancelPermission,
             data: {
               "modifiedBy": profilename,
               "permissionId": leavepermissionId,
@@ -1463,6 +1463,7 @@ class _PermissionsState extends State<Permissions> {
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
+        pr.hide();
         return null;
       }
     }
