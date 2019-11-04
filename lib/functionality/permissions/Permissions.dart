@@ -61,8 +61,7 @@ class _PermissionsState extends State<Permissions> {
 
 
 
-  String uuid,profilename;
-  int employCode;
+  String uuid,profilename,employCode;
   var _isEditButton=false;
   bool _isloading=false;
   static Dio dio = Dio(Config.options);
@@ -70,12 +69,12 @@ class _PermissionsState extends State<Permissions> {
   static  var now = DateTime.now();
   Future<String> getUserID() async {
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
+    String id=preferences.getString("userId");
     return id;
   }
   getAccountDetails() async {
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    employCode = preferences.getInt("uEmpCode");
+    employCode = preferences.getString("uEmpCode");
     profilename = preferences.getString("profileName");
     print(employCode.toString()+"-"+profilename);
   }
@@ -93,7 +92,7 @@ class _PermissionsState extends State<Permissions> {
     lateearly=false;
     getAccountDetails();
     getUserID().then((val)=>setState((){
-      uuid="USR_"+val;
+      uuid=val;
       getDataLeaves_Permissions();
     }));
 
@@ -104,21 +103,21 @@ class _PermissionsState extends State<Permissions> {
       lateearly=false;
       //pending
       list3 =  leavesList.where((d) {
-        if (d.el_status == "1") {
+        if (d.el_status.toString() == "1") {
           return true;
         }
         return false;
       }).toList();
       //approved
       list4 =  leavesList.where((d) {
-        if (d.el_status == "2") {
+        if (d.el_status.toString() == "2") {
           return true;
         }
         return false;
       }).toList();
       //cancelled
       list5 =  leavesList.where((d) {
-        if (d.el_status == "0") {
+        if (d.el_status.toString() == "0") {
           return true;
         }
         return false;
@@ -126,7 +125,7 @@ class _PermissionsState extends State<Permissions> {
 
       //rejected
       list6 =  leavesList.where((d) {
-        if (d.el_status == "3") {
+        if (d.el_status.toString() == "3") {
           return true;
         }
         return false;
@@ -166,21 +165,21 @@ class _PermissionsState extends State<Permissions> {
 
       //pending
       list33 =  permissionsList.where((d) {
-        if (d.per_status == "1" && d.per_is_approved != "1") {
+        if (d.per_status.toString() == "1" ) {
           return true;
         }
         return false;
       }).toList();
       //approved
       list44 =  permissionsList.where((d) {
-        if (d.per_is_approved == "1") {
+        if (d.per_status.toString() == "2") {
           return true;
         }
         return false;
       }).toList();
       //cancelled
       list55 =  permissionsList.where((d) {
-        if (d.per_status == "0") {
+        if (d.per_status.toString() == "0") {
           return true;
         }
         return false;
@@ -188,7 +187,7 @@ class _PermissionsState extends State<Permissions> {
 
       //rejected
       list66 =  permissionsList.where((d) {
-        if (d.per_status == "2") {
+        if (d.per_status.toString() == "3") {
           return true;
         }
         return false;
@@ -225,13 +224,13 @@ class _PermissionsState extends State<Permissions> {
     }else if(latecoming==true){
       lateearly=true;
       list333 =  latecomingList.where((d) {
-        if (d.att_request_id == "-" ) {
+        if (d.att_id == "-" ) {
           return true;
         }
         return false;
       }).toList();
       list444 =  latecomingList.where((d) {
-        if (d.att_request_id !="-"  && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
+        if (d.att_id !="-"  && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
           return true;
         }
         return false;
@@ -283,14 +282,14 @@ class _PermissionsState extends State<Permissions> {
       lateearly=true;
       latecoming=false;
       list3333 =  earlygoingList.where((d) {
-        if (d.att_request_id == "-"  && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
+        if (d.att_id == "-"  && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
           return true;
         }
         return false;
       }).toList();
 
       list4444 =  earlygoingList.where((d) {
-        if (d.att_request_id !="-" && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
+        if (d.att_id !="-" && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2" && d.att_work_status!="Absent") {
           return true;
         }
         return false;
@@ -989,7 +988,7 @@ class _PermissionsState extends State<Permissions> {
                                 child:Column(
                                 children: <Widget>[
                                   Text("No. Days: ",style: TextStyle(color: Colors.black,fontSize: 8),),
-                                  Text(list2[index]?.el_noofdays ?? 'NA' ,
+                                  Text(checkNoDays(list2[index]?.el_noofdays.toString()).toString() ?? 'NA' ,
                                     style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 24,
@@ -1073,7 +1072,7 @@ class _PermissionsState extends State<Permissions> {
                       padding: const EdgeInsets.all(2.0),
                       child: Column(
                         children: <Widget>[
-                          Text(list22[index]?.per_approved_by??"NA" ,style: TextStyle(color: lwtColor),),
+                          Text(list22[index]?.per_approved_by??"" ,style: TextStyle(color: lwtColor),),
                           ListTile(
                             leading: Container(
                               padding: EdgeInsets.only(right: 20.0),
@@ -1225,7 +1224,7 @@ class _PermissionsState extends State<Permissions> {
                                 color: lwtColor,
                               ),
                               onPressed: () {
-                                  if(list222[index].att_request_id=="-") {
+                                  if(list222[index].att_id=="-") {
                                     roundedAlertBox(list222[index], 1);
 //                                    LateComingReuestServiceCall(list222[index], 1);
                                     }else {
@@ -1266,7 +1265,7 @@ class _PermissionsState extends State<Permissions> {
                                 Padding(
                                   padding: EdgeInsets.only(top: 4),
                                 ),
-                                Text(list2222[index]?.att_tour_out_time.toString() ?? 'NA',
+                                Text(list2222[index]?.att_out_time.toString() ?? "",
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
@@ -1315,7 +1314,7 @@ class _PermissionsState extends State<Permissions> {
                             color: lwtColor,
                           ),
                           onPressed: () {
-                            if(list2222[index].att_request_id=="-") {
+                            if(list2222[index].att_id=="-") {
                               roundedAlertBox(list2222[index], 2);
 //                              LateComingReuestServiceCall(list222[index], 2);
                             }else {
@@ -1331,63 +1330,50 @@ class _PermissionsState extends State<Permissions> {
         });
   }
 
-  void getDataLeaves_Permissions() async {
+   getDataLeaves_Permissions() async {
     setState(() {
       _isloading=true;
     });
+    Map<String, String> queryParameters = {
+      "id": uuid
+    };
     try {
-      var leavesEmp = await dio.post(ServicesApi.emp_Data,
+      var leavesEmp = await dio.post(ServicesApi.getData,
+//          queryParameters: {"id": uuid},
           data: {
-            "actionMode": "GetEmpLeaves",
-            "parameter1": uuid.toString(),
-            "parameter2": "string",
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter1": "GetEmpLeaves",
+            "parameter2": uuid.toString()
           },
-          options: Options(contentType: ContentType.parse('application/json'),
-          ));
+          options: Options(contentType: ContentType.parse('application/json'),)
+      );
       if (leavesEmp.statusCode == 200 || leavesEmp.statusCode == 201) {
         setState(() {
-          leavesList =
-              (json.decode(leavesEmp.data) as List).map((data) => new LeavesModel.fromJson(data)).toList();
-//          print(list1.toString());
-          _isloading = false;
+          leavesList = (json.decode(leavesEmp.data) as List).map((data) => new LeavesModel.fromJson(data)).toList();
         });
         checkServices();
       }
 
       //=============================================================
 
-      var permissionsEmp = await dio.post(ServicesApi.emp_Data,
+      var permissionsEmp = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "GetAllPermissionByUId",
-            "parameter1": uuid.toString(),
-            "parameter2": "string",
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter1": "GetAllPermissionByUId",
+            "parameter2": uuid.toString()
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
       if (permissionsEmp.statusCode == 200 || permissionsEmp.statusCode == 201) {
         setState(() {
           permissionsList = (json.decode(permissionsEmp.data) as List).map((data) => new PermissionModel.fromJson(data)).toList();
-//            print(list11.toString());
-          _isloading = false;
         });
         checkServices();
       }
 
       //==========================================================
-      var latecomingEmp = await dio.post(ServicesApi.emp_Data,
+      var latecomingEmp = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "GetUserLatecomingByMonth",
-            "parameter1": employCode.toString(),
-            "parameter2": DateFormat("yyyy-MM-dd").format(now).toString(),
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter1": "getUserLateComingByMonth",
+            "parameter2":  employCode.toString()
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1401,14 +1387,10 @@ class _PermissionsState extends State<Permissions> {
         checkServices();
       }
       //======================================
-      var earlygoingEmp = await dio.post(ServicesApi.emp_Data,
+      var earlygoingEmp = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "GetUserEarlyGoingByMonth",
-            "parameter1": employCode.toString(),
-            "parameter2": DateFormat("yyyy-MM-dd").format(now).toString(),
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter1": "getUserEarlyGoingByMonth",
+            "parameter2":  employCode.toString()
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1436,31 +1418,29 @@ class _PermissionsState extends State<Permissions> {
   }
 
 
-  void cancelRequestServiceCall(String idd, int i) async {
+  void cancelRequestServiceCall(String leavepermissionId,String leaveType,String noofDays, int i) async {
     pr.show();
     var response;
     try{
       if(i==1) {
-        response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+        response = await dio.post(ServicesApi.cancelLeave,
             data: {
-              "actionMode": "CancelEmpLeave",
-              "parameter1": idd.toString(),
-              "parameter2": "string",
-              "parameter3": "string",
-              "parameter4": "string",
-              "parameter5": "string"
+              "leaveId": leavepermissionId,
+              "leaveType": leaveType,
+              "modifiedBy": profilename,
+              "noOfDays": noofDays,
+              "statusId": 0,
+              "userId": uuid
             },
             options: Options(contentType: ContentType.parse('application/json'),
             ));
       }else if(i==2){
-        response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+        response = await dio.put(ServicesApi.cancelLeave,
             data: {
-              "actionMode": "CancelPermissionById",
-              "parameter1": idd.toString(),
-              "parameter2": "string",
-              "parameter3": "string",
-              "parameter4": "string",
-              "parameter5": "string"
+              "modifiedBy": profilename,
+              "permissionId": leavepermissionId,
+              "remarks": "string",
+              "statusId": 0,
             },
             options: Options(contentType: ContentType.parse('application/json'),
             ));
@@ -1594,11 +1574,6 @@ class _PermissionsState extends State<Permissions> {
     }
   }
 
-//  if(list222[index].att_request_id=="-") {
-//  LateComingReuestServiceCall(list222[index], 1);
-//  }else {
-//  Fluttertoast.showToast(msg: "Already Applied");
-//  }
 
     roundedAlertBox(LateEarlyComingModel lateearlycomingmodel, int i){
       return showDialog(
@@ -1716,7 +1691,7 @@ class _PermissionsState extends State<Permissions> {
             actions: <Widget>[
               CupertinoButton(
                 onPressed: ()  {
-                  cancelRequestServiceCall(leavesModel.el_id,i);
+                  cancelRequestServiceCall(leavesModel.el_id.toString(),leavesModel.leave_type,leavesModel.el_noofdays.toString(),i);
                 },
                 child: new Text('Yes'),),
                CupertinoButton(
@@ -1774,7 +1749,7 @@ class _PermissionsState extends State<Permissions> {
             actions: <Widget>[
               CupertinoButton(
                 onPressed: ()  {
-                  cancelRequestServiceCall(permissionModel.per_id,i);
+                  cancelRequestServiceCall(permissionModel.per_id.toString(),"","",i);
                 },
                 child: new Text('Yes'),),
               CupertinoButton(
@@ -1792,6 +1767,12 @@ class _PermissionsState extends State<Permissions> {
    displayDateFormat(String el_from_date) {
     List<String> a=el_from_date.split("-");
     return a[2]+"-"+a[1]+"-"+a[0];
+  }
+
+  checkNoDays(String noodDays) {
+    List data=noodDays.split(".");
+//    return (int.parse(data[0].toString())+int.parse(1.toString())).toString();
+  return data[0].toString();
   }
 
 }

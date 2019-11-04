@@ -1,12 +1,12 @@
 class LeavesModel {
-  String el_noofdays;
+  double el_noofdays;
   String el_reason;
   String el_from_date;
-  String el_id;
-  String u_id;
+  int el_id;
+  int u_id;
   String el_to_date;
   String leave_type;
-  String el_status;
+  int el_status;
   String fullname;
   String el_approved_date;
   String el_modified_date;
@@ -30,7 +30,7 @@ class LeavesModel {
         el_approved_date = json['el_approved_date'],
         el_modified_date = json['el_modified_date'],
         el_modified_by = json['el_modified_by'],
-        el_approvedby = json['el_approvedby']
+        el_approvedby = json['el_approved_by']
   ;
 
 
@@ -48,6 +48,6 @@ class LeavesModel {
         'el_approved_date': el_approved_date,
         'el_modified_date': el_modified_date,
         'el_modified_by': el_modified_by,
-        'el_approvedby': el_approvedby,
+        'el_approved_by': el_approvedby,
       };
 }

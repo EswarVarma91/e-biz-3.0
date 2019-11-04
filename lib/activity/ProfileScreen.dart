@@ -17,8 +17,6 @@ class ProfileScreenState extends State<ProfileScreen>{
     setState(() {
       name = preferences.getString("fullname");
       employCode = preferences.getString("uEmpCode");
-      department = preferences.getString("department");
-      designation = preferences.getString("designation");
 //      print(downteam);
     });
   }

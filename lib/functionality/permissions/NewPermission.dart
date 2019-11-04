@@ -383,41 +383,48 @@ class _NewPermissionState extends State<NewPermissions> {
         typeP = "Office";
          response = await dio.post(ServicesApi.permissionsInsert,
             data: {
-              "actionMode": "insert",
-              "createdBy": fullname,
-              "perDate": selectDate.toString(),
-              "perFromTime": fromTime.toString(),
-              "perPurpose": _controller1.text.toString(),
-              "perStatus": 1,
-              "perToTime": toTime.toString(),
-              "perType": typeP,
-              "toAddress": [
-                "string"
-              ],
-              "uId": uidd.toString(),
+//              "actionMode": "insert",
+//              "createdBy": fullname,
+//              "perDate": selectDate.toString(),
+//              "perFromTime": fromTime.toString(),
+//              "perPurpose": _controller1.text.toString(),
+//              "perStatus": 1,
+//              "perToTime": toTime.toString(),
+//              "perType": typeP,
+//              "toAddress": [
+//                "string"
+//              ],
+//              "uId": uidd.toString(),
+
+              "vactionmode": "insert",
+              "vperCreatedby": fullname,
+              "vperDate": selectDate,
+              "vperPurpose": _controller1.text.toString(),
+              "vperType": typeP,
+              "vperfromTime": fromTime.toString(),
+              "vpertoTime": toTime.toString(),
+              "vuId": uidd
+
             },
             options: Options(
               contentType: ContentType.parse('application/json'),));
 
       } else if (personal == true) {
         typeP = "personal";
+        var data= await getUserByPermissionDate(selectDate,uidd);
         // ignore: unrelated_type_equality_checks
-        if(per_status=="0" ){
+        if(data == "0" ){
           pr.show();
-          response = await dio.post(ServicesApi.permissionsInsert,
+          response = await dio.post(ServicesApi.insertPermission,
               data: {
-                "actionMode": "insert",
-                "createdBy": fullname,
-                "perDate": selectDate.toString(),
-                "perFromTime": fromTime.toString(),
-                "perPurpose": _controller1.text.toString(),
-                "perStatus": 1,
-                "perToTime": toTime.toString(),
-                "perType": typeP,
-                "toAddress": [
-                  "string"
-                ],
-                "uId": uidd.toString(),
+                "vactionmode": "insert",
+                "vperCreatedby": fullname,
+                "vperDate": selectDate,
+                "vperPurpose": _controller1.text.toString(),
+                "vperType": typeP,
+                "vperfromTime": fromTime.toString(),
+                "vpertoTime": toTime.toString(),
+                "vuId": uidd
               },
               options: Options(
                 contentType: ContentType.parse('application/json'),));
@@ -465,18 +472,16 @@ class _NewPermissionState extends State<NewPermissions> {
         fullname = preferences.getString("fullname");
         uidd = preferences.getString("userId");
       });
-      getUserByPermissionDate(uidd);
+//      getUserByPermissionDate(uidd);
     }
 
-   getUserByPermissionDate(String uiddd) async {
-    var now = DateTime.now();
+   getUserByPermissionDate(String selectedDate,String uiddd) async {
     try {
-      var response = await dio.post(ServicesApi.emp_Data,
+      var response = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "getUserByPermissionDate",
-            "parameter1": uiddd,
-            "parameter2": DateFormat("yyyy-MM-dd").format(now),
-            "parameter3": "string",
+            "parameter1": "getUserByPermissionDate",
+            "parameter2": uiddd,
+            "parameter3": selectedDate,
             "parameter4": "string",
             "parameter5": "string"
           },
@@ -489,10 +494,12 @@ class _NewPermissionState extends State<NewPermissions> {
         setState(() {
           per_status="0";
         });
+        return "0";
       }else{
        setState(() {
          per_status=restrictpermissionModel[0].status.toString();
        });
+       return restrictpermissionModel[0].status.toString();
       }
       }
     } on DioError catch (exception) {

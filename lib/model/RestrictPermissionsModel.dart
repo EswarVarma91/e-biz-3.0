@@ -1,14 +1,14 @@
 class RestrictPermissionsModel {
-  String status;
+  int status;
 
   RestrictPermissionsModel(this.status);
 
   RestrictPermissionsModel.fromJson(Map<String, dynamic> json)
-      : status = json['status'];
+      : status = json['cnt'];
 
 
   Map<String, dynamic> toJson() =>
       {
-        'status': status,
+        'cnt': status,
       };
 }

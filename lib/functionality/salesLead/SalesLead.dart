@@ -39,7 +39,7 @@ class StateSalesLead extends State<SalesLead>{
 
   Future<String> getUserID() async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
+    String id=preferences.getString("userId");
     return id;
   }
 
@@ -286,7 +286,6 @@ class StateSalesLead extends State<SalesLead>{
 
     //  Service Call of Pending List
      pendingListM() async {
-      setState(() => _isloading = true);
       try {
         var response = await dio.post(ServicesApi.Pending_Url,
             data: {"actionMode": "GetSaleRequestListByUserId", "refId": uidd.toString()},
@@ -298,7 +297,6 @@ class StateSalesLead extends State<SalesLead>{
                 .map((data) => new SalesPendingModel.fromJson(data))
                 .toList();
             pendingCount=listpending?.length.toString()??'-';
-           _isloading = false;
            completedListM();
           });
         } else if (response.statusCode == 401) {
@@ -321,7 +319,6 @@ class StateSalesLead extends State<SalesLead>{
     //  Service Call of Completed List
      completedListM() async {
     print("uidd"+uidd.toString());
-      setState(() => _isloading = true);
       try {
         var response = await dio.post(ServicesApi.Pending_Url,
             data: {
@@ -336,7 +333,6 @@ class StateSalesLead extends State<SalesLead>{
                 .map((data) => new SalesPendingModel.fromJson(data))
                 .toList();
             completedCount=listcompleted?.length.toString()??'-';
-            _isloading = false;
           });
         } else if (response.statusCode == 401) {
           throw Exception("Incorrect data");

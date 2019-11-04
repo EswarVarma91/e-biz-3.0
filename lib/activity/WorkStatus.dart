@@ -6,7 +6,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../database/DatabaseHelper.dart';
 import '../main.dart';
 import '../model/AttendanceModel.dart';
@@ -33,7 +32,7 @@ class _WorkStatusState extends State<WorkStatus> {
   getEmpCode() async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
     setState(() {
-      empCode=preferences.getInt("uEmpCode").toString();
+      empCode = preferences.getString("uEmpCode").toString();
       userId = preferences.getString("userId").toString();
     });
   }
@@ -189,23 +188,21 @@ class _WorkStatusState extends State<WorkStatus> {
     var currDate = DateFormat("yyyy-MM-dd").format(now).toString();
     var response;
     if(s=="1"){
-       response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+       response = await dio.post(ServicesApi.updateData,
           data: {
-            "actionMode": "UpdateEmpTourinAttendance",
-            "parameter1": empCode.toString(),
-            "parameter2": currDate.toString(),
-            "parameter3": "",
-            "parameter4": "Tour",
+            "parameter1": "UpdateEmpTourinAttendance",
+            "parameter2": empCode.toString(),
+            "parameter3": currDate.toString(),
+            "parameter4": "Tour"
           },
           options: Options(contentType: ContentType.parse('application/json'),));
     }else if(s=="2"){
-      response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+      response = await dio.post(ServicesApi.updateData,
           data: {
-            "actionMode": "UpdateEmpTourinAttendance",
-            "parameter1": empCode.toString(),
-            "parameter2": currDate.toString(),
-            "parameter3": "",
-            "parameter4": "Working",
+            "parameter1": "UpdateEmpTourinAttendance",
+            "parameter2": empCode.toString(),
+            "parameter3": currDate.toString(),
+            "parameter4": "Working"
           },
           options: Options(
             contentType: ContentType.parse('application/json'),));
@@ -216,7 +213,7 @@ class _WorkStatusState extends State<WorkStatus> {
         throw Exception("Incorrect data");
       } else
         Fluttertoast.showToast(msg: "Check your internet connection.!");
-        Navigator.pop(context,s);
+//        Navigator.pop(context,s);
         throw Exception('Authentication Error');
   }
 

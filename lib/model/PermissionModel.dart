@@ -3,8 +3,8 @@ class PermissionModel {
   String per_to_time;
   String per_date;
   String per_fullName;
-  String per_status;
-  String per_id;
+  int per_status;
+  int per_id;
   String per_purpose;
   String per_type;
   String per_created_by;
@@ -13,7 +13,7 @@ class PermissionModel {
   String per_approved_by;
   String per_approved_date;
   String per_is_approved;
-  String u_id;
+  int u_id;
 
   PermissionModel(this.per_from_time, this.per_to_time,this.per_date,this.per_fullName,
       this.per_status,this.per_id,this.per_purpose, this.per_type,this.per_created_by,

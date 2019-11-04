@@ -123,8 +123,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                       if(_controllerReason.text.isEmpty){
                         Fluttertoast.showToast(msg: "Please write your feedback");
                       }else {
-                        _callServiceUpdateStatus(
-                            _idstatus, _controllerReason.text);
+                        _callServiceUpdateStatus(_idstatus, _controllerReason.text);
                       }
                     },
                     child: Container(
@@ -149,16 +148,16 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
         });
   }
 
-  void _callServiceUpdateStatus(int mainStatus,String reason) async {
+   _callServiceUpdateStatus(int mainStatus,String reason) async {
     pr.show();
     try {
-      var response = await dio.put(ServicesApi.Task_Update,
+      var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "update",
             "dpId": dp_id.toString(),
-            "dpStatus": mainStatus,
+            "dpModifiedBy" : profilename,
             "dpReason": reason.toString(),
-            "modifiedBy":profilename
+            "dpStatus": mainStatus.toString()
           },
           options: Options(
             contentType: ContentType.parse('application/json'),));

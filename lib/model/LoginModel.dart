@@ -1,34 +1,31 @@
 class LoginModel {
-   final  int count;
-   final int userId;
-   final  String empCode;
-   final  String departmentName;
-   final  String designation;
-   final  String fullName;
-   final  String profileName;
-   final  String downTeamId;
+  final  int cnt;
+  final int uId;
+  final  int uEmpCode;
+  final  String fullName;
+  final  String profileName;
+  final  String downTeamIds;
+  final String mobileNumber;
 
-  LoginModel(this.count, this.userId, this.empCode, this.departmentName, this.designation, this.fullName, this.profileName, this.downTeamId);
+  LoginModel(this.cnt, this.uId, this.uEmpCode, this.fullName, this.profileName, this.downTeamIds,this.mobileNumber);
 
   LoginModel.fromJson(Map<String, dynamic> json)
-      : count = json['count'],
-        userId = json['userId'],
-        empCode = json['empCode'],
-        departmentName = json['departmentName'],
-        designation = json['designation'],
+      : cnt = json['cnt'],
+        uId = json['uId'],
+        uEmpCode = json['uEmpCode'],
         fullName = json['fullName'],
         profileName = json['profileName'],
-        downTeamId = json['downTeamId'];
+        downTeamIds = json['downTeamIds'],
+        mobileNumber = json['mobileNumber'];
 
   Map<String, dynamic> toJson() =>
       {
-        'count': count,
-        'userId': userId,
-        'empCode': empCode,
-        'departmentName': departmentName,
-        'designation': designation,
+        'cnt': cnt,
+        'uId': uId,
+        'uEmpCode': uEmpCode,
         'fullName': fullName,
         'profileName': profileName,
-        'downTeamId': downTeamId
+        'downTeamIds': downTeamIds,
+        'mobileNumber': mobileNumber
       };
 }

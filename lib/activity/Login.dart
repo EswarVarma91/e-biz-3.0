@@ -188,8 +188,8 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "Enter Password");
     }else {
       var response = await _makePostRequest(email, password);
-      LoginModel loginData = LoginModel.fromJson(json.decode(response)[0]);
-      if (loginData.count == 1) {
+      LoginModel loginData = LoginModel.fromJson(json.decode(response));
+      if (loginData.cnt == 1) {
         String email = _controller1.text;
 //        print(email + "," + loginData.userId.toString() + "," +
 //            loginData.fullName.toString() + "," +
@@ -197,15 +197,15 @@ class _LoginState extends State<Login> {
 //            loginData.profileName.toString() + "," +
 //            loginData.downTeamId.toString() + "," +
 //            loginData.departmentName.toString());
-        _writeData(email, loginData.userId, loginData.fullName, loginData.empCode, loginData.profileName,
-            loginData.downTeamId, loginData.departmentName,loginData.designation);
+        _writeData(email, loginData.uId, loginData.fullName, loginData.uEmpCode.toString(), loginData.profileName,
+            loginData.downTeamIds, loginData.mobileNumber);
 
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('/'),
         );
-      }else if(loginData.count == 0){
+      }else if(loginData.cnt == 0){
         Fluttertoast.showToast(msg: "Please check the credentials.!");
       }
     }
@@ -213,7 +213,7 @@ class _LoginState extends State<Login> {
 
   _makePostRequest(String email,String password) async {
     try{
-      var response = await dio.post(ServicesApi.new_login_url+email+"&password="+password);
+      var response = await dio.post(ServicesApi.new_login_url,data: { "userName": email, "password":password });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.data);
         return response.data;
@@ -243,7 +243,7 @@ class _LoginState extends State<Login> {
 
 
   void _writeData(String userEmail, int uId, String fullName, String uEmpCode, String profileName, String downTeamId,
-      String departmentName,String designation) async{
+      String mobilenumber) async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
     preferences.setString("data", userEmail);
     preferences.setString("userId", uId.toString());
@@ -251,7 +251,6 @@ class _LoginState extends State<Login> {
     preferences.setString("uEmpCode", uEmpCode);
     preferences.setString("profileName", profileName.toString());
     preferences.setString("downTeamId", downTeamId.toString());
-    preferences.setString("department",departmentName.toString());
-    preferences.setString("designation",designation.toString());
+    preferences.setString("mobilenumber",mobilenumber.toString());
   }
 }

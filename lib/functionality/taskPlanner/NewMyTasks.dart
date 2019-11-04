@@ -37,7 +37,7 @@ class _NewTaskState extends State<NewMyTasks> {
 
   Future<String> getUserID() async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
+    String id=preferences.getString("userId");
     return id;
   }
 
@@ -357,30 +357,19 @@ class _NewTaskState extends State<NewMyTasks> {
     if (s == "1") {
 
       print(profileName+'/'+_controller1.text+'/'+_controller2.text+"/"+uidd);
-      var response = await dio.post(ServicesApi.Task,
+      var response = await dio.post(ServicesApi.saveDayPlan,
           data:
           {
             "actionMode": "insert",
-            "createdBy": profileName.toString(),
-            "dpCompanyName": "",
-            "dpContactPerson": "",
-            "dpEndDate": null,
+            "dpCreatedBy": profileName.toString(),
             "dpGivenBy": fullname,
-            "dpId": null,
-            "dpLocation": "",
-            "dpOwnedBy": "",
-            "dpOwnedDate": "",
-            "dpPhoneNo": "",
-            "dpReason": "",
-            "dpRefNo": "others",
             "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
-            "dpStatus": 0,
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Office",
-            "dpTaskType":"Self",
-            "modifiedBy": profileName,
-            "uId": "USR_"+uidd
+            "dayTaskType":"Self",
+            "dpModifiedBy": profileName,
+            "uId": uidd
           },
           options: Options(
             contentType: ContentType.parse('application/json'),));
@@ -407,26 +396,16 @@ class _NewTaskState extends State<NewMyTasks> {
           data:
           {
             "actionMode": "insert",
-            "createdBy": profileName.toString(),
-            "dpCompanyName": null,
-            "dpContactPerson": _controller4.text.toString(),
-            "dpEndDate": null,
+            "dpCreatedBy": profileName.toString(),
             "dpGivenBy": fullname,
-            "dpId": null,
-            "dpLocation": _controller3.text.toString(),
-            "dpOwnedBy": null,
-            "dpOwnedDate": null,
-            "dpPhoneNo": null,
-            "dpReason": reasonType.toString(),
-            "dpRefNo": null,
-            "dpStartDate": null,
+            "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
             "dpStatus": 0,
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Instation",
-            "dpTaskType" : "Self",
-            "modifiedBy": profileName,
-            "uId": "USR_"+uidd
+            "dayTaskType":"Self",
+            "dpModifiedBy": profileName,
+            "uId": uidd
           },
           options: Options(
             contentType: ContentType.parse('application/json'),));

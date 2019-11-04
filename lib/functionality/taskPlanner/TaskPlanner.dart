@@ -46,7 +46,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
 
   Future<String> getUserID() async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
+    String id=preferences.getString("userId");
     return id;
   }
   void getProfileName() async {
@@ -70,7 +70,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
     getProfileName();
     timeCheck = DateFormat("yyyy-MM-dd").format(now);
     getUserID().then((val) => setState(() {
-          uidd = "USR_" + val;
+          uidd = val;
           print(uidd);
           getTaskPlanner(uidd);
         }));
@@ -89,7 +89,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       list3 = list1.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self" && d.dp_created_by==profilename) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self" && d.dp_given_by==profilename) {
           return true;
         }
         return false;
@@ -97,21 +97,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
       ).toList();
       //open filter
       list4= list1.where((d){
-        if(d.dp_status=="1" && d.dpTaskType == "Self" && d.dp_created_by==profilename ){
+        if(d.dp_status.toString()=="1" && d.dpTaskType == "Self" && d.dp_given_by==profilename ){
           return true;
         }
         return false;
       }).toList();
       //progress filter
       list5=list1.where((d){
-        if(d.dp_status=="2" && d.dpTaskType == "Self" && d.dp_created_by==profilename ){
+        if(d.dp_status.toString()=="2" && d.dpTaskType == "Self" && d.dp_given_by==profilename ){
           return true;
         }
         return false;
       }).toList();
       //closed filter
       list6= list1.where((d){
-        if(d.dp_status=="3" && d.dpTaskType == "Self" && d.dp_created_by==profilename){
+        if(d.dp_status.toString()=="3" && d.dpTaskType == "Self" && d.dp_given_by==profilename){
           return true;
         }
         return false;
@@ -151,21 +151,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
       }).toList();
       //open
       list4= list1.where((d){
-        if(d.dp_status=="1" && d.dpTaskType == "Team" ){
+        if(d.dp_status.toString()=="1" && d.dpTaskType == "Team" ){
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list1.where((d){
-        if(d.dp_status=="2" && d.dpTaskType == "Team" ){
+        if(d.dp_status.toString()=="2" && d.dpTaskType == "Team" ){
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list1.where((d){
-        if(d.dp_status=="3" && d.dpTaskType == "Team" ){
+        if(d.dp_status.toString()=="3" && d.dpTaskType == "Team" ){
           return true;
         }
         return false;
@@ -207,21 +207,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
         }).toList();
         //open
         list4 = list11.where((d){
-          if(d.dp_status=="1" && d.dpTaskType=="Project" && d.dpOwnedBy==profilename ){
+          if(d.dp_status.toString()=="1" && d.dpTaskType=="Project"  ){
             return true;
           }
           return false;
         }).toList();
         //progress
         list5 = list11.where((d){
-          if(d.dp_status=="2" && d.dpTaskType=="Project" && d.dpOwnedBy==profilename ){
+          if(d.dp_status.toString()=="2" && d.dpTaskType=="Project" ){
             return true;
           }
           return false;
         }).toList();
         //closed
         list6 = list11.where((d){
-          if(d.dp_status=="3" && d.dpTaskType=="Project" && d.dpOwnedBy==profilename ){
+          if(d.dp_status.toString()=="3" && d.dpTaskType=="Project"  ){
             return true;
           }
           return false;
@@ -808,16 +808,14 @@ class _TaskPlannerState extends State<TaskPlanner> {
    getTaskPlanner(String uiddd) async {
     setState(() => _isloading = true);
     try {
-      var response = await dio.post(ServicesApi.emp_Data,
-          data: {"actionMode": "GetAllTasksIncludingDownTeamById", "parameter1": uiddd.toString()},
+      var response = await dio.post(ServicesApi.getData,
+          data: {"parameter1": "GetAllTasksIncludingDownTeamById", "parameter2": uiddd.toString()},
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          list1 = (json.decode(response.data) as List)
-              .map((data) => new TaskListModel.fromJson(data))
-              .toList();
+          list1 = (json.decode(response.data) as List).map((data) => new TaskListModel.fromJson(data)).toList();
           list11=list1;
           _isloading = false;
         });
@@ -855,7 +853,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                   padding: const EdgeInsets.all(10.0),
                   child: ListTile(
                     title: Text(
-                      list2[index]?.dp_id ?? 'NA',
+                      "EDP_"+list2[index]?.dp_id.toString() ?? 'NA',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 10,
@@ -905,6 +903,26 @@ class _TaskPlannerState extends State<TaskPlanner> {
                           ],
                         ),
                         Padding(
+                          padding: EdgeInsets.only(top: 4),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Text("Task Created  :   ",style: TextStyle(fontSize: 8,color: Colors.black),),
+                            Padding(
+                              padding: EdgeInsets.only(top: 2),
+                            ),
+                            Expanded(
+                              child: Text(list2[index]?.dp_created_date.split(" ")[0].toString() ?? '' + "NA.",
+                                style: TextStyle(
+                                  color: lwtColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
                           padding: EdgeInsets.only(top: 2),
                         ),
                         Row(
@@ -940,21 +958,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
                       onPressed: () {
                         if(myTasks==true){
                           if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id,profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
                           }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id,profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
                           }
                         }else if(teamTasks==true){
                           if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id,profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
                           }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id,profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
                           }
                         }else if(projectTasks==true){
                           if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id,profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
                           }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id,profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
                           }
                         }
                         /* var navigator = Navigator.of(context);

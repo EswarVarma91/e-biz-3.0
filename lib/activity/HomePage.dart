@@ -526,10 +526,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
         
           getPaidCount(String empCodee) async {
             try {
-              var response = await dio.post(ServicesApi.emp_Data,
+              var response = await dio.post(ServicesApi.getData,
                   data: {
-                    "actionMode": "getPaidCount",
-                    "parameter1": empCodee.toString(),
+                    "parameter1": "getPaidCount",
+                    "parameter2": empCodee.toString(),
                   },
                   options: Options(
                     contentType: ContentType.parse('application/json'),
@@ -561,11 +561,11 @@ class _HomePageLocationState extends State<HomePageLocation> {
           void getAttendance() async {
             var now = DateTime.now();
             try {
-              var response = await dio.post(ServicesApi.emp_Data,
+              var response = await dio.post(ServicesApi.getData,
                   data: {
-                    "actionMode": "GetEmpDayStatus",
-                    "parameter1": userId,
-                    "parameter2": DateFormat("yyyy-MM-dd").format(now).toString(),
+                    "parameter1": "GetEmpDayStatus",
+                    "parameter2": userId,
+                    "parameter3": DateFormat("yyyy-MM-dd").format(now).toString(),
                   },
                   options: Options(
                     contentType: ContentType.parse('application/json'),
@@ -638,15 +638,15 @@ class _HomePageLocationState extends State<HomePageLocation> {
           _insertStartTimeService(
               String timeStarta, String lat, String long, String datest) async {
             try {
-              var response = await dio.put(
-                  ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+              var response = await dio.post(
+                  ServicesApi.updateData,
                   data: {
-                    "actionMode": "UpdtEmpDayStartByCodeDate",
-                    "parameter1": empCode.toString(),
-                    "parameter2": lat.toString(),
-                    "parameter3": long.toString(),
-                    "parameter4": timeStarta.toString(),
-                    "parameter5": datest,
+                    "parameter1": "UpdtEmpDayStartByCodeDate",
+                    "parameter2": empCode.toString(),
+                    "parameter3": lat.toString(),
+                    "parameter4": long.toString(),
+                    "parameter5": timeStarta.toString(),
+                    "parameter6": datest,
                   },
                   options: Options(
                     contentType: ContentType.parse('application/json'),
@@ -674,15 +674,15 @@ class _HomePageLocationState extends State<HomePageLocation> {
           void _insertEndTimeService(
               String timeEnda, String lat, String long, String dateen) async {
             try {
-              var response = await dio.put(
-                  ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+              var response = await dio.post(
+                  ServicesApi.updateData,
                   data: {
-                    "actionMode": "UpdtEmpDayEndByCodeDate",
-                    "parameter1": empCode.toString(),
-                    "parameter2": lat.toString(),
-                    "parameter3": long.toString(),
-                    "parameter4": timeEnda.toString(),
-                    "parameter5": dateen,
+                    "parameter1": "UpdtEmpDayEndByCodeDate",
+                    "parameter2": empCode.toString(),
+                    "parameter3": lat.toString(),
+                    "parameter4": long.toString(),
+                    "parameter5": timeEnda.toString(),
+                    "parameter6": dateen,
                   },
                   options: Options(
                     contentType: ContentType.parse('application/json'),
@@ -712,13 +712,13 @@ class _HomePageLocationState extends State<HomePageLocation> {
             var dateNow = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
             try {
               var response = await dio.put(
-                  ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+                  ServicesApi.updateData,
                   data: {
-                    "actionMode": "insertUserLocations",
-                    "parameter1": userId,
-                    "parameter2": lati.toString(),
-                    "parameter3": longi.toString(),
-                    "parameter4": dateNow
+                    "parameter1": "insertUserLocations",
+                    "parameter2": userId,
+                    "parameter3": lati.toString(),
+                    "parameter4": longi.toString(),
+                    "parameter5": dateNow
                   },
                   options: Options(
                     contentType: ContentType.parse('application/json'),
@@ -783,10 +783,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   void getPendingCount(String userIdd) async {
     try {
-      var response = await dio.post(ServicesApi.emp_Data,
+      var response = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "getPendingCount",
-            "parameter1": userIdd.toString(),
+            "parameter1": "getPendingCount",
+            "parameter2": userIdd.toString(),
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

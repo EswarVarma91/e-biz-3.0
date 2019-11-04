@@ -1,5 +1,34 @@
 class ServicesApi{
 
+  //========= New DataBase ebizdb=========//
+
+  static String basic_url = "http://192.168.2.5:8383/";
+  static String new_login_url = basic_url + "global.service/validate/user";
+
+  static String global_Service = "global.service/global/";
+  static String hrms_Service = "hrms.service/hrms/";
+
+  static String getData = basic_url + global_Service + "getAnyGlobalDataForMobile";
+  static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
+
+  static String insertLeave = basic_url + hrms_Service +"saveEmpLeave";
+  static String cancelLeave = basic_url + hrms_Service + "update/leave/status";
+
+  static String insertPermission = basic_url + hrms_Service +"saveEmpPermission";
+  static String checkLeaveStatus = basic_url + hrms_Service + "get/hruser/data";
+
+  static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
+
+
+  //not working not supported error
+  static String leavebyUserId = "http://192.168.2.5:8383/hrms.service/hrms/getEmpLeaveByUserId?id=";
+
+
+
+
+
+
+  /// old database ip
   static String baseUrl= 'http://192.168.1.122:8180/';
 
   static String Referedby_Url = baseUrl + 'Eagle_HR_Dev/get/userinfo';
@@ -28,10 +57,6 @@ class ServicesApi{
 
 
 
-              //========= New DataBase ebizdb=========//
-
-  static String basic_url="http://192.168.2.5:8383/";
-  static String new_login_url=basic_url + "hrms.service/encryption/getValidateUser?empCode=";
 
 
 }

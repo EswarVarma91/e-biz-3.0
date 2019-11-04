@@ -1,5 +1,5 @@
 class PendingCountModel {
-  final String pendingCount;
+  final int pendingCount;
 
   PendingCountModel(this.pendingCount);
 

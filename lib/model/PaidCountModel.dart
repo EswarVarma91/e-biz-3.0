@@ -1,5 +1,5 @@
 class PaidCountModel {
-  final String paidCount;
+  final int paidCount;
 
   PaidCountModel(this.paidCount,);
 

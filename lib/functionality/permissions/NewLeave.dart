@@ -31,15 +31,11 @@ class _NewLeaveState extends State<NewLeave> {
   int y,m,d;
   String toA,toB,toC;
   var _isloading;
-  String uuid,leaveType="Leave Type",status;
+  String uuid,leaveType="Leave Type",status,fullname;
   List<RestrictPermissionsModel> restrictpermissionModel;
   static Dio dio = Dio(Config.options);
   ProgressDialog pr;
-  Future<String> getUserID() async{
-    SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
-    return id;
-  }
+
 
   @override
   void initState() {
@@ -49,10 +45,13 @@ class _NewLeaveState extends State<NewLeave> {
     y=now.year;
     m=now.month;
     d=now.day;
-    getUserID().then((val)=>setState((){
-      uuid="USR_"+val;
-      print(uuid);
-    }));
+    getName();
+  }
+
+   getName() async{
+    SharedPreferences preferences=await SharedPreferences.getInstance();
+    uuid= preferences.getString("userId");
+    fullname = preferences.getString("fullname");
   }
   @override
   Widget build(BuildContext context) {
@@ -297,42 +296,41 @@ class _NewLeaveState extends State<NewLeave> {
 
   void callServiceInsert() async {
     pr.show();
-    print("esko CallInsert : "+fromDate+", "+_controller1.text+", "+toDate+","+leaveType+", "+uuid);
+    print("esko CallInsert : "+fromDate+", "+_controller1.text+", "+toDate+","+leaveType+", "+uuid+" "+fullname);
     var response;
     if(_color1==true){
-       response = await dio.post(ServicesApi.leavesInsert,
+       response = await dio.post(ServicesApi.insertLeave,
           data:
           {
-            "actionMode": "insert",
-            "elFromDate": fromDate,
-            "elReason": _controller1.text,
-            "elStatus": 1,
-            "elToDate": fromDate,
-            "leaveType": leaveType,
-            "numberOfDays": "0.5",
-            "toAddress": ["string"],
-            "uId": uuid,
+            "vactionmode": "insert",
+            "vel_created_by": fullname,
+            "vel_from_date": fromDate,
+            "vel_noofdays": 1,
+            "vel_reason": _controller1.text,
+            "vel_to_date": fromDate,
+            "vleave_type": leaveType,
+            "vu_id": uuid
           },
           options: Options(
             contentType: ContentType.parse('application/json'),));
     }else {
-       response = await dio.post(ServicesApi.leavesInsert,
+       response = await dio.post(ServicesApi.insertLeave,
           data:
           {
-            "actionMode": "insert",
-            "elFromDate": fromDate,
-            "elReason": _controller1.text,
-            "elStatus": 1,
-            "elToDate": toDate,
-            "leaveType": leaveType,
-            "toAddress": ["string"],
-            "uId": uuid,
+            "vactionmode": "insert",
+            "vel_created_by": fullname,
+            "vel_from_date": fromDate,
+            "vel_noofdays": 0,
+            "vel_reason": _controller1.text,
+            "vel_to_date": toDate,
+            "vleave_type": leaveType,
+            "vu_id": uuid
           },
           options: Options(
             contentType: ContentType.parse('application/json'),));
     }
     print("Response :-"+response.toString());
-    setState(() => _isloading=false);
+
 
     if(response.statusCode==200 || response.statusCode==201){
       pr.hide();
@@ -367,7 +365,7 @@ class _NewLeaveState extends State<NewLeave> {
       var data= await checkleaveStatus(fromDate,toDate,uuid);
       if(data=="0"){
         callServiceInsert();
-      }else if(data=="1"){
+      }else {
         Fluttertoast.showToast(msg: "Sorry! You have already requested a leave for this date(s).");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => Permissions()),
@@ -388,25 +386,23 @@ class _NewLeaveState extends State<NewLeave> {
       var data =await checkleaveStatus(fromDate,fromDate,uuid);
       if(data=="0"){
         callServiceInsert();
-      }else if(data=="1"){
+      }else {
         Fluttertoast.showToast(msg: "Sorry! You have already requested a leave for this date.");
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => Permissions()),
-        ModalRoute.withName('/'),);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+          ModalRoute.withName('/'),);
       }
     }
   }
 
   checkleaveStatus(String fromDate, String toDate, String uuidd) async {
-    var response = await dio.post(ServicesApi.emp_Data,
+    var response = await dio.post(ServicesApi.getData,
         data:
         {
-          "actionMode": "getUserByLeaveDate",
-          "parameter1": uuidd,
-          "parameter2": fromDate,
-          "parameter3": toDate,
-          "parameter4": "string",
-          "parameter5": "string"
+          "parameter1": "checkLeaveBetweenDates",
+          "parameter2": uuidd,
+          "parameter3": fromDate,
+          "parameter4": toDate,
         },
         options: Options(contentType: ContentType.parse('application/json'),
         ));
@@ -422,4 +418,6 @@ class _NewLeaveState extends State<NewLeave> {
       throw Exception("Incorrect data");
     }
   }
+
+
 }

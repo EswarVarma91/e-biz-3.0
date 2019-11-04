@@ -462,7 +462,7 @@ class _ApprovalsState extends State<Approvals> {
                              Padding(
                                padding: EdgeInsets.only(top: 4),
                              ),
-                             Text(leaveList[index]?.el_noofdays+" Days" ?? '' + "NA.",
+                             Text(leaveList[index]?.el_noofdays.toString()+" Days" ?? '' + "NA.",
                                style: TextStyle(
                                    color: lwtColor,
                                    fontSize: 10,
@@ -1051,7 +1051,7 @@ class _ApprovalsState extends State<Approvals> {
         setState(() {
           datacheck=
               (json.decode(response2.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
-          datacheck.removeWhere((a)=> a.att_request_id=="-");
+          datacheck.removeWhere((a)=> a.att_id=="-");
           datacheck.removeWhere((a)=>a.tl_approval=="1");
           datacheck.removeWhere((a)=>a.tl_approval=="2");
           datacheck.removeWhere((a)=>a.hr_approval=="1");
@@ -1080,7 +1080,7 @@ class _ApprovalsState extends State<Approvals> {
         setState(() {
           datacheck =
               (json.decode(response3.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
-          datacheck.removeWhere((a)=> a.att_request_id=="-");
+          datacheck.removeWhere((a)=> a.att_id=="-");
           datacheck.removeWhere((a)=>a.tl_approval=="1");
           datacheck.removeWhere((a)=>a.tl_approval=="2");
           datacheck.removeWhere((a)=>a.hr_approval=="1");
@@ -1259,7 +1259,7 @@ class _ApprovalsState extends State<Approvals> {
             "parameter1": listdata.u_emp_code.toString(),
             "parameter2": listdata.att_date.toString(),
             "parameter3": profilename,
-            "parameter4": listdata.att_request_id.toString(),
+            "parameter4": listdata.att_id.toString(),
             "parameter5": "string"
           },
           options: Options(contentType: ContentType.parse('application/json'),
@@ -1294,7 +1294,7 @@ class _ApprovalsState extends State<Approvals> {
             "parameter1": listdata.u_emp_code.toString(),
             "parameter2": listdata.att_date.toString(),
             "parameter3": profilename,
-            "parameter4": listdata.att_request_id.toString(),
+            "parameter4": listdata.att_id.toString(),
             "parameter5": "string"
           },
           options: Options(contentType: ContentType.parse('application/json'),
