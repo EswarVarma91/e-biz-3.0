@@ -11,13 +11,15 @@ class ServicesApi{
   static String getData = basic_url + global_Service + "getAnyGlobalDataForMobile";
   static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
 
+  //leaves
   static String insertLeave = basic_url + hrms_Service +"saveEmpLeave";
   static String cancelLeave = basic_url + hrms_Service + "update/leave/status";
+  static String checkLeaveStatus = basic_url + hrms_Service + "get/hruser/data";
+  //permissions
+  static String insertPermission = basic_url + hrms_Service +"saveEmpPermission";
   static String cancelPermission = basic_url + hrms_Service + "update/Permission/status";
 
-  static String insertPermission = basic_url + hrms_Service +"saveEmpPermission";
-  static String checkLeaveStatus = basic_url + hrms_Service + "get/hruser/data";
-
+  //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
 
 
