@@ -462,7 +462,7 @@ class _ApprovalsState extends State<Approvals> {
                              Padding(
                                padding: EdgeInsets.only(top: 4),
                              ),
-                             Text(leaveList[index]?.el_noofdays.toString()+" Days" ?? '' + "NA.",
+                             Text(leaveList[index]?.el_noofdays.toString().split(".")[0]+" Days" ?? '' + "NA.",
                                style: TextStyle(
                                    color: lwtColor,
                                    fontSize: 10,
@@ -991,14 +991,10 @@ class _ApprovalsState extends State<Approvals> {
       _isloading=true;
     });
     try {
-      var response = await dio.post(ServicesApi.emp_Data,
+      var response = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "GetDownTeamPendLeavesByRLId",
-            "parameter1": uidd.toString(),
-            "parameter2": "string",
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter1": "GetDownTeamPendLeavesByRLId",
+            "parameter2": uidd.toString()
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1014,14 +1010,10 @@ class _ApprovalsState extends State<Approvals> {
 
       //=============================================================
 
-      var response1 = await dio.post(ServicesApi.emp_Data,
+      var response1 = await dio.post(ServicesApi.getData,
           data: {
-            "actionMode": "GetDownTeamPermissionsByRLId",
-            "parameter1": uidd.toString(),
-            "parameter2": "string",
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter1": "GetDownTeamPermissionsByRLId",
+            "parameter2": uidd.toString()
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
