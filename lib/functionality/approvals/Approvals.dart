@@ -1103,14 +1103,12 @@ class _ApprovalsState extends State<Approvals> {
   cancelLeavesServiceCall(LeavesModel leaveList) async{
     try {
       var
-      response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+      response = await dio.post(ServicesApi.ChangeLeaveStatus,
           data: {
-            "actionMode": "RejectEmpLeave",
-            "parameter1": leaveList.el_id.toString(),
-            "parameter2": leaveList.fullname,
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "leaveId": leaveList.el_id,
+            "modifiedBy": profilename,
+            "noOfDays": leaveList.el_noofdays,
+            "statusId": 3
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1139,12 +1137,10 @@ class _ApprovalsState extends State<Approvals> {
     try {
       var response = await dio.put(ServicesApi.ChangeLeaveStatus,
           data: {
-            "actionMode": "ApproveEmpLeave",
-            "parameter1": leaveList.el_id.toString(),
-            "parameter2": fullname,
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
+            "leaveId": leaveList.el_id,
+            "modifiedBy": profilename,
+            "noOfDays": leaveList.el_noofdays,
+            "statusId": 2
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1175,12 +1171,11 @@ class _ApprovalsState extends State<Approvals> {
     try {
       var response = await dio.put(ServicesApi.ChangePermissionStatus,
             data: {
-              "actionMode": "ApprovePermissionById",
-              "parameter1": permissionModel.per_id.toString(),
-              "parameter2": permissionModel.per_fullName,
-              "parameter3": "string",
-              "parameter4": "string",
-              "parameter5": "string"
+              "modifiedBy": profilename,
+              "permissionId": permissionModel.per_id,
+              "remarks": "string",
+              "statusId": 2,
+              "tlApprovedBy": profilename
             },
             options: Options(contentType: ContentType.parse('application/json'),
             ));
@@ -1209,14 +1204,13 @@ class _ApprovalsState extends State<Approvals> {
 
   void cancelPermissionServiceCall(PermissionModel permissionModel) async {
     try {
-      var response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+      var response = await dio.put(ServicesApi.ChangePermissionStatus,
             data: {
-              "actionMode": "RejectPermissionById",
-              "parameter1": permissionModel.per_id.toString(),
-              "parameter2": permissionModel.per_fullName,
-              "parameter3": "string",
-              "parameter4": "string",
-              "parameter5": "string"
+              "modifiedBy": profilename,
+              "permissionId": permissionModel.per_id,
+              "remarks": "string",
+              "statusId": 3,
+              "tlApprovedBy": profilename
             },
             options: Options(contentType: ContentType.parse('application/json'),
             ));
@@ -1243,9 +1237,11 @@ class _ApprovalsState extends State<Approvals> {
     }
   }
 
+
+  ///===============================
   void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
     try {
-      var  response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+      var  response = await dio.put(ServicesApi.ChangeLeaveStatus,
           data: {
             "actionMode": "RejectAttendanceReqByTL ",
             "parameter1": listdata.u_emp_code.toString(),
