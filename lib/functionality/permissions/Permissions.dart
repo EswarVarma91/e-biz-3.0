@@ -1376,8 +1376,7 @@ class _PermissionsState extends State<Permissions> {
           ));
       if (latecomingEmp.statusCode == 200 || latecomingEmp.statusCode == 201) {
         setState(() {
-          latecomingList =
-              (json.decode(latecomingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
+          latecomingList = (json.decode(latecomingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
 //          print(latecomingList.toString());
         });
         checkServices();
@@ -1392,8 +1391,7 @@ class _PermissionsState extends State<Permissions> {
           ));
       if (earlygoingEmp.statusCode == 200 || earlygoingEmp.statusCode == 201) {
         setState(() {
-          earlygoingList =
-              (json.decode(earlygoingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
+          earlygoingList = (json.decode(earlygoingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
 //          print(earlygoingList.toString());
         });
         checkServices();
