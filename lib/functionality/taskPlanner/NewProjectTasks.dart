@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:eaglebiz/model/RestrictPermissionsModel.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/taskPlanner/Projects.dart';
@@ -37,10 +38,11 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
     super.initState();
     getProfileName();
   }
-  void getProfileName() async {
+   getProfileName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       profileName = preferences.getString("profileName");
+      uidd = preferences.getString("userId");
     });
   }
 
@@ -155,11 +157,11 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                       ),
                     ),
                     trailing: IconButton(icon: Icon(Icons.add,color: lwtColor,),
-                      onPressed: (){
+                      onPressed: () {
                       if(projectId==null) {
                         Fluttertoast.showToast(msg: "Please choose a project");
                       }
-                      else{
+                      else {
                         _navigateresourceMethod(context);
                       }
                       },),
@@ -180,10 +182,17 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
     projectId=string[1];
   }
   void _navigateresourceMethod(BuildContext context) async {
-    var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Resources(chooseResource,projectId)));
-    var string=data.split(" USR_");
-    chooseResource = string[0];
-    resourceId=string[1];
+    var data;
+    var checkpi=await checkProjectIncharge(uidd,projectId);
+    if(checkpi.toString()=='1') {
+      data = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Resources(chooseResource,projectId)));
+      var string=data.split(" USR_");
+      chooseResource = string[0];
+      resourceId=string[1];
+    }else{
+      Fluttertoast.showToast(msg: "Sorry! You are not a project incharge.");
+    }
+
   }
 
   void CallProjectTaskApi() async{
@@ -223,6 +232,27 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
       Fluttertoast.showToast(msg: "Please try after some time.");
     }
 
+  }
+
+  checkProjectIncharge(String uidd, projectId) async {
+    var response = await dio.post(ServicesApi.getData,
+
+        data:
+        {
+          "parameter1": "CheckProjectIncharge",
+          "parameter2": uidd,
+          "parameter3": projectId.toString()
+        },
+        options: Options(
+          contentType: ContentType.parse('application/json'),));
+
+    if(response.statusCode==200 || response.statusCode==201){
+      List<RestrictPermissionsModel> dataCheck = (json.decode(response.data) as List).map((data) => new RestrictPermissionsModel.fromJson(data)).toList();
+     return dataCheck[0].status.toString();
+    }else{
+      pr.hide();
+      Fluttertoast.showToast(msg: "Please try after some time.");
+    }
   }
 }
 
