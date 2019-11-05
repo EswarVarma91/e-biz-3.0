@@ -1331,9 +1331,6 @@ class _PermissionsState extends State<Permissions> {
   }
 
    getDataLeaves_Permissions() async {
-    setState(() {
-      _isloading=true;
-    });
     Map<String, String> queryParameters = {
       "id": uuid
     };
@@ -1382,7 +1379,6 @@ class _PermissionsState extends State<Permissions> {
           latecomingList =
               (json.decode(latecomingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
 //          print(latecomingList.toString());
-          _isloading = false;
         });
         checkServices();
       }
@@ -1399,7 +1395,6 @@ class _PermissionsState extends State<Permissions> {
           earlygoingList =
               (json.decode(earlygoingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
 //          print(earlygoingList.toString());
-          _isloading = false;
         });
         checkServices();
       }

@@ -59,12 +59,12 @@ class _ApprovalsState extends State<Approvals> {
     }));
   }
 
-  void checkServices() {
+   checkServices() {
     setState(() {
-      leavesCount=leaveList.length.toString();
-      permissionsCount=permissionsList.length.toString();
-      latecomingCount=latecomingList.length.toString();
-      earlygoingCount=earlygoingList.length.toString();
+      leavesCount=leaveList.length?.toString()??"0";
+      permissionsCount=permissionsList.length?.toString()??"0";
+      latecomingCount=latecomingList.length?.toString()??"0";
+      earlygoingCount=earlygoingList.length?.toString()??"0";
     });
   }
 
@@ -142,6 +142,7 @@ class _ApprovalsState extends State<Approvals> {
           setState(() {
 
             _leavesA = !_leavesA;
+            checkServices();
             if (_permissionsA == true) {
               _permissionsA = !_permissionsA;
               checkServices();
@@ -153,6 +154,7 @@ class _ApprovalsState extends State<Approvals> {
               checkServices();
             } else if(_leavesA==false){
               _permissionsA=!_permissionsA;
+              checkServices();
             }
           });
         },
@@ -205,6 +207,7 @@ class _ApprovalsState extends State<Approvals> {
         onTap: () {
           setState(() {
             _permissionsA = !_permissionsA;
+            checkServices();
             if (_leavesA == true) {
               _leavesA = !_leavesA;
               checkServices();
@@ -216,6 +219,7 @@ class _ApprovalsState extends State<Approvals> {
               checkServices();
             } else if(_permissionsA==false){
               _earlygoingA =!_earlygoingA;
+              checkServices();
             }
           });
         },
@@ -268,6 +272,7 @@ class _ApprovalsState extends State<Approvals> {
         onTap: () {
           setState(() {
             _earlygoingA = !_earlygoingA;
+            checkServices();
             if (_leavesA == true) {
               _leavesA = !_leavesA;
               checkServices();
@@ -279,6 +284,7 @@ class _ApprovalsState extends State<Approvals> {
               checkServices();
             } else if(_earlygoingA==false){
               _latecomingA=!_latecomingA;
+              checkServices();
             }
           });
         },
@@ -331,6 +337,7 @@ class _ApprovalsState extends State<Approvals> {
         onTap: () {
           setState(() {
             _latecomingA = !_latecomingA;
+            checkServices();
             if (_leavesA == true) {
               _leavesA = !_leavesA;
               checkServices();
@@ -342,6 +349,7 @@ class _ApprovalsState extends State<Approvals> {
               checkServices();
             } else if(_latecomingA==false){
               _leavesA=!_leavesA;
+              checkServices();
             }
           });
         },
@@ -987,9 +995,7 @@ class _ApprovalsState extends State<Approvals> {
 
 
   getPendingApprovals() async {
-    setState(() {
-      _isloading=true;
-    });
+
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -1000,12 +1006,10 @@ class _ApprovalsState extends State<Approvals> {
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          leaveList =
-              (json.decode(response.data) as List).map((data) => new LeavesModel.fromJson(data)).toList();
-//          print(list1.toString());
-          _isloading = false;
+          leaveList = (json.decode(response.data) as List).map((data) => new LeavesModel.fromJson(data)).toList();
+          print(leaveList.toString());
         });
-//        CheckServices();
+        checkServices();
       }
 
       //=============================================================
@@ -1020,70 +1024,69 @@ class _ApprovalsState extends State<Approvals> {
       if (response1.statusCode == 200 || response1.statusCode == 201) {
         setState(() {
           permissionsList = (json.decode(response1.data) as List).map((data) => PermissionModel.fromJson(data)).toList();
-//            print(list11.toString());
-          _isloading = false;
+            print(permissionsList.toString());
         });
-
+        checkServices();
       }
 
-      //=======================================================================================
+      ///==================================
 
-      var response2 = await dio.post(ServicesApi.emp_Data,
-          data: {
-            "actionMode": "GetDownTeamLatecomingByMonth",
-            "parameter1": uidd.toString(),
-            "parameter2": DateFormat("yyyy-MM-").format(now).toString()+"01",
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
-          },
-          options: Options(contentType: ContentType.parse('application/json'),
-          ));
-      if (response2.statusCode == 200 || response2.statusCode == 201) {
-        setState(() {
-          datacheck=
-              (json.decode(response2.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
-          datacheck.removeWhere((a)=> a.att_id=="-");
-          datacheck.removeWhere((a)=>a.tl_approval=="1");
-          datacheck.removeWhere((a)=>a.tl_approval=="2");
-          datacheck.removeWhere((a)=>a.hr_approval=="1");
-          datacheck.removeWhere((a)=>a.hr_approval=="2");
-          latecomingList=datacheck;
-          print(latecomingList);
-//          print(list1.toString());
-          _isloading = false;
-        });
-//        CheckServices();
-      }
-      //=======================================================
-      print(DateFormat("yyyy-MM-").format(now).toString()+"01");
-      var response3 = await dio.post(ServicesApi.emp_Data,
-          data: {
-            "actionMode": "GetDownTeamEarlyGoingByMonth",
-            "parameter1": uidd.toString(),
-            "parameter2": DateFormat("yyyy-MM-").format(now).toString()+"01",
-            "parameter3": "string",
-            "parameter4": "string",
-            "parameter5": "string"
-          },
-          options: Options(contentType: ContentType.parse('application/json'),
-          ));
-      if (response3.statusCode == 200 || response3.statusCode == 201) {
-        setState(() {
-          datacheck =
-              (json.decode(response3.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
-          datacheck.removeWhere((a)=> a.att_id=="-");
-          datacheck.removeWhere((a)=>a.tl_approval=="1");
-          datacheck.removeWhere((a)=>a.tl_approval=="2");
-          datacheck.removeWhere((a)=>a.hr_approval=="1");
-          datacheck.removeWhere((a)=>a.hr_approval=="2");
-          earlygoingList=datacheck;
-//          print(list1.toString());
-          _isloading = false;
-        });
+//      var response2 = await dio.post(ServicesApi.emp_Data,
+//          data: {
+//            "actionMode": "GetDownTeamLatecomingByMonth",
+//            "parameter1": uidd.toString(),
+//            "parameter2": DateFormat("yyyy-MM-").format(now).toString()+"01",
+//            "parameter3": "string",
+//            "parameter4": "string",
+//            "parameter5": "string"
+//          },
+//          options: Options(contentType: ContentType.parse('application/json'),
+//          ));
+//      if (response2.statusCode == 200 || response2.statusCode == 201) {
+//        setState(() {
+//          datacheck=
+//              (json.decode(response2.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
+//          datacheck.removeWhere((a)=> a.att_id=="-");
+//          datacheck.removeWhere((a)=>a.tl_approval=="1");
+//          datacheck.removeWhere((a)=>a.tl_approval=="2");
+//          datacheck.removeWhere((a)=>a.hr_approval=="1");
+//          datacheck.removeWhere((a)=>a.hr_approval=="2");
+//          latecomingList=datacheck;
+//          print(latecomingList);
+////          print(list1.toString());
+//          _isloading = false;
+//        });
+////        CheckServices();
+//      }
+//      //=======================================================
+//      print(DateFormat("yyyy-MM-").format(now).toString()+"01");
+//      var response3 = await dio.post(ServicesApi.emp_Data,
+//          data: {
+//            "actionMode": "GetDownTeamEarlyGoingByMonth",
+//            "parameter1": uidd.toString(),
+//            "parameter2": DateFormat("yyyy-MM-").format(now).toString()+"01",
+//            "parameter3": "string",
+//            "parameter4": "string",
+//            "parameter5": "string"
+//          },
+//          options: Options(contentType: ContentType.parse('application/json'),
+//          ));
+//      if (response3.statusCode == 200 || response3.statusCode == 201) {
+//        setState(() {
+//          datacheck =
+//              (json.decode(response3.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
+//          datacheck.removeWhere((a)=> a.att_id=="-");
+//          datacheck.removeWhere((a)=>a.tl_approval=="1");
+//          datacheck.removeWhere((a)=>a.tl_approval=="2");
+//          datacheck.removeWhere((a)=>a.hr_approval=="1");
+//          datacheck.removeWhere((a)=>a.hr_approval=="2");
+//          earlygoingList=datacheck;
+////          print(list1.toString());
+//          _isloading = false;
+//        });
 
-      }
-      checkServices();
+//      }
+//      checkServices();
       //===================================================
     }on DioError catch(exception){
       if (exception == null ||
@@ -1107,8 +1110,10 @@ class _ApprovalsState extends State<Approvals> {
           data: {
             "leaveId": leaveList.el_id,
             "modifiedBy": profilename,
+            "leaveType": leaveList.leave_type,
             "noOfDays": leaveList.el_noofdays,
-            "statusId": 3
+            "statusId": 3,
+            "userId": uidd
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1135,12 +1140,14 @@ class _ApprovalsState extends State<Approvals> {
   }
   void approveLeavesServiceCall(LeavesModel leaveList) async {
     try {
-      var response = await dio.put(ServicesApi.ChangeLeaveStatus,
+      var response = await dio.post(ServicesApi.ChangeLeaveStatus,
           data: {
             "leaveId": leaveList.el_id,
             "modifiedBy": profilename,
+            "leaveType": leaveList.leave_type,
             "noOfDays": leaveList.el_noofdays,
-            "statusId": 2
+            "statusId": 2,
+            "userId": uidd
           },
           options: Options(contentType: ContentType.parse('application/json'),
           ));
@@ -1169,7 +1176,7 @@ class _ApprovalsState extends State<Approvals> {
 
    approvePermissionServiceCall(PermissionModel permissionModel) async {
     try {
-      var response = await dio.put(ServicesApi.ChangePermissionStatus,
+      var response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
               "modifiedBy": profilename,
               "permissionId": permissionModel.per_id,
@@ -1204,7 +1211,7 @@ class _ApprovalsState extends State<Approvals> {
 
   void cancelPermissionServiceCall(PermissionModel permissionModel) async {
     try {
-      var response = await dio.put(ServicesApi.ChangePermissionStatus,
+      var response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
               "modifiedBy": profilename,
               "permissionId": permissionModel.per_id,
