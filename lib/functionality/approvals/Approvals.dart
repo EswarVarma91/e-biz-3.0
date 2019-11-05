@@ -28,7 +28,7 @@ Future<String> getUserID() async{
 
 class _ApprovalsState extends State<Approvals> {
   String uidd,profilename,leavesCount="-",permissionsCount="-",earlygoingCount="-",latecomingCount="-",fullname;
-  bool _leavesA, _permissionsA, _earlygoingA, _latecomingA,_isloading=false;
+  bool _leavesA, _permissionsA, _earlygoingA, _latecomingA;
   static  var now = DateTime.now();
   static Dio dio = Dio(Config.options);
   List<LeavesModel> leaveList=new List();
@@ -1054,7 +1054,7 @@ class _ApprovalsState extends State<Approvals> {
 //          latecomingList=datacheck;
 //          print(latecomingList);
 ////          print(list1.toString());
-//          _isloading = false;
+//
 //        });
 ////        CheckServices();
 //      }
@@ -1082,7 +1082,7 @@ class _ApprovalsState extends State<Approvals> {
 //          datacheck.removeWhere((a)=>a.hr_approval=="2");
 //          earlygoingList=datacheck;
 ////          print(list1.toString());
-//          _isloading = false;
+//
 //        });
 
 //      }
@@ -1121,7 +1121,6 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           getPendingApprovals();
-          _isloading = false;
         });
         Navigator.pop(context);
       }
@@ -1154,7 +1153,6 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           getPendingApprovals();
-          _isloading = false;
         });
         Navigator.pop(context);
 //        CheckServices();
@@ -1190,7 +1188,6 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           getPendingApprovals();
-          _isloading = false;
         });
         Navigator.pop(context);
 //        CheckServices();
@@ -1225,7 +1222,6 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           getPendingApprovals();
-          _isloading = false;
         });
         Navigator.pop(context);
 //        CheckServices();
@@ -1262,7 +1258,6 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           getPendingApprovals();
-          _isloading = false;
         });
         Navigator.pop(context);
 //        CheckServices();
@@ -1297,7 +1292,6 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           getPendingApprovals();
-          _isloading = false;
         });
         Navigator.pop(context);
 //        CheckServices();

@@ -1,5 +1,5 @@
 class ResourcesModel {
-  String u_id;
+  int u_id;
   String pteam_type;
   String memberName;
 

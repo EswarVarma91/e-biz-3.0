@@ -29,7 +29,7 @@ class _ResourcesState extends State<Resources> {
 
   Future<String> getUserID() async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
+    String id=preferences.getString("userId");
     return id;
   }
 
@@ -37,7 +37,7 @@ class _ResourcesState extends State<Resources> {
   void initState() {
     super.initState();
     getUserID().then((val)=>setState((){
-      uidd="USR_"+val;
+      uidd=val;
       print(uidd);
     }));
     getResources(rId);
@@ -67,7 +67,7 @@ class _ResourcesState extends State<Resources> {
                     fliterReferals = listReferals
                         .where((u) => (
                         u.memberName.toLowerCase().contains(string.toLowerCase()) ||
-                            u.u_id.toLowerCase().contains(string.toLowerCase())
+                            u.u_id.toString().toLowerCase().contains(string.toLowerCase())
                     )).toList();
                   });
                 });
@@ -82,7 +82,7 @@ class _ResourcesState extends State<Resources> {
                   return Card(
                     child: ListTile (
                       onTap: (){
-                        Navigator.pop(context, fliterReferals[index].memberName+" "+fliterReferals[index].u_id);
+                        Navigator.pop(context, fliterReferals[index].memberName+" USR_"+fliterReferals[index].u_id.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),
@@ -112,11 +112,10 @@ class _ResourcesState extends State<Resources> {
   getResources(String rId) async {
     _isloading = false;
 
-    var response = await dio.post(ServicesApi.emp_Data,
-        data:
-        {
-          "actionMode": "GetProjectTeamByProjId",
-          "parameter1": rId,
+    var response = await dio.post(ServicesApi.getData,
+        data: {
+          "parameter1":"GetProjectTeamByProjId",
+          "parameter2": rId
         },
         options: Options(contentType: ContentType.parse('application/json'),
         ));

@@ -31,6 +31,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
   bool _isloading = false;
   List<TaskListModel> list1 = [];
   List<TaskListModel> list11 = [];
+  List<TaskListModel> list22 = [];
   List<TaskListModel> list2 = [];
   List<TaskListModel> list3 = [];
   List<TaskListModel> list4 = [];
@@ -89,7 +90,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       list3 = list1.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self" && d.dp_given_by==profilename) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self") {
           return true;
         }
         return false;
@@ -97,21 +98,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
       ).toList();
       //open filter
       list4= list1.where((d){
-        if(d.dp_status.toString()=="1" && d.dpTaskType == "Self" && d.dp_given_by==profilename ){
+        if(d.dp_status.toString()=="1" && d.dpTaskType == "Self"  ){
           return true;
         }
         return false;
       }).toList();
       //progress filter
       list5=list1.where((d){
-        if(d.dp_status.toString()=="2" && d.dpTaskType == "Self" && d.dp_given_by==profilename ){
+        if(d.dp_status.toString()=="2" && d.dpTaskType == "Self" ){
           return true;
         }
         return false;
       }).toList();
       //closed filter
       list6= list1.where((d){
-        if(d.dp_status.toString()=="3" && d.dpTaskType == "Self" && d.dp_given_by==profilename){
+        if(d.dp_status.toString()=="3" && d.dpTaskType == "Self"){
           return true;
         }
         return false;
@@ -196,32 +197,31 @@ class _TaskPlannerState extends State<TaskPlanner> {
        }
 
     } else if (projectTasks == true) {
-
        //today
-        list3=  list11.where((d) {
+        list3=  list22.where((d) {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
-          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&  d.dpTaskType=="Project" ) {
+          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
             return true;
           }
           return false;
         }).toList();
         //open
-        list4 = list11.where((d){
-          if(d.dp_status.toString()=="1" && d.dpTaskType=="Project"  ){
+        list4 = list22.where((d){
+          if(d.dp_status.toString()=="1"  ){
             return true;
           }
           return false;
         }).toList();
         //progress
-        list5 = list11.where((d){
-          if(d.dp_status.toString()=="2" && d.dpTaskType=="Project" ){
+        list5 = list22.where((d){
+          if(d.dp_status.toString()=="2"){
             return true;
           }
           return false;
         }).toList();
         //closed
-        list6 = list11.where((d){
-          if(d.dp_status.toString()=="3" && d.dpTaskType=="Project"  ){
+        list6 = list22.where((d){
+          if(d.dp_status.toString()=="3" ){
             return true;
           }
           return false;
@@ -807,8 +807,9 @@ class _TaskPlannerState extends State<TaskPlanner> {
 
    getTaskPlanner(String uiddd) async {
     setState(() => _isloading = true);
+    var response;
     try {
-      var response = await dio.post(ServicesApi.getData,
+       response = await dio.post(ServicesApi.getData,
           data: {"parameter1": "GetAllTasksIncludingDownTeamById", "parameter2": uiddd.toString()},
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -822,7 +823,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
       } else if (response.statusCode == 401) {
         throw Exception("Incorrect data");
       }
+      response = await dio.post(ServicesApi.getData,
+          data: {"parameter1": "GetAllProjectsTasks", "parameter2": uiddd.toString()},
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          list22 = (json.decode(response.data) as List).map((data) => new TaskListModel.fromJson(data)).toList();
+          _isloading = false;
+        });
+      } else if (response.statusCode == 401) {
+        throw Exception("Incorrect data");
+      }
       checkServices();
+
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -912,7 +927,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                               padding: EdgeInsets.only(top: 2),
                             ),
                             Expanded(
-                              child: Text(list2[index]?.dp_created_date.split(" ")[0].toString() ?? '' + "NA.",
+                              child: Text(list2[index]?.dp_created_date.toString() ?? '' + "NA.",
                                 style: TextStyle(
                                   color: lwtColor,
                                   fontSize: 10,

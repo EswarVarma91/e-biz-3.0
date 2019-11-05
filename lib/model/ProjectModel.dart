@@ -1,5 +1,5 @@
 class ProjectModel {
-  String project_id;
+  int project_id;
   String proj_name;
   String proj_oano;
 

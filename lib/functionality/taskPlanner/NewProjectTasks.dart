@@ -177,35 +177,34 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
     var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Projects(chooseProject)));
     var string=data.split(" PROJ_");
     chooseProject = string[0];
-    projectId="PROJ_"+string[1];
+    projectId=string[1];
   }
   void _navigateresourceMethod(BuildContext context) async {
     var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Resources(chooseResource,projectId)));
     var string=data.split(" USR_");
     chooseResource = string[0];
-    resourceId="USR_"+string[1];
+    resourceId=string[1];
   }
 
   void CallProjectTaskApi() async{
     pr.show();
     print(projectId);
-    var response = await dio.post(ServicesApi.Task,
+    var response = await dio.post(ServicesApi.saveDayPlan,
 
         data:
         {
           "actionMode": "insert",
-          "createdBy": profileName.toString(),
+          "dpCreatedBy": profileName.toString(),
+          "dpGivenBy": profileName,
+          "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
           "dpTask": _controller1.text.toString(),
           "dpTaskDesc": _controller2.text.toString(),
-          "uId": resourceId,
-          "dpGivenBy": profileName.toString(),
-          "modifiedBy": profileName,
           "dpType": "Office",
-          "dpTaskType": "Project",
-          "dpRefNo": projectId,
-          "dpReason":" ",
-          "dpOwnedBy":profileName,
-          "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+          "dayTaskType":"Project",
+          "projectId": projectId,
+          "dpModifiedBy": profileName,
+          "uId": resourceId,
+          "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now)
         },
         options: Options(
           contentType: ContentType.parse('application/json'),));

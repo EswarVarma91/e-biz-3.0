@@ -85,7 +85,7 @@ class _MembersState extends State<Members> {
                   return Card(
                     child: ListTile (
                       onTap: (){
-                        Navigator.pop(context, fliterReferals[index].FullName+" "+fliterReferals[index].u_id.toString());
+                        Navigator.pop(context, fliterReferals[index].FullName+" USR_"+fliterReferals[index].u_id.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),
@@ -111,11 +111,11 @@ class _MembersState extends State<Members> {
   getDownTeamMembers(String uidds) async {
     _isloading = false;
     print(uidd);
-    var response = await dio.post(ServicesApi.emp_Data,
+    var response = await dio.post(ServicesApi.getData,
         data:
         {
-          "actionMode": "GetDownTeamByUId",
-          "parameter1": uidd.toString(),
+          "parameter1": "GetDownTeamByUId",
+          "parameter2": uidd.toString(),
         },
         options: Options(contentType: ContentType.parse('application/json'),
         ));

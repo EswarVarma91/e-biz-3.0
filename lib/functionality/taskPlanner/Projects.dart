@@ -32,7 +32,7 @@ class _ProjectsState extends State<Projects> {
 
   Future<String> getUserID() async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("uId");
+    String id=preferences.getString("userId");
     return id;
   }
 
@@ -73,7 +73,7 @@ class _ProjectsState extends State<Projects> {
                     fliterReferals = listReferals
                         .where((u) => (
                         u.proj_name.toLowerCase().contains(string.toLowerCase()) ||
-                            u.project_id.toLowerCase().contains(string.toLowerCase())
+                            u.project_id.toString().toLowerCase().contains(string.toLowerCase())
                     )).toList();
                   });
                 });
@@ -88,7 +88,7 @@ class _ProjectsState extends State<Projects> {
                   return Card(
                     child: ListTile (
                       onTap: (){
-                        Navigator.pop(context, fliterReferals[index].proj_name+" "+fliterReferals[index].project_id);
+                        Navigator.pop(context, fliterReferals[index].proj_name+" PROJ_"+fliterReferals[index].project_id.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),
@@ -113,11 +113,11 @@ class _ProjectsState extends State<Projects> {
   getProject() async {
     _isloading = false;
     print(uidd);
-    var response = await dio.post(ServicesApi.emp_Data,
+    var response = await dio.post(ServicesApi.getData,
         data:
         {
-          "actionMode": "GetDRProjectNoByUId",
-          "parameter1": "USR_"+uidd,
+          "parameter1": "GetDRProjectNoByUId",
+          "parameter2": uidd,
         },
         options: Options(contentType: ContentType.parse('application/json'),
         ));

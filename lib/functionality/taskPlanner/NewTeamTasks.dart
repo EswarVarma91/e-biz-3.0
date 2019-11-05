@@ -148,7 +148,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
     print(data.toString());
     var string=data.split(" USR_");
     choosePerson = string[0];
-    resourceId="USR_"+string[1];
+    resourceId=string[1];
     print(resourceId);
   }
 
@@ -156,19 +156,18 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
     pr.show();
       var now = DateTime.now();
     print(profileName+","+_controller1.text+","+_controller2.text+","+resourceId.toString());
-    var response = await dio.post(ServicesApi.Task,
+    var response = await dio.post(ServicesApi.saveDayPlan,
         data:
         {
           "actionMode": "insert",
-          "createdBy": profileName.toString(),
+          "dpCreatedBy": profileName.toString(),
           "dpGivenBy": profileName,
-          "dpStartDate":DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
-          "dpStatus": 0,
+          "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
           "dpTask": _controller1.text.toString(),
           "dpTaskDesc": _controller2.text.toString(),
           "dpType": "Office",
-          "dpTaskType": "Team",
-          "modifiedBy": profileName,
+          "dayTaskType":"Team",
+          "dpModifiedBy": profileName,
           "uId": resourceId
         },
         options: Options(
