@@ -1169,7 +1169,7 @@ class _PermissionsState extends State<Permissions> {
                                 Padding(
                                   padding: EdgeInsets.only(top: 4),
                                 ),
-                                Text(list222[index]?.att_tour_in_time.toString() ?? 'NA',
+                                Text(list222[index]?.att_in_time.toString() ?? 'NA',
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
