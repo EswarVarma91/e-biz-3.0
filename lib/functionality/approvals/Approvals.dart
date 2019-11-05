@@ -1137,7 +1137,7 @@ class _ApprovalsState extends State<Approvals> {
   }
   void approveLeavesServiceCall(LeavesModel leaveList) async {
     try {
-      var response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+      var response = await dio.put(ServicesApi.ChangeLeaveStatus,
           data: {
             "actionMode": "ApproveEmpLeave",
             "parameter1": leaveList.el_id.toString(),
@@ -1173,7 +1173,7 @@ class _ApprovalsState extends State<Approvals> {
 
    approvePermissionServiceCall(PermissionModel permissionModel) async {
     try {
-      var response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+      var response = await dio.put(ServicesApi.ChangePermissionStatus,
             data: {
               "actionMode": "ApprovePermissionById",
               "parameter1": permissionModel.per_id.toString(),

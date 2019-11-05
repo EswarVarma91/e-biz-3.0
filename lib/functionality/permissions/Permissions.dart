@@ -1423,7 +1423,7 @@ class _PermissionsState extends State<Permissions> {
     var response;
     try{
       if(i==1) {
-        response = await dio.post(ServicesApi.cancelLeave,
+        response = await dio.post(ServicesApi.ChangeLeaveStatus,
             data: {
               "leaveId": leavepermissionId,
               "leaveType": leaveType,
@@ -1435,7 +1435,7 @@ class _PermissionsState extends State<Permissions> {
             options: Options(contentType: ContentType.parse('application/json'),
             ));
       }else if(i==2){
-        response = await dio.post(ServicesApi.cancelPermission,
+        response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
               "modifiedBy": profilename,
               "permissionId": leavepermissionId,
