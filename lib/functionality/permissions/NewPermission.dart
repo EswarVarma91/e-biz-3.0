@@ -4,7 +4,6 @@ import 'dart:core';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/permissions/Permissions.dart';
 import 'package:eaglebiz/model/CheckPermissionsRestrictions.dart';
-import 'package:eaglebiz/model/RestrictPermissionsModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +22,7 @@ class NewPermissions extends StatefulWidget {
 }
 
 class _NewPermissionState extends State<NewPermissions> {
-  bool personal,official,_isLoading=false;
+  bool personal,official;
   String selectDate= " ",selectDateS= " ",fromTime="",toTime="",uidd,typeP,per_status;
   int y,m,d;
   ProgressDialog pr;
@@ -398,30 +397,36 @@ class _NewPermissionState extends State<NewPermissions> {
 
       } else if (personal == true) {
         typeP = "personal";
+        pr.show();
         var data= await getUserByPermissionDate(selectDate,uidd);
         // ignore: unrelated_type_equality_checks
-        if(data.dayPerCnt == 0 && data.monthPerCnt >= 2){
-          pr.show();
-          response = await dio.post(ServicesApi.insertPermission,
-              data: {
-                "vactionmode": "insert",
-                "vperCreatedby": fullname,
-                "vperDate": selectDate,
-                "vperPurpose": _controller1.text.toString(),
-                "vperType": typeP,
-                "vperfromTime": fromTime.toString(),
-                "vpertoTime": toTime.toString(),
-                "vuId": uidd
-              },
-              options: Options(
-                contentType: ContentType.parse('application/json'),));
-        }else{
-          Fluttertoast.showToast(msg: "Sorry! You have already requested a permission for this date.");
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => Permissions()),
-            ModalRoute.withName('/'),);
+        if(data==0){
+          if(checkPermissionRestrictions[0].dayPerCnt==0 && checkPermissionRestrictions[0].monthPerCnt<=2){
+            response = await dio.post(ServicesApi.insertPermission,
+                data: {
+                  "vactionmode": "insert",
+                  "vperCreatedby": fullname,
+                  "vperDate": selectDate,
+                  "vperPurpose": _controller1.text.toString(),
+                  "vperType": typeP,
+                  "vperfromTime": fromTime.toString(),
+                  "vpertoTime": toTime.toString(),
+                  "vuId": uidd
+                },
+                options: Options(
+                  contentType: ContentType.parse('application/json'),));
+          }else{
+            pr.hide();
+            Fluttertoast.showToast(msg: "Sorry! You have already requested a permission for this date.");
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+              ModalRoute.withName('/'),);
+          }
+          }else{
+          pr.hide();
+          Fluttertoast.showToast(msg: 'Something went wrong.!');
         }
-      }
+        }
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           pr.hide();
@@ -480,8 +485,10 @@ class _NewPermissionState extends State<NewPermissions> {
       if(checkPermissionRestrictions.isEmpty || checkPermissionRestrictions==null){
         Fluttertoast.showToast(msg: 'Something went wrong.!');
       }else{
-       return checkPermissionRestrictions[0].toString();
+       return 0;
       }
+      }else{
+        return 1;
       }
     } on DioError catch (exception) {
       if (exception == null ||
