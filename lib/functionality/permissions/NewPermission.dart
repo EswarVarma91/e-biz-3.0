@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:core';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/permissions/Permissions.dart';
+import 'package:eaglebiz/model/CheckPermissionsRestrictions.dart';
 import 'package:eaglebiz/model/RestrictPermissionsModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
@@ -31,7 +32,7 @@ class _NewPermissionState extends State<NewPermissions> {
   final _controller1 =TextEditingController();
   List<String> dSplit = [];
   List<String> aSplit = [];
-  List<RestrictPermissionsModel> restrictpermissionModel;
+  List<CheckPermissionRestrictions> checkPermissionRestrictions;
 
 
   @override
@@ -399,7 +400,7 @@ class _NewPermissionState extends State<NewPermissions> {
         typeP = "personal";
         var data= await getUserByPermissionDate(selectDate,uidd);
         // ignore: unrelated_type_equality_checks
-        if(data == "0" ){
+        if(data.dayPerCnt == 0 && data.monthPerCnt >= 2){
           pr.show();
           response = await dio.post(ServicesApi.insertPermission,
               data: {
@@ -465,9 +466,9 @@ class _NewPermissionState extends State<NewPermissions> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "parameter1": "getUserByPermissionDate",
-            "parameter2": uiddd,
-            "parameter3": selectedDate,
+            "parameter1": "getUserPermissionCount",
+            "parameter2": selectedDate,
+            "parameter3": uiddd,
             "parameter4": "string",
             "parameter5": "string"
           },
@@ -475,17 +476,11 @@ class _NewPermissionState extends State<NewPermissions> {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-      restrictpermissionModel = (json.decode(response.data) as List).map((data) => new RestrictPermissionsModel.fromJson(data)).toList();
-      if(restrictpermissionModel.isEmpty || restrictpermissionModel==null){
-        setState(() {
-          per_status="0";
-        });
-        return "0";
+        checkPermissionRestrictions = (json.decode(response.data) as List).map((data) => new CheckPermissionRestrictions.fromJson(data)).toList();
+      if(checkPermissionRestrictions.isEmpty || checkPermissionRestrictions==null){
+        Fluttertoast.showToast(msg: 'Something went wrong.!');
       }else{
-       setState(() {
-         per_status=restrictpermissionModel[0].status.toString();
-       });
-       return restrictpermissionModel[0].status.toString();
+       return checkPermissionRestrictions[0].toString();
       }
       }
     } on DioError catch (exception) {
