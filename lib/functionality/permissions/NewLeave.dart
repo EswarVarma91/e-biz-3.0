@@ -163,7 +163,7 @@ class _NewLeaveState extends State<NewLeave> {
                             showTitleActions: true,
 //                            minTime: DateTime(2019, 3, 5),
                             minTime: DateTime(int.parse(toA), int.parse(toB), int.parse(toC)),
-                            maxTime: DateTime(y, m,d+5),
+                            maxTime: DateTime(y, m,d+6),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
