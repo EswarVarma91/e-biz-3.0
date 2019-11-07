@@ -578,8 +578,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   timeStart = attData.in_time.toString();
                   timeEnd = attData.out_time.toString();
                   if (attData.in_time != null && attData != null) {
-                    AttendanceGettingModel attendanceModel =
-                        AttendanceGettingModel(userId, timeStart, timeEnd);
+                    AttendanceGettingModel attendanceModel = AttendanceGettingModel(userId, timeStart, timeEnd);
                     dbHelper.updateStartandEnd(attendanceModel);
                   }
                 });
