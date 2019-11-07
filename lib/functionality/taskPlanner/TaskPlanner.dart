@@ -200,28 +200,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
        //today
         list3=  list22.where((d) {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
-          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
+          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dp_given_by == profilename) {
             return true;
           }
           return false;
         }).toList();
         //open
         list4 = list22.where((d){
-          if(d.dp_status.toString()=="1"  ){
+          if(d.dp_status.toString()=="1" && d.dp_given_by == profilename ){
             return true;
           }
           return false;
         }).toList();
         //progress
         list5 = list22.where((d){
-          if(d.dp_status.toString()=="2"){
+          if(d.dp_status.toString()=="2" && d.dp_given_by == profilename){
             return true;
           }
           return false;
         }).toList();
         //closed
         list6 = list22.where((d){
-          if(d.dp_status.toString()=="3" ){
+          if(d.dp_status.toString()=="3" && d.dp_given_by == profilename ){
             return true;
           }
           return false;
@@ -831,6 +831,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           list22 = (json.decode(response.data) as List).map((data) => new TaskListModel.fromJson(data)).toList();
+          print(list22.toString());
           _isloading = false;
         });
       } else if (response.statusCode == 401) {

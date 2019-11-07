@@ -18,9 +18,11 @@ class ServicesApi{
   //permissions
   static String insertPermission = basic_url + hrms_Service +"saveEmpPermission";
   static String ChangePermissionStatus = basic_url + hrms_Service + "update/Permission/status";
+  static String getLeaves = basic_url + hrms_Service + "attendance/get/user/leaves?id=";
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
+
 
 
   //not working not supported error
