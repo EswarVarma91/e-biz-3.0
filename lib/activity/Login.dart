@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/activity/HomePage.dart';
@@ -147,8 +146,7 @@ class _LoginState extends State<Login> {
                       ),
                       Spacer(),
 
-                      Material(/*
-                        color: lwtColor,*/
+                      Material(
                         borderRadius: BorderRadius.circular(32.0),
                         shadowColor: lwtColor,
                         elevation: 15.0,
@@ -156,13 +154,7 @@ class _LoginState extends State<Login> {
                           minWidth: 280.0,
                           height: 42.0,
                           onPressed: () async {
-                            /*streamSubscription=connectivity.onConnectivityChanged.listen((ConnectivityResult result){
-                            if(result!=ConnectivityResult.none){*/
                             LoginMethod();
-                            /*}else{
-                              Fluttertoast.showToast(msg: "No Internet.!");
-                            }
-                          });*/
                           },
                           child: Text('Login'.toUpperCase(), style: TextStyle(color: lwtColor,fontSize: 16,fontWeight: FontWeight.bold)),
                         ),
@@ -198,7 +190,7 @@ class _LoginState extends State<Login> {
 //            loginData.downTeamId.toString() + "," +
 //            loginData.departmentName.toString());
         _writeData(email, loginData.uId, loginData.fullName, loginData.uEmpCode.toString(), loginData.profileName,
-            loginData.downTeamIds, loginData.mobileNumber);
+            loginData.downTeamIds, loginData.mobileNumber,loginData.branchid);
 
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
@@ -231,6 +223,7 @@ class _LoginState extends State<Login> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+            Fluttertoast.showToast(msg: "Please check your Internet connection.!");
         throw Exception("Could'nt connect, please ensure you have a stable network.");
       } else {
         return null;
@@ -243,7 +236,7 @@ class _LoginState extends State<Login> {
 
 
   void _writeData(String userEmail, int uId, String fullName, String uEmpCode, String profileName, String downTeamId,
-      String mobilenumber) async{
+      String mobilenumber,String branchid) async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
     preferences.setString("data", userEmail);
     preferences.setString("userId", uId.toString());
@@ -252,5 +245,6 @@ class _LoginState extends State<Login> {
     preferences.setString("profileName", profileName.toString());
     preferences.setString("downTeamId", downTeamId.toString());
     preferences.setString("mobilenumber",mobilenumber.toString());
+    preferences.setString("branchid",branchid.toString());
   }
 }

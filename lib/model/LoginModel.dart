@@ -6,8 +6,9 @@ class LoginModel {
   final  String profileName;
   final  String downTeamIds;
   final String mobileNumber;
+  final String branchid;
 
-  LoginModel(this.cnt, this.uId, this.uEmpCode, this.fullName, this.profileName, this.downTeamIds,this.mobileNumber);
+  LoginModel(this.cnt, this.uId, this.uEmpCode, this.fullName, this.profileName, this.downTeamIds,this.mobileNumber,this.branchid);
 
   LoginModel.fromJson(Map<String, dynamic> json)
       : cnt = json['cnt'],
@@ -16,7 +17,8 @@ class LoginModel {
         fullName = json['fullName'],
         profileName = json['profileName'],
         downTeamIds = json['downTeamIds'],
-        mobileNumber = json['mobileNumber'];
+        mobileNumber = json['mobileNumber'],
+        branchid = json['branchId'];
 
   Map<String, dynamic> toJson() =>
       {
@@ -26,6 +28,7 @@ class LoginModel {
         'fullName': fullName,
         'profileName': profileName,
         'downTeamIds': downTeamIds,
-        'mobileNumber': mobileNumber
+        'mobileNumber': mobileNumber,
+        'branchId': branchid,
       };
 }

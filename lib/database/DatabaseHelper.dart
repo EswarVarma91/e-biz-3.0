@@ -25,7 +25,7 @@ class DatabaseHelper {
   static const String DATE = 'date';
   static const String WORK_STATUS = 'work_status';
   static const String TABLE = 'attenTB';
-  static const String DATABASE = 'EbizDB';
+  static const String DATABASE = 'EbizDb';
 
   Future<Database> get db async {
     if (_db != null) {

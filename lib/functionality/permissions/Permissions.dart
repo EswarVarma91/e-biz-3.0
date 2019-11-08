@@ -397,14 +397,14 @@ class _PermissionsState extends State<Permissions> {
                     padding: const EdgeInsets.only(right: 1,top: 1),
                     child:  permissionsM(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  latecomingM(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  earlygoingM(),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 1,top: 1),
+                  //   child:  latecomingM(),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 1,top: 1),
+                  //   child:  earlygoingM(),
+                  // ),
                 ],
                 staggeredTiles: [
                   StaggeredTile.extent(2, 45.0),
@@ -414,7 +414,7 @@ class _PermissionsState extends State<Permissions> {
                 ],),
             ),
             Container(
-              margin: EdgeInsets.only(left: 60,right: 5,top: 115),
+              margin: EdgeInsets.only(left: 60,right: 5,top: 65),
               child: StaggeredGridView.count(crossAxisCount: 8,crossAxisSpacing: 5.0,
                 mainAxisSpacing: 5.0,
                 children: <Widget>[
@@ -443,19 +443,19 @@ class _PermissionsState extends State<Permissions> {
                 ],),
             ),
             leaves ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 210),
+              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
               child:  leavesListView(),
             ):Container(),
             permissions ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 210),
+              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
               child:  permissionsListView(),
             ):Container(),
             latecoming ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 210),
+              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
               child:  latecomingListView(),
             ):Container(),
             earlygoing ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 210),
+              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
               child:  earlygoingListView(),
             ):Container(),
 
@@ -1588,9 +1588,10 @@ class _PermissionsState extends State<Permissions> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(
-                          "Reason",
-                          style: TextStyle(fontSize: 25.0,color: lwtColor),
+                        Expanded(child: Text(
+                            "Reason",
+                            style: TextStyle(fontSize: 25.0,color: lwtColor),
+                          ),
                         ),
                       ],
                     ),

@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Approvals extends StatefulWidget {
@@ -36,6 +37,7 @@ class _ApprovalsState extends State<Approvals> {
   List<LateEarlyComingModel> earlygoingList=new List();
   List<LateEarlyComingModel> datacheck=new List();
   List<LateEarlyComingModel> latecomingList=new List();
+  ProgressDialog pr;
 
   getFullName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -70,6 +72,8 @@ class _ApprovalsState extends State<Approvals> {
 
   @override
   Widget build(BuildContext context) {
+     pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
         appBar: AppBar(title: Text("Approvals",style: TextStyle(color: Colors.white),),
           iconTheme: IconThemeData(color:Colors.white),),
@@ -91,14 +95,14 @@ class _ApprovalsState extends State<Approvals> {
                     padding: const EdgeInsets.only(right: 1, top: 1),
                     child: permissionMaterial(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: earlygoingMaterial(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: latecomingMaterial(),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 1, top: 1),
+                  //   child: earlygoingMaterial(),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 1, top: 1),
+                  //   child: latecomingMaterial(),
+                  // ),
                 ],
                 staggeredTiles: [
                   StaggeredTile.extent(4, 75.0),
@@ -109,21 +113,21 @@ class _ApprovalsState extends State<Approvals> {
               ),
             ),
             _leavesA? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+              margin: EdgeInsets.only(left: 60, right: 2, top: 90),
               child:  leavesAListView(),
             ):Container(),
             _permissionsA? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+              margin: EdgeInsets.only(left: 60, right: 2, top: 90),
               child:  permissionsAListView(),
             ):Container(),
-            _earlygoingA? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 180),
-              child:  earlygoingAListView(),
-            ):Container(),
-            _latecomingA ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 180),
-              child:  latecomingAListView(),
-            ):Container(),
+            // _earlygoingA? Container(
+            //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+            //   child:  earlygoingAListView(),
+            // ):Container(),
+            // _latecomingA ? Container(
+            //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+            //   child:  latecomingAListView(),
+            // ):Container(),
             CollapsingNavigationDrawer("5"),
             //ListView.builder(itemBuilder: null)
           ],
@@ -1104,14 +1108,15 @@ class _ApprovalsState extends State<Approvals> {
 
   //===
   cancelLeavesServiceCall(LeavesModel leaveList) async{
+    pr.show();
     try {
       var
       response = await dio.post(ServicesApi.ChangeLeaveStatus,
           data: {
-            "leaveId": leaveList.el_id,
+            "leaveId": leaveList.el_id.toString(),
             "modifiedBy": profilename,
-            "leaveType": leaveList.leave_type,
-            "noOfDays": leaveList.el_noofdays,
+            "leaveType": leaveList.leave_type.toString(),
+            "noOfDays": leaveList.el_noofdays.toString(),
             "statusId": 3,
             "userId": uidd
           },
@@ -1119,6 +1124,7 @@ class _ApprovalsState extends State<Approvals> {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        pr.hide();
         setState(() {
           getPendingApprovals();
         });
@@ -1127,9 +1133,11 @@ class _ApprovalsState extends State<Approvals> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
+            pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+            pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1138,6 +1146,7 @@ class _ApprovalsState extends State<Approvals> {
     }
   }
   void approveLeavesServiceCall(LeavesModel leaveList) async {
+    pr.show();
     try {
       var response = await dio.post(ServicesApi.ChangeLeaveStatus,
           data: {
@@ -1151,18 +1160,22 @@ class _ApprovalsState extends State<Approvals> {
           options: Options(contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
+        pr.dismiss();
         setState(() {
           getPendingApprovals();
         });
         Navigator.pop(context);
 //        CheckServices();
       }
+      
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
+            pr.dismiss();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+            pr.dismiss();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1173,6 +1186,7 @@ class _ApprovalsState extends State<Approvals> {
   //===
 
    approvePermissionServiceCall(PermissionModel permissionModel) async {
+     pr.show();
     try {
       var response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
@@ -1186,6 +1200,7 @@ class _ApprovalsState extends State<Approvals> {
             ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        pr.hide();
         setState(() {
           getPendingApprovals();
         });
@@ -1195,9 +1210,11 @@ class _ApprovalsState extends State<Approvals> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
+            pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+            pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1207,6 +1224,7 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   void cancelPermissionServiceCall(PermissionModel permissionModel) async {
+    pr.show();
     try {
       var response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
@@ -1223,15 +1241,18 @@ class _ApprovalsState extends State<Approvals> {
         setState(() {
           getPendingApprovals();
         });
+        pr.hide();
         Navigator.pop(context);
 //        CheckServices();
       }
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
+            pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+            pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {

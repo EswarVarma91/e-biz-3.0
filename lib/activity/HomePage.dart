@@ -399,7 +399,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
               shadowColor: lwtColor,
               child: InkWell(
                 onTap: () {
-                  if(workStatus != "-" || workStatus!= "" || workStatus!= " " ||workStatus!= null) {
+                  if(workStatus == "Tour" || workStatus== "Working" ) {
                     if (timeStart == "-") {
                       var now1 = DateTime.now();
                       setState(() {

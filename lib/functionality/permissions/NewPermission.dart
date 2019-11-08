@@ -75,7 +75,7 @@ class _NewPermissionState extends State<NewPermissions> {
                 if(selectDate.isEmpty){
                   Fluttertoast.showToast(msg: "Please Select Date");
                 }else if(fromTime.isEmpty){
-                  Fluttertoast.showToast(msg: "Please Slect From Time");
+                  Fluttertoast.showToast(msg: "Please Select From Time");
                 }else  if(toTime.isEmpty ) {
                   Fluttertoast.showToast(msg: "Please Select To Time");
                 }else if(_controller1.text.isEmpty ){
@@ -145,8 +145,8 @@ class _NewPermissionState extends State<NewPermissions> {
                         onPressed: () {
                           DatePicker.showDatePicker(context,
                               showTitleActions: true,
-                              minTime: DateTime(y, m, d),
-                              maxTime: DateTime(y, m,d),
+                              minTime: DateTime(y, m, d-9),
+                              maxTime: DateTime(y, m,d+9),
                               theme: DatePickerTheme(
                                   backgroundColor: Colors.white,
                                   itemStyle: TextStyle(

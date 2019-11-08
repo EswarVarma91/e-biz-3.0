@@ -7,6 +7,7 @@ class ServicesApi{
 
   static String global_Service = "global.service/global/";
   static String hrms_Service = "hrms.service/hrms/";
+  static String att_Service = "att.service/hrms/";
 
   static String getData = basic_url + global_Service + "getAnyGlobalDataForMobile";
   static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
@@ -18,7 +19,7 @@ class ServicesApi{
   //permissions
   static String insertPermission = basic_url + hrms_Service +"saveEmpPermission";
   static String ChangePermissionStatus = basic_url + hrms_Service + "update/Permission/status";
-  static String getLeaves = basic_url + hrms_Service + "attendance/get/user/leaves?id=";
+  static String getLeaves = basic_url + att_Service + "attendance/get/user/leaves?id=";
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
@@ -32,7 +33,7 @@ class ServicesApi{
 
 
 
-
+//=========================================================================================================
   /// old database ip
   static String baseUrl= 'http://192.168.1.122:8180/';
 
