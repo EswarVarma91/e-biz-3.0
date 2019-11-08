@@ -375,11 +375,10 @@ class _NewPermissionState extends State<NewPermissions> {
   }
 
   void permissionSerivceCall() async {
-
+pr.show();
     try {
     var response;
       if (official == true) {
-        pr.show();
         typeP = "Office";
          response = await dio.post(ServicesApi.insertPermission,
             data: {
@@ -397,7 +396,6 @@ class _NewPermissionState extends State<NewPermissions> {
 
       } else if (personal == true) {
         typeP = "personal";
-        pr.show();
         var data= await getUserByPermissionDate(selectDate,uidd);
         // ignore: unrelated_type_equality_checks
         if(data==0){

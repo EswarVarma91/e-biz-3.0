@@ -1764,10 +1764,13 @@ class _PermissionsState extends State<Permissions> {
     return a[2]+"-"+a[1]+"-"+a[0];
   }
 
-  checkNoDays(String noodDays) {
+  checkNoDays(String noodDays) {  
+    if(noodDays=="0.5"){
+      return noodDays.toString();
+    }else{
     List data=noodDays.split(".");
-//    return (int.parse(data[0].toString())+int.parse(1.toString())).toString();
-  return data[0].toString();
+    return data[0].toString();
+    }
   }
 
 }

@@ -95,8 +95,6 @@ class _EditSalesLeadState extends State<EditSalesLead> {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Email');
               }else if(contactMobile.text.isEmpty || validateMobile(contactMobile.text)==false){
                 Fluttertoast.showToast(msg: 'Please Enter Contact Mobile');
-              }else if(result.toString()=="null" || result.toString()=="Referred By" ){
-                Fluttertoast.showToast(msg: 'Please Select Referred By');
               }else {
                 //Service Call
                 _callUpdateMethod();
@@ -228,7 +226,6 @@ class _EditSalesLeadState extends State<EditSalesLead> {
             "srId": rid,
             "srNo": srNo,
             "srPhoneNo": contactMobile.text,
-            "srReferedBy": referalPerson,
             "srRequirement": requirement.text
           },
           options: Options(
