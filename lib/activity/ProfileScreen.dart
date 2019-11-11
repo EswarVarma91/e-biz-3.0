@@ -17,7 +17,10 @@ class ProfileScreenState extends State<ProfileScreen>{
     setState(() {
       name = preferences.getString("fullname");
       employCode = preferences.getString("uEmpCode");
-//      print(downteam);
+      emailid = preferences.getString("emailId");
+      department = preferences.getString("department");
+      designation = preferences.getString("designation");
+
     });
   }
   @override
@@ -42,7 +45,7 @@ class ProfileScreenState extends State<ProfileScreen>{
             // ignore: missing_return
             MaterialPageRoute(builder: (BuildContext context) => HomePage()),
             // ignore: missing_return
-             ModalRoute.withName('/'),
+            ModalRoute.withName('/'),
           );
         }else{
           showDialog(

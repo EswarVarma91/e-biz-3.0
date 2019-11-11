@@ -190,7 +190,7 @@ class _LoginState extends State<Login> {
 //            loginData.downTeamId.toString() + "," +
 //            loginData.departmentName.toString());
         _writeData(email, loginData.uId, loginData.fullName, loginData.uEmpCode.toString(), loginData.profileName,
-            loginData.downTeamIds, loginData.mobileNumber,loginData.branchid);
+            loginData.downTeamIds, loginData.mobileNumber,loginData.branchid,loginData.emailId,loginData.department,loginData.designation);
 
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
@@ -236,7 +236,7 @@ class _LoginState extends State<Login> {
 
 
   void _writeData(String userEmail, int uId, String fullName, String uEmpCode, String profileName, String downTeamId,
-      String mobilenumber,String branchid) async{
+      String mobilenumber,String branchid,String emailId, String department,String designation) async{
     SharedPreferences preferences=await SharedPreferences.getInstance();
     preferences.setString("data", userEmail);
     preferences.setString("userId", uId.toString());
@@ -246,5 +246,8 @@ class _LoginState extends State<Login> {
     preferences.setString("downTeamId", downTeamId.toString());
     preferences.setString("mobilenumber",mobilenumber.toString());
     preferences.setString("branchid",branchid.toString());
+    preferences.setString("emailId",emailId.toString());
+    preferences.setString("department",department.toString());
+    preferences.setString("designation",designation.toString());
   }
 }
