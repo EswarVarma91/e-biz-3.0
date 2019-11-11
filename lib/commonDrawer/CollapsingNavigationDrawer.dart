@@ -81,6 +81,17 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
+  List<NavigationModel> navigationItemsTravel = [
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel),
+    NavigationModel(title: "Home", icon: Icons.home),
+    NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
+    NavigationModel(title: "Tasks", icon: Icons.assignment),
+    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    
+//    NavigationModel(title: "Location", icon: Icons.location_searching),
+  ];
+
   List<NavigationModel> navigationItemsApprovals = [
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Home", icon: Icons.home),
@@ -119,7 +130,12 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
         }else if(result.toString()=="4"){
           navigationItemsPermissions.removeWhere((a)=>a.title=="Approvals");
           listMain=navigationItemsPermissions;
+        }else if(result.toString()=="7"){
+          navigationItemsTravel.removeWhere((a)=>a.title=="Travel Request");
+          listMain=navigationItemsTravel;
         }
+
+        
 //        else if(result.toString()=="6"){
 //          navigationItemsLocation.removeWhere((a)=>a.title=="Approvals");
 //          listMain=navigationItemsLocation;
@@ -135,6 +151,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           listMain = navigationItemsPermissions;
         } else if (result.toString() == "5") {
           listMain = navigationItemsApprovals;
+        } else if (result.toString() == "7") {
+          listMain = navigationItemsTravel;
         }
 //        else if(result.toString()=="6"){
 //        listMain=navigationItemsLocation;

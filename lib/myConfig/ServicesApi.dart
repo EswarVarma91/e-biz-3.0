@@ -8,6 +8,7 @@ class ServicesApi{
   static String global_Service = "global.service/global/";
   static String hrms_Service = "hrms.service/hrms/";
   static String att_Service = "att.service/hrms/";
+  static String travel_Service = "travel.service/travel/";
 
   static String getData = basic_url + global_Service + "getAnyGlobalDataForMobile";
   static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
@@ -23,6 +24,9 @@ class ServicesApi{
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
+
+  //get Travel Request List
+  static String getTravelList= basic_url + travel_Service + "get/travel/request";
 
 
 

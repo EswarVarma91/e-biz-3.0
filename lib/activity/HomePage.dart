@@ -474,6 +474,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 onTap: () {
                   if (timeStart == "-") {
                     Fluttertoast.showToast(msg: "Please Start Your Day");
+                  }else if (workStatus == "-" || workStatus == " " || workStatus=="") {
+                    Fluttertoast.showToast(msg: "Please Choose Your Work Status");
                   } else if (timeEnd == "-") {
                     setState(() {
                       if (userlocation != null) {
