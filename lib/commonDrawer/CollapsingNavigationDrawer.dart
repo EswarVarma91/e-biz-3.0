@@ -6,6 +6,7 @@ import 'package:eaglebiz/functionality/location/MapsActivity.dart';
 import 'package:eaglebiz/functionality/permissions/Permissions.dart';
 import 'package:eaglebiz/functionality/salesLead/SalesLead.dart';
 import 'package:eaglebiz/functionality/taskPlanner/TaskPlanner.dart';
+import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
 import 'package:eaglebiz/model/NavigationModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -52,6 +54,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
 
   ];
@@ -62,6 +65,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
 
   ];
@@ -73,6 +77,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -82,6 +87,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching,),
   ];
   List<NavigationModel> navigationItemsLocation = [
@@ -90,6 +96,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
 //    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
   ];
 
@@ -209,6 +216,12 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                         }else{
                           Fluttertoast.showToast(msg: "You dont have a Permission");
                         }
+                      }
+                      else if(listMain[counter].title=="Travel Request"){
+                       var navigator = Navigator.of(context);
+                          navigator.push(
+                            MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
+                          );
                       }
                     },
                     isSelected: currentSelectedIndex == counter,

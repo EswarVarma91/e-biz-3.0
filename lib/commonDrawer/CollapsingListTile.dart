@@ -49,7 +49,7 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.center,
                 direction: Axis.horizontal,
-                children: <Widget>[Text(widget.title,style: TextStyle(fontSize: 6,color: Colors.white),)])
+                children: <Widget>[Text(widget.title,style: TextStyle(fontSize: 5,color: Colors.white),)])
           ],
         ),
       ),
