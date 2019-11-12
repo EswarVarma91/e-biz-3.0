@@ -131,19 +131,19 @@ class _LoginState extends State<Login> {
                         ),
                       ),
 
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              top: 16, right: 32
-                          ),
-                          child: Text('Forgot Password ?',
-                            style: TextStyle(
-                                color: Colors.grey
-                            ),
-                          ),
-                        ),
-                      ),
+                      // Align(
+                      //   alignment: Alignment.centerRight,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.only(
+                      //         top: 16, right: 32
+                      //     ),
+                      //     child: Text('Forgot Password ?',
+                      //       style: TextStyle(
+                      //           color: Colors.grey
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Spacer(),
 
                       Material(
