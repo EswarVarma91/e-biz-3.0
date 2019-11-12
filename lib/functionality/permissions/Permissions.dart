@@ -450,14 +450,14 @@ class _PermissionsState extends State<Permissions> {
               margin: EdgeInsets.only(left: 60, right: 2, top: 160),
               child:  permissionsListView(),
             ):Container(),
-            latecoming ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
-              child:  latecomingListView(),
-            ):Container(),
-            earlygoing ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
-              child:  earlygoingListView(),
-            ):Container(),
+            // latecoming ? Container(
+            //   margin: EdgeInsets.only(left: 60, right: 2, top: 160),
+            //   child:  latecomingListView(),
+            // ):Container(),
+            // earlygoing ? Container(
+            //   margin: EdgeInsets.only(left: 60, right: 2, top: 160),
+            //   child:  earlygoingListView(),
+            // ):Container(),
 
             CollapsingNavigationDrawer("4"),
             //ListView.builder(itemBuilder: null)
@@ -1145,190 +1145,190 @@ class _PermissionsState extends State<Permissions> {
               ));
         });
   }
-  latecomingListView() {
-    return ListView.builder(
-        itemCount: list222 == null ? 0 : list222.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-              elevation: 5.0,
-              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-              child: InkWell(
-                child: Container(
-                  /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
-                        borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
-                        )),*/
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ListTile(
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text("In Time    :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                ),
-                                Text(list222[index]?.att_in_time.toString() ?? 'NA',
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 4),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text("Status      :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                ),
-                                Text(list222[index]?.att_work_status.toString() ?? 'NA',
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),Padding(
-                              padding: EdgeInsets.only(top: 4),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text("Date        :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                ),
-                                Text(displayDateFormat(list222[index]?.att_date.toString()) ?? 'NA',
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                           /* Text(_CheckApprovalStatus(list222[index])?? 'NA',
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 10,
-                              ),
-                            ),*/
-                          ],
-                        ),
-                        trailing: _isEditButton ? IconButton(
-                              icon: Icon(
-                                Icons.check,
-                                color: lwtColor,
-                              ),
-                              onPressed: () {
-                                  if(list222[index].att_id=="-") {
-                                    roundedAlertBox(list222[index], 1);
-//                                    LateComingReuestServiceCall(list222[index], 1);
-                                    }else {
-                                    Fluttertoast.showToast(msg: "Already Applied");
-                                    }
-                              },
-                            ): IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
-                          //
-                        },),
+//   latecomingListView() {
+//     return ListView.builder(
+//         itemCount: list222 == null ? 0 : list222.length,
+//         itemBuilder: (BuildContext context, int index) {
+//           return Card(
+//               elevation: 5.0,
+//               margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+//               child: InkWell(
+//                 child: Container(
+//                   /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
+//                         borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
+//                         )),*/
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(10.0),
+//                       child: ListTile(
+//                         subtitle: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: <Widget>[
+//                             Row(
+//                               children: <Widget>[
+//                                 Text("In Time    :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
+//                                 Padding(
+//                                   padding: EdgeInsets.only(top: 4),
+//                                 ),
+//                                 Text(list222[index]?.att_in_time.toString() ?? 'NA',
+//                                   style: TextStyle(
+//                                       color: lwtColor,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold),
+//                                 ),
+//                               ],
+//                             ),
+//                             Padding(
+//                               padding: EdgeInsets.only(top: 4),
+//                             ),
+//                             Row(
+//                               children: <Widget>[
+//                                 Text("Status      :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
+//                                 Padding(
+//                                   padding: EdgeInsets.only(top: 4),
+//                                 ),
+//                                 Text(list222[index]?.att_work_status.toString() ?? 'NA',
+//                                   style: TextStyle(
+//                                       color: lwtColor,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold),
+//                                 ),
+//                               ],
+//                             ),Padding(
+//                               padding: EdgeInsets.only(top: 4),
+//                             ),
+//                             Row(
+//                               children: <Widget>[
+//                                 Text("Date        :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
+//                                 Padding(
+//                                   padding: EdgeInsets.only(top: 4),
+//                                 ),
+//                                 Text(displayDateFormat(list222[index]?.att_date.toString()) ?? 'NA',
+//                                   style: TextStyle(
+//                                       color: lwtColor,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold),
+//                                 ),
+//                               ],
+//                             ),
+//                            /* Text(_CheckApprovalStatus(list222[index])?? 'NA',
+//                               style: TextStyle(
+//                                 color: Colors.black54,
+//                                 fontSize: 10,
+//                               ),
+//                             ),*/
+//                           ],
+//                         ),
+//                         trailing: _isEditButton ? IconButton(
+//                               icon: Icon(
+//                                 Icons.check,
+//                                 color: lwtColor,
+//                               ),
+//                               onPressed: () {
+//                                   if(list222[index].att_id=="-") {
+//                                     roundedAlertBox(list222[index], 1);
+// //                                    LateComingReuestServiceCall(list222[index], 1);
+//                                     }else {
+//                                     Fluttertoast.showToast(msg: "Already Applied");
+//                                     }
+//                               },
+//                             ): IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
+//                           //
+//                         },),
 
-                      ),
-                    )),
-              ));
-        });
-  }
+//                       ),
+//                     )),
+//               ));
+//         });
+//   }
 
-  earlygoingListView() {
-    return ListView.builder(
-        itemCount: list2222 == null ? 0 : list2222.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-              elevation: 5.0,
-              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-              child: InkWell(
-                child: Container(
-                  /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
-                        borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
-                        )),*/
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ListTile(
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text("Out Time    :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                ),
-                                Text(list2222[index]?.att_out_time.toString() ?? "",
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 4),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text("Status         :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                ),
-                                Text(list2222[index]?.att_work_status.toString() ?? 'NA',
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),Padding(
-                              padding: EdgeInsets.only(top: 4),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text("Date           :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 4),
-                                ),
-                                Text(displayDateFormat(list2222[index]?.att_date.toString()) ?? 'NA',
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        trailing: _isEditButton ? IconButton(
-                          icon: Icon(
-                            Icons.check,
-                            color: lwtColor,
-                          ),
-                          onPressed: () {
-                            if(list2222[index].att_id=="-") {
-                              roundedAlertBox(list2222[index], 2);
-//                              LateComingReuestServiceCall(list222[index], 2);
-                            }else {
-                              Fluttertoast.showToast(msg: "Already Applied");
-                            }
-                          },
-                        ):IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
-                      //
-                    },),
-                      ),
-                    )),
-              ));
-        });
-  }
+//   earlygoingListView() {
+//     return ListView.builder(
+//         itemCount: list2222 == null ? 0 : list2222.length,
+//         itemBuilder: (BuildContext context, int index) {
+//           return Card(
+//               elevation: 5.0,
+//               margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+//               child: InkWell(
+//                 child: Container(
+//                   /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
+//                         borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
+//                         )),*/
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(10.0),
+//                       child: ListTile(
+//                         subtitle: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: <Widget>[
+//                             Row(
+//                               children: <Widget>[
+//                                 Text("Out Time    :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
+//                                 Padding(
+//                                   padding: EdgeInsets.only(top: 4),
+//                                 ),
+//                                 Text(list2222[index]?.att_out_time.toString() ?? "",
+//                                   style: TextStyle(
+//                                       color: lwtColor,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold),
+//                                 ),
+//                               ],
+//                             ),
+//                             Padding(
+//                               padding: EdgeInsets.only(top: 4),
+//                             ),
+//                             Row(
+//                               children: <Widget>[
+//                                 Text("Status         :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
+//                                 Padding(
+//                                   padding: EdgeInsets.only(top: 4),
+//                                 ),
+//                                 Text(list2222[index]?.att_work_status.toString() ?? 'NA',
+//                                   style: TextStyle(
+//                                       color: lwtColor,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold),
+//                                 ),
+//                               ],
+//                             ),Padding(
+//                               padding: EdgeInsets.only(top: 4),
+//                             ),
+//                             Row(
+//                               children: <Widget>[
+//                                 Text("Date           :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
+//                                 Padding(
+//                                   padding: EdgeInsets.only(top: 4),
+//                                 ),
+//                                 Text(displayDateFormat(list2222[index]?.att_date.toString()) ?? 'NA',
+//                                   style: TextStyle(
+//                                       color: lwtColor,
+//                                       fontSize: 10,
+//                                       fontWeight: FontWeight.bold),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                         trailing: _isEditButton ? IconButton(
+//                           icon: Icon(
+//                             Icons.check,
+//                             color: lwtColor,
+//                           ),
+//                           onPressed: () {
+//                             if(list2222[index].att_id=="-") {
+//                               roundedAlertBox(list2222[index], 2);
+// //                              LateComingReuestServiceCall(list222[index], 2);
+//                             }else {
+//                               Fluttertoast.showToast(msg: "Already Applied");
+//                             }
+//                           },
+//                         ):IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
+//                       //
+//                     },),
+//                       ),
+//                     )),
+//               ));
+//         });
+//   }
 
    getDataLeaves_Permissions() async {
     Map<String, String> queryParameters = {
@@ -1462,80 +1462,80 @@ class _PermissionsState extends State<Permissions> {
     }
   }
 
-   LateComingReuestServiceCall(LateEarlyComingModel lateearlycomingList,int i, String reason) async{
-    pr.show();
+  //  LateComingReuestServiceCall(LateEarlyComingModel lateearlycomingList,int i, String reason) async{
+  //   pr.show();
 
-    var response;
-    try{
-      if(i==1) {
-        print( "late : "+lateearlycomingList.att_date.toString());
-        response = await dio.put(ServicesApi.lateComing,
-            data: {
-              "actionMode": "LateComingReqest",
-              "date": lateearlycomingList.att_date.toString(),
-              "empCode": employCode.toString(),
-              "leaveAvailed": "Late Coming",
-              "leaves": [
-                {
-                  "leaveCount": "string",
-                  "leaveType": "string"
-                }
-              ],
-              "modifiedBy": profilename.toString(),
-              "paidCount": "0",
-              "remarks": reason.toString(),
-              "userId": "string",
-              "workStauts": "string"
-            },
-            options: Options(contentType: ContentType.parse('application/json'),
-            ));
+  //   var response;
+  //   try{
+  //     if(i==1) {
+  //       print( "late : "+lateearlycomingList.att_date.toString());
+  //       response = await dio.put(ServicesApi.lateComing,
+  //           data: {
+  //             "actionMode": "LateComingReqest",
+  //             "date": lateearlycomingList.att_date.toString(),
+  //             "empCode": employCode.toString(),
+  //             "leaveAvailed": "Late Coming",
+  //             "leaves": [
+  //               {
+  //                 "leaveCount": "string",
+  //                 "leaveType": "string"
+  //               }
+  //             ],
+  //             "modifiedBy": profilename.toString(),
+  //             "paidCount": "0",
+  //             "remarks": reason.toString(),
+  //             "userId": "string",
+  //             "workStauts": "string"
+  //           },
+  //           options: Options(contentType: ContentType.parse('application/json'),
+  //           ));
 
-        } else if(i==2){
-        print("early : "+ lateearlycomingList.att_date.toString());
-        response = await dio.put(ServicesApi.lateComing,
-            data: {
-              "actionMode": "LateComingReqest",
-              "date": lateearlycomingList.att_date.toString(),
-              "empCode": employCode.toString(),
-              "leaveAvailed": "Early going",
-              "leaves": [
-                {
-                  "leaveCount": "string",
-                  "leaveType": "string"
-                }
-              ],
-              "modifiedBy": profilename.toString(),
-              "paidCount": "0",
-              "remarks": "string",
-              "userId": "string",
-              "workStauts": "string"
-            },
-            options: Options(contentType: ContentType.parse('application/json'),
-            ));
-      }
+  //       } else if(i==2){
+  //       print("early : "+ lateearlycomingList.att_date.toString());
+  //       response = await dio.put(ServicesApi.lateComing,
+  //           data: {
+  //             "actionMode": "LateComingReqest",
+  //             "date": lateearlycomingList.att_date.toString(),
+  //             "empCode": employCode.toString(),
+  //             "leaveAvailed": "Early going",
+  //             "leaves": [
+  //               {
+  //                 "leaveCount": "string",
+  //                 "leaveType": "string"
+  //               }
+  //             ],
+  //             "modifiedBy": profilename.toString(),
+  //             "paidCount": "0",
+  //             "remarks": "string",
+  //             "userId": "string",
+  //             "workStauts": "string"
+  //           },
+  //           options: Options(contentType: ContentType.parse('application/json'),
+  //           ));
+  //     }
 
-      print(response.toString());
-      if (response.statusCode == 200 || response.statusCode == 201) {
+  //     print(response.toString());
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
 
-        getDataLeaves_Permissions();
-        pr.hide();
-      }
-    }on DioError catch(exception){
-      pr.hide();
-      if (exception == null ||
-          exception.toString().contains('SocketException')) {
-        pr.hide();
-        throw Exception("Network Error");
-      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-          exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        pr.hide();
-        throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
-      } else {
-        return null;
-      }
-    }
-  }
+  //       getDataLeaves_Permissions();
+  //       pr.hide();
+  //     }
+  //   }on DioError catch(exception){
+  //     pr.hide();
+  //     if (exception == null ||
+  //         exception.toString().contains('SocketException')) {
+  //       pr.hide();
+  //       throw Exception("Network Error");
+  //     } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+  //         exception.type == DioErrorType.CONNECT_TIMEOUT) {
+  //       pr.hide();
+  //       throw Exception(
+  //           "Could'nt connect, please ensure you have a stable network.");
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
 
   // _CheckApprovalStatus(LateEarlyComingModel list222) {
   //   if(list222.att_request_id=="-"){
@@ -1569,82 +1569,82 @@ class _PermissionsState extends State<Permissions> {
   }
 
 
-    roundedAlertBox(LateEarlyComingModel lateearlycomingmodel, int i){
-      return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0))),
-              contentPadding: EdgeInsets.only(top: 4.0),
-              content: Container(
-                width: 250.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Expanded(child: Text(
-                            "Reason",
-                            style: TextStyle(fontSize: 25.0,color: lwtColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 4.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: TextFormField(
-                        maxLength: 50,
-                        controller: _controllerReason,
-                        decoration: InputDecoration(
-                          hintText: "Write your Reason",
-                          border: InputBorder.none,
-                        ),
-                        maxLines: 5,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: (){
-                        if(_controllerReason.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Please write your reason");
-                        }else {
-                          Navigator.pop(context);
-                          LateComingReuestServiceCall(lateearlycomingmodel, i,_controllerReason.text);
+  //   roundedAlertBox(LateEarlyComingModel lateearlycomingmodel, int i){
+  //     return showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
+  //             contentPadding: EdgeInsets.only(top: 4.0),
+  //             content: Container(
+  //               width: 250.0,
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.stretch,
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 children: <Widget>[
+  //                   Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     children: <Widget>[
+  //                       Expanded(child: Text(
+  //                           "Reason",
+  //                           style: TextStyle(fontSize: 25.0,color: lwtColor),
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   SizedBox(
+  //                     height: 10.0,
+  //                   ),
+  //                   Divider(
+  //                     color: Colors.grey,
+  //                     height: 4.0,
+  //                   ),
+  //                   Padding(
+  //                     padding: EdgeInsets.only(left: 30.0, right: 30.0),
+  //                     child: TextFormField(
+  //                       maxLength: 50,
+  //                       controller: _controllerReason,
+  //                       decoration: InputDecoration(
+  //                         hintText: "Write your Reason",
+  //                         border: InputBorder.none,
+  //                       ),
+  //                       maxLines: 5,
+  //                     ),
+  //                   ),
+  //                   InkWell(
+  //                     onTap: (){
+  //                       if(_controllerReason.text.isEmpty){
+  //                         Fluttertoast.showToast(msg: "Please write your reason");
+  //                       }else {
+  //                         Navigator.pop(context);
+  //                         LateComingReuestServiceCall(lateearlycomingmodel, i,_controllerReason.text);
 
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        decoration: BoxDecoration(
-                          color: lwtColor,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(24.0),
-                              bottomRight: Radius.circular(24.0)),
-                        ),
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(color: Colors.white,fontSize: 16),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          });
-  }
+  //                       }
+  //                     },
+  //                     child: Container(
+  //                       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+  //                       decoration: BoxDecoration(
+  //                         color: lwtColor,
+  //                         borderRadius: BorderRadius.only(
+  //                             bottomLeft: Radius.circular(24.0),
+  //                             bottomRight: Radius.circular(24.0)),
+  //                       ),
+  //                       child: Text(
+  //                         "Submit",
+  //                         style: TextStyle(color: Colors.white,fontSize: 16),
+  //                         textAlign: TextAlign.center,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           );
+  //         });
+  // }
 
   void cancelLeavesAlertDialog(LeavesModel leavesModel, int i) {
     showDialog(

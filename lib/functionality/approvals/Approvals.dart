@@ -650,302 +650,302 @@ class _ApprovalsState extends State<Approvals> {
 
 
 
-  earlygoingAListView() {
-    return ListView.builder(
-        itemCount: earlygoingList == null ? 0 : earlygoingList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            elevation: 5.0,
-            child: Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
-              child: ListTile(
-                subtitle: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          child: Text(
-                            earlygoingList[index]?.att_request_by ?? 'NA',
-                            style: TextStyle(
-                                color: lwtColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8),
-                    ),
-                   Container(
-                     padding: EdgeInsets.only(left: 5),
-                     child: Column(
-                       children: <Widget>[
-                         Row(
-                           children: <Widget>[
-                             Text("Date                      :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Text(displayDateFormat(earlygoingList[index]?.att_date) ?? 'NA',
-                               style: TextStyle(
-                                   color: lwtColor,
-                                   fontSize: 10,
-                                   fontWeight: FontWeight.bold
-                               ),
-                             ),
-                           ],
-                         ),
-                         Padding(
-                           padding: EdgeInsets.only(top: 6),
-                         ),
-                         Row(
-                           children: <Widget>[
-                             Text("Out Time              :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Text(earlygoingList[index]?.att_out_time ?? 'NA',
-                               style: TextStyle(
-                                   color: lwtColor,
-                                   fontSize: 10,
-                                   fontWeight: FontWeight.bold
-                               ),
-                             ),
-                           ],
-                         ),
-                         Padding(
-                           padding: EdgeInsets.only(top: 6),
-                         ),
-                         Row(
-                           children: <Widget>[
-                             Text("Work Status         :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Text(earlygoingList[index]?.att_work_status ?? '' + "NA.",
-                               style: TextStyle(
-                                   color: lwtColor,
-                                   fontSize: 10,
-                                   fontWeight: FontWeight.bold
-                               ),
-                             ),
-                           ],
-                         ),
-                         Padding(
-                           padding: EdgeInsets.only(top: 6),
-                         ),
-                         Row(
-                           children: <Widget>[
-                                   Text("Reason                 :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Expanded(
-                               child: Text(earlygoingList[index]?.att_request_remarks ?? '' + "NA.",
-                                 style: TextStyle(
-                                     color: lwtColor,
-                                     fontSize: 10,
-                                     fontWeight: FontWeight.bold
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ],
-                     ),
-                   )
-                  ],
-                ),
-                trailing: Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: IconButton(
-                    icon: Icon(Icons.check_circle,color: lwtColor,size: 40,),
-                    onPressed: (){
-                      earlygoingRequest(earlygoingList[index]);
-                    },
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-  }
+  // earlygoingAListView() {
+  //   return ListView.builder(
+  //       itemCount: earlygoingList == null ? 0 : earlygoingList.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return Card(
+  //           elevation: 5.0,
+  //           child: Container(
+  //             padding: EdgeInsets.only(top: 10,bottom: 10),
+  //             child: ListTile(
+  //               subtitle: Column(
+  //                 children: <Widget>[
+  //                   Row(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: <Widget>[
+  //                       Container(
+  //                         padding: EdgeInsets.all(2),
+  //                         child: Text(
+  //                           earlygoingList[index]?.att_request_by ?? 'NA',
+  //                           style: TextStyle(
+  //                               color: lwtColor,
+  //                               fontSize: 12,
+  //                               fontWeight: FontWeight.bold),
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Padding(
+  //                     padding: EdgeInsets.only(top: 8),
+  //                   ),
+  //                  Container(
+  //                    padding: EdgeInsets.only(left: 5),
+  //                    child: Column(
+  //                      children: <Widget>[
+  //                        Row(
+  //                          children: <Widget>[
+  //                            Text("Date                      :     ",style: TextStyle(fontSize: 8,),),
+  //                            Padding(
+  //                              padding: EdgeInsets.only(top: 4),
+  //                            ),
+  //                            Text(displayDateFormat(earlygoingList[index]?.att_date) ?? 'NA',
+  //                              style: TextStyle(
+  //                                  color: lwtColor,
+  //                                  fontSize: 10,
+  //                                  fontWeight: FontWeight.bold
+  //                              ),
+  //                            ),
+  //                          ],
+  //                        ),
+  //                        Padding(
+  //                          padding: EdgeInsets.only(top: 6),
+  //                        ),
+  //                        Row(
+  //                          children: <Widget>[
+  //                            Text("Out Time              :     ",style: TextStyle(fontSize: 8,),),
+  //                            Padding(
+  //                              padding: EdgeInsets.only(top: 4),
+  //                            ),
+  //                            Text(earlygoingList[index]?.att_out_time ?? 'NA',
+  //                              style: TextStyle(
+  //                                  color: lwtColor,
+  //                                  fontSize: 10,
+  //                                  fontWeight: FontWeight.bold
+  //                              ),
+  //                            ),
+  //                          ],
+  //                        ),
+  //                        Padding(
+  //                          padding: EdgeInsets.only(top: 6),
+  //                        ),
+  //                        Row(
+  //                          children: <Widget>[
+  //                            Text("Work Status         :     ",style: TextStyle(fontSize: 8,),),
+  //                            Padding(
+  //                              padding: EdgeInsets.only(top: 4),
+  //                            ),
+  //                            Text(earlygoingList[index]?.att_work_status ?? '' + "NA.",
+  //                              style: TextStyle(
+  //                                  color: lwtColor,
+  //                                  fontSize: 10,
+  //                                  fontWeight: FontWeight.bold
+  //                              ),
+  //                            ),
+  //                          ],
+  //                        ),
+  //                        Padding(
+  //                          padding: EdgeInsets.only(top: 6),
+  //                        ),
+  //                        Row(
+  //                          children: <Widget>[
+  //                                  Text("Reason                 :     ",style: TextStyle(fontSize: 8,),),
+  //                            Padding(
+  //                              padding: EdgeInsets.only(top: 4),
+  //                            ),
+  //                            Expanded(
+  //                              child: Text(earlygoingList[index]?.att_request_remarks ?? '' + "NA.",
+  //                                style: TextStyle(
+  //                                    color: lwtColor,
+  //                                    fontSize: 10,
+  //                                    fontWeight: FontWeight.bold
+  //                                ),
+  //                              ),
+  //                            ),
+  //                          ],
+  //                        ),
+  //                      ],
+  //                    ),
+  //                  )
+  //                 ],
+  //               ),
+  //               trailing: Container(
+  //                 padding: EdgeInsets.only(top: 20),
+  //                 child: IconButton(
+  //                   icon: Icon(Icons.check_circle,color: lwtColor,size: 40,),
+  //                   onPressed: (){
+  //                     earlygoingRequest(earlygoingList[index]);
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
 
-  latecomingAListView() {
-    return ListView.builder(
-        itemCount: latecomingList == null ? 0 : latecomingList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            elevation: 5.0,
-            child: Container(
-              padding: EdgeInsets.only(top: 10,bottom: 10),
-              child: ListTile(
-                subtitle: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          child: Text(latecomingList[index].att_request_by[0].toUpperCase()+ latecomingList[index].att_request_by.substring(1) ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text("Date                      :     ",style: TextStyle(fontSize: 8,),),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Text(displayDateFormat(latecomingList[index]?.att_date) ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text("In Time                 :     ",style: TextStyle(fontSize: 8,),),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Text(latecomingList[index]?.att_tour_in_time ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text("Work Status         :     ",style: TextStyle(fontSize: 8,),),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Text(latecomingList[index]?.att_work_status ?? '' + "NA.",
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text("Reason                 :     ",style: TextStyle(fontSize: 8,),),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Expanded(
-                                child: Text(latecomingList[index]?.att_request_remarks ?? '' + "NA.",
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                trailing: Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: IconButton(
-                    icon: Icon(Icons.check_circle,size: 40,color: lwtColor,),
-                    onPressed: (){
-                      latecomingRequest(latecomingList[index]);
-                    },
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-        }
+  // latecomingAListView() {
+  //   return ListView.builder(
+  //       itemCount: latecomingList == null ? 0 : latecomingList.length,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return Card(
+  //           elevation: 5.0,
+  //           child: Container(
+  //             padding: EdgeInsets.only(top: 10,bottom: 10),
+  //             child: ListTile(
+  //               subtitle: Column(
+  //                 children: <Widget>[
+  //                   Row(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: <Widget>[
+  //                       Container(
+  //                         padding: EdgeInsets.all(2),
+  //                         child: Text(latecomingList[index].att_request_by[0].toUpperCase()+ latecomingList[index].att_request_by.substring(1) ?? 'NA',
+  //                               style: TextStyle(
+  //                                   color: lwtColor,
+  //                                   fontSize: 12,
+  //                                   fontWeight: FontWeight.bold),
+  //                             ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   Padding(
+  //                     padding: EdgeInsets.only(top: 8),
+  //                   ),
+  //                   Container(
+  //                     padding: EdgeInsets.only(left: 5),
+  //                     child: Column(
+  //                       children: <Widget>[
+  //                         Row(
+  //                           children: <Widget>[
+  //                             Text("Date                      :     ",style: TextStyle(fontSize: 8,),),
+  //                             Padding(
+  //                               padding: EdgeInsets.only(top: 4),
+  //                             ),
+  //                             Text(displayDateFormat(latecomingList[index]?.att_date) ?? 'NA',
+  //                               style: TextStyle(
+  //                                   color: lwtColor,
+  //                                   fontSize: 10,
+  //                                   fontWeight: FontWeight.bold
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                         Padding(
+  //                           padding: EdgeInsets.only(top: 6),
+  //                         ),
+  //                         Row(
+  //                           children: <Widget>[
+  //                             Text("In Time                 :     ",style: TextStyle(fontSize: 8,),),
+  //                             Padding(
+  //                               padding: EdgeInsets.only(top: 4),
+  //                             ),
+  //                             Text(latecomingList[index]?.att_tour_in_time ?? 'NA',
+  //                               style: TextStyle(
+  //                                   color: lwtColor,
+  //                                   fontSize: 10,
+  //                                   fontWeight: FontWeight.bold
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                         Padding(
+  //                           padding: EdgeInsets.only(top: 6),
+  //                         ),
+  //                         Row(
+  //                           children: <Widget>[
+  //                             Text("Work Status         :     ",style: TextStyle(fontSize: 8,),),
+  //                             Padding(
+  //                               padding: EdgeInsets.only(top: 4),
+  //                             ),
+  //                             Text(latecomingList[index]?.att_work_status ?? '' + "NA.",
+  //                               style: TextStyle(
+  //                                   color: lwtColor,
+  //                                   fontSize: 10,
+  //                                   fontWeight: FontWeight.bold
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                         Padding(
+  //                           padding: EdgeInsets.only(top: 6),
+  //                         ),
+  //                         Row(
+  //                           children: <Widget>[
+  //                             Text("Reason                 :     ",style: TextStyle(fontSize: 8,),),
+  //                             Padding(
+  //                               padding: EdgeInsets.only(top: 4),
+  //                             ),
+  //                             Expanded(
+  //                               child: Text(latecomingList[index]?.att_request_remarks ?? '' + "NA.",
+  //                                 style: TextStyle(
+  //                                     color: lwtColor,
+  //                                     fontSize: 10,
+  //                                     fontWeight: FontWeight.bold
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   )
+  //                 ],
+  //               ),
+  //               trailing: Container(
+  //                 padding: EdgeInsets.only(top: 20),
+  //                 child: IconButton(
+  //                   icon: Icon(Icons.check_circle,size: 40,color: lwtColor,),
+  //                   onPressed: (){
+  //                     latecomingRequest(latecomingList[index]);
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       });
+  //       }
 
 
 
-  void earlygoingRequest(LateEarlyComingModel earlygoingList) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: new Text('Do you want to Approve.?'),
-            actions: <Widget>[
-              new CupertinoButton(
-                onPressed: () {
-                  cancelLateEarlyServiceCall(earlygoingList);
-                },
-                child: new Text('Reject'),
-              ),
-              new CupertinoButton(
-                onPressed: ()  {
-                  approveLateEarlyServiceCall(earlygoingList);
-                },
-                child: new Text('Approve'),),
-            ],
-          );
-        });
-  }
+  // void earlygoingRequest(LateEarlyComingModel earlygoingList) {
+  //   showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (BuildContext context) {
+  //         return CupertinoAlertDialog(
+  //           title: new Text('Do you want to Approve.?'),
+  //           actions: <Widget>[
+  //             new CupertinoButton(
+  //               onPressed: () {
+  //                 cancelLateEarlyServiceCall(earlygoingList);
+  //               },
+  //               child: new Text('Reject'),
+  //             ),
+  //             new CupertinoButton(
+  //               onPressed: ()  {
+  //                 approveLateEarlyServiceCall(earlygoingList);
+  //               },
+  //               child: new Text('Approve'),),
+  //           ],
+  //         );
+  //       });
+  // }
 
-   latecomingRequest(LateEarlyComingModel lateearlycomingModel) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: new Text('Do you want to Approve.?'),
-            actions: <Widget>[
-              new CupertinoButton(
-                onPressed: () {
-                  cancelLateEarlyServiceCall(lateearlycomingModel);
-                },
-                child: new Text('Reject'),
-              ),
-              new CupertinoButton(
-                onPressed: ()  {
-                  approveLateEarlyServiceCall(lateearlycomingModel);
-                },
-                child: new Text('Approve'),),
-            ],
-          );
-        });
-  }
+  //  latecomingRequest(LateEarlyComingModel lateearlycomingModel) {
+  //   showDialog(
+  //       context: context,
+  //       barrierDismissible: false,
+  //       builder: (BuildContext context) {
+  //         return CupertinoAlertDialog(
+  //           title: new Text('Do you want to Approve.?'),
+  //           actions: <Widget>[
+  //             new CupertinoButton(
+  //               onPressed: () {
+  //                 cancelLateEarlyServiceCall(lateearlycomingModel);
+  //               },
+  //               child: new Text('Reject'),
+  //             ),
+  //             new CupertinoButton(
+  //               onPressed: ()  {
+  //                 approveLateEarlyServiceCall(lateearlycomingModel);
+  //               },
+  //               child: new Text('Approve'),),
+  //           ],
+  //         );
+  //       });
+  // }
 
    alertpermissionCheck(PermissionModel permissionModel) {
      showDialog(
@@ -1262,74 +1262,74 @@ class _ApprovalsState extends State<Approvals> {
   }
 
 
-  ///===============================
-  void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
-    try {
-      var  response = await dio.put(ServicesApi.ChangeLeaveStatus,
-          data: {
-            "actionMode": "RejectAttendanceReqByTL ",
-            "parameter1": listdata.u_emp_code.toString(),
-            "parameter2": listdata.att_date.toString(),
-            "parameter3": profilename,
-            "parameter4": listdata.att_id.toString(),
-            "parameter5": "string"
-          },
-          options: Options(contentType: ContentType.parse('application/json'),
-          ));
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        setState(() {
-          getPendingApprovals();
-        });
-        Navigator.pop(context);
-//        CheckServices();
-      }
-    } on DioError catch (exception) {
-      if (exception == null ||
-          exception.toString().contains('SocketException')) {
-        throw Exception("Network Error");
-      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-          exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
-      } else {
-        return null;
-      }
-    }
-  }
+//   ///===============================
+//   void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
+//     try {
+//       var  response = await dio.put(ServicesApi.ChangeLeaveStatus,
+//           data: {
+//             "actionMode": "RejectAttendanceReqByTL ",
+//             "parameter1": listdata.u_emp_code.toString(),
+//             "parameter2": listdata.att_date.toString(),
+//             "parameter3": profilename,
+//             "parameter4": listdata.att_id.toString(),
+//             "parameter5": "string"
+//           },
+//           options: Options(contentType: ContentType.parse('application/json'),
+//           ));
+//       if (response.statusCode == 200 || response.statusCode == 201) {
+//         setState(() {
+//           getPendingApprovals();
+//         });
+//         Navigator.pop(context);
+// //        CheckServices();
+//       }
+//     } on DioError catch (exception) {
+//       if (exception == null ||
+//           exception.toString().contains('SocketException')) {
+//         throw Exception("Network Error");
+//       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+//           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+//         throw Exception(
+//             "Could'nt connect, please ensure you have a stable network.");
+//       } else {
+//         return null;
+//       }
+//     }
+//   }
 
-  void approveLateEarlyServiceCall(LateEarlyComingModel listdata) async {
-    try {
-      var  response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
-          data: {
-            "actionMode": "ApproveAttendanceReqByTL",
-            "parameter1": listdata.u_emp_code.toString(),
-            "parameter2": listdata.att_date.toString(),
-            "parameter3": profilename,
-            "parameter4": listdata.att_id.toString(),
-            "parameter5": "string"
-          },
-          options: Options(contentType: ContentType.parse('application/json'),
-          ));
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        setState(() {
-          getPendingApprovals();
-        });
-        Navigator.pop(context);
-//        CheckServices();
-      }
-    } on DioError catch (exception) {
-      if (exception == null ||
-          exception.toString().contains('SocketException')) {
-        throw Exception("Network Error");
-      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-          exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
-      } else {
-        return null;
-      }
-    }
-  }
+//   void approveLateEarlyServiceCall(LateEarlyComingModel listdata) async {
+//     try {
+//       var  response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+//           data: {
+//             "actionMode": "ApproveAttendanceReqByTL",
+//             "parameter1": listdata.u_emp_code.toString(),
+//             "parameter2": listdata.att_date.toString(),
+//             "parameter3": profilename,
+//             "parameter4": listdata.att_id.toString(),
+//             "parameter5": "string"
+//           },
+//           options: Options(contentType: ContentType.parse('application/json'),
+//           ));
+//       if (response.statusCode == 200 || response.statusCode == 201) {
+//         setState(() {
+//           getPendingApprovals();
+//         });
+//         Navigator.pop(context);
+// //        CheckServices();
+//       }
+//     } on DioError catch (exception) {
+//       if (exception == null ||
+//           exception.toString().contains('SocketException')) {
+//         throw Exception("Network Error");
+//       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+//           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+//         throw Exception(
+//             "Could'nt connect, please ensure you have a stable network.");
+//       } else {
+//         return null;
+//       }
+//     }
+//   }
 
   displayDateFormat(String el_from_date) {
     List<String> a=el_from_date.split("-");

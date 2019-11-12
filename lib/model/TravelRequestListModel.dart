@@ -1,22 +1,24 @@
 class TravelRequestListModel{
+  int tra_id;
   String reqNo;
-  String oaco;
+  String proj_oano;
   String fullName;
-  String from;
-  String to;
+  String tra_from;
+  String tra_to;
   String journeyDate;
-  String purpose;
-  int traStatus;
+  String tra_purpose;
+  int tra_status;
 
-  TravelRequestListModel(this.reqNo,this.oaco,this.fullName,this.from,this.to,this.journeyDate,this.purpose,this.traStatus);
-
+  TravelRequestListModel(this.reqNo,this.proj_oano,this.fullName,this.tra_from,this.tra_to,this.journeyDate,this.tra_purpose,this.tra_status);
+  
   TravelRequestListModel.fromJson(Map<String, dynamic> json)
-      : reqNo = json['reqNo'],
-        oaco = json['oaco'],
+      : tra_id = json['tra_id'],
+        reqNo = json['tra_req_no'],
+        proj_oano = json['proj_oano'],
         fullName = json['fullName'],
-        from = json['from'],
-        to = json['to'],
+        tra_from = json['tra_from'],
+        tra_to = json['tra_to'],
         journeyDate = json['journeyDate'],
-        purpose = json['purpose'],
-        traStatus = json['traStatus'];
+        tra_purpose = json['tra_purpose'],
+        tra_status = json['tra_status'];
 }

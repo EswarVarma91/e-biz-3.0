@@ -131,7 +131,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           navigationItemsPermissions.removeWhere((a)=>a.title=="Approvals");
           listMain=navigationItemsPermissions;
         }else if(result.toString()=="7"){
-          navigationItemsTravel.removeWhere((a)=>a.title=="Travel Request");
+          navigationItemsTravel.removeWhere((a)=>a.title=="Approvals");
           listMain=navigationItemsTravel;
         }
 

@@ -53,7 +53,7 @@ class _ViewMapState  extends State<ViewMap>{
   @override
   void initState() {
     super.initState();
-   _getuserLocations();
+  //  _getuserLocations();
 
   }
 
@@ -126,51 +126,51 @@ class _ViewMapState  extends State<ViewMap>{
     }
   }
 
-    _getuserLocations() async {
-     try {
-       var response = await dio.post(ServicesApi.emp_Data,
-           data: {
-             "actionMode": "getUserLocation"
-           },
-           options: Options(responseType: ResponseType.json,
-           ));
-       if (response.statusCode == 200 || response.statusCode == 201) {
-         setState(()  {
-           List responseJson = response.data;
-           lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
-         });
-         for (int i = 0; i < lm.length; i++) {
-           setState(() {
-             allmarkers.add(Marker(markerId: MarkerId("marker"),
-               position: LatLng(double.parse(lm[i].lati.substring(0,10)), double.parse(lm[i].longi.substring(0,10))),
-               icon: BitmapDescriptor.defaultMarker,
-               infoWindow: InfoWindow(title: lm[i].u_profile_name[0].toUpperCase()+lm[i].u_profile_name.substring(1),snippet: "last seen "+_lastSeenTime(lm[i].created_date)),
-               draggable: false,
-             ));
-           });
+  //   _getuserLocations() async {
+  //    try {
+  //      var response = await dio.post(ServicesApi.emp_Data,
+  //          data: {
+  //            "actionMode": "getUserLocation"
+  //          },
+  //          options: Options(responseType: ResponseType.json,
+  //          ));
+  //      if (response.statusCode == 200 || response.statusCode == 201) {
+  //        setState(()  {
+  //          List responseJson = response.data;
+  //          lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
+  //        });
+  //        for (int i = 0; i < lm.length; i++) {
+  //          setState(() {
+  //            allmarkers.add(Marker(markerId: MarkerId("marker"),
+  //              position: LatLng(double.parse(lm[i].lati.substring(0,10)), double.parse(lm[i].longi.substring(0,10))),
+  //              icon: BitmapDescriptor.defaultMarker,
+  //              infoWindow: InfoWindow(title: lm[i].u_profile_name[0].toUpperCase()+lm[i].u_profile_name.substring(1),snippet: "last seen "+_lastSeenTime(lm[i].created_date)),
+  //              draggable: false,
+  //            ));
+  //          });
 
-         }
-       } else if (response.statusCode == 401) {
-         Fluttertoast.showToast(msg: "Incorrect Email/Password");
-         throw Exception("Incorrect Email/Password");
-       } else {
+  //        }
+  //      } else if (response.statusCode == 401) {
+  //        Fluttertoast.showToast(msg: "Incorrect Email/Password");
+  //        throw Exception("Incorrect Email/Password");
+  //      } else {
 
-         Fluttertoast.showToast(msg: "Incorrect Email/Password");
-         throw Exception('Authentication Error');
-       }
-     } on DioError catch (exception) {
-       if (exception == null ||
-           exception.toString().contains('SocketException')) {
-         throw Exception("Network Error");
-       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-         throw Exception(
-             "Could'nt connect, please ensure you have a stable network.");
-       } else {
-         return null;
-       }
-     }
-   }
+  //        Fluttertoast.showToast(msg: "Incorrect Email/Password");
+  //        throw Exception('Authentication Error');
+  //      }
+  //    } on DioError catch (exception) {
+  //      if (exception == null ||
+  //          exception.toString().contains('SocketException')) {
+  //        throw Exception("Network Error");
+  //      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+  //          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+  //        throw Exception(
+  //            "Could'nt connect, please ensure you have a stable network.");
+  //      } else {
+  //        return null;
+  //      }
+  //    }
+  //  }
 
 
 

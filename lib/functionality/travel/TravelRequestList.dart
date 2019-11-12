@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:eaglebiz/commonDrawer/CollapsingNavigationDrawer.dart';
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/travel/AddTravelRequest.dart';
 import 'package:eaglebiz/main.dart';
@@ -51,112 +52,124 @@ class _TravelRequestListState extends State<TravelRequestList> {
             color: Colors.white,
           ),
           Container(
-
             child: ListView.builder(
               itemCount: trlm?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  margin: EdgeInsets.only(left: 60, right: 5, top: 6),
-                  child: StaggeredGridView.count(
-                    crossAxisCount: 6,
-                    crossAxisSpacing: 12.0,
-                    mainAxisSpacing: 12.0,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 1, top: 1),
-                        child: TravelRquestM(trlm[index]),
+                    margin: EdgeInsets.only(left: 60, right: 5, top: 6),
+                    child: Card(
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  trlm[index].reqNo,
+                                  style: TextStyle(
+                                      color: lwtColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12),
+                                ),
+                                Text(
+                                  checkTravelRequestStatus(
+                                      trlm[index].tra_status),
+                                  style: TextStyle(
+                                      color: Colors.amber,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
+                              Column(children: <Widget>[
+                                Text("Traveller Name",style: TextStyle(fontSize: 7,color: Colors.black),),
+                                Text(
+                                  trlm[index].fullName,
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ],),
+                              Column(children: <Widget>[
+                                Text("Date",style: TextStyle(fontSize: 7,color: Colors.black),),
+                                Text(
+                                  trlm[index].journeyDate,
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ],)
+                            ],),
+                            SizedBox(height: 15,),
+                            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: <Widget>[
+                            Column(children: <Widget>[
+                              Text("From",style: TextStyle(fontSize: 7,color: Colors.black),),
+                            Text(
+                              trlm[index].tra_from,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                            ],),
+                            
+                            Column(children: <Widget>[
+                              Text("To",style: TextStyle(fontSize: 7,color: Colors.black),),
+                            Text(
+                              trlm[index].tra_to,
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                            ],)
+                            ],)
+                          ],
+                        ),
                       ),
-                    ],
-                    staggeredTiles: [
-                      StaggeredTile.extent(4, 65.0),
-                    ],
-                  ),
-                );
+                      color: Colors.white,
+                    ));
               },
             ),
           ),
+          CollapsingNavigationDrawer("7"),
         ],
       ),
     );
   }
 
   getTravelData() async {
-    try {
-      String url="http://192.168.2.5:8383/travel.service/travel/get/travel/request";
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "GetAllTravelRequests"},
+        options: Options(
+          contentType: ContentType.parse('application/json'),
+        ));
 
-      var response = await dio.post(url,
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      setState(() {
         trlm = (json.decode(response.data) as List)
-            .map((data) => new TravelRequestListModel.fromJson(data))
+            .map((f) => TravelRequestListModel.fromJson(f))
             .toList();
-        Fluttertoast.showToast(msg: trlm.toString());
-      } else if (response.statusCode == 401) {
-        Fluttertoast.showToast(msg: "Please check your internet connection.!");
-      }
-
-    } on DioError catch (exception) {
-      if (exception == null ||
-          exception.toString().contains('SocketException')) {
-        throw Exception("Network Error");
-      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-          exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
-      } else {
-        return null;
-      }
+      });
+    } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
     }
   }
 
-  Material TravelRquestM(TravelRequestListModel trlm) {
-    return Material(
-      elevation: 14.0,
-      borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Colors.white,
-      child: InkWell(
-        onTap: () {},
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(1.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        trlm.reqNo,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontFamily: "Roboto",
-                          color: lwtColor,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        trlm.fullName,
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontFamily: "Roboto",
-                          color: lwtColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  
+  String checkTravelRequestStatus(int tra_status) {
+    if (tra_status == 1) {
+      return "Pending";
+    } else {
+      return "";
+    }
   }
 }
