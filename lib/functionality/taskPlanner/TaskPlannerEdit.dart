@@ -112,7 +112,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                     child: TextFormField(
                       controller: _controllerReason,
                       decoration: InputDecoration(
-                        hintText: "Write your feedback of the Task ",
+                        hintText: "Write your feedback of the task ",
                         border: InputBorder.none,
                       ),
                       maxLines: 8,

@@ -868,13 +868,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(
-                      "EDP_"+list2[index]?.dp_id.toString() ?? 'NA',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -974,21 +968,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
                       onPressed: () {
                         if(myTasks==true){
                           if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
                           }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
                           }
                         }else if(teamTasks==true){
                           if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
                           }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
                           }
                         }else if(projectTasks==true){
                           if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
                           }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_id.toString(),profilename)));
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
                           }
                         }
                         /* var navigator = Navigator.of(context);

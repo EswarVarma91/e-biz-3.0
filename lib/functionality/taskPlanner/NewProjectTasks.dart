@@ -81,7 +81,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                 if(chooseProject=="Select Project" || chooseProject=="null"){
                   Fluttertoast.showToast(msg: "Please select project");
                 }else if(chooseResource=="Select Resource" || chooseResource=="null"){
-                  Fluttertoast.showToast(msg: "Please select Resource");
+                  Fluttertoast.showToast(msg: "Please select resource");
                 }else if(_controller1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter Task Name");
                 }else if(_controller2.text.isEmpty){

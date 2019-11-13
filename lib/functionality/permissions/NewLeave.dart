@@ -62,7 +62,7 @@ class _NewLeaveState extends State<NewLeave> {
          pr = new ProgressDialog(context);
          pr.style(message: 'Please wait...');
          return Scaffold(
-           appBar: AppBar(title: Text("Request Leave".toUpperCase(),style: TextStyle(color: Colors.white),),
+           appBar: AppBar(title: Text("Leave request",style: TextStyle(color: Colors.white),),
      
              leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
                var navigator = Navigator.of(context);
@@ -309,7 +309,7 @@ class _NewLeaveState extends State<NewLeave> {
                           "vactionmode": "insert",
                           "vel_created_by": fullname,
                           "vel_from_date": fromDate,
-                          "vel_noofdays": 0,
+                          "vel_noofdays": 1,
                           "vel_reason": _controller1.text,
                           "vel_to_date": fromDate,
                           "vleave_type": leaveType,
@@ -324,7 +324,7 @@ class _NewLeaveState extends State<NewLeave> {
                           "vactionmode": "insert",
                           "vel_created_by": fullname,
                           "vel_from_date": fromDate,
-                          "vel_noofdays": 1,
+                          "vel_noofdays": 0,
                           "vel_reason": _controller1.text,
                           "vel_to_date": toDate,
                           "vleave_type": leaveType,
@@ -333,7 +333,7 @@ class _NewLeaveState extends State<NewLeave> {
                         options: Options(
                           contentType: ContentType.parse('application/json'),));
                   }
-                  print("Response :-"+response.toString());
+                  // print("Response :-"+response.toString());
               
               
                   if(response.statusCode==200 || response.statusCode==201){

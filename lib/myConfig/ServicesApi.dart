@@ -2,7 +2,10 @@ class ServicesApi{
 
   //========= New DataBase ebizdb=========//
 
-  static String basic_url = "http://192.168.2.5:8383/";
+  // static String basic_url = "http://192.168.2.5:8383/";
+
+
+  static String basic_url ="http://192.168.2.3:8080/";
   static String new_login_url = basic_url + "global.service/validate/user";
 
   static String global_Service = "global.service/global/";

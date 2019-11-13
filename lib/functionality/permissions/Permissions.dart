@@ -357,7 +357,7 @@ class _PermissionsState extends State<Permissions> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(title: Text("Leaves & Permission",style: TextStyle(color: Colors.white),),
+        appBar: AppBar(title: Text("Leaves & Permissions",style: TextStyle(color: Colors.white),),
           iconTheme: IconThemeData(color:Colors.white),
 //        leading: Icon(Icons.monetization_on,color: Colors.white,),
         ),

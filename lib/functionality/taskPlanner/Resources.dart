@@ -57,7 +57,7 @@ class _ResourcesState extends State<Resources> {
             child: TextField(
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(15.0),
-                hintText: 'Search by Project or Project Id',
+                hintText: 'Search',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),
@@ -66,8 +66,7 @@ class _ResourcesState extends State<Resources> {
                   setState(() {
                     fliterReferals = listReferals
                         .where((u) => (
-                        u.memberName.toLowerCase().contains(string.toLowerCase()) ||
-                            u.u_id.toString().toLowerCase().contains(string.toLowerCase())
+                        u.memberName.toLowerCase().contains(string.toLowerCase())
                     )).toList();
                   });
                 });

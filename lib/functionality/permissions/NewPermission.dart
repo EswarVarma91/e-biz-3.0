@@ -54,7 +54,7 @@ class _NewPermissionState extends State<NewPermissions> {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
-        appBar: AppBar(title: Text("Request Permissions",style: TextStyle(color: Colors.white),),
+        appBar: AppBar(title: Text("Permission request",style: TextStyle(color: Colors.white),),
 
           leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
             var navigator = Navigator.of(context);

@@ -23,7 +23,7 @@ class _LeaveTypeState extends State<LeaveType> {
 
 getLeavesCount(String uidd) async {
 
-    var response = await dio.post(ServicesApi.getLeaves+"33");
+    var response = await dio.post(ServicesApi.getLeaves+uidd);
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
       lcm=LeavesCountModel.fromJson(json.decode(response.data));
