@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:eaglebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:eaglebiz/functionality/travel/ViewTravelRequest.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/travel/AddTravelRequest.dart';
 import 'package:eaglebiz/main.dart';
