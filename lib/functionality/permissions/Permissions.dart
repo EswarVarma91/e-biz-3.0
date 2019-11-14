@@ -17,7 +17,6 @@ import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
 
-
 class Permissions extends StatefulWidget {
   @override
   _PermissionsState createState() => _PermissionsState();
@@ -25,57 +24,60 @@ class Permissions extends StatefulWidget {
 
 class _PermissionsState extends State<Permissions> {
   ProgressDialog pr;
-  bool _color1,_color2,_color3,_color4;
-  TextEditingController _controllerReason=TextEditingController();
-  bool leaves,permissions,latecoming,earlygoing,lateearly;
+  bool _color1, _color2, _color3, _color4;
+  TextEditingController _controllerReason = TextEditingController();
+  bool leaves, permissions, latecoming, earlygoing, lateearly;
 
-  List<LeavesModel> leavesList=new List();
-  List<LeavesModel> list2=new List();
-  List<LeavesModel> list3=new List();
-  List<LeavesModel> list4=new List();
-  List<LeavesModel> list5=new List();
-  List<LeavesModel> list6=new List();
+  List<LeavesModel> leavesList = new List();
+  List<LeavesModel> list2 = new List();
+  List<LeavesModel> list3 = new List();
+  List<LeavesModel> list4 = new List();
+  List<LeavesModel> list5 = new List();
+  List<LeavesModel> list6 = new List();
 
-  List<PermissionModel> permissionsList=new List();
-  List<PermissionModel> list22=new List();
-  List<PermissionModel> list33=new List();
-  List<PermissionModel> list44=new List();
-  List<PermissionModel> list55=new List();
-  List<PermissionModel> list66=new List();
+  List<PermissionModel> permissionsList = new List();
+  List<PermissionModel> list22 = new List();
+  List<PermissionModel> list33 = new List();
+  List<PermissionModel> list44 = new List();
+  List<PermissionModel> list55 = new List();
+  List<PermissionModel> list66 = new List();
 
-  List<LateEarlyComingModel> latecomingList=new List();
-  List<LateEarlyComingModel> list222=new List();
-  List<LateEarlyComingModel> list333=new List();
-  List<LateEarlyComingModel> list444=new List();
-  List<LateEarlyComingModel> list555=new List();
-  List<LateEarlyComingModel> list666=new List();
+  List<LateEarlyComingModel> latecomingList = new List();
+  List<LateEarlyComingModel> list222 = new List();
+  List<LateEarlyComingModel> list333 = new List();
+  List<LateEarlyComingModel> list444 = new List();
+  List<LateEarlyComingModel> list555 = new List();
+  List<LateEarlyComingModel> list666 = new List();
 
-  List<LateEarlyComingModel> earlygoingList=new List();
-  List<LateEarlyComingModel> list2222=new List();
-  List<LateEarlyComingModel> list3333=new List();
-  List<LateEarlyComingModel> list4444=new List();
-  List<LateEarlyComingModel> list5555=new List();
-  List<LateEarlyComingModel> list6666=new List();
+  List<LateEarlyComingModel> earlygoingList = new List();
+  List<LateEarlyComingModel> list2222 = new List();
+  List<LateEarlyComingModel> list3333 = new List();
+  List<LateEarlyComingModel> list4444 = new List();
+  List<LateEarlyComingModel> list5555 = new List();
+  List<LateEarlyComingModel> list6666 = new List();
 
-
-
-  String uuid,profilename,employCode;
-  var _isEditButton=false;
-  bool _isloading=false;
+  String uuid, profilename, employCode;
+  var _isEditButton = false;
+  bool _isloading = false;
   static Dio dio = Dio(Config.options);
-  String pendingCount="-",approvedCount="-",cancelledCount="-",rejectedCount="-";
-  static  var now = DateTime.now();
+  String pendingCount = "-",
+      approvedCount = "-",
+      cancelledCount = "-",
+      rejectedCount = "-";
+  static var now = DateTime.now();
   Future<String> getUserID() async {
-    SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("userId");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString("userId");
     return id;
   }
+
   getAccountDetails() async {
-    SharedPreferences preferences=await SharedPreferences.getInstance();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     employCode = preferences.getString("uEmpCode");
     profilename = preferences.getString("profileName");
-    print(employCode.toString()+"-"+profilename);
+    print(employCode.toString() + "-" + profilename);
   }
+
   @override
   void initState() {
     super.initState();
@@ -83,38 +85,37 @@ class _PermissionsState extends State<Permissions> {
     _color2 = false;
     _color3 = false;
     _color4 = false;
-    leaves=true;
-    permissions=false;
-    latecoming=false;
-    earlygoing=false;
-    lateearly=false;
+    leaves = true;
+    permissions = false;
+    latecoming = false;
+    earlygoing = false;
+    lateearly = false;
     getAccountDetails();
-    getUserID().then((val)=>setState((){
-      uuid=val;
-      getDataLeaves_Permissions();
-    }));
-
+    getUserID().then((val) => setState(() {
+          uuid = val;
+          getDataLeaves_Permissions();
+        }));
   }
 
   void checkServices() {
-    if(leaves==true){
-      lateearly=false;
+    if (leaves == true) {
+      lateearly = false;
       //pending
-      list3 =  leavesList.where((d) {
+      list3 = leavesList.where((d) {
         if (d.el_status.toString() == "1") {
           return true;
         }
         return false;
       }).toList();
       //approved
-      list4 =  leavesList.where((d) {
+      list4 = leavesList.where((d) {
         if (d.el_status.toString() == "2") {
           return true;
         }
         return false;
       }).toList();
       //cancelled
-      list5 =  leavesList.where((d) {
+      list5 = leavesList.where((d) {
         if (d.el_status.toString() == "0") {
           return true;
         }
@@ -122,7 +123,7 @@ class _PermissionsState extends State<Permissions> {
       }).toList();
 
       //rejected
-      list6 =  leavesList.where((d) {
+      list6 = leavesList.where((d) {
         if (d.el_status.toString() == "3") {
           return true;
         }
@@ -131,52 +132,52 @@ class _PermissionsState extends State<Permissions> {
 
       //
       setState(() {
-        pendingCount=list3?.length.toString()??"-";
-        approvedCount=list4?.length.toString()??"-";
-        cancelledCount=list5?.length.toString()??"-";
-        rejectedCount=list6?.length.toString()??"-";
+        pendingCount = list3?.length.toString() ?? "-";
+        approvedCount = list4?.length.toString() ?? "-";
+        cancelledCount = list5?.length.toString() ?? "-";
+        rejectedCount = list6?.length.toString() ?? "-";
       });
 
-      if(_color1==true){
+      if (_color1 == true) {
         setState(() {
-          _isEditButton=true;
-          list2=list3;
+          _isEditButton = true;
+          list2 = list3;
         });
-      }else if(_color2==true){
+      } else if (_color2 == true) {
         setState(() {
-          _isEditButton=false;
-          list2=list4;
+          _isEditButton = false;
+          list2 = list4;
         });
-      }else if(_color3==true){
+      } else if (_color3 == true) {
         setState(() {
-          _isEditButton=false;
-          list2=list5;
+          _isEditButton = false;
+          list2 = list5;
         });
-      }else if(_color4==true){
+      } else if (_color4 == true) {
         setState(() {
-          _isEditButton=false;
-          list2=list6;
+          _isEditButton = false;
+          list2 = list6;
         });
       }
-    }else if(permissions==true){
-      lateearly=false;
+    } else if (permissions == true) {
+      lateearly = false;
 
       //pending
-      list33 =  permissionsList.where((d) {
-        if (d.per_status.toString() == "1" ) {
+      list33 = permissionsList.where((d) {
+        if (d.per_status.toString() == "1") {
           return true;
         }
         return false;
       }).toList();
       //approved
-      list44 =  permissionsList.where((d) {
+      list44 = permissionsList.where((d) {
         if (d.per_status.toString() == "2") {
           return true;
         }
         return false;
       }).toList();
       //cancelled
-      list55 =  permissionsList.where((d) {
+      list55 = permissionsList.where((d) {
         if (d.per_status.toString() == "0") {
           return true;
         }
@@ -184,7 +185,7 @@ class _PermissionsState extends State<Permissions> {
       }).toList();
 
       //rejected
-      list66 =  permissionsList.where((d) {
+      list66 = permissionsList.where((d) {
         if (d.per_status.toString() == "3") {
           return true;
         }
@@ -193,145 +194,158 @@ class _PermissionsState extends State<Permissions> {
 
       //
       setState(() {
-        pendingCount=list33?.length.toString()??"-";
-        approvedCount=list44?.length.toString()??"-";
-        cancelledCount=list55?.length.toString()??"-";
-        rejectedCount=list66?.length.toString()??"-";
+        pendingCount = list33?.length.toString() ?? "-";
+        approvedCount = list44?.length.toString() ?? "-";
+        cancelledCount = list55?.length.toString() ?? "-";
+        rejectedCount = list66?.length.toString() ?? "-";
       });
-      if(_color1==true){
+      if (_color1 == true) {
         setState(() {
-          _isEditButton=true;
-          list22=list33;
+          _isEditButton = true;
+          list22 = list33;
         });
-      }else if(_color2==true){
+      } else if (_color2 == true) {
         setState(() {
-          _isEditButton=false;
-          list22=list44;
+          _isEditButton = false;
+          list22 = list44;
         });
-      }else if(_color3==true){
+      } else if (_color3 == true) {
         setState(() {
-          _isEditButton=false;
-          list22=list55;
+          _isEditButton = false;
+          list22 = list55;
         });
-      }else if(_color4==true){
+      } else if (_color4 == true) {
         setState(() {
-          _isEditButton=false;
-          list22=list66;
+          _isEditButton = false;
+          list22 = list66;
         });
       }
-    }else if(latecoming==true){
-      lateearly=true;
-      list333 =  latecomingList.where((d) {
-        if (d.att_id == "-" ) {
+    } else if (latecoming == true) {
+      lateearly = true;
+      list333 = latecomingList.where((d) {
+        if (d.att_id == "-") {
           return true;
         }
         return false;
       }).toList();
-      list444 =  latecomingList.where((d) {
-        if (d.att_id !="-"  && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
+      list444 = latecomingList.where((d) {
+        if (d.att_id != "-" &&
+            d.hr_approval != "1" &&
+            d.hr_approval != "2" &&
+            d.tl_approval != "1" &&
+            d.tl_approval != "2") {
           return true;
         }
         return false;
       }).toList();
 
-      list555 =  latecomingList.where((d) {
-        if ( d.hr_approval=="2") {
+      list555 = latecomingList.where((d) {
+        if (d.hr_approval == "2") {
           return true;
         }
         return false;
       }).toList();
 
-      list666 =  latecomingList.where((d) {
-        if ( d.hr_approval=="1" ) {
+      list666 = latecomingList.where((d) {
+        if (d.hr_approval == "1") {
           return true;
         }
         return false;
       }).toList();
 
       setState(() {
-        pendingCount=list333?.length.toString()??"-";
-        approvedCount=list444?.length.toString()??"-";
-        cancelledCount=list555?.length.toString()??"-";
-        rejectedCount=list666?.length.toString()??"-";
+        pendingCount = list333?.length.toString() ?? "-";
+        approvedCount = list444?.length.toString() ?? "-";
+        cancelledCount = list555?.length.toString() ?? "-";
+        rejectedCount = list666?.length.toString() ?? "-";
       });
 
-      if(_color1==true){
+      if (_color1 == true) {
         setState(() {
-          _isEditButton=true;
-          list222=list333;
+          _isEditButton = true;
+          list222 = list333;
         });
-      } else if(_color2==true){
+      } else if (_color2 == true) {
         setState(() {
-          _isEditButton=false;
-          list222=list444;
+          _isEditButton = false;
+          list222 = list444;
         });
-      } else if(_color3==true){
+      } else if (_color3 == true) {
         setState(() {
-          _isEditButton=false;
-          list222=list555;
+          _isEditButton = false;
+          list222 = list555;
         });
-      }else if(_color4==true){
+      } else if (_color4 == true) {
         setState(() {
-          _isEditButton=false;
-          list222=list666;
+          _isEditButton = false;
+          list222 = list666;
         });
       }
-    }else if(earlygoing==true){
-      lateearly=true;
-      latecoming=false;
-      list3333 =  earlygoingList.where((d) {
-        if (d.att_id == "-"  && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2") {
+    } else if (earlygoing == true) {
+      lateearly = true;
+      latecoming = false;
+      list3333 = earlygoingList.where((d) {
+        if (d.att_id == "-" &&
+            d.hr_approval != "1" &&
+            d.hr_approval != "2" &&
+            d.tl_approval != "1" &&
+            d.tl_approval != "2") {
           return true;
         }
         return false;
       }).toList();
 
-      list4444 =  earlygoingList.where((d) {
-        if (d.att_id !="-" && d.hr_approval!="1" && d.hr_approval!="2" && d.tl_approval!="1" && d.tl_approval!="2" && d.att_work_status!="Absent") {
+      list4444 = earlygoingList.where((d) {
+        if (d.att_id != "-" &&
+            d.hr_approval != "1" &&
+            d.hr_approval != "2" &&
+            d.tl_approval != "1" &&
+            d.tl_approval != "2" &&
+            d.att_work_status != "Absent") {
           return true;
         }
         return false;
       }).toList();
 
-      list5555 =  earlygoingList.where((d) {
-        if (d.hr_approval=="2") {
+      list5555 = earlygoingList.where((d) {
+        if (d.hr_approval == "2") {
           return true;
         }
         return false;
       }).toList();
 
-      list6666 =  earlygoingList.where((d) {
-        if (d.hr_approval=="1") {
+      list6666 = earlygoingList.where((d) {
+        if (d.hr_approval == "1") {
           return true;
         }
         return false;
       }).toList();
 
       setState(() {
-        pendingCount=list3333?.length.toString()??"-";
-        approvedCount=list4444?.length.toString()??"-";
-        cancelledCount=list5555?.length.toString()??"-";
-        rejectedCount=list6666?.length.toString()??"-";
+        pendingCount = list3333?.length.toString() ?? "-";
+        approvedCount = list4444?.length.toString() ?? "-";
+        cancelledCount = list5555?.length.toString() ?? "-";
+        rejectedCount = list6666?.length.toString() ?? "-";
       });
-      if(_color1==true){
+      if (_color1 == true) {
         setState(() {
-          _isEditButton=true;
-          list2222=list3333;
+          _isEditButton = true;
+          list2222 = list3333;
         });
-      } else if(_color2==true){
+      } else if (_color2 == true) {
         setState(() {
-          _isEditButton=false;
-          list2222=list4444;
+          _isEditButton = false;
+          list2222 = list4444;
         });
-      } else if(_color3==true){
+      } else if (_color3 == true) {
         setState(() {
-          _isEditButton=false;
-          list2222=list5555;
+          _isEditButton = false;
+          list2222 = list5555;
         });
-      }else if(_color4==true){
+      } else if (_color4 == true) {
         setState(() {
-          _isEditButton=false;
-          list2222=list6666;
+          _isEditButton = false;
+          list2222 = list6666;
         });
       }
     }
@@ -355,22 +369,28 @@ class _PermissionsState extends State<Permissions> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(title: Text("Leaves & Permissions",style: TextStyle(color: Colors.white),),
-          iconTheme: IconThemeData(color:Colors.white),
+        appBar: AppBar(
+          title: Text(
+            "Leaves & Permissions",
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
 //        leading: Icon(Icons.monetization_on,color: Colors.white,),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if(leaves==true){
+            if (leaves == true) {
               var navigator = Navigator.of(context);
               navigator.push(
-                MaterialPageRoute(builder: (BuildContext context) => NewLeave()),
+                MaterialPageRoute(
+                    builder: (BuildContext context) => NewLeave()),
 //                          ModalRoute.withName('/'),
               );
-            }else if(permissions==true){
+            } else if (permissions == true) {
               var navigator = Navigator.of(context);
               navigator.push(
-                MaterialPageRoute(builder: (BuildContext context) => NewPermissions()),
+                MaterialPageRoute(
+                    builder: (BuildContext context) => NewPermissions()),
 //                          ModalRoute.withName('/'),
               );
             }
@@ -381,19 +401,23 @@ class _PermissionsState extends State<Permissions> {
         ),
         body: Stack(
           children: <Widget>[
-            Container(color: Colors.white,),
             Container(
-              margin: EdgeInsets.only(left: 60,right: 5,top: 6),
-              child: StaggeredGridView.count(crossAxisCount: 4,crossAxisSpacing: 12.0,
+              color: Colors.white,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 60, right: 5, top: 6),
+              child: StaggeredGridView.count(
+                crossAxisCount: 4,
+                crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  leavesM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: leavesM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  permissionsM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: permissionsM(),
                   ),
                   // Padding(
                   //   padding: const EdgeInsets.only(right: 1,top: 1),
@@ -409,28 +433,31 @@ class _PermissionsState extends State<Permissions> {
                   StaggeredTile.extent(2, 45.0),
                   StaggeredTile.extent(2, 45.0),
                   StaggeredTile.extent(2, 45.0),
-                ],),
+                ],
+              ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 60,right: 5,top: 65),
-              child: StaggeredGridView.count(crossAxisCount: 8,crossAxisSpacing: 5.0,
+              margin: EdgeInsets.only(left: 60, right: 5, top: 65),
+              child: StaggeredGridView.count(
+                crossAxisCount: 8,
+                crossAxisSpacing: 5.0,
                 mainAxisSpacing: 5.0,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  dashboard1(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: dashboard1(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  dashboard2(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: dashboard2(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  dashboard3(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: dashboard3(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  dashboard4(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: dashboard4(),
                   ),
                 ],
                 staggeredTiles: [
@@ -438,16 +465,21 @@ class _PermissionsState extends State<Permissions> {
                   StaggeredTile.extent(2, 85.0),
                   StaggeredTile.extent(2, 85.0),
                   StaggeredTile.extent(2, 85.0),
-                ],),
+                ],
+              ),
             ),
-            leaves ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
-              child:  leavesListView(),
-            ):Container(),
-            permissions ? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 160),
-              child:  permissionsListView(),
-            ):Container(),
+            leaves
+                ? Container(
+                    margin: EdgeInsets.only(left: 60, right: 2, top: 160),
+                    child: leavesListView(),
+                  )
+                : Container(),
+            permissions
+                ? Container(
+                    margin: EdgeInsets.only(left: 60, right: 2, top: 160),
+                    child: permissionsListView(),
+                  )
+                : Container(),
             // latecoming ? Container(
             //   margin: EdgeInsets.only(left: 60, right: 2, top: 160),
             //   child:  latecomingListView(),
@@ -465,15 +497,14 @@ class _PermissionsState extends State<Permissions> {
     );
   }
 
-
-  Material dashboard1( ) {
+  Material dashboard1() {
     return Material(
       color: _color1 ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: _color1 ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             _color1 = !_color1;
             checkServices();
@@ -486,8 +517,8 @@ class _PermissionsState extends State<Permissions> {
             } else if (_color4 == true) {
               _color4 = !_color4;
               checkServices();
-            } else if(_color1==false){
-              _color2=!_color2;
+            } else if (_color1 == false) {
+              _color2 = !_color2;
               checkServices();
             }
           });
@@ -498,30 +529,34 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("Pending".toUpperCase(),style:TextStyle(
-                        fontSize: 10.0,fontFamily: "Roboto",
-                        color: _color1 ?  Colors.white : lwtColor,
-                        //Color(0xFF272D34),
-                      ),),
+                      child: Text(
+                        "Pending".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0, fontFamily: "Roboto",
+                          color: _color1 ? Colors.white : lwtColor,
+                          //Color(0xFF272D34),
+                        ),
+                      ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(pendingCount,style:TextStyle(
-                          fontSize: 30.0,fontFamily: "Roboto",
-                          color: _color1 ?  Colors.white : lwtColor
-                      ),),
+                      child: Text(
+                        pendingCount,
+                        style: TextStyle(
+                            fontSize: 30.0,
+                            fontFamily: "Roboto",
+                            color: _color1 ? Colors.white : lwtColor),
+                      ),
                     ),
                   ],
                 ),
@@ -533,14 +568,14 @@ class _PermissionsState extends State<Permissions> {
     );
   }
 
-  Material dashboard2( ) {
+  Material dashboard2() {
     return Material(
       color: _color2 ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: _color2 ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             _color2 = !_color2;
             checkServices();
@@ -553,8 +588,8 @@ class _PermissionsState extends State<Permissions> {
             } else if (_color4 == true) {
               _color4 = !_color4;
               checkServices();
-            } else if(_color2==false){
-              _color3=!_color3;
+            } else if (_color2 == false) {
+              _color3 = !_color3;
               checkServices();
             }
           });
@@ -565,31 +600,38 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lateearly ? "Applied".toUpperCase(): "Approved".toUpperCase(),style:TextStyle(
-                        fontSize: 10.0,fontFamily: "Roboto",
-                        color: _color2 ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lateearly
+                            ? "Applied".toUpperCase()
+                            : "Approved".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Roboto",
+                          color: _color2 ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(approvedCount,style:TextStyle(
-                        fontSize: 30.0,fontFamily: "Roboto",
-                        color: _color2 ?  Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        approvedCount,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Roboto",
+                          color: _color2 ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
-
                   ],
                 ),
               ],
@@ -599,14 +641,15 @@ class _PermissionsState extends State<Permissions> {
       ),
     );
   }
-  Material dashboard3( ) {
+
+  Material dashboard3() {
     return Material(
       color: _color3 ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: _color3 ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             _color3 = !_color3;
             checkServices();
@@ -619,8 +662,8 @@ class _PermissionsState extends State<Permissions> {
             } else if (_color4 == true) {
               _color4 = !_color4;
               checkServices();
-            } else if(_color3==false){
-              _color4=!_color4;
+            } else if (_color3 == false) {
+              _color4 = !_color4;
               checkServices();
             }
           });
@@ -631,31 +674,38 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lateearly ? "Rejected".toUpperCase() :"Cancelled".toUpperCase(),style:TextStyle(
-                        fontSize: 10.0,fontFamily: "Roboto",
-                        color: _color3 ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lateearly
+                            ? "Rejected".toUpperCase()
+                            : "Cancelled".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Roboto",
+                          color: _color3 ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(cancelledCount,style:TextStyle(
-                        fontSize: 30.0,fontFamily: "Roboto",
-                        color: _color3 ?  Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        cancelledCount,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Roboto",
+                          color: _color3 ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
-
                   ],
                 ),
               ],
@@ -665,7 +715,8 @@ class _PermissionsState extends State<Permissions> {
       ),
     );
   }
-  Material dashboard4( ) {
+
+  Material dashboard4() {
     return Material(
       color: _color4 ? lwtColor : Colors.white,
       elevation: 14.0,
@@ -685,8 +736,8 @@ class _PermissionsState extends State<Permissions> {
             } else if (_color2 == true) {
               _color2 = !_color2;
               checkServices();
-            } else if(_color4==false){
-              _color1=!_color1;
+            } else if (_color4 == false) {
+              _color1 = !_color1;
               checkServices();
             }
           });
@@ -702,18 +753,27 @@ class _PermissionsState extends State<Permissions> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lateearly ? "Approved".toUpperCase() :"Rejected".toUpperCase(),style:TextStyle(
-                        fontSize: 10.0,fontFamily: "Roboto",
-                        color: _color4 ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lateearly
+                            ? "Approved".toUpperCase()
+                            : "Rejected".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Roboto",
+                          color: _color4 ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(rejectedCount,style:TextStyle(
-                        fontSize: 30.0,fontFamily: "Roboto",
-                        color: _color4 ?  Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        rejectedCount,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Roboto",
+                          color: _color4 ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -732,21 +792,21 @@ class _PermissionsState extends State<Permissions> {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: leaves ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             leaves = !leaves;
             checkServices();
-            if(permissions==true){
-              permissions=!permissions;
+            if (permissions == true) {
+              permissions = !permissions;
               checkServices();
-            }else if(latecoming==true){
-              latecoming=!latecoming;
+            } else if (latecoming == true) {
+              latecoming = !latecoming;
               checkServices();
-            }else if(earlygoing==true){
-              earlygoing=!earlygoing;
+            } else if (earlygoing == true) {
+              earlygoing = !earlygoing;
               checkServices();
-            }else if(leaves==false){
-              permissions=!permissions;
+            } else if (leaves == false) {
+              permissions = !permissions;
               checkServices();
             }
           });
@@ -757,21 +817,24 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("Leaves".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: leaves ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "Leaves".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: leaves ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -790,21 +853,21 @@ class _PermissionsState extends State<Permissions> {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: permissions ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             permissions = !permissions;
             checkServices();
-            if(latecoming==true){
-              latecoming=!latecoming;
+            if (latecoming == true) {
+              latecoming = !latecoming;
               checkServices();
-            }else if(earlygoing==true){
-              earlygoing=!earlygoing;
+            } else if (earlygoing == true) {
+              earlygoing = !earlygoing;
               checkServices();
-            }else if(leaves==true){
-              leaves=!leaves;
+            } else if (leaves == true) {
+              leaves = !leaves;
               checkServices();
-            }else if(permissions==false){
-              latecoming=!latecoming;
+            } else if (permissions == false) {
+              latecoming = !latecoming;
               checkServices();
             }
           });
@@ -815,21 +878,24 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("Permissions".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: permissions ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "Permissions".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: permissions ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -840,8 +906,6 @@ class _PermissionsState extends State<Permissions> {
       ),
     );
   }
-
-
 
   Material latecomingM() {
     return Material(
@@ -850,21 +914,21 @@ class _PermissionsState extends State<Permissions> {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: latecoming ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             latecoming = !latecoming;
             checkServices();
-            if(earlygoing==true){
-              earlygoing=!earlygoing;
+            if (earlygoing == true) {
+              earlygoing = !earlygoing;
               checkServices();
-            }else if(leaves==true){
-              leaves=!leaves;
+            } else if (leaves == true) {
+              leaves = !leaves;
               checkServices();
-            }else if(permissions==true){
-              permissions=!permissions;
+            } else if (permissions == true) {
+              permissions = !permissions;
               checkServices();
-            }else if(latecoming==false){
-              earlygoing=!earlygoing;
+            } else if (latecoming == false) {
+              earlygoing = !earlygoing;
               checkServices();
             }
           });
@@ -875,21 +939,24 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("Late Coming".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: latecoming ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "Late Coming".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: latecoming ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -900,6 +967,7 @@ class _PermissionsState extends State<Permissions> {
       ),
     );
   }
+
   Material earlygoingM() {
     return Material(
       color: earlygoing ? lwtColor : Colors.white,
@@ -907,21 +975,21 @@ class _PermissionsState extends State<Permissions> {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: earlygoing ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             earlygoing = !earlygoing;
             checkServices();
-            if(leaves==true){
-              leaves=!leaves;
+            if (leaves == true) {
+              leaves = !leaves;
               checkServices();
-            }else if(permissions==true){
-              permissions=!permissions;
+            } else if (permissions == true) {
+              permissions = !permissions;
               checkServices();
-            }else if(latecoming==true){
-              latecoming=!latecoming;
+            } else if (latecoming == true) {
+              latecoming = !latecoming;
               checkServices();
-            }else if(earlygoing==false){
-              leaves=!leaves;
+            } else if (earlygoing == false) {
+              leaves = !leaves;
               checkServices();
             }
           });
@@ -932,21 +1000,24 @@ class _PermissionsState extends State<Permissions> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("Early Going".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: earlygoing ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "Early Going".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: earlygoing ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -966,90 +1037,120 @@ class _PermissionsState extends State<Permissions> {
               elevation: 5.0,
               margin: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
               child: InkWell(
-                child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(top: 4),
-                              child: Text(checkApprovalStatus(list2[index].el_approvedby) ,style: TextStyle(color: lwtColor),),
-                            ),
-                            ListTile(
-                              leading: Container(
-                                padding: EdgeInsets.only(right: 14.0,top: 1.0),
-                                decoration: BoxDecoration(
-                                    border:
-                                    Border(right: BorderSide(width: 1.0, color: Colors.grey))),
-                                width: 50,
-                                child:Column(
-                                children: <Widget>[
-                                  Text("No. Days: ",style: TextStyle(color: Colors.black,fontSize: 8),),
-                                  Text(checkNoDays(list2[index]?.el_noofdays.toString()).toString() ?? 'NA' ,
-                                    style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 24,
-                                    ),
+                child: Column(children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(top: 4),
+                          child: Text(
+                            checkApprovalStatus(list2[index].el_approvedby),
+                            style: TextStyle(color: lwtColor),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Container(
+                            padding: EdgeInsets.only(right: 14.0, top: 1.0),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    right: BorderSide(
+                                        width: 1.0, color: Colors.grey))),
+                            width: 50,
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "No. Days: ",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 8),
+                                ),
+                                Text(
+                                  checkNoDays(list2[index]
+                                              ?.el_noofdays
+                                              .toString())
+                                          .toString() ??
+                                      'NA',
+                                  style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 24,
                                   ),
-                                ],
-                              ),
-                              ),
-
-                              title: Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                          title: Container(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
                                   children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text("From Date  :  ",style: TextStyle(fontSize: 10,color: Colors.black),),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 4),
-                                        ),
-                                        Text(displayDateFormat(list2[index]?.el_from_date) ?? 'NA',
-                                          style: TextStyle(
-                                            color: lwtColor,
-                                            fontSize: 10, fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
+                                    Text(
+                                      "From Date  :  ",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.black),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(top: 4),
                                     ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text("To Date       :  ",style: TextStyle(fontSize: 10,color: Colors.black),),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 4),
-                                        ),
-                                        Text(displayDateFormat(list2[index]?.el_to_date) ?? 'NA',
-                                          style: TextStyle(
-                                            color: lwtColor,
-                                            fontSize: 10,
-                                              fontWeight: FontWeight.bold
-                                          ),
-                                        ),
-                                      ],
+                                    Text(
+                                      displayDateFormat(
+                                              list2[index]?.el_from_date) ??
+                                          'NA',
+                                      style: TextStyle(
+                                          color: lwtColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
-                              ) ,
-                              trailing: _isEditButton ? IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
+                                Padding(
+                                  padding: EdgeInsets.only(top: 4),
                                 ),
-                                onPressed: () {
-                                  cancelLeavesAlertDialog(list2[index],1);
-                                },
-                              ): IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
-                                //
-                              },),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "To Date       :  ",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.black),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4),
+                                    ),
+                                    Text(
+                                      displayDateFormat(
+                                              list2[index]?.el_to_date) ??
+                                          'NA',
+                                      style: TextStyle(
+                                          color: lwtColor,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
+                          trailing: _isEditButton
+                              ? IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    cancelLeavesAlertDialog(list2[index], 1);
+                                  },
+                                )
+                              : IconButton(
+                                  icon: Icon(Icons.visibility_off),
+                                  onPressed: () {
+                                    //
+                                  },
+                                ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
+                  ),
+                ]),
               ));
         });
   }
@@ -1063,83 +1164,120 @@ class _PermissionsState extends State<Permissions> {
               margin: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
               child: InkWell(
                 child: Container(
-                  /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
+                    /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
                         borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
                         )),*/
                     child: Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text(list22[index]?.per_approved_by??"" ,style: TextStyle(color: lwtColor),),
-                          ListTile(
-                            leading: Container(
-                              padding: EdgeInsets.only(right: 20.0),
-                              decoration: BoxDecoration(
-                                  border:
-                                  Border(right: BorderSide(width: 1.0, color: Colors.grey))),
-                              width: 50,
-                              child: Column(
-                                children: <Widget>[
-                                  Text(getDateMethod(list22[index]?.per_date??"Na","1"),style: TextStyle(color: lwtColor,fontSize: 25,fontWeight: FontWeight.bold),),
-                                  Text(getDateMethod(list22[index]?.per_date??"Na","2"),style: TextStyle(fontSize: 8,),),
-                                  Text(getDateMethod(list22[index]?.per_date??"Na","3"),style: TextStyle(fontSize: 8,)),
-                                ],
+                  padding: const EdgeInsets.all(2.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        list22[index]?.per_approved_by ?? "",
+                        style: TextStyle(color: lwtColor),
+                      ),
+                      ListTile(
+                        leading: Container(
+                          padding: EdgeInsets.only(right: 20.0),
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  right: BorderSide(
+                                      width: 1.0, color: Colors.grey))),
+                          width: 50,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                getDateMethod(
+                                    list22[index]?.per_date ?? "Na", "1"),
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            title: Container(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                              Text(
+                                getDateMethod(
+                                    list22[index]?.per_date ?? "Na", "2"),
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Text(
+                                  getDateMethod(
+                                      list22[index]?.per_date ?? "Na", "3"),
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                  )),
+                            ],
+                          ),
+                        ),
+                        title: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
                                 children: <Widget>[
-                                  Row(children: <Widget>[
-                                    Text("From Time  : ",style: TextStyle(color: Colors.black,fontSize: 10),),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 4),
-                                    ),
-                                    Text(
-                                      list22[index]?.per_from_time ?? 'NA',
-                                      style: TextStyle(
-                                          color: lwtColor,
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],),
+                                  Text(
+                                    "From Time  : ",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 10),
+                                  ),
                                   Padding(
                                     padding: EdgeInsets.only(top: 4),
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      Text("To Time       : ",style: TextStyle(color: Colors.black,fontSize: 10),),
-                                      Padding(
-                                        padding: EdgeInsets.only(top: 4),
-                                      ),
-                                      Text(
-                                        list22[index]?.per_to_time ?? 'NA',
-                                        style: TextStyle(
-                                          color: lwtColor,
-                                          fontSize: 10, fontWeight: FontWeight.bold
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    list22[index]?.per_from_time ?? 'NA',
+                                    style: TextStyle(
+                                        color: lwtColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
-                            ),
-
-                            trailing: _isEditButton ? IconButton(
-                              icon: Icon(
-                                Icons.delete,
-                                color: Colors.red,
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
                               ),
-                              onPressed: () {
-                                cancelPermissionsAlertDialog(list22[index],2);
-                              },
-                            ): IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
-                              //
-                            },),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    "To Time       : ",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 10),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 4),
+                                  ),
+                                  Text(
+                                    list22[index]?.per_to_time ?? 'NA',
+                                    style: TextStyle(
+                                        color: lwtColor,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
+                        trailing: _isEditButton
+                            ? IconButton(
+                                icon: Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  cancelPermissionsAlertDialog(
+                                      list22[index], 2);
+                                },
+                              )
+                            : IconButton(
+                                icon: Icon(Icons.visibility_off),
+                                onPressed: () {
+                                  //
+                                },
+                              ),
                       ),
-                    )),
+                    ],
+                  ),
+                )),
               ));
         });
   }
@@ -1328,22 +1466,20 @@ class _PermissionsState extends State<Permissions> {
 //         });
 //   }
 
-   getDataLeaves_Permissions() async {
-    Map<String, String> queryParameters = {
-      "id": uuid
-    };
+  getDataLeaves_Permissions() async {
+    Map<String, String> queryParameters = {"id": uuid};
     try {
       var leavesEmp = await dio.post(ServicesApi.getData,
 //          queryParameters: {"id": uuid},
-          data: {
-            "parameter1": "GetEmpLeaves",
-            "parameter2": uuid.toString()
-          },
-          options: Options(contentType: ContentType.parse('application/json'),)
-      );
+          data: {"parameter1": "GetEmpLeaves", "parameter2": uuid.toString()},
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
       if (leavesEmp.statusCode == 200 || leavesEmp.statusCode == 201) {
         setState(() {
-          leavesList = (json.decode(leavesEmp.data) as List).map((data) => new LeavesModel.fromJson(data)).toList();
+          leavesList = (json.decode(leavesEmp.data) as List)
+              .map((data) => new LeavesModel.fromJson(data))
+              .toList();
         });
         checkServices();
       }
@@ -1355,11 +1491,15 @@ class _PermissionsState extends State<Permissions> {
             "parameter1": "GetAllPermissionByUId",
             "parameter2": uuid.toString()
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
-      if (permissionsEmp.statusCode == 200 || permissionsEmp.statusCode == 201) {
+      if (permissionsEmp.statusCode == 200 ||
+          permissionsEmp.statusCode == 201) {
         setState(() {
-          permissionsList = (json.decode(permissionsEmp.data) as List).map((data) => new PermissionModel.fromJson(data)).toList();
+          permissionsList = (json.decode(permissionsEmp.data) as List)
+              .map((data) => new PermissionModel.fromJson(data))
+              .toList();
         });
         checkServices();
       }
@@ -1368,13 +1508,16 @@ class _PermissionsState extends State<Permissions> {
       var latecomingEmp = await dio.post(ServicesApi.getData,
           data: {
             "parameter1": "getUserLateComingByMonth",
-            "parameter2":  employCode.toString()
+            "parameter2": employCode.toString()
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
       if (latecomingEmp.statusCode == 200 || latecomingEmp.statusCode == 201) {
         setState(() {
-          latecomingList = (json.decode(latecomingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
+          latecomingList = (json.decode(latecomingEmp.data) as List)
+              .map((data) => new LateEarlyComingModel.fromJson(data))
+              .toList();
 //          print(latecomingList.toString());
         });
         checkServices();
@@ -1383,18 +1526,21 @@ class _PermissionsState extends State<Permissions> {
       var earlygoingEmp = await dio.post(ServicesApi.getData,
           data: {
             "parameter1": "getUserEarlyGoingByMonth",
-            "parameter2":  employCode.toString()
+            "parameter2": employCode.toString()
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
       if (earlygoingEmp.statusCode == 200 || earlygoingEmp.statusCode == 201) {
         setState(() {
-          earlygoingList = (json.decode(earlygoingEmp.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
+          earlygoingList = (json.decode(earlygoingEmp.data) as List)
+              .map((data) => new LateEarlyComingModel.fromJson(data))
+              .toList();
 //          print(earlygoingList.toString());
         });
         checkServices();
       }
-    }on DioError catch(exception){
+    } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         throw Exception("Network Error");
@@ -1408,12 +1554,12 @@ class _PermissionsState extends State<Permissions> {
     }
   }
 
-
-  void cancelRequestServiceCall(String leavepermissionId,String leaveType,String noofDays, int i) async {
+  void cancelRequestServiceCall(String leavepermissionId, String leaveType,
+      String noofDays, int i) async {
     pr.show();
     var response;
-    try{
-      if(i==1) {
+    try {
+      if (i == 1) {
         response = await dio.post(ServicesApi.ChangeLeaveStatus,
             data: {
               "leaveId": leavepermissionId,
@@ -1423,9 +1569,10 @@ class _PermissionsState extends State<Permissions> {
               "statusId": 0,
               "userId": uuid
             },
-            options: Options(contentType: ContentType.parse('application/json'),
+            options: Options(
+              contentType: ContentType.parse('application/json'),
             ));
-      }else if(i==2){
+      } else if (i == 2) {
         response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
               "modifiedBy": profilename,
@@ -1433,7 +1580,8 @@ class _PermissionsState extends State<Permissions> {
               "remarks": "string",
               "statusId": 0,
             },
-            options: Options(contentType: ContentType.parse('application/json'),
+            options: Options(
+              contentType: ContentType.parse('application/json'),
             ));
       }
 
@@ -1442,7 +1590,7 @@ class _PermissionsState extends State<Permissions> {
         pr.hide();
         Navigator.pop(context);
       }
-    }on DioError catch(exception){
+    } on DioError catch (exception) {
       pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -1543,29 +1691,28 @@ class _PermissionsState extends State<Permissions> {
   //   }
   // }
 
-   getDateMethod(String created_date,String selectType) {
-    List<String> timeStamp=[];
-      timeStamp = created_date.split(" ");
-      var timeStampSplit = timeStamp[0].toString();
-      List<String> dateSplit;
-      dateSplit = timeStampSplit.split("-");
-      if (selectType == "1") {
-        return dateSplit[2].toString();
-      } else if (selectType == "2") {
-        return dateSplit[1].toString();
-      } else if (selectType == "3") {
-        return dateSplit[0].toString();
-      }
-  }
-
-  String checkApprovalStatus(String res) {
-    if(res=="0"){
-     return "";
-    }else{
-      return res.substring(0,1).toUpperCase()+res.substring(1).toString();
+  getDateMethod(String created_date, String selectType) {
+    List<String> timeStamp = [];
+    timeStamp = created_date.split(" ");
+    var timeStampSplit = timeStamp[0].toString();
+    List<String> dateSplit;
+    dateSplit = timeStampSplit.split("-");
+    if (selectType == "1") {
+      return dateSplit[2].toString();
+    } else if (selectType == "2") {
+      return dateSplit[1].toString();
+    } else if (selectType == "3") {
+      return dateSplit[0].toString();
     }
   }
 
+  String checkApprovalStatus(String res) {
+    if (res == "0") {
+      return "";
+    } else {
+      return res.substring(0, 1).toUpperCase() + res.substring(1).toString();
+    }
+  }
 
   //   roundedAlertBox(LateEarlyComingModel lateearlycomingmodel, int i){
   //     return showDialog(
@@ -1652,7 +1799,7 @@ class _PermissionsState extends State<Permissions> {
           return CupertinoAlertDialog(
             title: new Text('Do you want to cancel your Leave?'),
             content: Container(
-              padding: EdgeInsets.only(top: 10,left: 10,right: 10),
+              padding: EdgeInsets.only(top: 10, left: 10, right: 10),
               child: Container(
                 padding: EdgeInsets.only(left: 10),
                 child: Column(
@@ -1660,21 +1807,52 @@ class _PermissionsState extends State<Permissions> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text("From Date      :     ",style: TextStyle(fontSize: 10),),
-                        Text(displayDateFormat(leavesModel.el_from_date),style:  TextStyle(color: lwtColor,fontSize: 12,fontWeight: FontWeight.bold),),
+                        Text(
+                          "From Date      :     ",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        Text(
+                          displayDateFormat(leavesModel.el_from_date),
+                          style: TextStyle(
+                              color: lwtColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        Text("To Date           :     ",style: TextStyle(fontSize: 10),),
-                        Text(displayDateFormat(leavesModel.el_to_date),style:  TextStyle(color: lwtColor,fontSize: 12,fontWeight: FontWeight.bold),),
+                        Text(
+                          "To Date           :     ",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        Text(
+                          displayDateFormat(leavesModel.el_to_date),
+                          style: TextStyle(
+                              color: lwtColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.only(top: 4),),
+                    Padding(
+                      padding: EdgeInsets.only(top: 4),
+                    ),
                     Row(
                       children: <Widget>[
-                        Text("Reason           :     ",style: TextStyle(fontSize: 10),),
-                        Expanded(child: Text(leavesModel.el_reason,style:  TextStyle(color: lwtColor,fontSize: 12,fontWeight: FontWeight.bold),textAlign: TextAlign.start,)),
+                        Text(
+                          "Reason           :     ",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        Expanded(
+                            child: Text(
+                          leavesModel.el_reason,
+                          style: TextStyle(
+                              color: lwtColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.start,
+                        )),
                       ],
                     )
                   ],
@@ -1683,22 +1861,27 @@ class _PermissionsState extends State<Permissions> {
             ),
             actions: <Widget>[
               CupertinoButton(
-                onPressed: ()  {
-                  cancelRequestServiceCall(leavesModel.el_id.toString(),leavesModel.leave_type,leavesModel.el_noofdays.toString(),i);
+                onPressed: () {
+                  cancelRequestServiceCall(
+                      leavesModel.el_id.toString(),
+                      leavesModel.leave_type,
+                      leavesModel.el_noofdays.toString(),
+                      i);
                 },
-                child: new Text('Yes'),),
-               CupertinoButton(
+                child: new Text('Yes'),
+              ),
+              CupertinoButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: new Text('No'),
               ),
-
             ],
           );
         });
   }
-   cancelPermissionsAlertDialog(PermissionModel permissionModel, int i) {
+
+  cancelPermissionsAlertDialog(PermissionModel permissionModel, int i) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -1706,7 +1889,7 @@ class _PermissionsState extends State<Permissions> {
           return CupertinoAlertDialog(
             title: new Text('Do you want to cancel your Permission?'),
             content: Container(
-              padding: EdgeInsets.only(top: 10,left: 10,right: 10),
+              padding: EdgeInsets.only(top: 10, left: 10, right: 10),
               child: Container(
                 padding: EdgeInsets.only(left: 10),
                 child: Column(
@@ -1714,25 +1897,55 @@ class _PermissionsState extends State<Permissions> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Text("From Time      :     ",style: TextStyle(fontSize: 10),),
-                        Text(permissionModel.per_from_time,style:  TextStyle(color: lwtColor,fontSize: 12,fontWeight: FontWeight.bold),),
+                        Text(
+                          "From Time      :     ",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        Text(
+                          permissionModel.per_from_time,
+                          style: TextStyle(
+                              color: lwtColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                     Row(
                       children: <Widget>[
-                        Text("To Time           :     ",style: TextStyle(fontSize: 10),),
-                        Text(permissionModel.per_to_time,style:  TextStyle(color: lwtColor,fontSize: 12,fontWeight: FontWeight.bold),),
+                        Text(
+                          "To Time           :     ",
+                          style: TextStyle(fontSize: 10),
+                        ),
+                        Text(
+                          permissionModel.per_to_time,
+                          style: TextStyle(
+                              color: lwtColor,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.only(top: 4),),
+                    Padding(
+                      padding: EdgeInsets.only(top: 4),
+                    ),
                     Row(
                       children: <Widget>[
-                        Text("Reason             :     ",style: TextStyle(fontSize: 10),),
+                        Text(
+                          "Reason             :     ",
+                          style: TextStyle(fontSize: 10),
+                        ),
                         Expanded(
-                            child: Text(permissionModel.per_purpose,
-                                style:  TextStyle(color: lwtColor,fontSize: 12,fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.start,softWrap: true,overflow: TextOverflow.fade,),
-                            ),
+                          child: Text(
+                            permissionModel.per_purpose,
+                            style: TextStyle(
+                                color: lwtColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.start,
+                            softWrap: true,
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
                       ],
                     )
                   ],
@@ -1741,34 +1954,34 @@ class _PermissionsState extends State<Permissions> {
             ),
             actions: <Widget>[
               CupertinoButton(
-                onPressed: ()  {
-                  cancelRequestServiceCall(permissionModel.per_id.toString(),"","",i);
+                onPressed: () {
+                  cancelRequestServiceCall(
+                      permissionModel.per_id.toString(), "", "", i);
                 },
-                child: new Text('Yes'),),
+                child: new Text('Yes'),
+              ),
               CupertinoButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: new Text('No'),
               ),
-
             ],
           );
         });
   }
 
-   displayDateFormat(String el_from_date) {
-    List<String> a=el_from_date.split("-");
-    return a[2]+"-"+a[1]+"-"+a[0];
+  displayDateFormat(String el_from_date) {
+    List<String> a = el_from_date.split("-");
+    return a[2] + "-" + a[1] + "-" + a[0];
   }
 
-  checkNoDays(String noodDays) {  
-    if(noodDays=="0.5"){
+  checkNoDays(String noodDays) {
+    if (noodDays == "0.5") {
       return noodDays.toString();
-    }else{
-    List data=noodDays.split(".");
-    return data[0].toString();
+    } else {
+      List data = noodDays.split(".");
+      return data[0].toString();
     }
   }
-
 }
