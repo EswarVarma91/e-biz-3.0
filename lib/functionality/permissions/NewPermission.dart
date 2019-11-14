@@ -23,7 +23,7 @@ class NewPermissions extends StatefulWidget {
 
 class _NewPermissionState extends State<NewPermissions> {
   bool personal,official;
-  String selectDate= " ",selectDateS= " ",fromTime="",toTime="",uidd,typeP,per_status;
+  String selectDate= " ",selectDateS= " ",fromTime="",toTime="",uidd,typeP;
   int y,m,d;
   ProgressDialog pr;
   var fullname;

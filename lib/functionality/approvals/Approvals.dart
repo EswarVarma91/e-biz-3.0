@@ -11,7 +11,6 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -1331,8 +1330,8 @@ class _ApprovalsState extends State<Approvals> {
 //     }
 //   }
 
-  displayDateFormat(String el_from_date) {
-    List<String> a=el_from_date.split("-");
+  displayDateFormat(String elFromDate) {
+    List<String> a=elFromDate.split("-");
     return a[2]+"-"+a[1]+"-"+a[0];
   }
 

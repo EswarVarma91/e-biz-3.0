@@ -23,7 +23,7 @@ class WorkStatus extends StatefulWidget {
 class _WorkStatusState extends State<WorkStatus> {
   static Dio dio = Dio(Config.options);
   String empCode,userId;
-  bool _isSelectedT,_isSelectedW,_statusSelected;
+  bool _isSelectedT,_isSelectedW;
   var dbHelper = DatabaseHelper();
   List<AttendanceModel> atteModel;
   Future<List<AttendanceModel>> attList;
@@ -42,7 +42,6 @@ class _WorkStatusState extends State<WorkStatus> {
     super.initState();
     _isSelectedT=false;
     _isSelectedW=false;
-    _statusSelected=false;
     getEmpCode();
     _localGet();
   }

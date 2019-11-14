@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
@@ -20,7 +19,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   Connectivity connectivity;
-  StreamSubscription<ConnectivityResult> streamSubscription;
   bool _obscureText = true;
   bool _isLoading = false;
   List<LoginModel> loginList = [];
@@ -154,7 +152,7 @@ class _LoginState extends State<Login> {
                           minWidth: 280.0,
                           height: 42.0,
                           onPressed: () async {
-                            LoginMethod();
+                            _loginmethod();
                           },
                           child: Text('Login'.toUpperCase(), style: TextStyle(color: lwtColor,fontSize: 16,fontWeight: FontWeight.bold)),
                         ),
@@ -171,7 +169,7 @@ class _LoginState extends State<Login> {
   }
 
 
-  LoginMethod() async {
+  _loginmethod() async {
     String email=_controller1.text.toString();
     String password=_controller2.text.toString();
     if(email.isEmpty){
