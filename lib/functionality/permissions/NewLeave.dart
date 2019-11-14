@@ -341,7 +341,6 @@ class _NewLeaveState extends State<NewLeave> {
               //      var responseJson = json.decode(response.data);
                     Fluttertoast.showToast(msg: "Leave Created");
                     Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-              
                   }else{
                     pr.hide();
                     Fluttertoast.showToast(msg: "Please try after some time.");
