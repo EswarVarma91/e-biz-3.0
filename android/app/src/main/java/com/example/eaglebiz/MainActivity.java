@@ -36,18 +36,18 @@ public class MainActivity extends FlutterActivity {
   }
 
   static void callFlutter() {
-    // MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
-    // methodChannel.invokeMethod("I say hello every minute!!","");
-    new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodCallHandler() {
-      @Override
-      public void onMethodCall(MethodCall call, Result result) {
-        if (call.method.equals("getPlatfromVersion")) {
-          result.success("Android " + android.os.Build.VERSION.RELEASE);
-        } else {
-          result.notImplemented();
-        }
-      }
-    });
+    MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
+    methodChannel.invokeMethod("I say hello every minute!!","");
+    // new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodCallHandler() {
+    //   @Override
+    //   public void onMethodCall(MethodCall call, Result result) {
+    //     if (call.method.equals("getPlatfromVersion")) {
+    //       result.success("Android " + android.os.Build.VERSION.RELEASE);
+    //     } else {
+    //       result.notImplemented();
+    //     }
+    //   }
+    // });
 
   }
 }
