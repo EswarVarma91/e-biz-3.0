@@ -36,6 +36,15 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+
+static const methodChannel = const MethodChannel('com.tarazgroup');
+
+  _MyHomePageState() {
+    methodChannel.setMethodCallHandler((call) {
+      print(call.method);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
