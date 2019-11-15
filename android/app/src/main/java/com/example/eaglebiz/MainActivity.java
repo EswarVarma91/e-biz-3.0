@@ -14,7 +14,7 @@ public class MainActivity extends FlutterActivity {
 
   private PendingIntent pendingIntent;
   private AlarmManager alarmManager;
-  private static  FlutterView flutterView;
+  private static FlutterView flutterView;
   private static final String CHANNEL = "eb";
 
   @Override
@@ -23,31 +23,31 @@ public class MainActivity extends FlutterActivity {
     GeneratedPluginRegistrant.registerWith(this);
 
     Intent intent = new Intent(this, MyReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(this, 1019662, intent, 0);
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60*1000, pendingIntent);
+    pendingIntent = PendingIntent.getBroadcast(this, 1019662, intent, 0);
+    alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 1000, pendingIntent);
 
   }
 
   @Override
   protected void onDestroy() {
-      super.onDestroy();
-      alarmManager.cancel(pendingIntent);
+    super.onDestroy();
+    alarmManager.cancel(pendingIntent);
   }
 
-  static void callFlutter(){
-      // MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
-      // methodChannel.invokeMethod("I say hello every minute!!","");
-      new MethodChannel(getFlutterView(),CHANNEL).setMethodCallHandler(
-       new MethodCallHandler(){
-            @Override
-            public void onMethodCall(MethodCall call,Result result){
-              if(call.method.equals("getPlatfromVersion")){
-                result.suc
-              }
-            }
+  static void callFlutter() {
+    // MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
+    // methodChannel.invokeMethod("I say hello every minute!!","");
+    new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodCallHandler() {
+      @Override
+      public void onMethodCall(MethodCall call, Result result) {
+        if (call.method.equals("getPlatfromVersion")) {
+          result.success("Android " + android.os.Build.VERSION.RELEASE);
+        } else {
+          result.notImplemented();
         }
-      );
-      
+      }
+    });
+
   }
 }
