@@ -37,11 +37,12 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
 
-static const methodChannel = const MethodChannel('com.tarazgroup');
+static const methodChannel = const MethodChannel('eb');
 
   _MyHomePageState() {
     methodChannel.setMethodCallHandler((call) {
-      print(call.method);
+      Fluttertoast.showToast(msg: "Hello Eagle Biz");
+      print("test "+call.method);
     });
   }
 

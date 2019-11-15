@@ -8,13 +8,14 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
+import com.example.eaglebiz.MyReceiver;
 
 public class MainActivity extends FlutterActivity {
 
   private PendingIntent pendingIntent;
   private AlarmManager alarmManager;
   private static  FlutterView flutterView;
-  private static final String CHANNEL = "com.tarazgroup";
+  private static final String CHANNEL = "eb";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class MainActivity extends FlutterActivity {
     Intent intent = new Intent(this, MyReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 1019662, intent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60*1000, pendingIntent);
 
   }
 
@@ -35,7 +36,18 @@ public class MainActivity extends FlutterActivity {
   }
 
   static void callFlutter(){
-      MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
-      methodChannel.invokeMethod("I say hello every minute!!","");
+      // MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
+      // methodChannel.invokeMethod("I say hello every minute!!","");
+      new MethodChannel(getFlutterView(),CHANNEL).setMethodCallHandler(
+       new MethodCallHandler(){
+            @Override
+            public void onMethodCall(MethodCall call,Result result){
+              if(call.method.equals("getPlatfromVersion")){
+                result.suc
+              }
+            }
+        }
+      );
+      
   }
 }
