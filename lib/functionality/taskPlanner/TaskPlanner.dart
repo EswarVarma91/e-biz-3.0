@@ -25,7 +25,7 @@ class TaskPlanner extends StatefulWidget {
 
 class _TaskPlannerState extends State<TaskPlanner> {
   bool _color1, _color2, _color3, _color4;
-  var todayT='-',openT='-',progressT='-',closedT='-';
+  var todayT = '-', openT = '-', progressT = '-', closedT = '-';
   bool myTasks, teamTasks, projectTasks;
   String uidd;
   bool _isloading = false;
@@ -41,15 +41,16 @@ class _TaskPlannerState extends State<TaskPlanner> {
   var now = DateTime.now();
   var timeCheck;
   bool _listDisplay = true;
-  String profilename,fullname;
+  String profilename, fullname;
   Connectivity connectivity;
   StreamSubscription<ConnectivityResult> streamSubscription;
 
-  Future<String> getUserID() async{
-    SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("userId");
+  Future<String> getUserID() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString("userId");
     return id;
   }
+
   void getProfileName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
@@ -75,8 +76,9 @@ class _TaskPlannerState extends State<TaskPlanner> {
           print(uidd);
           getTaskPlanner(uidd);
         }));
-    connectivity=Connectivity();
-    streamSubscription=connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+    connectivity = Connectivity();
+    streamSubscription =
+        connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
       if (result != ConnectivityResult.none) {
         getTaskPlanner(uidd);
       }
@@ -85,172 +87,181 @@ class _TaskPlannerState extends State<TaskPlanner> {
 
   void checkServices() {
     list2.clear();
-    if(myTasks==true){
+    if (myTasks == true) {
       //today filter
-      list3 = list1.where((d) {
-        DateTime dt = DateTime.parse(d.dp_created_date.toString());
+      list3 = list1.where(
+        (d) {
+          DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self") {
-          return true;
-        }
-        return false;
-      },
+          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+              d.dpTaskType == "Self") {
+            return true;
+          }
+          return false;
+        },
       ).toList();
       //open filter
-      list4= list1.where((d){
-        if(d.dp_status.toString()=="1" && d.dpTaskType == "Self"  ){
+      list4 = list1.where((d) {
+        if (d.dp_status.toString() == "1" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
       //progress filter
-      list5=list1.where((d){
-        if(d.dp_status.toString()=="2" && d.dpTaskType == "Self" ){
+      list5 = list1.where((d) {
+        if (d.dp_status.toString() == "2" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
       //closed filter
-      list6= list1.where((d){
-        if(d.dp_status.toString()=="3" && d.dpTaskType == "Self"){
+      list6 = list1.where((d) {
+        if (d.dp_status.toString() == "3" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
 
-      todayT=list3.length.toString();
-      openT=list4.length.toString();
-      progressT=list5.length.toString();
-      closedT=list6.length.toString();
+      todayT = list3.length.toString();
+      openT = list4.length.toString();
+      progressT = list5.length.toString();
+      closedT = list6.length.toString();
 
-      if(_color1==true){
+      if (_color1 == true) {
         setState(() {
-          list2=list3;
+          list2 = list3;
         });
-      }else if(_color2==true){
+      } else if (_color2 == true) {
         setState(() {
-          list2=list4;
+          list2 = list4;
         });
-      }else if(_color3==true){
+      } else if (_color3 == true) {
         setState(() {
-         list2=list5;
+          list2 = list5;
         });
-      }else if(_color4==true){
+      } else if (_color4 == true) {
         setState(() {
-          list2=list6;
+          list2 = list6;
         });
       }
-    }
-     else if (teamTasks == true) {
-       //today filter
-      list3=  list1.where((d) {
+    } else if (teamTasks == true) {
+      //today filter
+      list3 = list1.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Team") {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+            d.dpTaskType == "Team" &&
+            d.dp_created_by == profilename) {
           return true;
         }
         return false;
       }).toList();
       //open
-      list4= list1.where((d){
-        if(d.dp_status.toString()=="1" && d.dpTaskType == "Team" ){
+      list4 = list1.where((d) {
+        if (d.dp_status.toString() == "1" &&
+            d.dpTaskType == "Team" &&
+            d.dp_created_by == profilename) {
           return true;
         }
         return false;
       }).toList();
       //progress
-      list5 = list1.where((d){
-        if(d.dp_status.toString()=="2" && d.dpTaskType == "Team" ){
+      list5 = list1.where((d) {
+        if (d.dp_status.toString() == "2" &&
+            d.dpTaskType == "Team" &&
+            d.dp_created_by == profilename) {
           return true;
         }
         return false;
       }).toList();
       //closed
-      list6 = list1.where((d){
-        if(d.dp_status.toString()=="3" && d.dpTaskType == "Team" ){
+      list6 = list1.where((d) {
+        if (d.dp_status.toString() == "3" &&
+            d.dpTaskType == "Team" &&
+            d.dp_created_by == profilename) {
           return true;
         }
         return false;
       }).toList();
 
       //
-      todayT=list3.length.toString();
-      openT=list4.length.toString();
-      progressT=list5.length.toString();
-      closedT=list6.length.toString();
+      todayT = list3.length.toString();
+      openT = list4.length.toString();
+      progressT = list5.length.toString();
+      closedT = list6.length.toString();
 
-       if(_color1 == true ){
-         setState(() {
-         list2=list3;
-         });
-       }else if(_color2==true){
-         setState(() {
-           list2=list4;
-         });
-       }else if(_color3==true){
-         setState(() {
-           list2=list5;
-         });
-       }else if(_color4==true){
-         setState(() {
-          list2=list6;
-         });
-       }
-
+      if (_color1 == true) {
+        setState(() {
+          list2 = list3;
+        });
+      } else if (_color2 == true) {
+        setState(() {
+          list2 = list4;
+        });
+      } else if (_color3 == true) {
+        setState(() {
+          list2 = list5;
+        });
+      } else if (_color4 == true) {
+        setState(() {
+          list2 = list6;
+        });
+      }
     } else if (projectTasks == true) {
-       //today
-        list3=  list22.where((d) {
-          DateTime dt = DateTime.parse(d.dp_created_date.toString());
-          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dp_given_by == profilename) {
-            return true;
-          }
-          return false;
-        }).toList();
-        //open
-        list4 = list22.where((d){
-          if(d.dp_status.toString()=="1" && d.dp_given_by == profilename ){
-            return true;
-          }
-          return false;
-        }).toList();
-        //progress
-        list5 = list22.where((d){
-          if(d.dp_status.toString()=="2" && d.dp_given_by == profilename){
-            return true;
-          }
-          return false;
-        }).toList();
-        //closed
-        list6 = list22.where((d){
-          if(d.dp_status.toString()=="3" && d.dp_given_by == profilename ){
-            return true;
-          }
-          return false;
-        }).toList();
-        //
+      //today
+      list3 = list22.where((d) {
+        DateTime dt = DateTime.parse(d.dp_created_date.toString());
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+            d.dp_given_by == profilename) {
+          return true;
+        }
+        return false;
+      }).toList();
+      //open
+      list4 = list22.where((d) {
+        if (d.dp_status.toString() == "1" && d.dp_given_by == profilename) {
+          return true;
+        }
+        return false;
+      }).toList();
+      //progress
+      list5 = list22.where((d) {
+        if (d.dp_status.toString() == "2" && d.dp_given_by == profilename) {
+          return true;
+        }
+        return false;
+      }).toList();
+      //closed
+      list6 = list22.where((d) {
+        if (d.dp_status.toString() == "3" && d.dp_given_by == profilename) {
+          return true;
+        }
+        return false;
+      }).toList();
+      //
 
-        //
-        todayT=list3.length.toString();
-        openT=list4.length.toString();
-        progressT=list5.length.toString();
-        closedT=list6.length.toString();
+      //
+      todayT = list3.length.toString();
+      openT = list4.length.toString();
+      progressT = list5.length.toString();
+      closedT = list6.length.toString();
 
-       if(_color1 == true){
-         setState(() {
-          list2=list3;
-         });
-       }else if(_color2==true){
-         setState(() {
-           list2=list4;
-         });
-       }else if(_color3==true){
-         setState(() {
-           list2=list5;
-         });
-       }else if(_color4==true){
-         setState(() {
-           list2=list6;
-         });
-       }
+      if (_color1 == true) {
+        setState(() {
+          list2 = list3;
+        });
+      } else if (_color2 == true) {
+        setState(() {
+          list2 = list4;
+        });
+      } else if (_color3 == true) {
+        setState(() {
+          list2 = list5;
+        });
+      } else if (_color4 == true) {
+        setState(() {
+          list2 = list6;
+        });
+      }
     }
   }
 
@@ -403,8 +414,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
             } else if (_color4 == true) {
               _color4 = !_color4;
               checkServices();
-            } else if(_color1==false){
-              _color2=!_color2;
+            } else if (_color1 == false) {
+              _color2 = !_color2;
               checkServices();
             }
           });
@@ -469,8 +480,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
             } else if (_color4 == true) {
               _color4 = !_color4;
               checkServices();
-            } else if(_color2==false){
-              _color3=!_color3;
+            } else if (_color2 == false) {
+              _color3 = !_color3;
               checkServices();
             }
           });
@@ -535,8 +546,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
             } else if (_color4 == true) {
               _color4 = !_color4;
               checkServices();
-            } else if(_color3==false){
-              _color4=!_color4;
+            } else if (_color3 == false) {
+              _color4 = !_color4;
               checkServices();
             }
           });
@@ -601,8 +612,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
             } else if (_color2 == true) {
               _color2 = !_color2;
               checkServices();
-            } else if(_color4==false){
-              _color1=!_color1;
+            } else if (_color4 == false) {
+              _color1 = !_color1;
               checkServices();
             }
           });
@@ -805,32 +816,42 @@ class _TaskPlannerState extends State<TaskPlanner> {
     );
   }
 
-   getTaskPlanner(String uiddd) async {
+  getTaskPlanner(String uiddd) async {
     setState(() => _isloading = true);
     var response;
     try {
-       response = await dio.post(ServicesApi.getData,
-          data: {"parameter1": "GetAllTasksIncludingDownTeamById", "parameter2": uiddd.toString()},
+      response = await dio.post(ServicesApi.getData,
+          data: {
+            "parameter1": "GetAllTasksIncludingDownTeamById",
+            "parameter2": uiddd.toString()
+          },
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          list1 = (json.decode(response.data) as List).map((data) => new TaskListModel.fromJson(data)).toList();
-          list11=list1;
+          list1 = (json.decode(response.data) as List)
+              .map((data) => new TaskListModel.fromJson(data))
+              .toList();
+          list11 = list1;
           _isloading = false;
         });
       } else if (response.statusCode == 401) {
         throw Exception("Incorrect data");
       }
       response = await dio.post(ServicesApi.getData,
-          data: {"parameter1": "GetAllProjectsTasks", "parameter2": uiddd.toString()},
+          data: {
+            "parameter1": "GetAllProjectsTasks",
+            "parameter2": uiddd.toString()
+          },
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          list22 = (json.decode(response.data) as List).map((data) => new TaskListModel.fromJson(data)).toList();
+          list22 = (json.decode(response.data) as List)
+              .map((data) => new TaskListModel.fromJson(data))
+              .toList();
           print(list22.toString());
           _isloading = false;
         });
@@ -838,7 +859,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
         throw Exception("Incorrect data");
       }
       checkServices();
-
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -868,131 +888,198 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ListTile(
-                    
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: 6),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text("Task Name      :   ",style: TextStyle(fontSize: 8,color: Colors.black),),
-                            Padding(
-                              padding: EdgeInsets.only(top: 4),
-                            ),
-                            Expanded(
-                              child: Text(list2[index]?.dp_task ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Task Name      :   ",
+                                style:
+                                    TextStyle(fontSize: 8, color: Colors.black),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  list2[index]?.dp_task ?? 'NA',
+                                  style: TextStyle(
+                                      color: lwtColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text("Task Details    :   ",style: TextStyle(fontSize: 8,color: Colors.black),),
-                            Padding(
-                              padding: EdgeInsets.only(top: 2),
-                            ),
-                            Expanded(
-                              child: Text(list2[index]?.dp_task_desc ?? '' + "NA.",
-                                style: TextStyle(
-                                  color: lwtColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Task Details    :   ",
+                                style:
+                                    TextStyle(fontSize: 8, color: Colors.black),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 2),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  list2[index]?.dp_task_desc ?? '' + "NA.",
+                                  style: TextStyle(
+                                      color: lwtColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 4),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text("Task Created  :   ",style: TextStyle(fontSize: 8,color: Colors.black),),
-                            Padding(
-                              padding: EdgeInsets.only(top: 2),
-                            ),
-                            Expanded(
-                              child: Text(list2[index]?.dp_created_date.toString() ?? '' + "NA.",
-                                style: TextStyle(
-                                  color: lwtColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 4),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Task Created  :   ",
+                                style:
+                                    TextStyle(fontSize: 8, color: Colors.black),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 2),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  list2[index]?.dp_created_date.toString() ??
+                                      '' + "NA.",
+                                  style: TextStyle(
+                                      color: lwtColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 2),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text("Assigned To    :  ",style: TextStyle(fontSize: 8,color: Colors.black),),
-                            Padding(
-                              padding: EdgeInsets.only(top: 2),
-                            ),
-                            Expanded(
-                              child: Text(list2[index]?.fullName ?? '' + "NA.",
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Assigned To    :  ",
+                                style:
+                                    TextStyle(fontSize: 8, color: Colors.black),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 2),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  list2[index]?.fullName ?? '' + "NA.",
                                   style: TextStyle(
                                     color: lwtColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10,
                                   ),
                                 ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 2),
-                        ),
-                      ],
-                    ),
-                    trailing: _color4 ? IconButton(icon: Icon(Icons.visibility_off),onPressed: (){
-
-                    },) : IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: lwtColor,
-                        size: 25,
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 2),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        if(myTasks==true){
-                          if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
-                          }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
-                          }
-                        }else if(teamTasks==true){
-                          if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
-                          }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
-                          }
-                        }else if(projectTasks==true){
-                          if(_color1==true || _color2==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
-                          }else if(_color3==true){
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> TaskPlannerEdit(list2[index].dp_task.toString(),profilename)));
-                          }
-                        }
-                        /* var navigator = Navigator.of(context);
+                      trailing: _color4
+                          ? IconButton(
+                              icon: Icon(Icons.visibility_off),
+                              onPressed: () {},
+                            )
+                          : IconButton(
+                              icon: Icon(
+                                Icons.edit,
+                                color: lwtColor,
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                if (myTasks == true) {
+                                  if (_color1 == true || _color2 == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TaskPlannerEdit(
+                                                    list2[index]
+                                                        .dp_task
+                                                        .toString(),
+                                                    profilename)));
+                                  } else if (_color3 == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TaskPlannerEdit(
+                                                    list2[index]
+                                                        .dp_task
+                                                        .toString(),
+                                                    profilename)));
+                                  }
+                                } else if (teamTasks == true) {
+                                  if (_color1 == true || _color2 == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TaskPlannerEdit(
+                                                    list2[index]
+                                                        .dp_task
+                                                        .toString(),
+                                                    profilename)));
+                                  } else if (_color3 == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TaskPlannerEdit(
+                                                    list2[index]
+                                                        .dp_task
+                                                        .toString(),
+                                                    profilename)));
+                                  }
+                                } else if (projectTasks == true) {
+                                  if (_color1 == true || _color2 == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TaskPlannerEdit(
+                                                    list2[index]
+                                                        .dp_task
+                                                        .toString(),
+                                                    profilename)));
+                                  } else if (_color3 == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                TaskPlannerEdit(
+                                                    list2[index]
+                                                        .dp_task
+                                                        .toString(),
+                                                    profilename)));
+                                  }
+                                }
+                                /* var navigator = Navigator.of(context);
                             navigator.push(
                               MaterialPageRoute(builder: (BuildContext context) => EditSalesLead(listpending[index])),
 //                          ModalRoute.withName('/'),
                             );*/
-                      },
-                    )
-                  ),
+                              },
+                            )),
                 )),
               ));
         });

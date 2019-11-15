@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/taskPlanner/Members.dart';
 import 'package:eaglebiz/functionality/taskPlanner/TaskPlanner.dart';
+import 'package:eaglebiz/main.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
@@ -12,18 +12,16 @@ import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
-
 class NewTeamTasks extends StatefulWidget {
   @override
   _NewTeamTasksState createState() => _NewTeamTasksState();
 }
 
 class _NewTeamTasksState extends State<NewTeamTasks> {
-  bool downTeam,teamTasks;
-  var _controller1=TextEditingController();
-  var _controller2=TextEditingController();
-  var choosePerson ="Select Member";
+  bool downTeam, teamTasks;
+  var _controller1 = TextEditingController();
+  var _controller2 = TextEditingController();
+  var choosePerson = "Select Member";
   var resourceId;
   String profileName;
   ProgressDialog pr;
@@ -31,8 +29,8 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   @override
   void initState() {
     super.initState();
-    downTeam=true;
-    teamTasks=false;
+    downTeam = true;
+    teamTasks = false;
     getProfileName();
   }
 
@@ -61,41 +59,58 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Team Activity',style: TextStyle(color: Colors.white),),
-          iconTheme: IconThemeData(color:Colors.white),
-          leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
-            var navigator = Navigator.of(context);
-            navigator.push(
-              MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+        appBar: AppBar(
+          title: Text(
+            'Team Activity',
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              var navigator = Navigator.of(context);
+              navigator.push(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => TaskPlanner()),
 //                          ModalRoute.withName('/'),
-            );
-          },),
+              );
+            },
+          ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.check,color: Colors.white,),
-              onPressed: (){
+              icon: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              onPressed: () {
                 //Service Call
                 //Service Call
-                if(choosePerson=="Select Member" || choosePerson=="null"){
+                if (choosePerson == "Select Member" || choosePerson == "null") {
                   Fluttertoast.showToast(msg: "Please select member");
-                }else if(_controller1.text.isEmpty) {
+                } else if (_controller1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter Task Name");
-                }else if(_controller2.text.isEmpty){
+                } else if (_controller2.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter Task Descrption");
-                }else{
+                } else {
 //                  print("One : "+profileName+","+_controller1.text+","+_controller2.text+","+resourceId.toString());
                   CallTeamTaskApi();
                 }
               },
             )
-          ],),
+          ],
+        ),
         body: ListView(
           children: <Widget>[
             SizedBox(height: 15),
             ListTile(
               title: TextFormField(
                 enabled: false,
-                controller: TextEditingController(text: choosePerson[0].toUpperCase()+choosePerson.substring(1)),
+                controller: TextEditingController(
+                    text: choosePerson[0].toUpperCase() +
+                        choosePerson.substring(1)),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -104,10 +119,15 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
                   ),
                 ),
               ),
-              trailing: IconButton(icon: Icon(Icons.add,color: lwtColor,),
-                onPressed: (){
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: lwtColor,
+                ),
+                onPressed: () {
                   _navigateMemeberMethod(context);
-                },),
+                },
+              ),
             ),
             ListTile(
               title: TextFormField(
@@ -144,21 +164,29 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   }
 
   void _navigateMemeberMethod(BuildContext context) async {
-    var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Members(choosePerson)));
+    var data = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => Members(choosePerson)));
     print(data.toString());
-    var string=data.split(" USR_");
+    var string = data.split(" USR_");
     choosePerson = string[0];
-    resourceId=string[1];
+    resourceId = string[1];
     print(resourceId);
   }
 
   void CallTeamTaskApi() async {
     pr.show();
-      var now = DateTime.now();
-    print(profileName+","+_controller1.text+","+_controller2.text+","+resourceId.toString());
+    var now = DateTime.now();
+    print(profileName +
+        "," +
+        _controller1.text +
+        "," +
+        _controller2.text +
+        "," +
+        resourceId.toString());
     var response = await dio.post(ServicesApi.saveDayPlan,
-        data:
-        {
+        data: {
           "actionMode": "insert",
           "dpCreatedBy": profileName.toString(),
           "dpGivenBy": profileName,
@@ -166,14 +194,15 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           "dpTask": _controller1.text.toString(),
           "dpTaskDesc": _controller2.text.toString(),
           "dpType": "Office",
-          "dayTaskType":"Team",
+          "dayTaskType": "Team",
           "dpModifiedBy": profileName,
           "uId": resourceId
         },
         options: Options(
-          contentType: ContentType.parse('application/json'),));
+          contentType: ContentType.parse('application/json'),
+        ));
 
-    if(response.statusCode==200 || response.statusCode==201){
+    if (response.statusCode == 200 || response.statusCode == 201) {
       var responseJson = json.decode(response.data);
       Fluttertoast.showToast(msg: "Task Created");
       pr.hide();
@@ -182,7 +211,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
         MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
         ModalRoute.withName('/'),
       );
-    }else{
+    } else {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
     }
