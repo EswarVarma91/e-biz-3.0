@@ -37,7 +37,7 @@ public class MainActivity extends FlutterActivity {
 
   static void callFlutter() {
     MethodChannel methodChannel=new MethodChannel(flutterView, CHANNEL);
-    methodChannel.invokeMethod("I say hello every minute!!","");
+    methodChannel.invokeMethod("This is Background..!","");
     // new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodCallHandler() {
     //   @Override
     //   public void onMethodCall(MethodCall call, Result result) {
