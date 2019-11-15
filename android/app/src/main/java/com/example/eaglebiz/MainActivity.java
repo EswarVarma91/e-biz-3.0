@@ -8,7 +8,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.view.FlutterView;
-import com.example.eaglebiz.MyReceiver;
+import com.example.eaglebiz.MyService;
 
 public class MainActivity extends FlutterActivity {
 
@@ -22,10 +22,10 @@ public class MainActivity extends FlutterActivity {
     super.onCreate(savedInstanceState);
     GeneratedPluginRegistrant.registerWith(this);
 
-    Intent intent = new Intent(this, MyReceiver.class);
+    Intent intent = new Intent(this, MyService.class);
     pendingIntent = PendingIntent.getBroadcast(this, 1019662, intent, 0);
     alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 1000, pendingIntent);
+    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 30 * 1000, pendingIntent);
 
   }
 

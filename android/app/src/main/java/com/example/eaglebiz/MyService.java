@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-class MyReceiver extends BroadcastReceiver {
-    public MyReceiver() {
+class MyService extends BroadcastReceiver {
+    public MyService() {
     }
 
     @Override
