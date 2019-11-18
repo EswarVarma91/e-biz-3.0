@@ -1,7 +1,7 @@
 class ReferedbyModel {
   int uId;
   String fullName;
-  String u_emp_code;
+  int u_emp_code;
 
   ReferedbyModel(this.uId, this.fullName,this.u_emp_code);
 

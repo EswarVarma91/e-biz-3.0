@@ -58,8 +58,10 @@ class _TravelSelectionState extends State<TravelSelection> {
       getAirportCodes();
       print(_controllerCodes.text);
     }else if(_controllerCodes.text.length<3){
+      if(tcm!=null){
       tcm.clear();
       filtertcm.clear();
+      }
     }
   }
 

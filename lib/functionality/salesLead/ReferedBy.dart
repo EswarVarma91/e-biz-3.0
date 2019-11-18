@@ -72,7 +72,7 @@ class _ReferedByState extends State<ReferedBy> {
                     fliterReferals = listReferals
                         .where((u) => (
                         u.fullName.toLowerCase().contains(string.toLowerCase()) ||
-                            u.u_emp_code.toLowerCase().contains(string.toLowerCase())
+                            u.u_emp_code.toString().contains(string)
                     )).toList();
                   });
                 });

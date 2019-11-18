@@ -13,7 +13,7 @@ class AddTravelRequest extends StatefulWidget {
 class _AddTravelRequestState extends State<AddTravelRequest> {
   TextEditingController _controllerFrom1 = TextEditingController();
   TextEditingController _controllerTo1 = TextEditingController();
-  TextEditingController _controllerResponse1 = TextEditingController();
+  TextEditingController _controllerPurpose1 = TextEditingController();
 
   String TtravelName,
       Tmode,
@@ -316,11 +316,11 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
             ),
             ListTile(
               title: TextFormField(
-                controller: _controllerResponse1,
+                controller: _controllerPurpose1,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Response",
+                  labelText: "Purpose",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
