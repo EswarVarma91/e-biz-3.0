@@ -10,38 +10,47 @@ class PreviewSalesLead extends StatefulWidget {
 class _PreviewSalesLeadState extends State<PreviewSalesLead> {
   var dataList;
   _PreviewSalesLeadState(this.dataList);
-  String customerName,requirement,contactName,contactDesignation,contactEmail,contactMobile;
+  String customerName,
+      requirement,
+      contactName,
+      contactDesignation,
+      contactEmail,
+      contactMobile;
   var referalPerson;
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     getProfileName();
-
   }
-  void getProfileName()  {
+
+  void getProfileName() {
     setState(() {
-      customerName=dataList.srCustomerName;
-      requirement=dataList.srRequirement;
-      contactName=dataList.srContactName;
-      contactEmail=dataList.srContactEmail;
-      contactDesignation=dataList.srDesignation;
-      contactMobile=dataList.srPhoneNo;
-      referalPerson=dataList.referredByFullName;
+      customerName = dataList.srCustomerName;
+      requirement = dataList.srRequirement;
+      contactName = dataList.srContactName;
+      contactEmail = dataList.srContactEmail;
+      contactDesignation = dataList.srDesignation;
+      contactMobile = dataList.srPhoneNo;
+      referalPerson = dataList.referredByFullName;
     });
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.white),
-          title: Text(dataList.srNo.toString(),style: TextStyle(color: Colors.white,fontSize: 15),)
-        ),
-        body: Container(
+      appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(
+            dataList.srNo.toString(),
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          )),
+      body: Container(
         child: ListView(
           children: <Widget>[
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             ListTile(
               title: TextFormField(
                 controller: TextEditingController(text: customerName),

@@ -15,10 +15,22 @@ class PermissionModel {
   String per_is_approved;
   int u_id;
 
-  PermissionModel(this.per_from_time, this.per_to_time,this.per_date,this.per_fullName,
-      this.per_status,this.per_id,this.per_purpose, this.per_type,this.per_created_by,
-      this.u_id,this.per_approved_by,
-      this.per_approved_date,this.per_is_approved,this.per_modified_by,this.per_modified_date);
+  PermissionModel(
+      this.per_from_time,
+      this.per_to_time,
+      this.per_date,
+      this.per_fullName,
+      this.per_status,
+      this.per_id,
+      this.per_purpose,
+      this.per_type,
+      this.per_created_by,
+      this.u_id,
+      this.per_approved_by,
+      this.per_approved_date,
+      this.per_is_approved,
+      this.per_modified_by,
+      this.per_modified_date);
 
   PermissionModel.fromJson(Map<String, dynamic> json)
       : per_from_time = json['per_from_time'],
@@ -38,13 +50,13 @@ class PermissionModel {
         per_created_by = json['per_created_by'];
 
   Map<String, dynamic> toJson() => {
-        'per_from_time':per_from_time,
-        'per_to_time':per_to_time ,
-        'per_date': per_date ,
-        'FUllname':per_fullName ,
-        'per_status': per_status ,
-        'per_id': per_id ,
-        'per_purpose': per_purpose ,
+        'per_from_time': per_from_time,
+        'per_to_time': per_to_time,
+        'per_date': per_date,
+        'FUllname': per_fullName,
+        'per_status': per_status,
+        'per_id': per_id,
+        'per_purpose': per_purpose,
         'per_type': per_type,
         'per_created_by': per_created_by,
         'u_id': u_id,

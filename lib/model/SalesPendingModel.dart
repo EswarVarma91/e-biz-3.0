@@ -11,8 +11,18 @@ class SalesPendingModel {
   String referredByFullName;
   int rId;
 
-  SalesPendingModel(String srCustomerName, String srRequirement, String srContactName, String srDesignation,
-      String srPhoneNo, String srContactEmail , String srNo,String srReferedBy, int srStatus, String referredByFullName, int rId) {
+  SalesPendingModel(
+      String srCustomerName,
+      String srRequirement,
+      String srContactName,
+      String srDesignation,
+      String srPhoneNo,
+      String srContactEmail,
+      String srNo,
+      String srReferedBy,
+      int srStatus,
+      String referredByFullName,
+      int rId) {
     this.srCustomerName = srCustomerName;
     this.srRequirement = srRequirement;
     this.srContactName = srContactName;
@@ -39,11 +49,7 @@ class SalesPendingModel {
         referredByFullName = json['referredByFullName'],
         rId = json['rId'];
 
-
-
-
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'srCustomerName': srCustomerName,
         'srRequirement': srRequirement,
         'srContactName': srContactName,
@@ -56,5 +62,4 @@ class SalesPendingModel {
         'referredByFullName': referredByFullName,
         'rId': rId,
       };
-
 }

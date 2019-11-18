@@ -22,34 +22,34 @@ class NewMyTasks extends StatefulWidget {
 }
 
 class _NewTaskState extends State<NewMyTasks> {
-  final _controller1 =TextEditingController();
-  final _controller2 =TextEditingController();
-  final _controller3 =TextEditingController();
-  final _controller4 =TextEditingController();
-  String reasonType="Reason";
-  bool office,onsite;
+  final _controller1 = TextEditingController();
+  final _controller2 = TextEditingController();
+  final _controller3 = TextEditingController();
+  final _controller4 = TextEditingController();
+  String reasonType = "Reason";
+  bool office, onsite;
   var referalPerson;
-  String profileName,fullname;
+  String profileName, fullname;
   ProgressDialog pr;
   String uidd;
 
   static Dio dio = Dio(Config.options);
 
-  Future<String> getUserID() async{
-    SharedPreferences preferences=await SharedPreferences.getInstance();
-    String id=preferences.getString("userId");
+  Future<String> getUserID() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString("userId");
     return id;
   }
 
   @override
   void initState() {
     super.initState();
-    office=true;
-    onsite=false;
-    getUserID().then((val)=>setState((){
-      uidd=val;
-      print(uidd);
-    }));
+    office = true;
+    onsite = false;
+    getUserID().then((val) => setState(() {
+          uidd = val;
+          print(uidd);
+        }));
     getProfileName();
   }
 
@@ -58,7 +58,6 @@ class _NewTaskState extends State<NewMyTasks> {
     setState(() {
       profileName = preferences.getString("profileName");
       fullname = preferences.getString("fullname");
-
     });
   }
 
@@ -76,79 +75,98 @@ class _NewTaskState extends State<NewMyTasks> {
           // ignore: missing_return
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
           // ignore: missing_return
-           ModalRoute.withName('/'),
+          ModalRoute.withName('/'),
         );
       },
       child: Scaffold(
-          appBar: AppBar(title: Text('Self Activity',style: TextStyle(color: Colors.white),),
-            iconTheme: IconThemeData(color:Colors.white),
-            leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
+        appBar: AppBar(
+          title: Text(
+            'Self Activity',
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            onPressed: () {
               var navigator = Navigator.of(context);
               navigator.pushAndRemoveUntil(
-                MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-                          ModalRoute.withName('/'),
+                MaterialPageRoute(
+                    builder: (BuildContext context) => TaskPlanner()),
+                ModalRoute.withName('/'),
               );
-            },),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.check,color: Colors.white,),
-                onPressed: (){
-                  //Service Call
-                  if(office==true){
-                      if(_controller1.text.isEmpty){
-                          Fluttertoast.showToast(msg: "Enter Task Name");
-                      } else if(_controller2.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Enter Task Details");
-                      } else{
-                      myTaskService("1");
-                      }
-//                    Fluttertoast.showToast(msg: "Office");
-                  }else if(onsite==true){
-                    if(_controller1.text.isEmpty){
-                      Fluttertoast.showToast(msg: "Enter Task Name");
-                    } else if(_controller2.text.isEmpty) {
-                      Fluttertoast.showToast(msg: "Enter Task Details");
-                    } else if(_controller3.text.isEmpty) {
-                      Fluttertoast.showToast(msg: "Enter Location");
-                    } else if(_controller4.text.isEmpty) {
-                      Fluttertoast.showToast(msg: "Enter Contact Person");
-                    } else if(reasonType=="Reason" || reasonType=="null") {
-                      Fluttertoast.showToast(msg: "Enter Reason");
-                    } else{
-                      myTaskService("2");
-                    }
-//                    Fluttertoast.showToast(msg: "Instation");
-                  }
-                },
-              )
-            ],
+            },
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                //Service Call
+                if (office == true) {
+                  if (_controller1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Task Name");
+                  } else if (_controller2.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Task Details");
+                  } else {
+                    myTaskService("1");
+                  }
+//                    Fluttertoast.showToast(msg: "Office");
+                } else if (onsite == true) {
+                  if (_controller1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Task Name");
+                  } else if (_controller2.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Task Details");
+                  } else if (_controller3.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Location");
+                  } else if (_controller4.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Contact Person");
+                  } else if (reasonType == "Reason" || reasonType == "null") {
+                    Fluttertoast.showToast(msg: "Enter Reason");
+                  } else {
+                    myTaskService("2");
+                  }
+//                    Fluttertoast.showToast(msg: "Instation");
+                }
+              },
+            )
+          ],
+        ),
         body: Stack(
           children: <Widget>[
-            Container(color: Colors.white,),
             Container(
-              margin: EdgeInsets.only(left: 20,right: 20,top: 6),
-              child: StaggeredGridView.count(crossAxisCount: 4,crossAxisSpacing: 12.0,
+              color: Colors.white,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 20, right: 20, top: 6),
+              child: StaggeredGridView.count(
+                crossAxisCount: 4,
+                crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  officeM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: officeM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  onsiteM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: onsiteM(),
                   ),
                 ],
                 staggeredTiles: [
                   StaggeredTile.extent(2, 60.0),
                   StaggeredTile.extent(2, 60.0),
-                ],),
+                ],
+              ),
             ),
 
             Container(
-              margin: EdgeInsets.only(top: 80,left: 5,right: 5),
-              child:ListView(
+              margin: EdgeInsets.only(top: 80, left: 5, right: 5),
+              child: ListView(
                 children: <Widget>[
                   ListTile(
                     title: TextFormField(
@@ -178,48 +196,60 @@ class _NewTaskState extends State<NewMyTasks> {
                       ),
                     ),
                   ),
-                  onsite ? ListTile(
-                    title: TextFormField(
-                      controller: _controller3,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "Location",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ):Container(),
-                  onsite ? ListTile(
-                    title: TextFormField(
-                      controller: _controller4,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "Contact Person",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                  ):Container(),
-                  onsite ? ListTile(
-                    title: TextFormField(
-                      enabled: false,
-                      controller: TextEditingController(text: reasonType),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.view_list),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                    trailing: IconButton(icon: Icon(Icons.add,color: lwtColor,),onPressed: () {
-                      reasonTypeM(context);
-                    },),
-                  ):Container(),
+                  onsite
+                      ? ListTile(
+                          title: TextFormField(
+                            controller: _controller3,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.chrome_reader_mode),
+                              labelText: "Location",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  onsite
+                      ? ListTile(
+                          title: TextFormField(
+                            controller: _controller4,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.chrome_reader_mode),
+                              labelText: "Contact Person",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                  onsite
+                      ? ListTile(
+                          title: TextFormField(
+                            enabled: false,
+                            controller: TextEditingController(text: reasonType),
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(Icons.view_list),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(
+                              Icons.add,
+                              color: lwtColor,
+                            ),
+                            onPressed: () {
+                              reasonTypeM(context);
+                            },
+                          ),
+                        )
+                      : Container(),
 
 //                  ListTile(
 //                    trailing: IconButton(icon: Icon(Icons.add),color:lwtColor,onPressed: (){
@@ -245,7 +275,7 @@ class _NewTaskState extends State<NewMyTasks> {
         ),
       ),
     );
-}
+  }
 
   officeM() {
     return Material(
@@ -254,13 +284,13 @@ class _NewTaskState extends State<NewMyTasks> {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: office ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             office = !office;
-            if(office==true){
-              onsite=!onsite;
-            }else if(office==false){
-              onsite=!onsite;
+            if (office == true) {
+              onsite = !onsite;
+            } else if (office == false) {
+              onsite = !onsite;
             }
           });
           /* var navigator = Navigator.of(context);
@@ -270,20 +300,24 @@ class _NewTaskState extends State<NewMyTasks> {
           );*/
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("office".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: office ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "office".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: office ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -302,34 +336,36 @@ class _NewTaskState extends State<NewMyTasks> {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: onsite ? lwtColor : Colors.white,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           setState(() {
             onsite = !onsite;
-            if(onsite==true){
-              office=!office;
-            }else if(onsite==false){
-              office=!office;
+            if (onsite == true) {
+              office = !office;
+            } else if (onsite == false) {
+              office = !office;
             }
           });
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("In-Station".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: onsite ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "In-Station".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: onsite ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
-
                   ],
                 ),
               ],
@@ -355,11 +391,15 @@ class _NewTaskState extends State<NewMyTasks> {
     pr.show();
     var now = DateTime.now();
     if (s == "1") {
-
-      print(profileName+'/'+_controller1.text+'/'+_controller2.text+"/"+uidd);
+      print(profileName +
+          '/' +
+          _controller1.text +
+          '/' +
+          _controller2.text +
+          "/" +
+          uidd);
       var response = await dio.post(ServicesApi.saveDayPlan,
-          data:
-          {
+          data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
             "dpGivenBy": profileName,
@@ -367,34 +407,43 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Office",
-            "dayTaskType":"Self",
+            "dayTaskType": "Self",
             "dpModifiedBy": profileName,
             "uId": uidd
           },
           options: Options(
-            contentType: ContentType.parse('application/json'),));
+            contentType: ContentType.parse('application/json'),
+          ));
 
-      if(response.statusCode==200 || response.statusCode==201){
+      if (response.statusCode == 200 || response.statusCode == 201) {
 //        var responseJson = json.decode(response.data);
-      pr.hide();
+        pr.hide();
         Fluttertoast.showToast(msg: "Task Created");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
           ModalRoute.withName('/'),
         );
-      }else{
+      } else {
         pr.hide();
         Fluttertoast.showToast(msg: "Please try after some time.");
       }
-
-    }
-    else if(s=="2")
-    {
-      print(profileName+'/'+_controller4.text+'/'+profileName+'/'+_controller3.text+'/'+reasonType.toString()+'/'+_controller1.text+'/'+_controller2.text);
+    } else if (s == "2") {
+      print(profileName +
+          '/' +
+          _controller4.text +
+          '/' +
+          profileName +
+          '/' +
+          _controller3.text +
+          '/' +
+          reasonType.toString() +
+          '/' +
+          _controller1.text +
+          '/' +
+          _controller2.text);
       var response = await dio.post(ServicesApi.saveDayPlan,
-          data:
-          {
+          data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
             "dpGivenBy": fullname,
@@ -403,35 +452,34 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Instation",
-            "dayTaskType":"Self",
+            "dayTaskType": "Self",
             "dpModifiedBy": profileName,
             "uId": uidd
           },
           options: Options(
-            contentType: ContentType.parse('application/json'),));
+            contentType: ContentType.parse('application/json'),
+          ));
 
-      if(response.statusCode==200 || response.statusCode==201){
+      if (response.statusCode == 200 || response.statusCode == 201) {
 //        var responseJson = json.decode(response.data);
-      pr.hide();
+        pr.hide();
         Fluttertoast.showToast(msg: "Task Created");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
           ModalRoute.withName('/'),
         );
-      }else{
+      } else {
         pr.hide();
         Fluttertoast.showToast(msg: "Please try after some time.");
       }
-
-
+    }
   }
 
-  }
-
-   reasonTypeM(BuildContext context) async {
-    var data= await Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=> ReasonType()));
+  reasonTypeM(BuildContext context) async {
+    var data = await Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => ReasonType()));
     print(data.toString());
-    reasonType=data.toString();
+    reasonType = data.toString();
   }
 }

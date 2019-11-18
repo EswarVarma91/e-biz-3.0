@@ -1,19 +1,20 @@
-class StartAttendanceModel{
+class StartAttendanceModel {
   String _user_id;
   String _starttime;
   String _startlat;
   String _startlong;
   String _date;
 
-  StartAttendanceModel(this._user_id,this._starttime,this._startlat,this._startlong);
+  StartAttendanceModel(
+      this._user_id, this._starttime, this._startlat, this._startlong);
 
-  Map<String,dynamic> toMap(){
-    var map=<String,dynamic>{
-      'user_id' : _user_id,
-      'starttime' : _starttime,
-      'startlat' : _startlat,
-      'startlong' : _startlong,
-      'day' : _date,
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      'user_id': _user_id,
+      'starttime': _starttime,
+      'startlat': _startlat,
+      'startlong': _startlong,
+      'day': _date,
     };
     return map;
   }
@@ -27,12 +28,11 @@ class StartAttendanceModel{
   }
 
   StartAttendanceModel.fromJson(Map<String, dynamic> json)
-       : _user_id = json['user_id'],
+      : _user_id = json['user_id'],
         _starttime = json['starttime'],
         _startlat = json['startlat'],
         _startlong = json['startlong'],
         _date = json['date'];
-
 
   StartAttendanceModel.map(dynamic obj) {
     this._user_id = obj['user_id'];
@@ -46,5 +46,4 @@ class StartAttendanceModel{
   String get startlat => _startlat;
   String get startlong => _startlong;
   String get date => _date;
-
 }

@@ -12,12 +12,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget{
-
+class SplashScreen extends StatefulWidget {
   StateSplash createState() => StateSplash();
-
 }
-class StateSplash extends State<SplashScreen>{
+
+class StateSplash extends State<SplashScreen> {
 //  Connectivity connectivity;
 //  List<RestrictPermissionsModel> restrictpermissionModel;
 //  StreamSubscription<ConnectivityResult> streamSubscription;
@@ -32,7 +31,7 @@ class StateSplash extends State<SplashScreen>{
 //          if (result != ConnectivityResult.none)  {
 //            checkMobileVersion();
 //          } else {
-            startTime();
+    startTime();
 //          }
 //        });
   }
@@ -40,7 +39,6 @@ class StateSplash extends State<SplashScreen>{
   startTime() async {
     return Timer(Duration(seconds: 5), checkUser);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +49,18 @@ class StateSplash extends State<SplashScreen>{
     );
   }
 
-   checkUser() async {
-    SharedPreferences preferences=await SharedPreferences.getInstance();
-    String userCheck=preferences.getString("data");
-    if(userCheck==null){
+  checkUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String userCheck = preferences.getString("data");
+    if (userCheck == null) {
       var navigator = Navigator.of(context);
+
       /// Change Home Page to Login Page...
       navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => Login()),
-                         ModalRoute.withName('/'),
+        ModalRoute.withName('/'),
       );
-    }else{
+    } else {
       var navigator = Navigator.of(context);
       navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => HomePage()),

@@ -6,4 +6,3 @@ class NavigationModel {
 
   NavigationModel({this.title, this.icon});
 }
-

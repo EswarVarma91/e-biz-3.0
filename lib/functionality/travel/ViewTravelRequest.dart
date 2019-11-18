@@ -1019,7 +1019,8 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
                                             Container(
                                                 width: 180,
                                                 child: Text(
-                                                  trh[index]?.tra_tck_booking_status ??
+                                                  trh[index]
+                                                          ?.tra_tck_booking_status ??
                                                       "",
                                                   style: TextStyle(
                                                       color: Colors.grey,

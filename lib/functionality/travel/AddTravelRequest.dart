@@ -18,8 +18,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
   String TtravelName,
       Tmode,
       TmodeType,
-      Tfrom,TfromId,
-      Tto,TtoId,
+      Tfrom,
+      TfromId,
+      Tto,
+      TtoId,
       Tclass,
       TcomplaintNo,
       TrarrivalDateTime,
@@ -202,7 +204,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       if (data != null) {
                         setState(() {
                           Tfrom = data.split(" U_")[0].toString();
-                          TfromId= data.split(" U_")[1].toString();
+                          TfromId = data.split(" U_")[1].toString();
                         });
                       }
                     },
@@ -244,7 +246,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       if (data != null) {
                         setState(() {
                           Tto = data.split(" U_")[0].toString();
-                          TtoId= data.split(" U_")[1].toString();
+                          TtoId = data.split(" U_")[1].toString();
                         });
                       }
                     },

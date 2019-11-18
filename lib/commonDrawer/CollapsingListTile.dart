@@ -9,17 +9,15 @@ class CollapsingListTile extends StatefulWidget {
 
   CollapsingListTile(
       {@required this.title,
-        @required this.icon,
-        this.isSelected = false,
-        this.onTap});
+      @required this.icon,
+      this.isSelected = false,
+      this.onTap});
 
   @override
   _CollapsingListTileState createState() => _CollapsingListTileState();
 }
 
 class _CollapsingListTileState extends State<CollapsingListTile> {
-
-
   @override
   void initState() {
     super.initState();
@@ -49,7 +47,12 @@ class _CollapsingListTileState extends State<CollapsingListTile> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.center,
                 direction: Axis.horizontal,
-                children: <Widget>[Text(widget.title,style: TextStyle(fontSize: 5,color: Colors.white),)])
+                children: <Widget>[
+                  Text(
+                    widget.title,
+                    style: TextStyle(fontSize: 5, color: Colors.white),
+                  )
+                ])
           ],
         ),
       ),

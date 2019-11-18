@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ProfileScreen extends StatefulWidget {
   @override
   ProfileScreenState createState() => ProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen>{
-  String name='-',emailid='-',mobilenumber='-',department='-',designation='-',employCode="-";
+class ProfileScreenState extends State<ProfileScreen> {
+  String name = '-',
+      emailid = '-',
+      mobilenumber = '-',
+      department = '-',
+      designation = '-',
+      employCode = "-";
 
-   getAccountDetails() async {
+  getAccountDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       name = preferences.getString("fullname");
@@ -20,9 +24,9 @@ class ProfileScreenState extends State<ProfileScreen>{
       emailid = preferences.getString("emailId");
       department = preferences.getString("department");
       designation = preferences.getString("designation");
-
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -34,10 +38,10 @@ class ProfileScreenState extends State<ProfileScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return  WillPopScope(
+    return WillPopScope(
       // ignore: missing_return
-      onWillPop: (){
-        if(_isEdit==false) {
+      onWillPop: () {
+        if (_isEdit == false) {
           // ignore: missing_return
           var navigator = Navigator.of(context);
           // ignore: missing_return
@@ -47,7 +51,7 @@ class ProfileScreenState extends State<ProfileScreen>{
             // ignore: missing_return
             ModalRoute.withName('/'),
           );
-        }else{
+        } else {
           showDialog(
               context: context,
               barrierDismissible: false,
@@ -61,7 +65,8 @@ class ProfileScreenState extends State<ProfileScreen>{
                         // ignore: missing_return
                         navigator.push(
                           // ignore: missing_return
-                          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage()),
                           // ignore: missing_return
                           // ModalRoute.withName('/'),
                         );
@@ -69,20 +74,25 @@ class ProfileScreenState extends State<ProfileScreen>{
                       child: new Text('No'),
                     ),
                     new CupertinoButton(
-                      onPressed: ()  {
+                      onPressed: () {
                         _saveProfile();
                       },
-                      child: new Text('Yes'),),
+                      child: new Text('Yes'),
+                    ),
                   ],
                 );
               });
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: Text("Profile",style: TextStyle(color: Colors.white),),
-          iconTheme: IconThemeData(color:Colors.white),
-          actions: <Widget>[
-           /* _isEdit ? Container() : IconButton(
+          appBar: AppBar(
+            title: Text(
+              "Profile",
+              style: TextStyle(color: Colors.white),
+            ),
+            iconTheme: IconThemeData(color: Colors.white),
+            actions: <Widget>[
+              /* _isEdit ? Container() : IconButton(
               icon: Icon(Icons.edit,color: Colors.white,),
               onPressed: (){
                 //Service Call
@@ -98,28 +108,30 @@ class ProfileScreenState extends State<ProfileScreen>{
               _isEdit=!_isEdit;
             });
           },):Container(),*/
-        ],),
-          body:  Stack(
+            ],
+          ),
+          body: Stack(
             children: <Widget>[
-              Container(color: Colors.white,),
+              Container(
+                color: Colors.white,
+              ),
               Container(
                 margin: EdgeInsets.only(left: 5, right: 5, top: 5),
                 color: Colors.white,
-                child:  ListView(
+                child: ListView(
                   children: <Widget>[
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(top: 30,bottom: 30),
+                            margin: EdgeInsets.only(top: 30, bottom: 30),
                             width: 160.0,
                             height: 160.0,
-                            decoration:  BoxDecoration(
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image:  DecorationImage(
-                                image: ExactAssetImage(
-                                    'assets/images/as.png'),
+                              image: DecorationImage(
+                                image: ExactAssetImage('assets/images/as.png'),
                                 fit: BoxFit.cover,
                               ),
                             )),
@@ -160,7 +172,8 @@ class ProfileScreenState extends State<ProfileScreen>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
-                            controller: TextEditingController(text: employCode.toString()),
+                            controller: TextEditingController(
+                                text: employCode.toString()),
                             enabled: _isEdit ? true : false,
                             decoration: (InputDecoration(
                               labelText: "Employee Code",
@@ -181,7 +194,6 @@ class ProfileScreenState extends State<ProfileScreen>{
                               labelText: "Department",
                               border: OutlineInputBorder(),
                             ),
-
                           ),
                         ],
                       ),
@@ -191,12 +203,13 @@ class ProfileScreenState extends State<ProfileScreen>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           TextFormField(
-                            controller: TextEditingController(text: designation),
+                            controller:
+                                TextEditingController(text: designation),
                             enabled: _isEdit ? true : false,
-                              decoration: InputDecoration(
-                                labelText: "Designation",
-                                border: OutlineInputBorder(),
-                              ),
+                            decoration: InputDecoration(
+                              labelText: "Designation",
+                              border: OutlineInputBorder(),
+                            ),
                           ),
                         ],
                       ),

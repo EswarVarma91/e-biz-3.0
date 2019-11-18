@@ -9,21 +9,22 @@ import 'package:progress_dialog/progress_dialog.dart';
 import '../../main.dart';
 
 class TaskPlannerEdit extends StatefulWidget {
-  String dp_id,profilename;
-  TaskPlannerEdit(this.dp_id,this.profilename);
+  String dp_id, profilename;
+  TaskPlannerEdit(this.dp_id, this.profilename);
 
   @override
-  _TaskPlannerEditState createState() => _TaskPlannerEditState(dp_id,profilename);
+  _TaskPlannerEditState createState() =>
+      _TaskPlannerEditState(dp_id, profilename);
 }
 
 class _TaskPlannerEditState extends State<TaskPlannerEdit> {
-  String dp_id,mainStatus,profilename;
+  String dp_id, mainStatus, profilename;
   ProgressDialog pr;
-  _TaskPlannerEditState(this.dp_id,this.profilename);
-  TextEditingController _controllerReason=TextEditingController();
+  _TaskPlannerEditState(this.dp_id, this.profilename);
+  TextEditingController _controllerReason = TextEditingController();
 
   static Dio dio = Dio(Config.options);
-  final List<String> listTaskStatus=['Open','Progress','Closed'];
+  final List<String> listTaskStatus = ['Open', 'Progress', 'Closed'];
 
   @override
   void initState() {
@@ -35,13 +36,18 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
-      appBar: AppBar(title: Text(dp_id.toString(),style: TextStyle(color: Colors.white),),
+      appBar: AppBar(
+          title: Text(
+            dp_id.toString(),
+            style: TextStyle(color: Colors.white),
+          ),
           iconTheme: IconThemeData(color: Colors.white)),
-      body:  ListView.builder(
+      body: ListView.builder(
         itemCount: listTaskStatus.length,
         itemBuilder: (context, index) {
           return Container(
-            margin: EdgeInsets.only(left: 10.0,right: 10.0,top: 10.0,bottom: 10.0),
+            margin: EdgeInsets.only(
+                left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
             child: Card(
               elevation: 0.5,
               child: Material(
@@ -49,15 +55,15 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                 child: ListTile(
                   title: Text(listTaskStatus[index]),
                   onTap: () {
-                    if(listTaskStatus[index]=="Open"){
+                    if (listTaskStatus[index] == "Open") {
                       setState(() {
                         roundedAlertBox(1);
                       });
-                    }else if(listTaskStatus[index]=="Progress"){
+                    } else if (listTaskStatus[index] == "Progress") {
                       setState(() {
                         roundedAlertBox(2);
                       });
-                    }else if(listTaskStatus[index]=="Closed"){
+                    } else if (listTaskStatus[index] == "Closed") {
                       setState(() {
                         roundedAlertBox(3);
                       });
@@ -75,7 +81,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
     );
   }
 
-  roundedAlertBox(int _idstatus){
+  roundedAlertBox(int _idstatus) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -96,7 +102,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                     children: <Widget>[
                       Text(
                         "Feedback",
-                        style: TextStyle(fontSize: 30.0,color: lwtColor),
+                        style: TextStyle(fontSize: 30.0, color: lwtColor),
                       ),
                     ],
                   ),
@@ -119,11 +125,13 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                     ),
                   ),
                   InkWell(
-                    onTap: (){
-                      if(_controllerReason.text.isEmpty){
-                        Fluttertoast.showToast(msg: "Please write your feedback");
-                      }else {
-                        _callServiceUpdateStatus(_idstatus, _controllerReason.text);
+                    onTap: () {
+                      if (_controllerReason.text.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please write your feedback");
+                      } else {
+                        _callServiceUpdateStatus(
+                            _idstatus, _controllerReason.text);
                       }
                     },
                     child: Container(
@@ -136,7 +144,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                       ),
                       child: Text(
                         "Submit",
-                        style: TextStyle(color: Colors.white,fontSize: 20),
+                        style: TextStyle(color: Colors.white, fontSize: 20),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -148,30 +156,34 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
         });
   }
 
-   _callServiceUpdateStatus(int mainStatus,String reason) async {
+  _callServiceUpdateStatus(int mainStatus, String reason) async {
     pr.show();
     try {
       var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "update",
             "dpId": dp_id.toString(),
-            "dpModifiedBy" : profilename,
+            "dpModifiedBy": profilename,
             "dpReason": reason.toString(),
             "dpStatus": mainStatus.toString()
           },
           options: Options(
-            contentType: ContentType.parse('application/json'),));
+            contentType: ContentType.parse('application/json'),
+          ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         Fluttertoast.showToast(msg: "Status Updated.!");
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()), ModalRoute.withName('/'),);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+          ModalRoute.withName('/'),
+        );
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
       } else
         pr.hide();
-        throw Exception('Authentication Error');
-    }on DioError catch (exception) {
+      throw Exception('Authentication Error');
+    } on DioError catch (exception) {
       pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {

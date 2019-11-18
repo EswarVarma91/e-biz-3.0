@@ -14,7 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
 
-
 class EditSalesLead extends StatefulWidget {
   var datalist;
   EditSalesLead(this.datalist);
@@ -25,21 +24,25 @@ class EditSalesLead extends StatefulWidget {
 class _EditSalesLeadState extends State<EditSalesLead> {
   var dataList;
   _EditSalesLeadState(this.dataList);
-  TextEditingController customerName,requirement,contactName,contactDesignation,contactEmail,contactMobile;
-  String rid,srNo;
+  TextEditingController customerName,
+      requirement,
+      contactName,
+      contactDesignation,
+      contactEmail,
+      contactMobile;
+  String rid, srNo;
   bool _isLoading = false;
   static Dio dio = Dio(Config.options);
   SalesPendingModel user;
   String profileName;
-  var result ="Refered By";
+  var result = "Refered By";
   var referalPerson;
   ProgressDialog pr;
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     getProfileName();
-
   }
 
   void getProfileName() async {
@@ -47,22 +50,21 @@ class _EditSalesLeadState extends State<EditSalesLead> {
     setState(() {
       profileName = preferences.getString("profileName");
 
-      rid=dataList.rId.toString();
-      srNo=dataList.srNo.toString();
-      customerName=TextEditingController(text: dataList.srCustomerName);
-      requirement=TextEditingController(text: dataList.srRequirement);
-      contactName=TextEditingController(text: dataList.srContactName);
-      contactEmail=TextEditingController(text: dataList.srContactEmail);
-      contactDesignation=TextEditingController(text: dataList.srDesignation);
-      contactMobile=TextEditingController(text: dataList.srPhoneNo);
-      var res=dataList.referredByFullName;
-      if(res==null || res==""){
-        result="Referred By";
-      }else{
-        result=res;
+      rid = dataList.rId.toString();
+      srNo = dataList.srNo.toString();
+      customerName = TextEditingController(text: dataList.srCustomerName);
+      requirement = TextEditingController(text: dataList.srRequirement);
+      contactName = TextEditingController(text: dataList.srContactName);
+      contactEmail = TextEditingController(text: dataList.srContactEmail);
+      contactDesignation = TextEditingController(text: dataList.srDesignation);
+      contactMobile = TextEditingController(text: dataList.srPhoneNo);
+      var res = dataList.referredByFullName;
+      if (res == null || res == "") {
+        result = "Referred By";
+      } else {
+        result = res;
       }
     });
-
   }
 
   @override
@@ -70,32 +72,46 @@ class _EditSalesLeadState extends State<EditSalesLead> {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
-      appBar: AppBar(title: Text(dataList.srNo.toString(),style: TextStyle(color: Colors.white,fontSize: 15),),
-
-        leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
-          var navigator = Navigator.of(context);
-          navigator.push(
-            MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
+      appBar: AppBar(
+        title: Text(
+          dataList.srNo.toString(),
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            var navigator = Navigator.of(context);
+            navigator.push(
+              MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
 //                          ModalRoute.withName('/'),
-          );
-        },),
+            );
+          },
+        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.check,color: Colors.white,),
-            onPressed: (){
-              if(customerName.text.isEmpty){
+            icon: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              if (customerName.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Customer Name');
-              }else if(requirement.text.isEmpty){
+              } else if (requirement.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Requirement');
-              }else if(contactName.text.isEmpty){
+              } else if (contactName.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Name');
-              }else if(contactDesignation.text.isEmpty){
+              } else if (contactDesignation.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Designation');
-              }else if(contactEmail.text.isEmpty|| validateEmail(contactEmail.text)==false){
+              } else if (contactEmail.text.isEmpty ||
+                  validateEmail(contactEmail.text) == false) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Email');
-              }else if(contactMobile.text.isEmpty || validateMobile(contactMobile.text)==false){
+              } else if (contactMobile.text.isEmpty ||
+                  validateMobile(contactMobile.text) == false) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Mobile');
-              }else {
+              } else {
                 //Service Call
                 _callUpdateMethod();
               }
@@ -103,10 +119,12 @@ class _EditSalesLeadState extends State<EditSalesLead> {
           )
         ],
       ),
-      body:Container(
+      body: Container(
         child: ListView(
           children: <Widget>[
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             ListTile(
               title: TextFormField(
                 controller: customerName,
@@ -148,7 +166,7 @@ class _EditSalesLeadState extends State<EditSalesLead> {
             ),
             ListTile(
               title: TextFormField(
-                controller:contactDesignation,
+                controller: contactDesignation,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   labelText: "Contact Designation",
@@ -161,7 +179,7 @@ class _EditSalesLeadState extends State<EditSalesLead> {
             ),
             ListTile(
               title: TextFormField(
-                controller:  contactEmail,
+                controller: contactEmail,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: "Contact Email",
@@ -202,12 +220,9 @@ class _EditSalesLeadState extends State<EditSalesLead> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
-
-
     );
   }
 
@@ -229,20 +244,24 @@ class _EditSalesLeadState extends State<EditSalesLead> {
             "srRequirement": requirement.text
           },
           options: Options(
-            contentType: ContentType.parse('application/json'),));
+            contentType: ContentType.parse('application/json'),
+          ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         var responseJson = json.decode(response.data);
         Fluttertoast.showToast(msg: "Sales Lead Updated Successfully!");
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SalesLead()), ModalRoute.withName('/'),);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
+          ModalRoute.withName('/'),
+        );
         return responseJson;
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
       } else
         throw Exception('Authentication Error');
-    }on DioError catch (exception) {
+    } on DioError catch (exception) {
       pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -258,10 +277,13 @@ class _EditSalesLeadState extends State<EditSalesLead> {
   }
 
   void _navigatereferMethod(BuildContext context) async {
-    var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ReferedBy(result)));
-    var string=data.split(" USR_");
+    var data = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ReferedBy(result)));
+    var string = data.split(" USR_");
     result = string[0];
-    referalPerson=string[1];
+    referalPerson = string[1];
   }
 
   bool validateMobile(String mobile) {

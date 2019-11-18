@@ -17,20 +17,17 @@ class WorkStatus extends StatefulWidget {
   _WorkStatusState createState() => _WorkStatusState();
 }
 
-
-
-
 class _WorkStatusState extends State<WorkStatus> {
   static Dio dio = Dio(Config.options);
-  String empCode,userId;
-  bool _isSelectedT,_isSelectedW;
+  String empCode, userId;
+  bool _isSelectedT, _isSelectedW;
   var dbHelper = DatabaseHelper();
   List<AttendanceModel> atteModel;
   Future<List<AttendanceModel>> attList;
   String workStatus;
 
-  getEmpCode() async{
-    SharedPreferences preferences=await SharedPreferences.getInstance();
+  getEmpCode() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       empCode = preferences.getString("uEmpCode").toString();
       userId = preferences.getString("userId").toString();
@@ -40,8 +37,8 @@ class _WorkStatusState extends State<WorkStatus> {
   @override
   void initState() {
     super.initState();
-    _isSelectedT=false;
-    _isSelectedW=false;
+    _isSelectedT = false;
+    _isSelectedW = false;
     getEmpCode();
     _localGet();
   }
@@ -55,13 +52,13 @@ class _WorkStatusState extends State<WorkStatus> {
       for (int i = 0; i < atteModel.length; i++) {
         if (atteModel[i].date == checkDate && atteModel[i].user_id == userId) {
           setState(() {
-            workStatus=atteModel[i].work_status;
-            if(workStatus=="Tour"){
-              _isSelectedW=false;
-              _isSelectedT=true;
-            }else if(workStatus=="Working"){
-              _isSelectedT=false;
-              _isSelectedW=true;
+            workStatus = atteModel[i].work_status;
+            if (workStatus == "Tour") {
+              _isSelectedW = false;
+              _isSelectedT = true;
+            } else if (workStatus == "Working") {
+              _isSelectedT = false;
+              _isSelectedW = true;
             }
           });
         }
@@ -73,23 +70,26 @@ class _WorkStatusState extends State<WorkStatus> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Work Status", style: TextStyle(color: Colors.white),),
-        iconTheme: IconThemeData(color:Colors.white),),
+        title: Text(
+          "Work Status",
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: Container(
-      child: StaggeredGridView.count(
+        child: StaggeredGridView.count(
           crossAxisCount: 8,
           crossAxisSpacing: 12.0,
           mainAxisSpacing: 12.0,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(right: 1, top: 10,left: 10),
-              child:  tour(),
+              padding: const EdgeInsets.only(right: 1, top: 10, left: 10),
+              child: tour(),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 10, top: 10),
               child: working(),
             ),
-
           ],
           staggeredTiles: [
             StaggeredTile.extent(4, 75.0),
@@ -107,11 +107,11 @@ class _WorkStatusState extends State<WorkStatus> {
       shadowColor: _isSelectedT ? lwtColor : Colors.white,
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
-        onTap:  (){
-          WorkStatusModel wm = WorkStatusModel(userId,"Tour");
+        onTap: () {
+          WorkStatusModel wm = WorkStatusModel(userId, "Tour");
           dbHelper.updateWStatus(wm);
           _callworkStatus("1");
-        } ,
+        },
         child: Center(
           child: Padding(
             padding: EdgeInsets.all(8.0),
@@ -141,61 +141,63 @@ class _WorkStatusState extends State<WorkStatus> {
     );
   }
 
- Material working() {
-   return Material(
-     color: _isSelectedW ? lwtColor : Colors.white,
-     elevation: 14.0,
-     shadowColor: _isSelectedW ? lwtColor : Colors.white,
-     borderRadius: BorderRadius.circular(24.0),
-     child: InkWell(
-       onTap: (){
-         WorkStatusModel wm = WorkStatusModel(userId,"Working");
-         dbHelper.updateWStatus(wm);
-         _callworkStatus("2");
-       } ,
-       child: Center(
-         child: Padding(
-           padding: EdgeInsets.all(8.0),
-           child: Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: <Widget>[
-               Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: <Widget>[
-                   Padding(
-                     padding: EdgeInsets.all(2.0),
-                     child: Text(
-                       "Working".toUpperCase(),
-                       style: TextStyle(
-                         fontSize: 12.0,
-                         color: _isSelectedW ? Colors.white : lwtColor,
-                       ),
-                     ),
-                   ),
-                 ],
-               ),
-             ],
-           ),
-         ),
-       ),
-     ),
-   );
+  Material working() {
+    return Material(
+      color: _isSelectedW ? lwtColor : Colors.white,
+      elevation: 14.0,
+      shadowColor: _isSelectedW ? lwtColor : Colors.white,
+      borderRadius: BorderRadius.circular(24.0),
+      child: InkWell(
+        onTap: () {
+          WorkStatusModel wm = WorkStatusModel(userId, "Working");
+          dbHelper.updateWStatus(wm);
+          _callworkStatus("2");
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        "Working".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: _isSelectedW ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
-  void _callworkStatus(String s) async{
+  void _callworkStatus(String s) async {
     var now = DateTime.now();
     var currDate = DateFormat("yyyy-MM-dd").format(now).toString();
     var response;
-    if(s=="1"){
-       response = await dio.post(ServicesApi.updateData,
+    if (s == "1") {
+      response = await dio.post(ServicesApi.updateData,
           data: {
             "parameter1": "UpdateEmpTourinAttendance",
             "parameter2": empCode.toString(),
             "parameter3": currDate.toString(),
             "parameter4": "Tour"
           },
-          options: Options(contentType: ContentType.parse('application/json'),));
-    }else if(s=="2"){
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+    } else if (s == "2") {
       response = await dio.post(ServicesApi.updateData,
           data: {
             "parameter1": "UpdateEmpTourinAttendance",
@@ -204,16 +206,16 @@ class _WorkStatusState extends State<WorkStatus> {
             "parameter4": "Working"
           },
           options: Options(
-            contentType: ContentType.parse('application/json'),));
+            contentType: ContentType.parse('application/json'),
+          ));
     }
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Navigator.pop(context,s);
-      } else if (response.statusCode == 401) {
-        throw Exception("Incorrect data");
-      } else
-        Fluttertoast.showToast(msg: "Check your internet connection.!");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.pop(context, s);
+    } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
+    } else
+      Fluttertoast.showToast(msg: "Check your internet connection.!");
 //        Navigator.pop(context,s);
-        throw Exception('Authentication Error');
+    throw Exception('Authentication Error');
   }
-
 }

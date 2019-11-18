@@ -17,7 +17,6 @@ class MapsActivity extends StatefulWidget {
 }
 
 class _MapsActivityState extends State<MapsActivity> {
-
   @override
   Widget build(BuildContext context) {
     return StreamProvider<UserLocationModel>(
@@ -25,102 +24,108 @@ class _MapsActivityState extends State<MapsActivity> {
       child: ViewMap(),
     );
   }
-
 }
 
-class ViewMap  extends StatefulWidget  {
-
+class ViewMap extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _ViewMapState();
   }
 }
 
-class _ViewMapState  extends State<ViewMap>{
-
-  static double lati,longi;
+class _ViewMapState extends State<ViewMap> {
+  static double lati, longi;
   var userlocation;
-  List<Marker> allmarkers=new List();
+  List<Marker> allmarkers = new List();
   List<LocationModel> lm = new List();
-  Completer<GoogleMapController> _controller=Completer();
+  Completer<GoogleMapController> _controller = Completer();
   static Dio dio = Dio(Config.options);
-  bool mapDisplay=false;
+  bool mapDisplay = false;
   ProgressDialog pr;
-
 
   @override
   void initState() {
     super.initState();
-  //  _getuserLocations();
-
+    //  _getuserLocations();
   }
 
   @override
   Widget build(BuildContext context) {
-     userlocation=Provider.of<UserLocationModel>(context);
-     if(userlocation!=null){
-       setState(() {
-         mapDisplay=true;
-         lati = userlocation?.latitude??0.0;
-         longi = userlocation?.longitude??0.0;
-       });
-     }
+    userlocation = Provider.of<UserLocationModel>(context);
+    if (userlocation != null) {
+      setState(() {
+        mapDisplay = true;
+        lati = userlocation?.latitude ?? 0.0;
+        longi = userlocation?.longitude ?? 0.0;
+      });
+    }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Track",style: TextStyle(color: Colors.white),),
-      iconTheme: IconThemeData(color: Colors.white),
-      actions: <Widget>[
-        IconButton(
-          color: Colors.white,
-          icon: Icon(Icons.view_list),
-          onPressed: (){
-
-          },
-        )
-      ],),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 0,right: 0,top: 0),
-            child: GoogleMap(
-                mapType: MapType.normal,
-                zoomGesturesEnabled: true,
-                myLocationEnabled: true,
-                initialCameraPosition: CameraPosition(target: LatLng(lati,longi),zoom: 8) ,
-                onMapCreated: (GoogleMapController controller){
-                    _controller.complete(controller);
-                },
-                markers: Set.from(allmarkers)
-            ),
-          ),
-          CollapsingNavigationDrawer("6"),
-        ]
+      appBar: AppBar(
+        title: Text(
+          "Track",
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          IconButton(
+            color: Colors.white,
+            icon: Icon(Icons.view_list),
+            onPressed: () {},
+          )
+        ],
       ),
+      body: Stack(children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(left: 0, right: 0, top: 0),
+          child: GoogleMap(
+              mapType: MapType.normal,
+              zoomGesturesEnabled: true,
+              myLocationEnabled: true,
+              initialCameraPosition:
+                  CameraPosition(target: LatLng(lati, longi), zoom: 8),
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              markers: Set.from(allmarkers)),
+        ),
+        CollapsingNavigationDrawer("6"),
+      ]),
     );
   }
 
   String _lastSeenTime(String datetime) {
-    var now= DateTime.now();
-    List splitDateTime=datetime.split(" ");
-    List splitTime=splitDateTime[1].toString().split(":");
-    var lastSeenTime= DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
-    var currentTime =DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
-    if(currentTime.difference(lastSeenTime).inSeconds<=59){
-      return currentTime.difference(lastSeenTime).inSeconds.toString()+" sec ago";
-    }else if(currentTime.difference(lastSeenTime).inMinutes<=60){
-      return currentTime.difference(lastSeenTime).inMinutes.toString()+" min ago";
-    } else if(currentTime.difference(lastSeenTime).inHours<=24){
-      return currentTime.difference(lastSeenTime).inHours.toString()+" hours ago";
-    } else if(currentTime.difference(lastSeenTime).inDays<=7 ){
-      if(currentTime.difference(lastSeenTime).inDays==0 ){
-        return "yesterday at"+splitTime[0]+":"+splitTime[1].toString();
-      } else if(currentTime.difference(lastSeenTime).inDays==1){
-        return currentTime.difference(lastSeenTime).inDays.toString()+" day ago";
-      } else{
-        return currentTime.difference(lastSeenTime).inDays.toString()+" days ago";
+    var now = DateTime.now();
+    List splitDateTime = datetime.split(" ");
+    List splitTime = splitDateTime[1].toString().split(":");
+    var lastSeenTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
+    var currentTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
+    if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
+      return currentTime.difference(lastSeenTime).inSeconds.toString() +
+          " sec ago";
+    } else if (currentTime.difference(lastSeenTime).inMinutes <= 60) {
+      return currentTime.difference(lastSeenTime).inMinutes.toString() +
+          " min ago";
+    } else if (currentTime.difference(lastSeenTime).inHours <= 24) {
+      return currentTime.difference(lastSeenTime).inHours.toString() +
+          " hours ago";
+    } else if (currentTime.difference(lastSeenTime).inDays <= 7) {
+      if (currentTime.difference(lastSeenTime).inDays == 0) {
+        return "yesterday at" + splitTime[0] + ":" + splitTime[1].toString();
+      } else if (currentTime.difference(lastSeenTime).inDays == 1) {
+        return currentTime.difference(lastSeenTime).inDays.toString() +
+            " day ago";
+      } else {
+        return currentTime.difference(lastSeenTime).inDays.toString() +
+            " days ago";
       }
     } else {
-      return "at "+splitDateTime[0]+" "+splitTime[0]+":"+splitTime[1].toString();
+      return "at " +
+          splitDateTime[0] +
+          " " +
+          splitTime[0] +
+          ":" +
+          splitTime[1].toString();
     }
   }
 
@@ -169,7 +174,5 @@ class _ViewMapState  extends State<ViewMap>{
   //      }
   //    }
   //  }
-
-
 
 }

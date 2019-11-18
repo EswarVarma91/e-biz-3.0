@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 
 class Config {
-
   ServicesApi con = new ServicesApi();
 
   static var uri = ServicesApi.basic_url;

@@ -177,40 +177,84 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                 )
                               ],
                             ),
-                            SizedBox(height: 6,),
+                            SizedBox(
+                              height: 6,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Column(crossAxisAlignment: CrossAxisAlignment.start,mainAxisSize: MainAxisSize.max,
-                                children: <Widget>[
-                                  Text("Purpose.",style: TextStyle(fontSize: 7,color: Colors.black),),
-                                  Container(width: 180,
-                                  child: Text(trlm[index].tra_purpose,style: TextStyle(color:Colors.grey,fontWeight: FontWeight.bold,fontSize: 10),)),
-                                  SizedBox(height: 6,),
-                                  Text("Complaint Ticket No.",style: TextStyle(fontSize: 7,color: Colors.black),),
-                                  Container(width: 180,
-                                    child: Text(trlm[index].proj_oano,style: TextStyle(color:Colors.grey,fontWeight: FontWeight.bold,fontSize: 10),))
-                                ],),
-                                SizedBox(height: 10,),
-                                SizedBox(height: 30, width: 70,
-                                child: Material(elevation: 2.0,
-                                shadowColor: Colors.grey,
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: lwtColor,
-                                child: MaterialButton(
-                                  height: 22.0,
-                                  padding: EdgeInsets.all(3),
-                                  child: 
-                                  
-                                  Text("View",textAlign: TextAlign.center,style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                                  
-                                  onPressed: (){
-                                    Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) => ViewTravelRequest(trlm[index].tra_id,trlm[index].reqNo)));
-
-                                },),),)
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Text(
+                                      "Purpose.",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    ),
+                                    Container(
+                                        width: 180,
+                                        child: Text(
+                                          trlm[index].tra_purpose,
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10),
+                                        )),
+                                    SizedBox(
+                                      height: 6,
+                                    ),
+                                    Text(
+                                      "Complaint Ticket No.",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    ),
+                                    Container(
+                                        width: 180,
+                                        child: Text(
+                                          trlm[index].proj_oano,
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 10),
+                                        ))
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  width: 70,
+                                  child: Material(
+                                    elevation: 2.0,
+                                    shadowColor: Colors.grey,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: lwtColor,
+                                    child: MaterialButton(
+                                      height: 22.0,
+                                      padding: EdgeInsets.all(3),
+                                      child: Text(
+                                        "View",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ViewTravelRequest(
+                                                            trlm[index].tra_id,
+                                                            trlm[index]
+                                                                .reqNo)));
+                                      },
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ],

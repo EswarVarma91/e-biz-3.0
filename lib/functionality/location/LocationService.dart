@@ -7,7 +7,8 @@ class LocationService {
   UserLocationModel _currentLocation;
   Location location = Location();
   // Continuously emit location updates
-  StreamController<UserLocationModel> _locationController = StreamController<UserLocationModel>.broadcast();
+  StreamController<UserLocationModel> _locationController =
+      StreamController<UserLocationModel>.broadcast();
 
   LocationService() {
     location.requestPermission().then((granted) {
@@ -15,8 +16,8 @@ class LocationService {
         location.onLocationChanged().listen((locationData) {
           if (locationData != null) {
             _locationController.add(UserLocationModel(
-              latitude: locationData?.latitude??0.0,
-              longitude: locationData?.longitude??0.0,
+              latitude: locationData?.latitude ?? 0.0,
+              longitude: locationData?.longitude ?? 0.0,
               timeGps: locationData.time,
             ));
           }
@@ -27,18 +28,16 @@ class LocationService {
 
   Stream<UserLocationModel> get locationStream => _locationController.stream;
 
-  Future<UserLocationModel> getLocation() async{
-    try{
-    var userlocation = await location.getLocation();
-    _currentLocation=UserLocationModel(
-        latitude: userlocation?.latitude??0.0,
-        longitude: userlocation?.longitude??0.0,
-        timeGps: userlocation.time
-    );
-    }catch(e){
+  Future<UserLocationModel> getLocation() async {
+    try {
+      var userlocation = await location.getLocation();
+      _currentLocation = UserLocationModel(
+          latitude: userlocation?.latitude ?? 0.0,
+          longitude: userlocation?.longitude ?? 0.0,
+          timeGps: userlocation.time);
+    } catch (e) {
       print('Could not get the location: $e');
     }
     return _currentLocation;
   }
-
 }

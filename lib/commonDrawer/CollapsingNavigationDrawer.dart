@@ -24,19 +24,18 @@ class CollapsingNavigationDrawer extends StatefulWidget {
     return new CollapsingNavigationDrawerState(this.result);
   }
 }
+
 class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     with SingleTickerProviderStateMixin {
-
   var result;
   CollapsingNavigationDrawerState(this.result);
   double maxWidth = 210;
   double minWidth = 55;
   bool isCollapsed = false;
   int currentSelectedIndex = 0;
-  var downteam,profilename;
+  var downteam, profilename;
 
-  List<NavigationModel> listMain=[];
-
+  List<NavigationModel> listMain = [];
 
   List<NavigationModel> navigationItems = [
     NavigationModel(title: "Home", icon: Icons.home),
@@ -44,7 +43,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel),
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -54,9 +53,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
-
   ];
 
   List<NavigationModel> navigationItemsSales = [
@@ -65,11 +63,9 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
-
   ];
-
 
   List<NavigationModel> navigationItemsTask = [
     NavigationModel(title: "Tasks", icon: Icons.assignment),
@@ -77,18 +73,18 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   List<NavigationModel> navigationItemsTravel = [
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel),
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    
+
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -98,16 +94,19 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
 //    NavigationModel(title: "Location", icon: Icons.location_searching,),
   ];
   List<NavigationModel> navigationItemsLocation = [
-    NavigationModel(title: "Location", icon: Icons.location_searching,),
+    NavigationModel(
+      title: "Location",
+      icon: Icons.location_searching,
+    ),
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
-    NavigationModel(title: "Travel Request",icon:Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
 //    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
   ];
 
@@ -115,32 +114,31 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       downteam = preferences.getString("downTeamId");
-      profilename=preferences.getString("profileName");
+      profilename = preferences.getString("profileName");
       print(downteam);
-      if(downteam=="null"){
-        if(result.toString()=="1"){
-          navigationItems.removeWhere((a)=>a.title=="Approvals");
-          listMain=navigationItems;
-        }else if(result.toString()=="2"){
-          navigationItemsSales.removeWhere((a)=>a.title=="Approvals");
-          listMain=navigationItemsSales;
-        }else if(result.toString()=="3"){
-          navigationItemsTask.removeWhere((a)=>a.title=="Approvals");
-          listMain=navigationItemsTask;
-        }else if(result.toString()=="4"){
-          navigationItemsPermissions.removeWhere((a)=>a.title=="Approvals");
-          listMain=navigationItemsPermissions;
-        }else if(result.toString()=="7"){
-          navigationItemsTravel.removeWhere((a)=>a.title=="Approvals");
-          listMain=navigationItemsTravel;
+      if (downteam == "null") {
+        if (result.toString() == "1") {
+          navigationItems.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItems;
+        } else if (result.toString() == "2") {
+          navigationItemsSales.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsSales;
+        } else if (result.toString() == "3") {
+          navigationItemsTask.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsTask;
+        } else if (result.toString() == "4") {
+          navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsPermissions;
+        } else if (result.toString() == "7") {
+          navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsTravel;
         }
 
-        
 //        else if(result.toString()=="6"){
 //          navigationItemsLocation.removeWhere((a)=>a.title=="Approvals");
 //          listMain=navigationItemsLocation;
 //        }
-      }else {
+      } else {
         if (result.toString() == "1") {
           listMain = navigationItems;
         } else if (result.toString() == "2") {
@@ -184,62 +182,63 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                       setState(() {
                         currentSelectedIndex = counter;
                       });
-                      if(listMain[counter].title=="Home") {
-
+                      if (listMain[counter].title == "Home") {
                         var navigator = Navigator.of(context);
                         navigator.pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => HomePage()),
                           ModalRoute.withName('/'),
                         );
-
-                      }else if(listMain[counter].title=="Sales Lead"){
+                      } else if (listMain[counter].title == "Sales Lead") {
                         var navigator = Navigator.of(context);
                         navigator.push(
-                          MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => SalesLead()),
                         );
-                      }
-                      else if(listMain[counter].title=="Tasks"){
+                      } else if (listMain[counter].title == "Tasks") {
                         var navigator = Navigator.of(context);
                         navigator.push(
-                          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => TaskPlanner()),
                         );
-                      }
-                      else if(listMain[counter].title=="Leaves & Permissions"){
+                      } else if (listMain[counter].title ==
+                          "Leaves & Permissions") {
                         var navigator = Navigator.of(context);
                         navigator.push(
-                          MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Permissions()),
                         );
-                      }
-                      else if(listMain[counter].title=="Tasks"){
+                      } else if (listMain[counter].title == "Tasks") {
                         var navigator = Navigator.of(context);
                         navigator.push(
-                          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => TaskPlanner()),
                         );
-                      }
-                      else if(listMain[counter].title=="Approvals" ){
-
+                      } else if (listMain[counter].title == "Approvals") {
+                        var navigator = Navigator.of(context);
+                        navigator.push(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => Approvals()),
+                        );
+                      } else if (listMain[counter].title == "Location") {
+                        if (downteam != null) {
                           var navigator = Navigator.of(context);
                           navigator.push(
-                            MaterialPageRoute(builder: (BuildContext context) => Approvals()),
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    MapsActivity()),
                           );
-
-
-                      }
-                      else if(listMain[counter].title=="Location"){
-                        if(downteam!=null){
-                          var navigator = Navigator.of(context);
-                          navigator.push(
-                            MaterialPageRoute(builder: (BuildContext context) => MapsActivity()),
-                          );
-                        }else{
-                          Fluttertoast.showToast(msg: "You dont have a Permission");
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "You dont have a Permission");
                         }
-                      }
-                      else if(listMain[counter].title=="Travel Request"){
-                       var navigator = Navigator.of(context);
-                          navigator.push(
-                            MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
-                          );
+                      } else if (listMain[counter].title == "Travel Request") {
+                        var navigator = Navigator.of(context);
+                        navigator.push(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  TravelRequestList()),
+                        );
                       }
                     },
                     isSelected: currentSelectedIndex == counter,
@@ -263,7 +262,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
               icon: Icon(Icons.exit_to_app),
               color: lwtColor,
               iconSize: 38,
-              onPressed: ()  {
+              onPressed: () {
                 _logout();
               },
             ),
@@ -276,33 +275,36 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     );
   }
 
-   _logout() {
+  _logout() {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
             title: new Text('Do you want to Logout?'),
-              actions: <Widget>[
-                new CupertinoButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: new Text('No'),
-                ),
-                new CupertinoButton(
-                    onPressed: () async {
-                      SharedPreferences preferences=await SharedPreferences.getInstance();
-                      preferences.clear();
-                      var navigator = Navigator.of(context);
-                      navigator.pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (BuildContext context) => Login()),
-                        ModalRoute.withName('/'),
-                      );
-                    },
-                    child: new Text('Yes'),),
-              ],
-            );
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: new Text('No'),
+              ),
+              new CupertinoButton(
+                onPressed: () async {
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+                  var navigator = Navigator.of(context);
+                  navigator.pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Login()),
+                    ModalRoute.withName('/'),
+                  );
+                },
+                child: new Text('Yes'),
+              ),
+            ],
+          );
         });
   }
 }

@@ -1,4 +1,4 @@
-class TravelRequestListModel{
+class TravelRequestListModel {
   int tra_id;
   String reqNo;
   String proj_oano;
@@ -9,8 +9,16 @@ class TravelRequestListModel{
   String tra_purpose;
   int tra_status;
 
-  TravelRequestListModel(this.reqNo,this.proj_oano,this.fullName,this.tra_from,this.tra_to,this.journeyDate,this.tra_purpose,this.tra_status);
-  
+  TravelRequestListModel(
+      this.reqNo,
+      this.proj_oano,
+      this.fullName,
+      this.tra_from,
+      this.tra_to,
+      this.journeyDate,
+      this.tra_purpose,
+      this.tra_status);
+
   TravelRequestListModel.fromJson(Map<String, dynamic> json)
       : tra_id = json['tra_id'],
         reqNo = json['tra_req_no'],

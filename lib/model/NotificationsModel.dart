@@ -10,8 +10,17 @@ class NotificationsModel {
   String sender_id;
   String status;
 
-  NotificationsModel(this.not_id, this.ref_id,this.notification_type,this.senderName,this.receiver_id,
-      this.created_date,this.message,this.created_by,this.sender_id,this.status);
+  NotificationsModel(
+      this.not_id,
+      this.ref_id,
+      this.notification_type,
+      this.senderName,
+      this.receiver_id,
+      this.created_date,
+      this.message,
+      this.created_by,
+      this.sender_id,
+      this.status);
 
   NotificationsModel.fromJson(Map<String, dynamic> json)
       : not_id = json['not_id'],
@@ -25,9 +34,7 @@ class NotificationsModel {
         sender_id = json['sender_id'],
         status = json['status'];
 
-
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'not_id': not_id,
         'ref_id': ref_id,
         'notification_type': notification_type,

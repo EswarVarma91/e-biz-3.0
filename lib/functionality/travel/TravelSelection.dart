@@ -43,24 +43,25 @@ class _TravelSelectionState extends State<TravelSelection> {
   List<String> listFlightClassData = ['Business', 'Economy'];
   List<String> list;
   // final _debouncer = Debouncer( milliseconds: 500);
-  TextEditingController _controllerCodes=TextEditingController();
+  TextEditingController _controllerCodes = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     dynamicData = false;
-     _controllerCodes.addListener(_textCount);
+    _controllerCodes.addListener(_textCount);
 
     // getAirportCodes();
   }
-  _textCount(){
-    if(_controllerCodes.text.length>=3){
+
+  _textCount() {
+    if (_controllerCodes.text.length >= 3) {
       getAirportCodes();
       print(_controllerCodes.text);
-    }else if(_controllerCodes.text.length<3){
-      if(tcm!=null){
-      tcm.clear();
-      filtertcm.clear();
+    } else if (_controllerCodes.text.length < 3) {
+      if (tcm != null) {
+        tcm.clear();
+        filtertcm.clear();
       }
     }
   }
@@ -122,16 +123,16 @@ class _TravelSelectionState extends State<TravelSelection> {
         return "Bus";
       }
     } else if (mode == "5") {
-      if(res=="Flight"){
+      if (res == "Flight") {
         dynamicData = true;
-      }else{
+      } else {
         dynamicData = false;
       }
       return "From";
     } else if (mode == "6") {
-      if(res=="Flight"){
+      if (res == "Flight") {
         dynamicData = true;
-      }else{
+      } else {
         dynamicData = false;
       }
       return "To";
@@ -142,7 +143,10 @@ class _TravelSelectionState extends State<TravelSelection> {
 
   getAirportCodes() async {
     Response response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getAirportCodes","parameter2":_controllerCodes.text+"%"},
+        data: {
+          "parameter1": "getAirportCodes",
+          "parameter2": _controllerCodes.text + "%"
+        },
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
@@ -150,7 +154,7 @@ class _TravelSelectionState extends State<TravelSelection> {
       tcm = (json.decode(response.data) as List)
           .map((data) => new TravelCodesModel.fromJson(data))
           .toList();
-          filtertcm=tcm;
+      filtertcm = tcm;
       // print(tcm);
     }
   }
@@ -169,28 +173,28 @@ class _TravelSelectionState extends State<TravelSelection> {
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),
-              
+
               // onChanged: (string) {
-                // if(string.length==3){
-                //   getAirportCodes();
-                // }else{
-                //   tcm=[];
-                //   filtertcm=[];
-                // }
-                // _debouncer.run(() {
-                //   setState(() {
-                //     filtertcm = tcm
-                //         .where((u) => (u.stationCode
-                //                 .toLowerCase()
-                //                 .contains(string.toLowerCase()) ||
-                //             u.stationName
-                //                 .toString()
-                //                 .toLowerCase()
-                //                 .contains(string.toLowerCase())))
-                //         .toList();
-                //   });
-                // }
-                // );
+              // if(string.length==3){
+              //   getAirportCodes();
+              // }else{
+              //   tcm=[];
+              //   filtertcm=[];
+              // }
+              // _debouncer.run(() {
+              //   setState(() {
+              //     filtertcm = tcm
+              //         .where((u) => (u.stationCode
+              //                 .toLowerCase()
+              //                 .contains(string.toLowerCase()) ||
+              //             u.stationName
+              //                 .toString()
+              //                 .toLowerCase()
+              //                 .contains(string.toLowerCase())))
+              //         .toList();
+              //   });
+              // }
+              // );
               // },
             ),
           ),
@@ -202,11 +206,11 @@ class _TravelSelectionState extends State<TravelSelection> {
                   return Card(
                     child: ListTile(
                       onTap: () {
-                          Navigator.pop(
-                              context,
-                              filtertcm[index].stationCode +
-                                  " U_" +
-                                  filtertcm[index].stationId.toString());
+                        Navigator.pop(
+                            context,
+                            filtertcm[index].stationCode +
+                                " U_" +
+                                filtertcm[index].stationId.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),

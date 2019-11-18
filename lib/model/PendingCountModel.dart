@@ -6,8 +6,7 @@ class PendingCountModel {
   PendingCountModel.fromJson(Map<String, dynamic> json)
       : pendingCount = json['cnt'];
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'cnt': pendingCount,
       };
 }

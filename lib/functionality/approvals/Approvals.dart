@@ -19,30 +19,35 @@ class Approvals extends StatefulWidget {
   _ApprovalsState createState() => _ApprovalsState();
 }
 
-Future<String> getUserID() async{
-  SharedPreferences preferences=await SharedPreferences.getInstance();
-  String id=preferences.getString("userId");
+Future<String> getUserID() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String id = preferences.getString("userId");
   return id;
 }
 
-
 class _ApprovalsState extends State<Approvals> {
-  String uidd,profilename,leavesCount="-",permissionsCount="-",earlygoingCount="-",latecomingCount="-",fullname;
+  String uidd,
+      profilename,
+      leavesCount = "-",
+      permissionsCount = "-",
+      earlygoingCount = "-",
+      latecomingCount = "-",
+      fullname;
   bool _leavesA, _permissionsA, _earlygoingA, _latecomingA;
-  static  var now = DateTime.now();
+  static var now = DateTime.now();
   static Dio dio = Dio(Config.options);
-  List<LeavesModel> leaveList=new List();
-  List<PermissionModel> permissionsList=new List();
-  List<LateEarlyComingModel> earlygoingList=new List();
-  List<LateEarlyComingModel> datacheck=new List();
-  List<LateEarlyComingModel> latecomingList=new List();
+  List<LeavesModel> leaveList = new List();
+  List<PermissionModel> permissionsList = new List();
+  List<LateEarlyComingModel> earlygoingList = new List();
+  List<LateEarlyComingModel> datacheck = new List();
+  List<LateEarlyComingModel> latecomingList = new List();
   ProgressDialog pr;
 
   getFullName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       fullname = preferences.getString("fullname");
-      profilename=preferences.getString("profileName");
+      profilename = preferences.getString("profileName");
     });
   }
 
@@ -54,83 +59,94 @@ class _ApprovalsState extends State<Approvals> {
     _earlygoingA = false;
     _latecomingA = false;
     getFullName();
-    getUserID().then((val)=>setState((){
-      uidd=val;
-      getPendingApprovals();
-    }));
+    getUserID().then((val) => setState(() {
+          uidd = val;
+          getPendingApprovals();
+        }));
   }
 
-   checkServices() {
+  checkServices() {
     setState(() {
-      leavesCount=leaveList.length?.toString()??"0";
-      permissionsCount=permissionsList.length?.toString()??"0";
-      latecomingCount=latecomingList.length?.toString()??"0";
-      earlygoingCount=earlygoingList.length?.toString()??"0";
+      leavesCount = leaveList.length?.toString() ?? "0";
+      permissionsCount = permissionsList.length?.toString() ?? "0";
+      latecomingCount = latecomingList.length?.toString() ?? "0";
+      earlygoingCount = earlygoingList.length?.toString() ?? "0";
     });
   }
 
   @override
   Widget build(BuildContext context) {
-     pr = new ProgressDialog(context);
+    pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
-        appBar: AppBar(title: Text("Approvals",style: TextStyle(color: Colors.white),),
-          iconTheme: IconThemeData(color:Colors.white),),
-        body: Stack(
-          children: <Widget>[
-            Container(color: Colors.white,),
-            Container(
-              margin: EdgeInsets.only(left: 60, right: 5, top: 5),
-              child: StaggeredGridView.count(
-                crossAxisCount: 8,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: leaveMaterial(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: permissionMaterial(),
-                  ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 1, top: 1),
-                  //   child: earlygoingMaterial(),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 1, top: 1),
-                  //   child: latecomingMaterial(),
-                  // ),
-                ],
-                staggeredTiles: [
-                  StaggeredTile.extent(4, 75.0),
-                  StaggeredTile.extent(4, 75.0),
-                  StaggeredTile.extent(4, 75.0),
-                  StaggeredTile.extent(4, 75.0),
-                ],
-              ),
-            ),
-            _leavesA? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 90),
-              child:  leavesAListView(),
-            ):Container(),
-            _permissionsA? Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 90),
-              child:  permissionsAListView(),
-            ):Container(),
-            // _earlygoingA? Container(
-            //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
-            //   child:  earlygoingAListView(),
-            // ):Container(),
-            // _latecomingA ? Container(
-            //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
-            //   child:  latecomingAListView(),
-            // ):Container(),
-            CollapsingNavigationDrawer("5"),
-            //ListView.builder(itemBuilder: null)
-          ],
+      appBar: AppBar(
+        title: Text(
+          "Approvals",
+          style: TextStyle(color: Colors.white),
         ),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 60, right: 5, top: 5),
+            child: StaggeredGridView.count(
+              crossAxisCount: 8,
+              crossAxisSpacing: 12.0,
+              mainAxisSpacing: 12.0,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: leaveMaterial(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: permissionMaterial(),
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 1, top: 1),
+                //   child: earlygoingMaterial(),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 1, top: 1),
+                //   child: latecomingMaterial(),
+                // ),
+              ],
+              staggeredTiles: [
+                StaggeredTile.extent(4, 75.0),
+                StaggeredTile.extent(4, 75.0),
+                StaggeredTile.extent(4, 75.0),
+                StaggeredTile.extent(4, 75.0),
+              ],
+            ),
+          ),
+          _leavesA
+              ? Container(
+                  margin: EdgeInsets.only(left: 60, right: 2, top: 90),
+                  child: leavesAListView(),
+                )
+              : Container(),
+          _permissionsA
+              ? Container(
+                  margin: EdgeInsets.only(left: 60, right: 2, top: 90),
+                  child: permissionsAListView(),
+                )
+              : Container(),
+          // _earlygoingA? Container(
+          //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+          //   child:  earlygoingAListView(),
+          // ):Container(),
+          // _latecomingA ? Container(
+          //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+          //   child:  latecomingAListView(),
+          // ):Container(),
+          CollapsingNavigationDrawer("5"),
+          //ListView.builder(itemBuilder: null)
+        ],
+      ),
     );
   }
 
@@ -143,7 +159,6 @@ class _ApprovalsState extends State<Approvals> {
       child: InkWell(
         onTap: () {
           setState(() {
-
             _leavesA = !_leavesA;
             checkServices();
             if (_permissionsA == true) {
@@ -155,8 +170,8 @@ class _ApprovalsState extends State<Approvals> {
             } else if (_latecomingA == true) {
               _latecomingA = !_latecomingA;
               checkServices();
-            } else if(_leavesA==false){
-              _permissionsA=!_permissionsA;
+            } else if (_leavesA == false) {
+              _permissionsA = !_permissionsA;
               checkServices();
             }
           });
@@ -182,8 +197,9 @@ class _ApprovalsState extends State<Approvals> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top:5,bottom: 5),
-                      child: Text(leavesCount,
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Text(
+                        leavesCount,
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: "Roboto",
@@ -220,8 +236,8 @@ class _ApprovalsState extends State<Approvals> {
             } else if (_latecomingA == true) {
               _latecomingA = !_latecomingA;
               checkServices();
-            } else if(_permissionsA==false){
-              _earlygoingA =!_earlygoingA;
+            } else if (_permissionsA == false) {
+              _earlygoingA = !_earlygoingA;
               checkServices();
             }
           });
@@ -247,8 +263,9 @@ class _ApprovalsState extends State<Approvals> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top:5,bottom: 5),
-                      child: Text(permissionsCount,
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Text(
+                        permissionsCount,
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: "Roboto",
@@ -285,8 +302,8 @@ class _ApprovalsState extends State<Approvals> {
             } else if (_latecomingA == true) {
               _latecomingA = !_latecomingA;
               checkServices();
-            } else if(_earlygoingA==false){
-              _latecomingA=!_latecomingA;
+            } else if (_earlygoingA == false) {
+              _latecomingA = !_latecomingA;
               checkServices();
             }
           });
@@ -312,8 +329,9 @@ class _ApprovalsState extends State<Approvals> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top:5,bottom: 5),
-                      child: Text(earlygoingCount,
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Text(
+                        earlygoingCount,
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: "Roboto",
@@ -350,8 +368,8 @@ class _ApprovalsState extends State<Approvals> {
             } else if (_permissionsA == true) {
               _permissionsA = !_permissionsA;
               checkServices();
-            } else if(_latecomingA==false){
-              _leavesA=!_leavesA;
+            } else if (_latecomingA == false) {
+              _leavesA = !_leavesA;
               checkServices();
             }
           });
@@ -377,8 +395,9 @@ class _ApprovalsState extends State<Approvals> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top:5,bottom: 5),
-                      child: Text(latecomingCount,
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: Text(
+                        latecomingCount,
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: "Roboto",
@@ -395,8 +414,6 @@ class _ApprovalsState extends State<Approvals> {
     );
   }
 
-
-
   leavesAListView() {
     return ListView.builder(
         itemCount: leaveList == null ? 0 : leaveList.length,
@@ -405,7 +422,7 @@ class _ApprovalsState extends State<Approvals> {
             elevation: 5.0,
             child: ListTile(
               subtitle: Container(
-                padding: EdgeInsets.only(top: 10,bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -413,13 +430,12 @@ class _ApprovalsState extends State<Approvals> {
                       children: <Widget>[
                         Container(
                           padding: EdgeInsets.only(left: 2),
-                          child:
-                              Text(
-                                leaveList[index]?.fullname ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold),
+                          child: Text(
+                            leaveList[index]?.fullname ?? 'NA',
+                            style: TextStyle(
+                                color: lwtColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -427,92 +443,121 @@ class _ApprovalsState extends State<Approvals> {
                     Padding(
                       padding: EdgeInsets.only(top: 8),
                     ),
-                   Container(
-                     padding: EdgeInsets.only(left: 5),
-                     child: Column(
-                       children: <Widget>[
-                         Row(
-                           children: <Widget>[
-                             Text("From Date         :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Text(displayDateFormat(leaveList[index]?.el_from_date) ?? 'NA',
-                               style: TextStyle(
-                                   color: lwtColor,
-                                   fontSize: 10,
-                                   fontWeight: FontWeight.bold
-                               ),
-                             ),
-                           ],
-                         ),
-                         Padding(
-                           padding: EdgeInsets.only(top: 6),
-                         ),
-                         Row(
-                           children: <Widget>[
-                             Text("To Date              :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Text(displayDateFormat(leaveList[index]?.el_to_date) ?? 'NA',
-                               style: TextStyle(
-                                   color: lwtColor,
-                                   fontSize: 10,
-                                   fontWeight: FontWeight.bold
-                               ),
-                             ),
-                           ],
-                         ),
-                         Padding(
-                           padding: EdgeInsets.only(top: 6),
-                         ),
-                         Row(
-                           children: <Widget>[
-                             Text("No of Days        :     ",style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Text(leaveList[index]?.el_noofdays.toString().split(".")[0]+" Days" ?? '' + "NA.",
-                               style: TextStyle(
-                                   color: lwtColor,
-                                   fontSize: 10,
-                                   fontWeight: FontWeight.bold
-                               ),
-                             ),
-                           ],
-                         ),
-                         Padding(
-                           padding: EdgeInsets.only(top: 6),
-                         ),
-                         Row(
-                           children: <Widget>[
-                             Text("Reason              :     ", style: TextStyle(fontSize: 8,),),
-                             Padding(
-                               padding: EdgeInsets.only(top: 4),
-                             ),
-                             Expanded(
-                               child: Text(leaveList[index]?.el_reason?? '',
-                                 style: TextStyle(
-                                     color: lwtColor,
-                                     fontSize: 10,
-                                     fontWeight: FontWeight.bold
-                                 ),
-                               ),
-                             ),
-                           ],
-                         ),
-                       ],
-                     ),
-                   )
+                    Container(
+                      padding: EdgeInsets.only(left: 5),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "From Date         :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                displayDateFormat(
+                                        leaveList[index]?.el_from_date) ??
+                                    'NA',
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "To Date              :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                displayDateFormat(
+                                        leaveList[index]?.el_to_date) ??
+                                    'NA',
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "No of Days        :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                leaveList[index]
+                                            ?.el_noofdays
+                                            .toString()
+                                            .split(".")[0] +
+                                        " Days" ??
+                                    '' + "NA.",
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Reason              :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  leaveList[index]?.el_reason ?? '',
+                                  style: TextStyle(
+                                      color: lwtColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
               trailing: Container(
                 padding: EdgeInsets.only(top: 22),
                 child: IconButton(
-                  icon: Icon(Icons.check_circle,size: 40,color: lwtColor),
-                  onPressed: (){
+                  icon: Icon(Icons.check_circle, size: 40, color: lwtColor),
+                  onPressed: () {
                     alertleavesCheck(leaveList[index]);
                   },
                 ),
@@ -530,7 +575,7 @@ class _ApprovalsState extends State<Approvals> {
             elevation: 5.0,
             child: ListTile(
               subtitle: Container(
-                padding: EdgeInsets.only(top: 10,bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Column(
                   children: <Widget>[
                     Row(
@@ -557,16 +602,21 @@ class _ApprovalsState extends State<Approvals> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text("From Time            :     ",style: TextStyle(fontSize: 8,),),
+                              Text(
+                                "From Time            :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 5),
                               ),
-                              Text(permissionsList[index]?.per_from_time ?? 'NA',
+                              Text(
+                                permissionsList[index]?.per_from_time ?? 'NA',
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -575,16 +625,21 @@ class _ApprovalsState extends State<Approvals> {
                           ),
                           Row(
                             children: <Widget>[
-                              Text("To Time                 :     ",style: TextStyle(fontSize: 8,),),
+                              Text(
+                                "To Time                 :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
-                              Text(permissionsList[index]?.per_to_time ?? 'NA',
+                              Text(
+                                permissionsList[index]?.per_to_time ?? 'NA',
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
-                                    fontWeight: FontWeight.bold
-                                ),
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -593,18 +648,24 @@ class _ApprovalsState extends State<Approvals> {
                           ),
                           Row(
                             children: <Widget>[
-                              Text("Date                       :     ",style: TextStyle(fontSize: 8,),),
+                              Text(
+                                "Date                       :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
-                              Text(displayDateFormat(permissionsList[index]?.per_date) ?? '' + "NA.",
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-
+                              Text(
+                                displayDateFormat(
+                                        permissionsList[index]?.per_date) ??
+                                    '' + "NA.",
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ],
                           ),
                           Padding(
@@ -612,17 +673,23 @@ class _ApprovalsState extends State<Approvals> {
                           ),
                           Row(
                             children: <Widget>[
-                                    Text("Reason                  :     ",style: TextStyle(fontSize: 8,),),
+                              Text(
+                                "Reason                  :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
                               Expanded(
-                                child: Text(permissionsList[index]?.per_purpose ?? '' + "NA.",
+                                child: Text(
+                                  permissionsList[index]?.per_purpose ??
+                                      '' + "NA.",
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],
@@ -636,8 +703,12 @@ class _ApprovalsState extends State<Approvals> {
               trailing: Container(
                 padding: EdgeInsets.only(top: 20),
                 child: IconButton(
-                  icon: Icon(Icons.check_circle,size: 40,color: lwtColor,),
-                  onPressed: (){
+                  icon: Icon(
+                    Icons.check_circle,
+                    size: 40,
+                    color: lwtColor,
+                  ),
+                  onPressed: () {
                     alertpermissionCheck(permissionsList[index]);
                   },
                 ),
@@ -646,8 +717,6 @@ class _ApprovalsState extends State<Approvals> {
           );
         });
   }
-
-
 
   // earlygoingAListView() {
   //   return ListView.builder(
@@ -896,8 +965,6 @@ class _ApprovalsState extends State<Approvals> {
   //       });
   //       }
 
-
-
   // void earlygoingRequest(LateEarlyComingModel earlygoingList) {
   //   showDialog(
   //       context: context,
@@ -946,28 +1013,29 @@ class _ApprovalsState extends State<Approvals> {
   //       });
   // }
 
-   alertpermissionCheck(PermissionModel permissionModel) {
-     showDialog(
-         context: context,
-         barrierDismissible: false,
-         builder: (BuildContext context) {
-           return CupertinoAlertDialog(
-             title: new Text('Do you want to Approve.?'),
-             actions: <Widget>[
-               new CupertinoButton(
-                 onPressed: () {
-                   cancelPermissionServiceCall(permissionModel);
-                 },
-                 child: new Text('Reject'),
-               ),
-               new CupertinoButton(
-                 onPressed: ()  {
-                   approvePermissionServiceCall(permissionModel);
-                 },
-                 child: new Text('Approve'),),
-             ],
-           );
-         });
+  alertpermissionCheck(PermissionModel permissionModel) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text('Do you want to Approve.?'),
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  cancelPermissionServiceCall(permissionModel);
+                },
+                child: new Text('Reject'),
+              ),
+              new CupertinoButton(
+                onPressed: () {
+                  approvePermissionServiceCall(permissionModel);
+                },
+                child: new Text('Approve'),
+              ),
+            ],
+          );
+        });
   }
 
   void alertleavesCheck(LeavesModel leaveList) {
@@ -985,31 +1053,31 @@ class _ApprovalsState extends State<Approvals> {
                 child: new Text('Reject'),
               ),
               new CupertinoButton(
-                onPressed: ()  {
+                onPressed: () {
                   approveLeavesServiceCall(leaveList);
                 },
-                child: new Text('Approve'),),
+                child: new Text('Approve'),
+              ),
             ],
           );
         });
   }
 
-
-
-
   getPendingApprovals() async {
-
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
             "parameter1": "GetDownTeamPendLeavesByRLId",
             "parameter2": uidd.toString()
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          leaveList = (json.decode(response.data) as List).map((data) => new LeavesModel.fromJson(data)).toList();
+          leaveList = (json.decode(response.data) as List)
+              .map((data) => new LeavesModel.fromJson(data))
+              .toList();
           print(leaveList.toString());
         });
         checkServices();
@@ -1022,12 +1090,15 @@ class _ApprovalsState extends State<Approvals> {
             "parameter1": "GetDownTeamPermissionsByRLId",
             "parameter2": uidd.toString()
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
       if (response1.statusCode == 200 || response1.statusCode == 201) {
         setState(() {
-          permissionsList = (json.decode(response1.data) as List).map((data) => PermissionModel.fromJson(data)).toList();
-            print(permissionsList.toString());
+          permissionsList = (json.decode(response1.data) as List)
+              .map((data) => PermissionModel.fromJson(data))
+              .toList();
+          print(permissionsList.toString());
         });
         checkServices();
       }
@@ -1091,7 +1162,7 @@ class _ApprovalsState extends State<Approvals> {
 //      }
 //      checkServices();
       //===================================================
-    }on DioError catch(exception){
+    } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         throw Exception("Network Error");
@@ -1106,11 +1177,10 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   //===
-  cancelLeavesServiceCall(LeavesModel leaveList) async{
+  cancelLeavesServiceCall(LeavesModel leaveList) async {
     pr.show();
     try {
-      var
-      response = await dio.post(ServicesApi.ChangeLeaveStatus,
+      var response = await dio.post(ServicesApi.ChangeLeaveStatus,
           data: {
             "leaveId": leaveList.el_id.toString(),
             "modifiedBy": profilename,
@@ -1119,7 +1189,8 @@ class _ApprovalsState extends State<Approvals> {
             "statusId": 3,
             "userId": uidd
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -1132,11 +1203,11 @@ class _ApprovalsState extends State<Approvals> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-            pr.hide();
+        pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            pr.hide();
+        pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1144,6 +1215,7 @@ class _ApprovalsState extends State<Approvals> {
       }
     }
   }
+
   void approveLeavesServiceCall(LeavesModel leaveList) async {
     pr.show();
     try {
@@ -1156,7 +1228,8 @@ class _ApprovalsState extends State<Approvals> {
             "statusId": 2,
             "userId": uidd
           },
-          options: Options(contentType: ContentType.parse('application/json'),
+          options: Options(
+            contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.dismiss();
@@ -1166,15 +1239,14 @@ class _ApprovalsState extends State<Approvals> {
         Navigator.pop(context);
 //        CheckServices();
       }
-      
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-            pr.dismiss();
+        pr.dismiss();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            pr.dismiss();
+        pr.dismiss();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1184,19 +1256,20 @@ class _ApprovalsState extends State<Approvals> {
   }
   //===
 
-   approvePermissionServiceCall(PermissionModel permissionModel) async {
-     pr.show();
+  approvePermissionServiceCall(PermissionModel permissionModel) async {
+    pr.show();
     try {
       var response = await dio.post(ServicesApi.ChangePermissionStatus,
-            data: {
-              "modifiedBy": profilename,
-              "permissionId": permissionModel.per_id,
-              "remarks": "string",
-              "statusId": 2,
-              "tlApprovedBy": profilename
-            },
-            options: Options(contentType: ContentType.parse('application/json'),
-            ));
+          data: {
+            "modifiedBy": profilename,
+            "permissionId": permissionModel.per_id,
+            "remarks": "string",
+            "statusId": 2,
+            "tlApprovedBy": profilename
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
@@ -1209,11 +1282,11 @@ class _ApprovalsState extends State<Approvals> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-            pr.hide();
+        pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            pr.hide();
+        pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1226,15 +1299,16 @@ class _ApprovalsState extends State<Approvals> {
     pr.show();
     try {
       var response = await dio.post(ServicesApi.ChangePermissionStatus,
-            data: {
-              "modifiedBy": profilename,
-              "permissionId": permissionModel.per_id,
-              "remarks": "string",
-              "statusId": 3,
-              "tlApprovedBy": profilename
-            },
-            options: Options(contentType: ContentType.parse('application/json'),
-            ));
+          data: {
+            "modifiedBy": profilename,
+            "permissionId": permissionModel.per_id,
+            "remarks": "string",
+            "statusId": 3,
+            "tlApprovedBy": profilename
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
@@ -1247,11 +1321,11 @@ class _ApprovalsState extends State<Approvals> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-            pr.hide();
+        pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            pr.hide();
+        pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
@@ -1259,7 +1333,6 @@ class _ApprovalsState extends State<Approvals> {
       }
     }
   }
-
 
 //   ///===============================
 //   void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
@@ -1331,9 +1404,7 @@ class _ApprovalsState extends State<Approvals> {
 //   }
 
   displayDateFormat(String elFromDate) {
-    List<String> a=elFromDate.split("-");
-    return a[2]+"-"+a[1]+"-"+a[0];
+    List<String> a = elFromDate.split("-");
+    return a[2] + "-" + a[1] + "-" + a[0];
   }
-
-
 }

@@ -1,17 +1,17 @@
-class AttendanceGettingModel{
+class AttendanceGettingModel {
   int _id;
   String _user_id;
   String _starttime;
   String _endtime;
 
-  AttendanceGettingModel(this._user_id,this._starttime,this._endtime);
+  AttendanceGettingModel(this._user_id, this._starttime, this._endtime);
 
-  Map<String,dynamic> toMap(){
-    var map=<String,dynamic>{
-      'id' : _id,
-      'user_id' : _user_id,
-      'starttime' : _starttime,
-      'endtime' : _endtime,
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      'id': _id,
+      'user_id': _user_id,
+      'starttime': _starttime,
+      'endtime': _endtime,
     };
     return map;
   }
@@ -27,9 +27,7 @@ class AttendanceGettingModel{
       : _id = json['id'],
         _user_id = json['user_id'],
         _starttime = json['starttime'],
-        _endtime = json['endtime']
-  ;
-
+        _endtime = json['endtime'];
 
   AttendanceGettingModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -42,5 +40,4 @@ class AttendanceGettingModel{
   String get user_id => _user_id;
   String get starttime => _starttime;
   String get endtime => _endtime;
-
 }

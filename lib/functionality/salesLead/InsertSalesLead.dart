@@ -20,22 +20,22 @@ class NewSalesLead extends StatefulWidget {
 }
 
 class _NewSalesLeadState extends State<NewSalesLead> {
-  final _controller1 =TextEditingController();
-  final _controller2 =TextEditingController();
-  final _controller3 =TextEditingController();
-  final _controller4 =TextEditingController();
-  final _controller5 =TextEditingController();
-  final _controller6 =TextEditingController();
+  final _controller1 = TextEditingController();
+  final _controller2 = TextEditingController();
+  final _controller3 = TextEditingController();
+  final _controller4 = TextEditingController();
+  final _controller5 = TextEditingController();
+  final _controller6 = TextEditingController();
   bool _isLoading = false;
   ProgressDialog pr;
   static Dio dio = Dio(Config.options);
   SalesPendingModel user;
   String profileName;
-  var result ="Referred By";
+  var result = "Referred By";
   var referalPerson;
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     getProfileName();
   }
@@ -45,34 +45,49 @@ class _NewSalesLeadState extends State<NewSalesLead> {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
-      appBar: AppBar(title: Text("New Sales Lead",style: TextStyle(color: Colors.white,fontSize: 15),),
-
-        leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
-          var navigator = Navigator.of(context);
-          navigator.push(
-            MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
+      appBar: AppBar(
+        title: Text(
+          "New Sales Lead",
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+        leading: IconButton(
+          icon: Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            var navigator = Navigator.of(context);
+            navigator.push(
+              MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
 //                          ModalRoute.withName('/'),
-          );
-        },),
+            );
+          },
+        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.check,color: Colors.white,),
-            onPressed: (){
-              if(_controller1.text.isEmpty ){
+            icon: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              if (_controller1.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Customer Name');
-              }else if(_controller2.text.isEmpty){
+              } else if (_controller2.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Requirement');
-              }else if(_controller3.text.isEmpty){
+              } else if (_controller3.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Name');
-              }else if(_controller4.text.isEmpty){
+              } else if (_controller4.text.isEmpty) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Designation');
-              }else if(_controller5.text.isEmpty || validateEmail(_controller5.text)==false){
+              } else if (_controller5.text.isEmpty ||
+                  validateEmail(_controller5.text) == false) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Email');
-              }else if(_controller6.text.isEmpty || validateMobile(_controller6.text)==false){
+              } else if (_controller6.text.isEmpty ||
+                  validateMobile(_controller6.text) == false) {
                 Fluttertoast.showToast(msg: 'Please Enter Contact Mobile');
-              }else if(result.toString()==null || result.toString()=="Referred By"){
+              } else if (result.toString() == null ||
+                  result.toString() == "Referred By") {
                 Fluttertoast.showToast(msg: 'Please Select Referred By');
-              }else {
+              } else {
                 //Service Call
                 _callInsertMethod();
               }
@@ -80,107 +95,114 @@ class _NewSalesLeadState extends State<NewSalesLead> {
           )
         ],
       ),
-      body:Container(
+      body: Container(
         child: ListView(
-            children: <Widget>[
-              SizedBox(height: 10,),
-              ListTile(
-                title: TextFormField(
-                  controller: _controller1,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    labelText: "Customer Name",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+          children: <Widget>[
+            SizedBox(
+              height: 10,
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: _controller1,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.person),
+                  labelText: "Customer Name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-              ListTile(
-                title: TextFormField(
-                  controller: _controller2,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: "Requirement",
-                    prefixIcon: Icon(Icons.assignment),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: _controller2,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: "Requirement",
+                  prefixIcon: Icon(Icons.assignment),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-              ListTile(
-                title: TextFormField(
-                  controller: _controller3,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: "Contact Name",
-                    prefixIcon: Icon(Icons.account_box),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: _controller3,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: "Contact Name",
+                  prefixIcon: Icon(Icons.account_box),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-              ListTile(
-                title: TextFormField(
-                  controller: _controller4,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    labelText: "Contact Designation",
-                    prefixIcon: Icon(Icons.confirmation_number),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: _controller4,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: "Contact Designation",
+                  prefixIcon: Icon(Icons.confirmation_number),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-               ListTile(
-                title: TextFormField(
-                  controller: _controller5,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: "Contact Email",
-                    prefixIcon: Icon(Icons.contact_mail),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: _controller5,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: "Contact Email",
+                  prefixIcon: Icon(Icons.contact_mail),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-               ListTile(
-                title: TextFormField(
-                  controller: _controller6,
-                  keyboardType: TextInputType.phone,
-                  maxLength: 10,
-                  decoration: InputDecoration(
-                    labelText: "Contact Mobile",
-                    prefixIcon: Icon(Icons.phone_android),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            ),
+            ListTile(
+              title: TextFormField(
+                controller: _controller6,
+                keyboardType: TextInputType.phone,
+                maxLength: 10,
+                decoration: InputDecoration(
+                  labelText: "Contact Mobile",
+                  prefixIcon: Icon(Icons.phone_android),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-               ListTile(
-                 trailing: IconButton(icon: Icon(Icons.add),color:lwtColor,onPressed: (){
-                   _navigatereferMethod(context);
-                   },),
-                title: TextFormField(
-                  controller: TextEditingController(text: result[0].toUpperCase()+result.substring(1)),
-                  enabled: false,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.group_add),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+            ),
+            ListTile(
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                color: lwtColor,
+                onPressed: () {
+                  _navigatereferMethod(context);
+                },
+              ),
+              title: TextFormField(
+                controller: TextEditingController(
+                    text: result[0].toUpperCase() + result.substring(1)),
+                enabled: false,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.group_add),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -204,21 +226,24 @@ class _NewSalesLeadState extends State<NewSalesLead> {
             "srRequirement": _controller2.text.toString()
           },
           options: Options(
-            contentType: ContentType.parse('application/json'),));
-
+            contentType: ContentType.parse('application/json'),
+          ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         var responseJson = json.decode(response.data);
         Fluttertoast.showToast(msg: "New Sales Lead Created!");
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SalesLead()), ModalRoute.withName('/'),);
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
+          ModalRoute.withName('/'),
+        );
         return responseJson;
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
       } else
         throw Exception('Authentication Error');
-    }on DioError catch (exception) {
+    } on DioError catch (exception) {
       pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -241,10 +266,13 @@ class _NewSalesLeadState extends State<NewSalesLead> {
   }
 
   void _navigatereferMethod(BuildContext context) async {
-     var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => ReferedBy(result)));
-     var string=data.split(" USR_");
-     result = string[0];
-     referalPerson=string[1];
+    var data = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => ReferedBy(result)));
+    var string = data.split(" USR_");
+    result = string[0];
+    referalPerson = string[1];
   }
 
   bool validateMobile(String mobile) {
@@ -263,7 +291,4 @@ class _NewSalesLeadState extends State<NewSalesLead> {
     else
       return true;
   }
-
-
 }
-

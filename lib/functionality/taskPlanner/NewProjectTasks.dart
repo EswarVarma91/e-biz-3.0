@@ -20,13 +20,12 @@ class NewProjectTasks extends StatefulWidget {
 }
 
 class _NewProjectTasksState extends State<NewProjectTasks> {
-
   String uidd;
   static Dio dio = Dio(Config.options);
-  var _controller1=TextEditingController();
-  var _controller2=TextEditingController();
-  var chooseProject ="Select Project";
-  var chooseResource ="Select Resource";
+  var _controller1 = TextEditingController();
+  var _controller2 = TextEditingController();
+  var chooseProject = "Select Project";
+  var chooseResource = "Select Resource";
   var projectId;
   var resourceId;
   String profileName;
@@ -38,7 +37,8 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
     super.initState();
     getProfileName();
   }
-   getProfileName() async {
+
+  getProfileName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       profileName = preferences.getString("profileName");
@@ -64,37 +64,56 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         );
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Project Activity',style: TextStyle(color: Colors.white),),
-          iconTheme: IconThemeData(color:Colors.white),
-          leading: IconButton(icon: Icon(Icons.close,color: Colors.white,),onPressed: (){
-            var navigator = Navigator.of(context);
-            navigator.push(
-              MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+        appBar: AppBar(
+          title: Text(
+            'Project Activity',
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+          leading: IconButton(
+            icon: Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              var navigator = Navigator.of(context);
+              navigator.push(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => TaskPlanner()),
 //                          ModalRoute.withName('/'),
-            );
-          },),
+              );
+            },
+          ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.check,color: Colors.white,),
-              onPressed: (){
+              icon: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              onPressed: () {
                 //Service Call
-                if(chooseProject=="Select Project" || chooseProject=="null"){
+                if (chooseProject == "Select Project" ||
+                    chooseProject == "null") {
                   Fluttertoast.showToast(msg: "Please select project");
-                }else if(chooseResource=="Select Resource" || chooseResource=="null"){
+                } else if (chooseResource == "Select Resource" ||
+                    chooseResource == "null") {
                   Fluttertoast.showToast(msg: "Please select resource");
-                }else if(_controller1.text.isEmpty) {
+                } else if (_controller1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter Task Name");
-                }else if(_controller2.text.isEmpty){
+                } else if (_controller2.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter Task Descrption");
-                }else{
+                } else {
                   CallProjectTaskApi();
                 }
               },
             )
-          ],),
+          ],
+        ),
         body: Stack(
           children: <Widget>[
-            Container(color: Colors.white,),
+            Container(
+              color: Colors.white,
+            ),
             Container(
               child: ListView(
                 children: <Widget>[
@@ -102,7 +121,9 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                   ListTile(
                     title: TextFormField(
                       enabled: false,
-                      controller: TextEditingController(text: chooseProject[0].toUpperCase()+chooseProject.substring(1)),
+                      controller: TextEditingController(
+                          text: chooseProject[0].toUpperCase() +
+                              chooseProject.substring(1)),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -111,10 +132,15 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                         ),
                       ),
                     ),
-                    trailing: IconButton(icon: Icon(Icons.add,color: lwtColor,),
-                    onPressed: (){
-                      _navigatereferMethod(context);
-                    },),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.add,
+                        color: lwtColor,
+                      ),
+                      onPressed: () {
+                        _navigatereferMethod(context);
+                      },
+                    ),
                   ),
                   ListTile(
                     title: TextFormField(
@@ -147,7 +173,9 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                   ListTile(
                     title: TextFormField(
                       enabled: false,
-                      controller: TextEditingController(text: chooseResource[0].toUpperCase()+chooseResource.substring(1)),
+                      controller: TextEditingController(
+                          text: chooseResource[0].toUpperCase() +
+                              chooseResource.substring(1)),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -156,15 +184,20 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                         ),
                       ),
                     ),
-                    trailing: IconButton(icon: Icon(Icons.add,color: lwtColor,),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.add,
+                        color: lwtColor,
+                      ),
                       onPressed: () {
-                      if(projectId==null) {
-                        Fluttertoast.showToast(msg: "Please choose a project");
-                      }
-                      else {
-                        _navigateresourceMethod(context);
-                      }
-                      },),
+                        if (projectId == null) {
+                          Fluttertoast.showToast(
+                              msg: "Please choose a project");
+                        } else {
+                          _navigateresourceMethod(context);
+                        }
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -176,32 +209,37 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   }
 
   void _navigatereferMethod(BuildContext context) async {
-    var data= await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Projects(chooseProject)));
-    var string=data.split(" PROJ_");
+    var data = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => Projects(chooseProject)));
+    var string = data.split(" PROJ_");
     chooseProject = string[0];
-    projectId=string[1];
+    projectId = string[1];
   }
+
   void _navigateresourceMethod(BuildContext context) async {
     var data;
-    var checkpi=await checkProjectIncharge(uidd,projectId);
-    if(checkpi.toString()=='1') {
-      data = await Navigator.push(context,MaterialPageRoute(builder: (BuildContext context) => Resources(chooseResource,projectId)));
-      var string=data.split(" USR_");
+    var checkpi = await checkProjectIncharge(uidd, projectId);
+    if (checkpi.toString() == '1') {
+      data = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  Resources(chooseResource, projectId)));
+      var string = data.split(" USR_");
       chooseResource = string[0];
-      resourceId=string[1];
-    }else{
+      resourceId = string[1];
+    } else {
       Fluttertoast.showToast(msg: "Sorry! You are not a project incharge.");
     }
-
   }
 
-  void CallProjectTaskApi() async{
+  void CallProjectTaskApi() async {
     pr.show();
     print(projectId);
     var response = await dio.post(ServicesApi.saveDayPlan,
-
-        data:
-        {
+        data: {
           "actionMode": "insert",
           "dpCreatedBy": profileName.toString(),
           "dpGivenBy": profileName,
@@ -209,16 +247,17 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
           "dpTask": _controller1.text.toString(),
           "dpTaskDesc": _controller2.text.toString(),
           "dpType": "Office",
-          "dayTaskType":"Project",
+          "dayTaskType": "Project",
           "projectId": projectId,
           "dpModifiedBy": profileName,
           "uId": resourceId,
           "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now)
         },
         options: Options(
-          contentType: ContentType.parse('application/json'),));
+          contentType: ContentType.parse('application/json'),
+        ));
 
-    if(response.statusCode==200 || response.statusCode==201){
+    if (response.statusCode == 200 || response.statusCode == 201) {
 //      var responseJson = json.decode(response.data);
       Fluttertoast.showToast(msg: "Task Created");
       pr.hide();
@@ -227,35 +266,32 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
         ModalRoute.withName('/'),
       );
-    }else{
+    } else {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
     }
-
   }
 
   checkProjectIncharge(String uidd, projectId) async {
     var response = await dio.post(ServicesApi.getData,
-
-        data:
-        {
+        data: {
           "parameter1": "CheckProjectIncharge",
           "parameter2": uidd,
           "parameter3": projectId.toString()
         },
         options: Options(
-          contentType: ContentType.parse('application/json'),));
+          contentType: ContentType.parse('application/json'),
+        ));
 
-    if(response.statusCode==200 || response.statusCode==201){
-      List<RestrictPermissionsModel> dataCheck = (json.decode(response.data) as List).map((data) => new RestrictPermissionsModel.fromJson(data)).toList();
-     return dataCheck[0].status.toString();
-    }else{
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List<RestrictPermissionsModel> dataCheck =
+          (json.decode(response.data) as List)
+              .map((data) => new RestrictPermissionsModel.fromJson(data))
+              .toList();
+      return dataCheck[0].status.toString();
+    } else {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
     }
   }
 }
-
-
-
-

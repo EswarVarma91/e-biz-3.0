@@ -17,9 +17,9 @@ class ReferedBy extends StatefulWidget {
   _ReferedByState createState() => _ReferedByState(data);
 }
 
-Future<String> getUserID() async{
-  SharedPreferences preferences=await SharedPreferences.getInstance();
-  String id=preferences.getString("userId");
+Future<String> getUserID() async {
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String id = preferences.getString("userId");
   return id;
 }
 
@@ -34,26 +34,27 @@ class _ReferedByState extends State<ReferedBy> {
   List<ReferedbyModel> listReferals = new List();
   List<ReferedbyModel> dataCheckList = new List();
   List<ReferedbyModel> fliterReferals = new List();
-  bool _isloading= false;
+  bool _isloading = false;
   final _debouncer = Debouncer(milliseconds: 500);
   @override
   void initState() {
     super.initState();
-    connectivity=Connectivity();
-    getUserID().then((val)=>setState((){
-      uidd=val;
-      getReferals();
-    }));
-
+    connectivity = Connectivity();
+    getUserID().then((val) => setState(() {
+          uidd = val;
+          getReferals();
+        }));
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text(data,style: TextStyle(color: Colors.white),),
+        title: Text(
+          data,
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -70,10 +71,11 @@ class _ReferedByState extends State<ReferedBy> {
                 _debouncer.run(() {
                   setState(() {
                     fliterReferals = listReferals
-                        .where((u) => (
-                        u.fullName.toLowerCase().contains(string.toLowerCase()) ||
-                            u.u_emp_code.toString().contains(string)
-                    )).toList();
+                        .where((u) => (u.fullName
+                                .toLowerCase()
+                                .contains(string.toLowerCase()) ||
+                            u.u_emp_code.toString().contains(string)))
+                        .toList();
                   });
                 });
               },
@@ -81,17 +83,23 @@ class _ReferedByState extends State<ReferedBy> {
           ),
           Expanded(
             child: ListView.builder(
-                padding: EdgeInsets.only(left: 8,right: 8),
-                itemCount:fliterReferals ==null ? 0: fliterReferals.length,
-                itemBuilder: (BuildContext context,int index){
+                padding: EdgeInsets.only(left: 8, right: 8),
+                itemCount: fliterReferals == null ? 0 : fliterReferals.length,
+                itemBuilder: (BuildContext context, int index) {
                   return Card(
-                    child: ListTile (
-                      onTap: (){
-                        Navigator.pop(context, fliterReferals[index].fullName+" USR_"+fliterReferals[index].uId.toString());
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.pop(
+                            context,
+                            fliterReferals[index].fullName +
+                                " USR_" +
+                                fliterReferals[index].uId.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),
-                        child: Text(fliterReferals[index].fullName[0].toUpperCase()+fliterReferals[index].fullName.substring(1),
+                        child: Text(
+                          fliterReferals[index].fullName[0].toUpperCase() +
+                              fliterReferals[index].fullName.substring(1),
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
@@ -100,7 +108,6 @@ class _ReferedByState extends State<ReferedBy> {
                       ),
 //                  trailing:Padding(padding:EdgeInsets.all(10),child: Text(fliterReferals[index].uId)),
                     ),
-
                   );
                 }),
           ),
@@ -113,26 +120,25 @@ class _ReferedByState extends State<ReferedBy> {
     _isloading = false;
 //    var response=await dio.get(url);
     var response = await dio.post(ServicesApi.getData,
-        data:
-        {
-          "parameter1": "GetAllEmps"
-        },
-        options: Options(contentType: ContentType.parse('application/json'),
+        data: {"parameter1": "GetAllEmps"},
+        options: Options(
+          contentType: ContentType.parse('application/json'),
         ));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
+        dataCheckList = (json.decode(response.data) as List)
+            .map((data) => new ReferedbyModel.fromJson(data))
+            .toList();
+        dataCheckList
+            .removeWhere((item) => item.uId.toString() == uidd.toString());
+        dataCheckList.removeWhere((item) => item.fullName.toString() == null);
+        dataCheckList.removeWhere((item) => item.fullName.toString().isEmpty);
 
-        dataCheckList = (json.decode(response.data) as List).map((data) => new ReferedbyModel.fromJson(data)).toList();
-        dataCheckList.removeWhere((item)=>item.uId.toString()==uidd.toString());
-        dataCheckList.removeWhere((item)=>item.fullName.toString()==null);
-        dataCheckList.removeWhere((item)=>item.fullName.toString().isEmpty);
-
-        listReferals=dataCheckList;
-        fliterReferals=dataCheckList;
+        listReferals = dataCheckList;
+        fliterReferals = dataCheckList;
 
         _isloading = false;
-
       });
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
@@ -154,4 +160,3 @@ class Debouncer {
     _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
 }
-

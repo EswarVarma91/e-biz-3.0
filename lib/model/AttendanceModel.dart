@@ -1,4 +1,4 @@
-class AttendanceModel{
+class AttendanceModel {
   int _id;
   String _user_id;
   String _starttime;
@@ -10,22 +10,21 @@ class AttendanceModel{
   String _work_status;
   String _date;
 
-  AttendanceModel(this._user_id,this._starttime,this._startlat,this._startlong,this._endtime,this._endlat,this._endlong);
+  AttendanceModel(this._user_id, this._starttime, this._startlat,
+      this._startlong, this._endtime, this._endlat, this._endlong);
 
-
-
-  Map<String,dynamic> toMap(){
-    var map=<String,dynamic>{
-      'id' : _id,
-      'user_id' : _user_id,
-      'starttime' : _starttime,
-      'startlat' : _startlat,
-      'startlong' : _startlong,
-      'endtime' : _endtime,
-      'endlat' : _endlat,
-      'endlong' : _endlong,
-      'work_status' : _work_status,
-      'day' : _date,
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      'id': _id,
+      'user_id': _user_id,
+      'starttime': _starttime,
+      'startlat': _startlat,
+      'startlong': _startlong,
+      'endtime': _endtime,
+      'endlat': _endlat,
+      'endlong': _endlong,
+      'work_status': _work_status,
+      'day': _date,
     };
     return map;
   }
@@ -53,9 +52,7 @@ class AttendanceModel{
         _endlat = json['endlat'],
         _endlong = json['endlong'],
         _work_status = json['work_status'],
-        _date = json['date']
-  ;
-
+        _date = json['date'];
 
   AttendanceModel.map(dynamic obj) {
     this._id = obj['id'];
@@ -79,5 +76,4 @@ class AttendanceModel{
   String get endlong => _endlong;
   String get work_status => _work_status;
   String get date => _date;
-
 }

@@ -15,18 +15,17 @@ class LeaveType extends StatefulWidget {
 }
 
 class _LeaveTypeState extends State<LeaveType> {
-  List<LeavesCountModel> listcountLeaves=new List();
+  List<LeavesCountModel> listcountLeaves = new List();
   LeavesCountModel lcm;
   String uidd;
   static Dio dio = Dio(Config.options);
-  bool lop,sl,ml,co,cl,cal;
+  bool lop, sl, ml, co, cl, cal;
 
-getLeavesCount(String uidd) async {
-
-    var response = await dio.post(ServicesApi.getLeaves+uidd);
+  getLeavesCount(String uidd) async {
+    var response = await dio.post(ServicesApi.getLeaves + uidd);
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
-      lcm=LeavesCountModel.fromJson(json.decode(response.data));
+        lcm = LeavesCountModel.fromJson(json.decode(response.data));
       });
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
@@ -36,54 +35,63 @@ getLeavesCount(String uidd) async {
   @override
   void initState() {
     super.initState();
-    lop=false;
-    sl=false;
-    ml=false;
-    co=false;
-    cl=false;
-    cal=false;
+    lop = false;
+    sl = false;
+    ml = false;
+    co = false;
+    cl = false;
+    cal = false;
     getUserID().then((val) => setState(() {
-      uidd = val;
-      getLeavesCount(uidd);
-    }));
+          uidd = val;
+          getLeavesCount(uidd);
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Leave Type',style: TextStyle(color: Colors.white),),
-      iconTheme: IconThemeData(color: Colors.white),),
-      body: Stack(
-        children: <Widget>[
-          Container(color: Colors.white,),
+        appBar: AppBar(
+          title: Text(
+            'Leave Type',
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        body: Stack(
+          children: <Widget>[
             Container(
-              margin: EdgeInsets.only(left: 15,right: 15,top: 20),
-              child: StaggeredGridView.count(crossAxisCount: 4,crossAxisSpacing: 12.0,
+              color: Colors.white,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 15, right: 15, top: 20),
+              child: StaggeredGridView.count(
+                crossAxisCount: 4,
+                crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  lopM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: lopM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  calM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: calM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  clM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: clM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  coM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: coM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  slM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: slM(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 1,top: 1),
-                    child:  mlM(),
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: mlM(),
                   ),
                 ],
                 staggeredTiles: [
@@ -93,11 +101,11 @@ getLeavesCount(String uidd) async {
                   StaggeredTile.extent(2, 70.0),
                   StaggeredTile.extent(2, 70.0),
                   StaggeredTile.extent(2, 70.0),
-                ],),
+                ],
+              ),
             ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 
   Material lopM() {
@@ -107,31 +115,39 @@ getLeavesCount(String uidd) async {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: lwtColor,
       child: InkWell(
-        onTap: (){
+        onTap: () {
           Navigator.pop(context, "LOP 60");
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("LOP".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: lop ? Colors.white : lwtColor,fontWeight: FontWeight.bold
-                      ),),
+                      child: Text(
+                        "LOP".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Roboto",
+                            color: lop ? Colors.white : lwtColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("60",style:TextStyle(
-                        fontSize: 16.0,fontFamily: "Roboto",
-                        color: lop ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        "60",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: "Roboto",
+                          color: lop ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -150,39 +166,47 @@ getLeavesCount(String uidd) async {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: lwtColor,
       child: InkWell(
-        onTap: (){
-          if(lcm.cal!="0"){
-            if(int.parse(lcm.cal)>=6){
-              Navigator.pop(context,"CAL 6");
-            }else{
-              Navigator.pop(context, "CAL "+lcm.cal);
+        onTap: () {
+          if (lcm.cal != "0") {
+            if (int.parse(lcm.cal) >= 6) {
+              Navigator.pop(context, "CAL 6");
+            } else {
+              Navigator.pop(context, "CAL " + lcm.cal);
             }
-          }else{
+          } else {
             Fluttertoast.showToast(msg: "Sorry.! you dont have CAL Leaves");
           }
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("CAL".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: cal ? Colors.white : lwtColor,fontWeight: FontWeight.bold
-                      ),),
+                      child: Text(
+                        "CAL".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Roboto",
+                            color: cal ? Colors.white : lwtColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lcm?.cal??"",style:TextStyle(
-                        fontSize: 16.0,fontFamily: "Roboto",
-                        color: cal ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lcm?.cal ?? "",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: "Roboto",
+                          color: cal ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -194,46 +218,54 @@ getLeavesCount(String uidd) async {
     );
   }
 
-Material clM() {
+  Material clM() {
     return Material(
       color: cl ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: Colors.white,
       child: InkWell(
-        onTap: (){
-          if(lcm.cl!="0"){
-            if(int.parse(lcm.cl)>=6){
-              Navigator.pop(context,"CL 6");
-            }else{
-              Navigator.pop(context, "CL "+lcm.cl);
+        onTap: () {
+          if (lcm.cl != "0") {
+            if (int.parse(lcm.cl) >= 6) {
+              Navigator.pop(context, "CL 6");
+            } else {
+              Navigator.pop(context, "CL " + lcm.cl);
             }
-          }else{
+          } else {
             Fluttertoast.showToast(msg: "Sorry.! you dont have CL Leaves");
           }
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("CL".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: cl ? Colors.white : lwtColor,fontWeight: FontWeight.bold
-                      ),),
+                      child: Text(
+                        "CL".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Roboto",
+                            color: cl ? Colors.white : lwtColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lcm?.cl??"",style:TextStyle(
-                        fontSize: 16.0,fontFamily: "Roboto",
-                        color: cl ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lcm?.cl ?? "",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: "Roboto",
+                          color: cl ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -252,39 +284,47 @@ Material clM() {
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: Colors.white,
       child: InkWell(
-        onTap: (){
-          if(lcm.co!="0" ){
-            if(int.parse(lcm.co)>=6){
-              Navigator.pop(context,"CO 6");
-            }else{
-              Navigator.pop(context, "CO "+lcm.co);
+        onTap: () {
+          if (lcm.co != "0") {
+            if (int.parse(lcm.co) >= 6) {
+              Navigator.pop(context, "CO 6");
+            } else {
+              Navigator.pop(context, "CO " + lcm.co);
             }
-          }else{
+          } else {
             Fluttertoast.showToast(msg: "Sorry.! you dont have CO Leaves");
           }
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("CO".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: co ? Colors.white : lwtColor,fontWeight: FontWeight.bold
-                      ),),
+                      child: Text(
+                        "CO".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Roboto",
+                            color: co ? Colors.white : lwtColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lcm?.co??"",style:TextStyle(
-                        fontSize: 16.0,fontFamily: "Roboto",
-                        color: co ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lcm?.co ?? "",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: "Roboto",
+                          color: co ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -296,46 +336,54 @@ Material clM() {
     );
   }
 
-Material mlM() {
+  Material mlM() {
     return Material(
       color: ml ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: lwtColor,
       child: InkWell(
-        onTap: (){   
-          if(lcm.ml!="0" ){
-             if(int.parse(lcm.ml)>=6){
-              Navigator.pop(context,"ML 6");
-            }else{
-              Navigator.pop(context, "CL "+lcm.ml);
+        onTap: () {
+          if (lcm.ml != "0") {
+            if (int.parse(lcm.ml) >= 6) {
+              Navigator.pop(context, "ML 6");
+            } else {
+              Navigator.pop(context, "CL " + lcm.ml);
             }
-          }else{
+          } else {
             Fluttertoast.showToast(msg: "Sorry.! you dont have ML Leaves");
           }
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("ML".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: ml ? Colors.white : lwtColor,fontWeight: FontWeight.bold
-                      ),),
+                      child: Text(
+                        "ML".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Roboto",
+                            color: ml ? Colors.white : lwtColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lcm?.ml??"",style:TextStyle(
-                        fontSize: 16.0,fontFamily: "Roboto",
-                        color: ml ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lcm?.ml ?? "",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: "Roboto",
+                          color: ml ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -347,47 +395,54 @@ Material mlM() {
     );
   }
 
-
-Material slM() {
+  Material slM() {
     return Material(
       color: sl ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: lwtColor,
       child: InkWell(
-        onTap: (){
-          if(lcm.sl!="0" ){
-            if(int.parse(lcm.sl)>=6){
-              Navigator.pop(context,"SL 6");
-            }else{
-              Navigator.pop(context, "SL "+lcm.sl);
+        onTap: () {
+          if (lcm.sl != "0") {
+            if (int.parse(lcm.sl) >= 6) {
+              Navigator.pop(context, "SL 6");
+            } else {
+              Navigator.pop(context, "SL " + lcm.sl);
             }
-          }else{
+          } else {
             Fluttertoast.showToast(msg: "Sorry.! you dont have SL Leaves");
           }
         },
         child: Center(
-          child:Padding(
+          child: Padding(
             padding: EdgeInsets.all(2.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment:MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text("SL".toUpperCase(),style:TextStyle(
-                        fontSize: 12.0,fontFamily: "Roboto",
-                        color: sl ? Colors.white : lwtColor, fontWeight: FontWeight.bold
-                      ),),
+                      child: Text(
+                        "SL".toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            fontFamily: "Roboto",
+                            color: sl ? Colors.white : lwtColor,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:Text(lcm?.sl??"",style:TextStyle(
-                        fontSize: 16.0,fontFamily: "Roboto",
-                        color: sl ? Colors.white : lwtColor,
-                      ),),
+                      child: Text(
+                        lcm?.sl ?? "",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: "Roboto",
+                          color: sl ? Colors.white : lwtColor,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -398,7 +453,6 @@ Material slM() {
       ),
     );
   }
-
 }
 
 // Container(

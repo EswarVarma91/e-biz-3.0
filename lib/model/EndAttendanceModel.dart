@@ -1,19 +1,19 @@
-class EndAttendanceModel{
+class EndAttendanceModel {
   String _user_id;
   String _endtime;
   String _endlat;
   String _endlong;
   String _date;
 
-  EndAttendanceModel(this._user_id,this._endtime,this._endlat,this._endlong);
+  EndAttendanceModel(this._user_id, this._endtime, this._endlat, this._endlong);
 
-  Map<String,dynamic> toMap(){
-    var map=<String,dynamic>{
-      'user_id' : _user_id,
-      'endtime' : _endtime,
-      'endlat' : _endlat,
-      'endlong' : _endlong,
-      'day' : _date,
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      'user_id': _user_id,
+      'endtime': _endtime,
+      'endlat': _endlat,
+      'endlong': _endlong,
+      'day': _date,
     };
     return map;
   }
@@ -27,13 +27,11 @@ class EndAttendanceModel{
   }
 
   EndAttendanceModel.fromJson(Map<String, dynamic> json)
-      :  _user_id =json['user_id'],
+      : _user_id = json['user_id'],
         _endtime = json['endtime'],
         _endlat = json['endlat'],
         _endlong = json['endlong'],
-        _date = json['date']
-  ;
-
+        _date = json['date'];
 
   EndAttendanceModel.map(dynamic obj) {
     this._user_id = obj['user_id'];
@@ -48,5 +46,4 @@ class EndAttendanceModel{
   String get endlat => _endlat;
   String get endlong => _endlong;
   String get date => _date;
-
 }
