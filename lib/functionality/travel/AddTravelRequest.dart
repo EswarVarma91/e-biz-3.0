@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
-import 'package:eaglebiz/functionality/taskPlanner/Members.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
+import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
 import 'package:eaglebiz/functionality/travel/TravelSelection.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
@@ -478,7 +477,12 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       Fluttertoast.showToast(msg: "Success");
-      print(response);
+
+      var navigator = Navigator.of(context);
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
+        ModalRoute.withName('/'),
+      );
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
