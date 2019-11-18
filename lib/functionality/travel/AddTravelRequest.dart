@@ -116,7 +116,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   Fluttertoast.showToast(msg: "Please select complaint no. !");
                 } else if (_controllerPurpose1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Please select purpose!");
-                } else{
+                } else {
                   insertTravelRequest(
                       TravelNameId,
                       Tmode,
@@ -427,7 +427,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     });
   }
 
-  void insertTravelRequest(
+  insertTravelRequest(
       String travelNameId,
       String tmode,
       String tmodeType,
@@ -436,7 +436,5 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       String ttoId,
       String trarrivalDateTime,
       String tcomaplaintId,
-      String text) {
-
-      }
+      String text) {}
 }
