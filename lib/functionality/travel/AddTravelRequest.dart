@@ -1,10 +1,17 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:eaglebiz/functionality/taskPlanner/Members.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/functionality/travel/TravelSelection.dart';
+import 'package:eaglebiz/myConfig/Config.dart';
+import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddTravelRequest extends StatefulWidget {
   @override
@@ -20,9 +27,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       Tmode,
       TmodeType,
       Tfrom,
-      TfromId,
       Tto,
-      TtoId,
       Tclass,
       TcomplaintNo,
       TrarrivalDateTime,
@@ -31,8 +36,16 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       TcomaplaintId,
       TcomaplaintRefType;
   bool _isItflight = false;
+  static Dio dio = Dio(Config.options);
   int y, m, d, hh, mm, ss;
   String toA, toB, toC;
+  String uid, profilename;
+
+  getUserDetails() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    uid = preferences.getString("userId");
+    profilename = preferences.getString("profileName");
+  }
 
   @override
   void initState() {
@@ -45,6 +58,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     hh = now.hour;
     mm = now.minute;
     ss = now.second;
+    getUserDetails();
   }
 
   @override
@@ -72,10 +86,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   Fluttertoast.showToast(msg: "Please select mode type!");
                 } else if (Tclass.isEmpty) {
                   Fluttertoast.showToast(msg: "Please select class!");
-                } else if (TfromId.isEmpty) {
+                } else if (Tfrom.isEmpty) {
                   Fluttertoast.showToast(
                       msg: "Please select from station code!");
-                } else if (TtoId.isEmpty) {
+                } else if (Tto.isEmpty) {
                   Fluttertoast.showToast(msg: "Please select to station code!");
                 } else if (TrarrivalDateTime.isEmpty) {
                   Fluttertoast.showToast(
@@ -90,10 +104,11 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       Tmode,
                       TmodeType,
                       Tclass,
-                      TfromId,
-                      TtoId,
+                      Tfrom,
+                      Tto,
                       TrarrivalDateTime,
                       TcomaplaintId,
+                      TcomaplaintRefType,
                       _controllerPurpose1.text);
                 }
               } else {
@@ -126,6 +141,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       _controllerTo1.text,
                       TrarrivalDateTime,
                       TcomaplaintId,
+                      TcomaplaintRefType,
                       _controllerPurpose1.text);
                 }
               }
@@ -284,7 +300,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       if (data != null) {
                         setState(() {
                           Tfrom = data.split(" U_")[0].toString();
-                          TfromId = data.split(" U_")[1].toString();
+                          // TfromId = data.split(" U_")[1].toString();
                         });
                       }
                     },
@@ -326,7 +342,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       if (data != null) {
                         setState(() {
                           Tto = data.split(" U_")[0].toString();
-                          TtoId = data.split(" U_")[1].toString();
+                          // TtoId = data.split(" U_")[1].toString();
                         });
                       }
                     },
@@ -432,9 +448,39 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       String tmode,
       String tmodeType,
       String tclass,
-      String tfromId,
-      String ttoId,
+      String tfrom,
+      String tto,
       String trarrivalDateTime,
       String tcomaplaintId,
-      String text) {}
+      String tcomaplaintRefType,
+      String purpose) async {
+    var now = DateTime.now();
+    var response = await dio.post(ServicesApi.insert_travel,
+        data: {
+          "actionMode": "insert",
+          "clas": tclass,
+          "createdBy": profilename,
+          "from": tfrom,
+          "journeyDate": trarrivalDateTime,
+          "mode": tmode,
+          "modeType":tmodeType,
+          "modifiedBy": profilename,
+          "purpose": purpose,
+          "refId": tcomaplaintId,
+          "refType": tcomaplaintRefType,
+          "reqDateTime": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+          "to": tto,
+          "uId": travelNameId
+        },
+        options: Options(
+          contentType: ContentType.parse('application/json'),
+        ));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Fluttertoast.showToast(msg: "Success");
+      print(response);
+    } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
+    }
+  }
 }

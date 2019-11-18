@@ -14,8 +14,8 @@ class ServicesApi {
   static String crm = 'crm.service/';
 
   //CRM Sales Lead
-  static String Pending_Url = eagle_emp_main + crm + "crm/get/data";
-  static String Sales_Insert_Url =eagle_emp_main + crm + 'crm/sales/request/save';
+  static String Pending_Url = basic_url + crm + "crm/get/data";
+  static String Sales_Insert_Url =basic_url + crm + 'crm/sales/request/save';
 
   //
   static String getData =basic_url + global_Service + "getAnyGlobalDataForMobile";
@@ -34,6 +34,10 @@ class ServicesApi {
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
+
+
+  //Travel Insertion
+  static String insert_travel = basic_url + travel_Service + "request/save";
 
   //get Travel Request List
   // static String getTravelList= basic_url + travel_Service + "get/travel/request";
@@ -60,7 +64,7 @@ class ServicesApi {
   // static String GlobalNotificationsData= baseUrl + 'Eagle_HR_Dev/get/anydata';
 
 //  static String eagle_emp_main= 'http://192.168.2.5:8383/'; //live
-  static String eagle_emp_main = 'http://192.168.2.3:8080/'; // testing
+  // static String eagle_emp_main = 'http://192.168.2.3:8080/'; // testing
 
-  static String Login_Url =eagle_emp_main + "global.service/global/get/any/data";
+  // static String Login_Url =eagle_emp_main + "global.service/global/get/any/data";
 }
