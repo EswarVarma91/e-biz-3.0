@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:eaglebiz/main.dart';
 import 'package:eaglebiz/model/TravelRequestListModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
+import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 
 class HotelRequestList extends StatefulWidget {
@@ -11,12 +15,12 @@ class HotelRequestList extends StatefulWidget {
 }
 
 class _HotelRequestListState extends State<HotelRequestList> {
-static Dio dio = Dio(Config.options);
+  static Dio dio = Dio(Config.options);
   List<TravelRequestListModel> trlm = List();
   @override
   void initState() {
     super.initState();
-    // getTravelData();
+    getHotelData();
   }
 
   @override
@@ -262,5 +266,23 @@ static Dio dio = Dio(Config.options);
         ],
       ),
     );
+  }
+
+  getHotelData() async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "GetAllTravelRequests"},
+        options: Options(
+          contentType: ContentType.parse('application/json'),
+        ));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      setState(() {
+        trlm = (json.decode(response.data) as List)
+            .map((f) => TravelRequestListModel.fromJson(f))
+            .toList();
+      });
+    } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
+    }
   }
 }
