@@ -2,6 +2,7 @@ import 'package:eaglebiz/activity/HomePage.dart';
 import 'package:eaglebiz/activity/Login.dart';
 import 'package:eaglebiz/commonDrawer/CollapsingListTile.dart';
 import 'package:eaglebiz/functionality/approvals/Approvals.dart';
+import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
 import 'package:eaglebiz/functionality/location/MapsActivity.dart';
 import 'package:eaglebiz/functionality/permissions/Permissions.dart';
 import 'package:eaglebiz/functionality/salesLead/SalesLead.dart';
@@ -44,6 +45,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -53,7 +55,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -63,7 +66,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -73,7 +77,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
-    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
@@ -84,6 +89,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 
 //    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
@@ -94,7 +100,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
-    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 //    NavigationModel(title: "Location", icon: Icons.location_searching,),
   ];
   List<NavigationModel> navigationItemsLocation = [
@@ -106,8 +113,20 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
-    NavigationModel(title: "Travel Request", icon: Icons.card_travel)
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
 //    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+  ];
+
+  List<NavigationModel> navigationItemsHotels = [
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Home", icon: Icons.home),
+    NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
+    NavigationModel(title: "Tasks", icon: Icons.assignment),
+    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   getFullName() async {
@@ -132,6 +151,9 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
         } else if (result.toString() == "7") {
           navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
           listMain = navigationItemsTravel;
+        } else if (result.toString() == "8") {
+          navigationItemsHotels.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsHotels;
         }
 
 //        else if(result.toString()=="6"){
@@ -151,6 +173,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           listMain = navigationItemsApprovals;
         } else if (result.toString() == "7") {
           listMain = navigationItemsTravel;
+        } else if (result.toString() == "8") {
+          listMain = navigationItemsHotels;
         }
 //        else if(result.toString()=="6"){
 //        listMain=navigationItemsLocation;
@@ -238,6 +262,13 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   TravelRequestList()),
+                        );
+                      } else if (listMain[counter].title == "Hotel Request") {
+                        var navigator = Navigator.of(context);
+                        navigator.push(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  HotelRequestList()),
                         );
                       }
                     },

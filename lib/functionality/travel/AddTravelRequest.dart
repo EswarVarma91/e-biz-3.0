@@ -65,7 +65,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add travel request',
+          'Add Travel Request',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),

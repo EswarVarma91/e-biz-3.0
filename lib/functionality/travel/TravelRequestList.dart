@@ -31,7 +31,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Travel Request',
+          'Travel Requests',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
