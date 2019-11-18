@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:eaglebiz/model/TaskListModel.dart';
 import 'package:eaglebiz/model/TravelCodesModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
@@ -24,7 +25,7 @@ class _TravelSelectionState extends State<TravelSelection> {
   String mode, res;
   bool dynamicData;
   String airportCodes;
-  List<TravelCodesModel> tcm;
+  List<TravelCodesModel> tcm, filtertcm = [];
   _TravelSelectionState(this.mode, this.res);
   List<String> listModeData = ['Flight', 'Train', 'Bus'];
   List<String> listModeTypeData = ['Domestic', 'International'];
@@ -41,13 +42,25 @@ class _TravelSelectionState extends State<TravelSelection> {
   List<String> listBusClassData = ['Sleeper', 'Semi-Sleeper', 'Non-AC'];
   List<String> listFlightClassData = ['Business', 'Economy'];
   List<String> list;
+  // final _debouncer = Debouncer( milliseconds: 500);
+  TextEditingController _controllerCodes=TextEditingController();
 
   @override
   void initState() {
     super.initState();
     dynamicData = false;
-  
+     _controllerCodes.addListener(_textCount);
+
     // getAirportCodes();
+  }
+  _textCount(){
+    if(_controllerCodes.text.length>=3){
+      getAirportCodes();
+      print(_controllerCodes.text);
+    }else if(_controllerCodes.text.length<3){
+      tcm.clear();
+      filtertcm.clear();
+    }
   }
 
   @override
@@ -61,7 +74,7 @@ class _TravelSelectionState extends State<TravelSelection> {
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: dynamicData
-          ? Container()
+          ? dynamicListView(context)
           : ListView.builder(
               itemCount: list?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
@@ -98,38 +111,120 @@ class _TravelSelectionState extends State<TravelSelection> {
     } else if (mode == "4") {
       if (res == "Flight") {
         list = listFlightClassData;
+        return "Flight";
       } else if (res == "Train") {
         list = listTrainClassData;
-      } else if (res == "Bus") 
+        return "Train";
+      } else if (res == "Bus") {
         list = listBusClassData;
-      return "Bus";
+        return "Bus";
+      }
     } else if (mode == "5") {
+      if(res=="Flight"){
+        dynamicData = true;
+      }else{
+        dynamicData = false;
+      }
       return "From";
     } else if (mode == "6") {
+      if(res=="Flight"){
+        dynamicData = true;
+      }else{
+        dynamicData = false;
+      }
       return "To";
-    } else if(mode=="7"){
+    } else if (mode == "7") {
       return "OA/Complaint Ticket No.";
-    } 
+    }
   }
 
-  void getAirportCodes() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState(() {
-      airportCodes = preferences.getString("airportCodes");
-    });
-    if (airportCodes == null) {
-      Response response = await dio
-          .post(ServicesApi.getData, data: {"parameter1": "getAirportCodes"},
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        tcm = (json.decode(response.data) as List)
-            .map((data) => new TravelCodesModel.fromJson(data))
-            .toList();
-        print(tcm);
-      }
-    } else {}
+  getAirportCodes() async {
+    Response response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getAirportCodes","parameter2":_controllerCodes.text+"%"},
+        options: Options(
+          contentType: ContentType.parse('application/json'),
+        ));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      tcm = (json.decode(response.data) as List)
+          .map((data) => new TravelCodesModel.fromJson(data))
+          .toList();
+          filtertcm=tcm;
+      // print(tcm);
+    }
+  }
+
+  dynamicListView(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: TextField(
+              controller: _controllerCodes,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(15.0),
+                hintText: "Search",
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.search),
+              ),
+              
+              // onChanged: (string) {
+                // if(string.length==3){
+                //   getAirportCodes();
+                // }else{
+                //   tcm=[];
+                //   filtertcm=[];
+                // }
+                // _debouncer.run(() {
+                //   setState(() {
+                //     filtertcm = tcm
+                //         .where((u) => (u.stationCode
+                //                 .toLowerCase()
+                //                 .contains(string.toLowerCase()) ||
+                //             u.stationName
+                //                 .toString()
+                //                 .toLowerCase()
+                //                 .contains(string.toLowerCase())))
+                //         .toList();
+                //   });
+                // }
+                // );
+              // },
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                padding: EdgeInsets.only(left: 8, right: 8),
+                itemCount: filtertcm == null ? 0 : filtertcm.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    child: ListTile(
+                      onTap: () {
+                          Navigator.pop(
+                              context,
+                              filtertcm[index].stationCode +
+                                  " U_" +
+                                  filtertcm[index].stationId.toString());
+                      },
+                      title: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          filtertcm[index].stationCode.toString() +
+                              ", " +
+                              filtertcm[index].stationName,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+//                  trailing:Padding(padding:EdgeInsets.all(10),child: Text(fliterReferals[index].uId)),
+                    ),
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
   }
 }
-
