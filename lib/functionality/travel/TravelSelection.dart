@@ -55,13 +55,15 @@ class _TravelSelectionState extends State<TravelSelection> {
   }
 
   _textCount() {
-    if (_controllerCodes.text.length >= 3) {
+    if (_controllerCodes.text.length >= 2) {
       getAirportCodes();
       print(_controllerCodes.text);
-    } else if (_controllerCodes.text.length < 3) {
+    } else {
       if (tcm != null) {
-        tcm.clear();
-        filtertcm.clear();
+        setState(() {
+          tcm.clear();
+          filtertcm.clear();
+        });
       }
     }
   }
@@ -136,8 +138,6 @@ class _TravelSelectionState extends State<TravelSelection> {
         dynamicData = false;
       }
       return "To";
-    } else if (mode == "7") {
-      return "OA/Complaint Ticket No.";
     }
   }
 
@@ -151,10 +151,12 @@ class _TravelSelectionState extends State<TravelSelection> {
           contentType: ContentType.parse('application/json'),
         ));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      tcm = (json.decode(response.data) as List)
-          .map((data) => new TravelCodesModel.fromJson(data))
-          .toList();
-      filtertcm = tcm;
+      setState(() {
+        tcm = (json.decode(response.data) as List)
+            .map((data) => new TravelCodesModel.fromJson(data))
+            .toList();
+        filtertcm = tcm;
+      });
       // print(tcm);
     }
   }
@@ -173,29 +175,6 @@ class _TravelSelectionState extends State<TravelSelection> {
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),
-
-              // onChanged: (string) {
-              // if(string.length==3){
-              //   getAirportCodes();
-              // }else{
-              //   tcm=[];
-              //   filtertcm=[];
-              // }
-              // _debouncer.run(() {
-              //   setState(() {
-              //     filtertcm = tcm
-              //         .where((u) => (u.stationCode
-              //                 .toLowerCase()
-              //                 .contains(string.toLowerCase()) ||
-              //             u.stationName
-              //                 .toString()
-              //                 .toLowerCase()
-              //                 .contains(string.toLowerCase())))
-              //         .toList();
-              //   });
-              // }
-              // );
-              // },
             ),
           ),
           Expanded(
@@ -224,7 +203,7 @@ class _TravelSelectionState extends State<TravelSelection> {
                           ),
                         ),
                       ),
-//                  trailing:Padding(padding:EdgeInsets.all(10),child: Text(fliterReferals[index].uId)),
+                      //                  trailing:Padding(padding:EdgeInsets.all(10),child: Text(fliterReferals[index].uId)),
                     ),
                   );
                 }),

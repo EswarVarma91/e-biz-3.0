@@ -1,5 +1,6 @@
 import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:eaglebiz/functionality/taskPlanner/Members.dart';
+import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/functionality/travel/TravelSelection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -26,7 +27,9 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       TcomplaintNo,
       TrarrivalDateTime,
       TcomaplaintTicketNo,
-      TravelNameId;
+      TravelNameId,
+      TcomaplaintId,
+      TcomaplaintRefType;
   bool _isItflight = false;
   int y, m, d, hh, mm, ss;
   String toA, toB, toC;
@@ -53,6 +56,83 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.check,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              if (Tmode == "Flight") {
+                if (TravelNameId.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select traveller name!");
+                } else if (Tmode.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select mode!");
+                } else if (TmodeType.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select mode type!");
+                } else if (Tclass.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select class!");
+                } else if (TfromId.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Please select from station code!");
+                } else if (TtoId.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select to station code!");
+                } else if (TrarrivalDateTime.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Please select journey date and time!");
+                } else if (TcomaplaintId.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select complaint no. !");
+                } else if (_controllerPurpose1.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select purpose!");
+                } else {
+                  insertTravelRequest(
+                      TravelNameId,
+                      Tmode,
+                      TmodeType,
+                      Tclass,
+                      TfromId,
+                      TtoId,
+                      TrarrivalDateTime,
+                      TcomaplaintId,
+                      _controllerPurpose1.text);
+                }
+              } else {
+                if (TravelNameId.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select traveller name!");
+                } else if (Tmode.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select mode!");
+                } else if (TmodeType.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select mode type!");
+                } else if (Tclass.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select class!");
+                } else if (_controllerFrom1.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please enter from address!");
+                } else if (_controllerTo1.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please enter to address!");
+                } else if (TrarrivalDateTime.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Please select journey date and time!");
+                } else if (TcomaplaintId.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select complaint no. !");
+                } else if (_controllerPurpose1.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Please select purpose!");
+                } else{
+                  insertTravelRequest(
+                      TravelNameId,
+                      Tmode,
+                      TmodeType,
+                      Tclass,
+                      _controllerFrom1.text,
+                      _controllerTo1.text,
+                      TrarrivalDateTime,
+                      TcomaplaintId,
+                      _controllerPurpose1.text);
+                }
+              }
+              // Fluttertoast.showToast(msg: "Saved");
+            },
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.only(left: 0, top: 5),
@@ -308,10 +388,12 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            TravelSelection("7", "")));
+                            ProjectSelection("OA/Complaint Ticket No.")));
                 if (data != null) {
                   setState(() {
-                    TcomaplaintTicketNo = data.toString();
+                    TcomaplaintTicketNo = data.split(" P_")[0].toString();
+                    TcomaplaintId = data.split(" P_")[1].toString();
+                    TcomaplaintRefType = data.split(" P_")[2].toString();
                   });
                 }
               },
@@ -344,4 +426,17 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       TrarrivalDateTime = d[0].toString();
     });
   }
+
+  void insertTravelRequest(
+      String travelNameId,
+      String tmode,
+      String tmodeType,
+      String tclass,
+      String tfromId,
+      String ttoId,
+      String trarrivalDateTime,
+      String tcomaplaintId,
+      String text) {
+
+      }
 }
