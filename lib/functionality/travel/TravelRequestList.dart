@@ -223,38 +223,38 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                // SizedBox(
-                                //   height: 30,
-                                //   width: 70,
-                                //   child: Material(
-                                //     elevation: 2.0,
-                                //     shadowColor: Colors.grey,
-                                //     borderRadius: BorderRadius.circular(10.0),
-                                //     color: lwtColor,
-                                //     child: MaterialButton(
-                                //       height: 22.0,
-                                //       padding: EdgeInsets.all(3),
-                                //       child: Text(
-                                //         "View",
-                                //         textAlign: TextAlign.center,
-                                //         style: TextStyle(
-                                //             color: Colors.white,
-                                //             fontWeight: FontWeight.bold),
-                                //       ),
-                                //       onPressed: () {
-                                //         Navigator.push(
-                                //             context,
-                                //             MaterialPageRoute(
-                                //                 builder:
-                                //                     (BuildContext context) =>
-                                //                         ViewTravelRequest(
-                                //                             trlm[index].tra_id,
-                                //                             trlm[index]
-                                //                                 .reqNo)));
-                                //       },
-                                //     ),
-                                //   ),
-                                // )
+                                SizedBox(
+                                  height: 30,
+                                  width: 70,
+                                  child: Material(
+                                    elevation: 2.0,
+                                    shadowColor: Colors.grey,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: lwtColor,
+                                    child: MaterialButton(
+                                      height: 22.0,
+                                      padding: EdgeInsets.all(3),
+                                      child: Text(
+                                        "View",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ViewTravelRequest(
+                                                            trlm[index].tra_id,
+                                                            trlm[index]
+                                                                .reqNo)));
+                                      },
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ],
