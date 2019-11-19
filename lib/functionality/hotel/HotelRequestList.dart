@@ -247,38 +247,38 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                 SizedBox(
                                   height: 6,
                                 ),
-                                // SizedBox(
-                                //   height: 30,
-                                //   width: 70,
-                                //   child: Material(
-                                //     elevation: 2.0,
-                                //     shadowColor: Colors.grey,
-                                //     borderRadius: BorderRadius.circular(10.0),
-                                //     color: lwtColor,
-                                //     child: MaterialButton(
-                                //       height: 22.0,
-                                //       padding: EdgeInsets.all(3),
-                                //       child: Text(
-                                //         "View",
-                                //         textAlign: TextAlign.center,
-                                //         style: TextStyle(
-                                //             color: Colors.white,
-                                //             fontWeight: FontWeight.bold),
-                                //       ),
-                                //       onPressed: () {
-                                //         Navigator.push(
-                                //             context,
-                                //             MaterialPageRoute(
-                                //                 builder: (BuildContext
-                                //                         context) =>
-                                //                     ViewHotelRequest(
-                                //                         trlm[index].hotel_id,
-                                //                         trlm[index]
-                                //                             .hotel_ref_no)));
-                                //       },
-                                //     ),
-                                //   ),
-                                // )
+                                SizedBox(
+                                  height: 30,
+                                  width: 70,
+                                  child: Material(
+                                    elevation: 2.0,
+                                    shadowColor: Colors.grey,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: lwtColor,
+                                    child: MaterialButton(
+                                      height: 22.0,
+                                      padding: EdgeInsets.all(3),
+                                      child: Text(
+                                        "View",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    ViewHotelRequest(
+                                                        trlm[index].hotel_id,
+                                                        trlm[index]
+                                                            .hotel_ref_no)));
+                                      },
+                                    ),
+                                  ),
+                                )
                               ],
                             )
                           ],
