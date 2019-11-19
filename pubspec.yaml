@@ -23,7 +23,8 @@ dependencies:
   location: ^2.3.5
   progress_dialog: ^1.2.0
   flutter_speed_dial: ^1.2.4
-  expandable : ^3.0.1
+  expandable: ^3.0.1
+  flutter_rating_bar: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -35,9 +36,9 @@ flutter:
     - assets/images/ebiz.png
     - assets/images/as.png
   fonts:
-     - family: Roboto
-       fonts:
-         - asset: assets/fonts/Roboto-Regular.ttf
-         - asset: assets/fonts/Roboto-Bold.ttf
-         - asset: assets/fonts/Roboto-Light.ttf
-         - asset: assets/fonts/Roboto-Medium.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf

@@ -1,25 +1,27 @@
 class ServicesApi {
   //========= New DataBase ebizdb=========//
 
-  // static String basic_url = "http://192.168.2.5:8383/"; //Live
+  static String basic_url = "http://192.168.2.5:8383/"; //Live
 
-  static String basic_url = "http://192.168.2.3:8080/"; //test
+  // static String basic_url = "http://192.168.2.3:8080/"; //test
 
   static String new_login_url = basic_url + "global.service/validate/user";
 
   static String global_Service = "global.service/global/";
   static String hrms_Service = "hrms.service/hrms/";
   static String att_Service = "att.service/hrms/";
-  static String travel_Service = "travel.service/travel/";
+  static String travel_Service = "travel.service/";
   static String crm = 'crm.service/';
 
   //CRM Sales Lead
   static String Pending_Url = basic_url + crm + "crm/get/data";
-  static String Sales_Insert_Url =basic_url + crm + 'crm/sales/request/save';
+  static String Sales_Insert_Url = basic_url + crm + 'crm/sales/request/save';
 
   //
-  static String getData =basic_url + global_Service + "getAnyGlobalDataForMobile";
-  static String updateData =basic_url + global_Service + "updateAnyGlobalDataForMobile";
+  static String getData =
+      basic_url + global_Service + "getAnyGlobalDataForMobile";
+  static String updateData =
+      basic_url + global_Service + "updateAnyGlobalDataForMobile";
 
   //Leaves
   static String insertLeave = basic_url + hrms_Service + "saveEmpLeave";
@@ -28,16 +30,21 @@ class ServicesApi {
   static String checkLeaveStatus = basic_url + hrms_Service + "get/hruser/data";
 
   //Permissions
-  static String insertPermission =basic_url + hrms_Service + "saveEmpPermission";
-  static String ChangePermissionStatus =basic_url + hrms_Service + "update/Permission/status";
-  static String getLeaves =basic_url + att_Service + "attendance/get/user/leaves?id=";
+  static String insertPermission =
+      basic_url + hrms_Service + "saveEmpPermission";
+  static String ChangePermissionStatus =
+      basic_url + hrms_Service + "update/Permission/status";
+  static String getLeaves =
+      basic_url + att_Service + "attendance/get/user/leaves?id=";
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = basic_url + hrms_Service + "saveDayPlan";
 
-
   //Travel Insertion
-  static String insert_travel = basic_url + travel_Service + "request/save";
+  static String insert_travel =
+      basic_url + travel_Service + "travel/request/save";
+  static String insert_hotel =
+      basic_url + travel_Service + "hotel/request/save";
 
   //get Travel Request List
   // static String getTravelList= basic_url + travel_Service + "get/travel/request";
