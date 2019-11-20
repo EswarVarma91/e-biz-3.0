@@ -14,10 +14,13 @@ class TravelRequestByTId {
       approved_by,
       tra_cancelled_by,
       u_grade,
+      ref_type,
+      requiredDateTime,
       tra_required_datetime,
       tra_cancelled_payment_mode,
       tra_cancelled_card_no;
   double tra_cancelled_charges;
+  int ref_id, approved_status;
 
   TravelRequestByTId(
       this.fullName,
@@ -36,9 +39,13 @@ class TravelRequestByTId {
       this.approved_by,
       this.tra_cancelled_by,
       this.u_grade,
+      this.ref_type,
       this.tra_cancelled_card_no,
       this.tra_cancelled_charges,
-      this.tra_cancelled_payment_mode);
+      this.tra_cancelled_payment_mode,
+      this.ref_id,
+      this.approved_status,
+      this.requiredDateTime);
 
   TravelRequestByTId.fromJson(Map<String, dynamic> json)
       : fullName = json['fullName'],
@@ -59,5 +66,9 @@ class TravelRequestByTId {
         tra_cancelled_by = json['tra_cancelled_by'],
         tra_cancelled_charges = json['tra_cancelled_charges'],
         tra_cancelled_payment_mode = json['tra_cancelled_payment_mode'],
-        tra_cancelled_card_no = json['tra_cancelled_card_no'];
+        tra_cancelled_card_no = json['tra_cancelled_card_no'],
+        ref_type = json['ref_type'],
+        ref_id = json['ref_id'],
+        approved_status = json['approved_status'],
+        requiredDateTime=json['requiredDateTime'];
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:eaglebiz/functionality/hotel/DownTeamMembers.dart';
 import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
@@ -30,6 +31,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       Tclass,
       TcomplaintNo,
       TrarrivalDateTime,
+      TrequiredDateTime,
       TcomaplaintTicketNo,
       TravelNameId,
       TcomaplaintId,
@@ -37,7 +39,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
   bool _isItflight = false;
   static Dio dio = Dio(Config.options);
   int y, m, d, hh, mm, ss;
-  String toA, toB, toC;
+  int year, month, day, hour, minute;
   String uid, profilename;
 
   getUserDetails() async {
@@ -97,6 +99,9 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   Fluttertoast.showToast(msg: "Please select complaint no. !");
                 } else if (_controllerPurpose1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Please select purpose!");
+                } else if (TrequiredDateTime.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Please select required date and time!");
                 } else {
                   insertTravelRequest(
                       TravelNameId,
@@ -108,6 +113,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       TrarrivalDateTime,
                       TcomaplaintId,
                       TcomaplaintRefType,
+                      TrequiredDateTime,
                       _controllerPurpose1.text);
                 }
               } else {
@@ -130,6 +136,9 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   Fluttertoast.showToast(msg: "Please select complaint no. !");
                 } else if (_controllerPurpose1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Please select purpose!");
+                } else if (TrequiredDateTime.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Please select required date and time!");
                 } else {
                   insertTravelRequest(
                       TravelNameId,
@@ -141,6 +150,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       TrarrivalDateTime,
                       TcomaplaintId,
                       TcomaplaintRefType,
+                      TrequiredDateTime,
                       _controllerPurpose1.text);
                 }
               }
@@ -172,7 +182,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ReferedBy("Traveller Name")));
+                            DownTeamMembers("Traveller Name")));
                 if (data != null) {
                   setState(() {
                     TtravelName = data.split(" USR_")[0].toString();
@@ -387,6 +397,31 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
             ListTile(
               title: TextFormField(
                 enabled: false,
+                controller: TextEditingController(text: TrequiredDateTime),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.chrome_reader_mode),
+                  labelText: "Required Arrival Date & Time",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              trailing: Icon(Icons.calendar_today),
+              onTap: () async {
+                DatePicker.showDateTimePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(year, month, day, hour, minute+1),
+                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
+                  changeDateT(date);
+                }, onConfirm: (date) {
+                  changeDateT(date);
+                }, locale: LocaleType.en);
+              },
+            ),
+            ListTile(
+              title: TextFormField(
+                enabled: false,
                 controller: TextEditingController(text: TcomaplaintTicketNo),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -436,9 +471,35 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     String newDate = date.toString();
     List<String> d = [];
     d = newDate.split(".");
+  
+
     // print(d[0]);
     setState(() {
+      List<String> aa = [];
+      aa = d[0].split(" ");
+      String date=aa[0].toString();
+      String time=aa[1].toString();
+      List<String> bb=[];
+      bb = date.split("-");
+      year = int.parse(bb[0].toString());
+      month = int.parse(bb[1].toString());
+      day = int.parse(bb[2].toString());
+      List<String> cc=[];
+      cc = time.split(":");
+      hour=int.parse(cc[0].toString());
+      minute=int.parse(cc[1].toString());
+
       TrarrivalDateTime = d[0].toString();
+    });
+  }
+
+  void changeDateT(DateTime date) {
+    String newDate = date.toString();
+    List<String> d = [];
+    d = newDate.split(".");
+    // print(d[0]);
+    setState(() {
+      TrequiredDateTime = d[0].toString();
     });
   }
 
@@ -452,8 +513,8 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       String trarrivalDateTime,
       String tcomaplaintId,
       String tcomaplaintRefType,
+      String trequiredDateTime,
       String purpose) async {
-    var now = DateTime.now();
     var response = await dio.post(ServicesApi.insert_travel,
         data: {
           "actionMode": "insert",
@@ -462,12 +523,12 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
           "from": tfrom,
           "journeyDate": trarrivalDateTime,
           "mode": tmode,
-          "modeType":tmodeType,
+          "modeType": tmodeType,
           "modifiedBy": profilename,
           "purpose": purpose,
           "refId": tcomaplaintId,
           "refType": tcomaplaintRefType,
-          "reqDateTime": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+          "reqDateTime": trequiredDateTime,
           "to": tto,
           "uId": travelNameId
         },
@@ -480,7 +541,8 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
 
       var navigator = Navigator.of(context);
       navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
+        MaterialPageRoute(
+            builder: (BuildContext context) => TravelRequestList()),
         ModalRoute.withName('/'),
       );
     } else if (response.statusCode == 401) {

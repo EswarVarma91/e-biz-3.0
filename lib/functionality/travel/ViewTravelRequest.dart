@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:eaglebiz/functionality/travel/EditTravelRequest.dart';
+import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
 import 'package:eaglebiz/main.dart';
 import 'package:eaglebiz/model/TravelHistoryModel.dart';
 import 'package:eaglebiz/model/TravelRequestByTId.dart';
@@ -9,6 +11,7 @@ import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewTravelRequest extends StatefulWidget {
   int tra_id;
@@ -22,12 +25,17 @@ class ViewTravelRequest extends StatefulWidget {
 
 class _ViewTravelRequestState extends State<ViewTravelRequest> {
   int tra_id;
-  String reqNo;
+  String reqNo,profilename;
+  bool _editEnable = true;
   _ViewTravelRequestState(this.tra_id, this.reqNo);
   Dio dio = Dio(Config.options);
   List<TravelRequestByTId> trbtid = List();
   List<TravelHistoryModel> trh = List();
 
+getUserDetails() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    profilename = preferences.getString("profileName");
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -46,18 +54,29 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
           ),
           iconTheme: IconThemeData(color: Colors.white),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit, color: Colors.white),
-              onPressed: () {
-                ///Edit Request only Journey Date.
-                Fluttertoast.showToast(msg: "Coming Soon.!");
-              },
-            ),
+            _editEnable
+                ? IconButton(
+                    icon: Icon(Icons.edit, color: Colors.white),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  EditTravelRequest(
+                                      trbtid[0], tra_id.toString())));
+
+                      ///Edit Request only Journey Date.
+                      // Fluttertoast.showToast(msg: "Coming Soon.!");
+                    },
+                  )
+                : Container(),
             IconButton(
               icon: Icon(Icons.delete, color: Colors.white),
               onPressed: () {
+                cancelRequest(tra_id);
+
                 ///Delete Request
-                Fluttertoast.showToast(msg: "Coming Soon.!");
+                // Fluttertoast.showToast(msg: "Coming Soon.!");
               },
             )
           ],
@@ -1100,6 +1119,11 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
             .map((f) => TravelRequestByTId.fromJson(f))
             .toList();
       });
+      if (trbtid[0].approved_status == 1) {
+        _editEnable = false;
+      } else {
+        _editEnable = true;
+      }
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
@@ -1122,6 +1146,24 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
             .toList();
       });
     } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
+    }
+  }
+
+  void cancelRequest(int tra_id) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {"parameter1": "updateTravelRequestStatus", "parameter2": tra_id,"parameter3":profilename},
+        options: Options(
+          contentType: ContentType.parse("application/json"),
+        ));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var navigator = Navigator.of(context);
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (BuildContext context) => TravelRequestList()),
+        ModalRoute.withName('/'),
+      );
+    }else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
   }

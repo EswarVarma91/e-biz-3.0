@@ -5,6 +5,7 @@ import 'package:eaglebiz/functionality/hotel/DownTeamMembers.dart';
 import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/main.dart';
+import 'package:eaglebiz/model/HotelRequestByTId.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
@@ -13,26 +14,31 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddHotelRequest extends StatefulWidget {
+class EditHotelRequest extends StatefulWidget {
+  HotelRequestByTId hrbtid;
+  String hotel_id;
+  EditHotelRequest(this.hrbtid, this.hotel_id);
+
   @override
-  _AddHotelRequestState createState() => _AddHotelRequestState();
+  _EditHotelRequestState createState() =>
+      _EditHotelRequestState(hrbtid, hotel_id);
 }
 
-class _AddHotelRequestState extends State<AddHotelRequest> {
-  String TtravelName,
-      TravelNameId,
-      _userRating,
-      checkIn,
+class _EditHotelRequestState extends State<EditHotelRequest> {
+  HotelRequestByTId hrbtid;
+  String hotel_id;
+  _EditHotelRequestState(this.hrbtid, this.hotel_id);
+
+  String checkIn,
       checkIns,
       checkOut,
       checkOuts,
-      TcomplaintTicketNo,
-      TcomplaintId,
-      TcomplaintRefType;
-  double ratingBar;
-  TextEditingController _controllerLocation = new TextEditingController();
-  TextEditingController _controllerPurpose = new TextEditingController();
-  TextEditingController _controllerRating = new TextEditingController();
+      travelnameH,
+      locationH,
+      ratingH,
+      complaintnoH,
+      purposeH;
+
   int y, m, d;
   String toA, toB, toC, profilename;
   static Dio dio = Dio(Config.options);
@@ -50,13 +56,20 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     m = now.month;
     d = now.day;
     getUserDetails();
+    checkIns = hrbtid.hotel_his_check_in;
+    checkOuts = hrbtid.hotel_his_check_out;
+    travelnameH = hrbtid.travellerName;
+    locationH = hrbtid.hotel_his_location;
+    ratingH = hrbtid.hotel_his_rating.toString();
+    complaintnoH = hrbtid.proj_oano.toString();
+    purposeH = hrbtid.hotel_his_purpose;
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Hotel Request',
+          'Edit Hotel Request',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
@@ -67,23 +80,10 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               color: Colors.white,
             ),
             onPressed: () {
-              if (TravelNameId.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select traveller name!");
-              } else if (_controllerLocation.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Please enter location!");
-              } else if (_controllerRating.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Please Enter rating!");
-              } else if (checkIn.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select check-in time!");
+              if (checkIn.isEmpty) {
               } else if (checkOut.isEmpty) {
-                Fluttertoast.showToast(msg: "Please select check-out time!");
-              } else if (_controllerPurpose.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Please Enter Purpose!");
-              } else if (TcomplaintTicketNo.isEmpty) {
-                Fluttertoast.showToast(
-                    msg: "Please select complaint ticket no.!");
               } else {
-                insertHotelRequest();
+                edithoteRequestService(checkIn, checkOut);
               }
             },
           ),
@@ -96,7 +96,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
             ListTile(
               title: TextFormField(
                 enabled: false,
-                controller: TextEditingController(text: TtravelName),
+                controller: TextEditingController(text: travelnameH),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -106,24 +106,11 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            DownTeamMembers("Traveller Name")));
-                if (data != null) {
-                  setState(() {
-                    TtravelName = data.split(" USR_")[0].toString();
-                    TravelNameId = data.split(" USR_")[1].toString();
-                  });
-                }
-              },
             ),
             ListTile(
               title: TextFormField(
-                controller: _controllerLocation,
+                enabled: false,
+                controller: TextEditingController(text: locationH),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -136,21 +123,13 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
             ),
             ListTile(
                 title: TextFormField(
-              controller: _controllerRating,
+              enabled: false,
+              controller: TextEditingController(text: ratingH),
               keyboardType: TextInputType.number,
-              maxLength: 1,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: "Enter Rating",
-                  suffixIcon: MaterialButton(
-                    onPressed: () {
-                      setState(() {
-                        ratingBar =
-                            double.parse(_controllerRating.text ?? "0.0");
-                      });
-                    },
-                    child: Icon(Icons.star),
-                  )),
+                border: OutlineInputBorder(),
+                labelText: "Enter Rating",
+              ),
             )),
             ListTile(
               title: TextFormField(
@@ -240,7 +219,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
             ListTile(
               title: TextFormField(
                 enabled: false,
-                controller: TextEditingController(text: TcomplaintTicketNo),
+                controller: TextEditingController(text: complaintnoH),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -250,25 +229,11 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ProjectSelection("OA/Complaint Ticket No.")));
-                if (data != null) {
-                  setState(() {
-                    TcomplaintTicketNo = data.split(" P_")[0].toString();
-                    TcomplaintId = data.split(" P_")[1].toString();
-                    TcomplaintRefType = data.split(" P_")[2].toString();
-                  });
-                }
-              },
             ),
             ListTile(
               title: TextFormField(
-                controller: _controllerPurpose,
+                enabled: false,
+                controller: TextEditingController(text: purposeH),
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -316,29 +281,17 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     });
   }
 
-  insertHotelRequest() async {
-    var now = DateTime.now();
-    var response = await dio.post(ServicesApi.insert_hotel,
+  void edithoteRequestService(String checkIn, String checkOut) async {
+    var response = await dio.post(ServicesApi.updateData,
         data: {
-          "actionMode": "insert",
-          "hotelLocation": _controllerLocation.text,
-          "hotelCheckIn": checkIn,
-          "hotelCheckOut": checkOut,
-          "hotelRating": _controllerRating.text,
-          "hotelPurpose": _controllerPurpose.text,
-          "hotelCreatedBy": profilename,
-          "hotelModifiedBy": profilename,
-          "refId": TcomplaintId,
-          "refType": TcomplaintRefType,
-          "uId": TravelNameId,
-          "hotelCreatedDate": DateFormat("yyyy-MM-dd").format(now)
+          "parameter1": "updateHotelRequest",
+          "parameter2": hotel_id,
+          "parameter3": checkIn,
+          "parameter4": checkOut,
+          "parameter5": profilename
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Fluttertoast.showToast(msg: "Success");
-
       var navigator = Navigator.of(context);
       navigator.pushAndRemoveUntil(
         MaterialPageRoute(
