@@ -162,8 +162,8 @@ class _NewPermissionState extends State<NewPermissions> {
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime(y, m, d ),
-                            maxTime: DateTime(y, m, d +2),
+                            minTime: DateTime(y, m, d),
+                            maxTime: DateTime(y, m, d + 2),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
@@ -277,11 +277,6 @@ class _NewPermissionState extends State<NewPermissions> {
               personal = !personal;
             }
           });
-          /* var navigator = Navigator.of(context);
-          navigator.push(
-            MaterialPageRoute(builder: (BuildContext context) => SalesLeadDetails()),
-//                          ModalRoute.withName('/'),
-          );*/
         },
         child: Center(
           child: Padding(
@@ -329,11 +324,6 @@ class _NewPermissionState extends State<NewPermissions> {
               official = !official;
             }
           });
-          /* var navigator = Navigator.of(context);
-          navigator.push(
-            MaterialPageRoute(builder: (BuildContext context) => SalesLeadDetails()),
-//                          ModalRoute.withName('/'),
-          );*/
         },
         child: Center(
           child: Padding(
@@ -392,7 +382,7 @@ class _NewPermissionState extends State<NewPermissions> {
     });
   }
 
-  void permissionSerivceCall() async {
+  permissionSerivceCall() async {
     pr.show();
     try {
       var response;
