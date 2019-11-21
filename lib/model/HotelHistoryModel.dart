@@ -1,4 +1,4 @@
-class HotelRequestByTId{
+class HotelHistoryModel{
   String travellerName;
   String u_grade;
   String hotel_his_location;
@@ -19,21 +19,21 @@ class HotelRequestByTId{
   String hotel_his_payment_mode;
   String hotel_his_payment_source,hotelVersion;
 
-  HotelRequestByTId(this.travellerName,this.u_grade,this.hotel_his_location,this.hotel_his_check_in,this.hotel_his_check_out,this.hotel_his_rating,this.hotel_his_name,this.hotel_his_address,
+  HotelHistoryModel(this.travellerName,this.u_grade,this.hotel_his_location,this.hotel_his_check_in,this.hotel_his_check_out,this.hotel_his_rating,this.hotel_his_name,this.hotel_his_address,
   this.hotel_his_purpose,this.proj_oano,this.hotel_created_by,this.hotel_cancelled_by,this.hotel_cancelled_charges,this.hotel_cancelled_payment_mode,this.hotel_cancelled_source,this.approved_by,
   this.approved_status,this.hotel_his_basic_cost,this.hotel_his_charges,this.hotel_his_payment_mode,this.hotel_his_payment_source,this.hotel_his_tax,
   this.hotel_his_total_cost,this.hotelVersion);
 
-    HotelRequestByTId.fromJson(Map<String, dynamic> json)
+    HotelHistoryModel.fromJson(Map<String, dynamic> json)
       : travellerName = json['travellerName'],
         u_grade = json['u_grade'],
-        hotel_his_location = json['hotel_location'],
-        hotel_his_check_in = json['hotel_check_in'],
-        hotel_his_check_out = json['hotel_check_out'],
-        hotel_his_rating = json['hotel_rating'],
+        hotel_his_location = json['hotel_his_location'],
+        hotel_his_check_in = json['hotel_his_check_in'],
+        hotel_his_check_out = json['hotel_his_check_out'],
+        hotel_his_rating = json['hotel_his_rating'],
         hotel_his_name = json['hotel_his_name'],
         hotel_his_address = json['hotel_his_address'],
-        hotel_his_purpose = json['hotel_purpose'],
+        hotel_his_purpose = json['hotel_his_purpose'],
         proj_oano = json['proj_oano'],
         hotel_created_by = json['hotel_created_by'],
         hotel_cancelled_by = json['hotel_cancelled_by'],

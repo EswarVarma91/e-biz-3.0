@@ -162,8 +162,8 @@ class _NewPermissionState extends State<NewPermissions> {
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime(y, m, d - 9),
-                            maxTime: DateTime(y, m, d + 9),
+                            minTime: DateTime(y, m, d ),
+                            maxTime: DateTime(y, m, d +2),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(

@@ -20,10 +20,44 @@ class TravelRequestList extends StatefulWidget {
 class _TravelRequestListState extends State<TravelRequestList> {
   static Dio dio = Dio(Config.options);
   List<TravelRequestListModel> trlm = List();
+  List<TravelRequestListModel> trlmList = List();
+  bool pending, approved, cancel;
+  String pendingCount = "-", approvedCount = "-", cancelledCount = "-";
+
   @override
   void initState() {
     super.initState();
     getTravelData();
+    pending = true;
+    approved = false;
+    cancel = false;
+    // checkServices();
+  }
+
+  checkServices() {
+    trlmList.clear();
+    if (pending == true) {
+      setState(() {
+        trlmList = trlm
+            .where((item) =>
+                item.approved_status != 1 && item.tra_is_cancelled != 1)
+            .toList();
+      });
+    } else if (approved == true) {
+      setState(() {
+        trlmList = trlm
+            .where((item) =>
+                item.approved_status == 1 && item.tra_is_cancelled == 0)
+            .toList();
+      });
+    } else if (cancel == true) {
+      setState(() {
+        trlmList = trlm
+            .where((item) =>
+                item.tra_is_cancelled == 1 && item.approved_status == 0)
+            .toList();
+      });
+    }
   }
 
   @override
@@ -52,11 +86,39 @@ class _TravelRequestListState extends State<TravelRequestList> {
             color: Colors.white,
           ),
           Container(
+            margin: EdgeInsets.only(left: 60, right: 5, top: 5),
+            child: StaggeredGridView.count(
+              crossAxisCount: 9,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 5.0,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: pendingTravel(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: approvedTravel(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: cancelledTravel(),
+                ),
+              ],
+              staggeredTiles: [
+                StaggeredTile.extent(3, 85.0),
+                StaggeredTile.extent(3, 85.0),
+                StaggeredTile.extent(3, 85.0),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 0, right: 5, top: 90),
             child: ListView.builder(
-              itemCount: trlm?.length ?? 0,
+              itemCount: trlmList?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                    margin: EdgeInsets.only(left: 60, right: 5, top: 6),
+                    margin: EdgeInsets.only(left: 60, right: 5, top: 5),
                     child: Card(
                       child: Container(
                         padding: EdgeInsets.all(12),
@@ -75,7 +137,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlm[index].reqNo,
+                                      trlmList[index].reqNo,
                                       style: TextStyle(
                                           color: lwtColor,
                                           fontWeight: FontWeight.bold,
@@ -85,7 +147,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                 ),
                                 Text(
                                   checkTravelRequestStatus(
-                                      trlm[index].tra_status),
+                                      trlmList[index].tra_status),
                                   style: TextStyle(
                                       color: Colors.amber,
                                       fontWeight: FontWeight.bold,
@@ -108,7 +170,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlm[index].fullName,
+                                      trlmList[index].fullName,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -125,7 +187,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlm[index].journeyDate,
+                                      trlmList[index].journeyDate,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -150,7 +212,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlm[index].tra_from,
+                                      trlmList[index].tra_from,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -167,7 +229,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlm[index].tra_to,
+                                      trlmList[index].tra_to,
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -195,7 +257,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                     Container(
                                         width: 180,
                                         child: Text(
-                                          trlm[index].tra_purpose,
+                                          trlmList[index].tra_purpose,
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.bold,
@@ -212,7 +274,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                     Container(
                                         width: 180,
                                         child: Text(
-                                          trlm[index].proj_oano,
+                                          trlmList[index].proj_oano,
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.bold,
@@ -223,38 +285,42 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                SizedBox(
-                                  height: 30,
-                                  width: 70,
-                                  child: Material(
-                                    elevation: 2.0,
-                                    shadowColor: Colors.grey,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: lwtColor,
-                                    child: MaterialButton(
-                                      height: 22.0,
-                                      padding: EdgeInsets.all(3),
-                                      child: Text(
-                                        "View",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        ViewTravelRequest(
-                                                            trlm[index].tra_id,
-                                                            trlm[index]
-                                                                .reqNo)));
-                                      },
-                                    ),
-                                  ),
-                                )
+                                pending
+                                    ?  SizedBox(
+                                        height: 30,
+                                        width: 70,
+                                        child: Material(
+                                          elevation: 2.0,
+                                          shadowColor: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: lwtColor,
+                                          child: MaterialButton(
+                                            height: 22.0,
+                                            padding: EdgeInsets.all(3),
+                                            child: Text(
+                                              "View",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ViewTravelRequest(
+                                                              trlmList[index]
+                                                                  .tra_id,
+                                                              trlmList[index]
+                                                                  .reqNo)));
+                                            },
+                                          ),
+                                        ),
+                                      ):Container()
+                                    ,
                               ],
                             ),
                           ],
@@ -271,6 +337,194 @@ class _TravelRequestListState extends State<TravelRequestList> {
     );
   }
 
+  Material pendingTravel() {
+    return Material(
+      color: pending ? lwtColor : Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: pending ? lwtColor : Colors.white,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            pending = !pending;
+            checkServices();
+            if (approved == true) {
+              approved = false;
+              checkServices();
+            } else if (cancel == true) {
+              cancel = false;
+              checkServices();
+            } else if (pending == false) {
+              pending = true;
+              checkServices();
+            }
+          });
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(2.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        "Pending".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Roboto",
+                          color: pending ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        pendingCount,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Roboto",
+                          color: pending ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Material approvedTravel() {
+    return Material(
+      color: approved ? lwtColor : Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: approved ? lwtColor : Colors.white,
+      child: InkWell(
+        onTap: () {
+          approved = !approved;
+          checkServices();
+          if (pending == true) {
+            pending = false;
+            checkServices();
+          } else if (cancel == true) {
+            cancel = false;
+            checkServices();
+          } else if (approved == false) {
+            approved = true;
+            checkServices();
+          }
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(2.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        "Approved".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Roboto",
+                          color: approved ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        approvedCount,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Roboto",
+                          color: approved ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Material cancelledTravel() {
+    return Material(
+      color: cancel ? lwtColor : Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: cancel ? lwtColor : Colors.white,
+      child: InkWell(
+        onTap: () {
+          cancel = !cancel;
+          checkServices();
+          if (approved == true) {
+            approved = false;
+            checkServices();
+          } else if (pending == true) {
+            pending = false;
+            checkServices();
+          } else if (cancel == false) {
+            cancel = true;
+            checkServices();
+          }
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(2.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        "Cancelled".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Roboto",
+                          color: cancel ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        cancelledCount,
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontFamily: "Roboto",
+                          color: cancel ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   getTravelData() async {
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "GetAllTravelRequests"},
@@ -283,7 +537,23 @@ class _TravelRequestListState extends State<TravelRequestList> {
         trlm = (json.decode(response.data) as List)
             .map((f) => TravelRequestListModel.fromJson(f))
             .toList();
+        pendingCount = trlm
+            .where((item) =>
+                item.approved_status != 1 && item.tra_is_cancelled != 1)
+            .length
+            .toString();
+        approvedCount = trlm
+            .where((item) =>
+                item.approved_status == 1 && item.tra_is_cancelled == 0)
+            .length
+            .toString();
+        cancelledCount = trlm
+            .where((item) =>
+                item.tra_is_cancelled == 1 && item.approved_status == 0)
+            .length
+            .toString();
       });
+      checkServices();
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }

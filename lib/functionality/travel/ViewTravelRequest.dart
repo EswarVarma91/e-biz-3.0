@@ -74,9 +74,6 @@ getUserDetails() async {
               icon: Icon(Icons.delete, color: Colors.white),
               onPressed: () {
                 cancelRequest(tra_id);
-
-                ///Delete Request
-                // Fluttertoast.showToast(msg: "Coming Soon.!");
               },
             )
           ],
@@ -89,10 +86,10 @@ getUserDetails() async {
                   itemCount: trbtid?.length ?? 0,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      margin: EdgeInsets.only(left: 5, right: 5, top: 6),
+                      margin: EdgeInsets.only(left: 2, right: 2, top: 2),
                       child: Card(
                         child: Container(
-                          padding: EdgeInsets.all(8),
+                          padding: EdgeInsets.all(6),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -257,7 +254,7 @@ getUserDetails() async {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: 5,
                                   ),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -462,7 +459,7 @@ getUserDetails() async {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 10,
+                                    height: 5,
                                   ),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -494,6 +491,7 @@ getUserDetails() async {
                 ),
               ),
             ),
+            Text("Booking History",style: TextStyle(color: lwtColor,fontSize: 15,fontWeight: FontWeight.bold)),
             Container(
               child: Expanded(
                 child: ListView.builder(
