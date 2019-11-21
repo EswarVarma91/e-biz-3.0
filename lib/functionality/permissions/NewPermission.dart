@@ -96,12 +96,12 @@ class _NewPermissionState extends State<NewPermissions> {
               } else if (!totimeCheck.isAfter(fromtimeCheck)) {
                 Fluttertoast.showToast(msg: "Please check your timings");
               } else if (personal == true) {
-                if (totimeCheck.difference(fromtimeCheck).inMinutes <= 120) {
-                  //Service Call
-                  permissionSerivceCall();
-                } else {
-                  Fluttertoast.showToast(msg: "Not More than 2Hours.!");
-                }
+                // if (totimeCheck.difference(fromtimeCheck).inMinutes <= 120) {
+                //Service Call
+                permissionSerivceCall();
+                // } else {
+                //   Fluttertoast.showToast(msg: "Not More than 2Hours.!");
+                // }
               } else if (official == true) {
                 permissionSerivceCall();
               }
@@ -163,7 +163,7 @@ class _NewPermissionState extends State<NewPermissions> {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
                             minTime: DateTime(y, m, d),
-                            maxTime: DateTime(y, m, d + 2),
+                            maxTime: DateTime(y, m, d + 1),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
@@ -409,32 +409,37 @@ class _NewPermissionState extends State<NewPermissions> {
         // ignore: unrelated_type_equality_checks
         if (data == 0) {
           if (checkPermissionRestrictions[0].checkTime == 1) {
-            if (checkPermissionRestrictions[0].dayPerCnt == 0 &&
-                checkPermissionRestrictions[0].monthPerCnt <= 2) {
-              response = await dio.post(ServicesApi.insertPermission,
-                  data: {
-                    "vactionmode": "insert",
-                    "vperCreatedby": fullname,
-                    "vperDate": selectDate,
-                    "vperPurpose": _controller1.text.toString(),
-                    "vperType": typeP,
-                    "vperfromTime": fromTime.toString(),
-                    "vpertoTime": toTime.toString(),
-                    "vuId": uidd
-                  },
-                  options: Options(
-                    contentType: ContentType.parse('application/json'),
-                  ));
+            if (checkPermissionRestrictions[0].monthPerCnt < 2) {
+              if (checkPermissionRestrictions[0].dayPerCnt == 0) {
+                response = await dio.post(ServicesApi.insertPermission,
+                    data: {
+                      "vactionmode": "insert",
+                      "vperCreatedby": fullname,
+                      "vperDate": selectDate,
+                      "vperPurpose": _controller1.text.toString(),
+                      "vperType": typeP,
+                      "vperfromTime": fromTime.toString(),
+                      "vpertoTime": toTime.toString(),
+                      "vuId": uidd
+                    },
+                    options: Options(
+                      contentType: ContentType.parse('application/json'),
+                    ));
+              } else {
+                pr.hide();
+                Fluttertoast.showToast(
+                    msg:
+                        "Sorry! You have already requested a permission for this date.");
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Permissions()),
+                  ModalRoute.withName('/'),
+                );
+              }
             } else {
               pr.hide();
               Fluttertoast.showToast(
-                  msg:
-                      "Sorry! You have already requested a permission for this date.");
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => Permissions()),
-                ModalRoute.withName('/'),
-              );
+                  msg: "Sorry! You have excedded your monthly limit.");
             }
           } else {
             pr.hide();
@@ -450,12 +455,20 @@ class _NewPermissionState extends State<NewPermissions> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         var responseJson = json.decode(response.data);
-        // Fluttertoast.showToast(msg: "Permission Applied");
-        // Navigator.of(context).pushAndRemoveUntil(
-        //   MaterialPageRoute(builder: (BuildContext context) => Permissions()),
-        //   ModalRoute.withName('/'),
-        // );
 
+        if (response.data.toString() == '"Success"') {
+          Fluttertoast.showToast(msg: response.data.toString());
+          // Fluttertoast.showToast(msg: "Permission Applied");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+            ModalRoute.withName('/'),
+          );
+        } else if (response.data.toString() ==
+            '"Exceeded your permission hours"') {
+          Fluttertoast.showToast(msg: "Not More than 2 Hours");
+        } else {
+          Fluttertoast.showToast(msg: response.data.toString());
+        }
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");

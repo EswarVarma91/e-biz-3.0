@@ -11,6 +11,7 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TravelRequestList extends StatefulWidget {
   @override
@@ -22,12 +23,21 @@ class _TravelRequestListState extends State<TravelRequestList> {
   List<TravelRequestListModel> trlm = List();
   List<TravelRequestListModel> trlmList = List();
   bool pending, approved, cancel;
-  String pendingCount = "-", approvedCount = "-", cancelledCount = "-";
+  String pendingCount = "-", approvedCount = "-", cancelledCount = "-",uidd,profilename;
+
+getUserDetails() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      profilename = preferences.getString("profileName");
+      uidd = preferences.getString("userId");
+    });
+    getTravelData(uidd);
+  }
 
   @override
   void initState() {
     super.initState();
-    getTravelData();
+     getUserDetails();
     pending = true;
     approved = false;
     cancel = false;
@@ -525,9 +535,9 @@ class _TravelRequestListState extends State<TravelRequestList> {
     );
   }
 
-  getTravelData() async {
+  getTravelData(String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "GetAllTravelRequests"},
+        data: {"parameter1": "GetAllTravelRequests","parameter2":uidd},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

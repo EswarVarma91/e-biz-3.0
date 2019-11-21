@@ -28,15 +28,19 @@ class _HotelRequestListState extends State<HotelRequestList> {
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    profilename = preferences.getString("profileName");
-    uidd = preferences.getString("userId");
+    setState(() {
+      profilename = preferences.getString("profileName");
+      uidd = preferences.getString("userId");
+    });
+    getHotelData(uidd);
   }
 
   @override
   void initState() {
     super.initState();
-    getHotelData();
     getUserDetails();
+    
+    
     pending = true;
     approved = false;
     cancel = false;
@@ -561,7 +565,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
     );
   }
 
-  getHotelData() async {
+  getHotelData(String uidd) async {
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getHotelRequests", "parameter2": uidd},
         options: Options(
