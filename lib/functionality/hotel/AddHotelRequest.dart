@@ -9,6 +9,7 @@ import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -140,17 +141,10 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               keyboardType: TextInputType.number,
               maxLength: 1,
               decoration: InputDecoration(
+                prefixIcon: Icon(Icons.star),
                   border: OutlineInputBorder(),
                   labelText: "Enter Rating",
-                  suffixIcon: MaterialButton(
-                    onPressed: () {
-                      setState(() {
-                        ratingBar =
-                            double.parse(_controllerRating.text ?? "0.0");
-                      });
-                    },
-                    child: Icon(Icons.star),
-                  )),
+                  ),
             )),
             ListTile(
               title: TextFormField(
@@ -168,8 +162,6 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               trailing: IconButton(
                 icon: Icon(
                   Icons.calendar_today,
-                  size: 16,
-                  color: lwtColor,
                 ),
                 onPressed: () {
                   setState(() {
@@ -212,8 +204,6 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               trailing: IconButton(
                 icon: Icon(
                   Icons.calendar_today,
-                  size: 16,
-                  color: lwtColor,
                 ),
                 onPressed: () {
                   DatePicker.showDatePicker(context,
@@ -279,6 +269,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                 ),
               ),
             ),
+            
           ],
         ),
       ),

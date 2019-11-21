@@ -404,35 +404,42 @@ class _NewPermissionState extends State<NewPermissions> {
             ));
       } else if (personal == true) {
         typeP = "personal";
-        var data = await getUserByPermissionDate(selectDate, uidd);
+        var data =
+            await getUserByPermissionDate(selectDate, uidd, fromTime, toTime);
         // ignore: unrelated_type_equality_checks
         if (data == 0) {
-          if (checkPermissionRestrictions[0].dayPerCnt == 0 &&
-              checkPermissionRestrictions[0].monthPerCnt <= 2) {
-            response = await dio.post(ServicesApi.insertPermission,
-                data: {
-                  "vactionmode": "insert",
-                  "vperCreatedby": fullname,
-                  "vperDate": selectDate,
-                  "vperPurpose": _controller1.text.toString(),
-                  "vperType": typeP,
-                  "vperfromTime": fromTime.toString(),
-                  "vpertoTime": toTime.toString(),
-                  "vuId": uidd
-                },
-                options: Options(
-                  contentType: ContentType.parse('application/json'),
-                ));
+          if (checkPermissionRestrictions[0].checkTime == 1) {
+            if (checkPermissionRestrictions[0].dayPerCnt == 0 &&
+                checkPermissionRestrictions[0].monthPerCnt <= 2) {
+              response = await dio.post(ServicesApi.insertPermission,
+                  data: {
+                    "vactionmode": "insert",
+                    "vperCreatedby": fullname,
+                    "vperDate": selectDate,
+                    "vperPurpose": _controller1.text.toString(),
+                    "vperType": typeP,
+                    "vperfromTime": fromTime.toString(),
+                    "vpertoTime": toTime.toString(),
+                    "vuId": uidd
+                  },
+                  options: Options(
+                    contentType: ContentType.parse('application/json'),
+                  ));
+            } else {
+              pr.hide();
+              Fluttertoast.showToast(
+                  msg:
+                      "Sorry! You have already requested a permission for this date.");
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (BuildContext context) => Permissions()),
+                ModalRoute.withName('/'),
+              );
+            }
           } else {
             pr.hide();
             Fluttertoast.showToast(
-                msg:
-                    "Sorry! You have already requested a permission for this date.");
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Permissions()),
-              ModalRoute.withName('/'),
-            );
+                msg: "Sorry! You have trying to request in non working hours.");
           }
         } else {
           pr.hide();
@@ -443,12 +450,12 @@ class _NewPermissionState extends State<NewPermissions> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         var responseJson = json.decode(response.data);
-        Fluttertoast.showToast(msg: "Permission Applied");
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => Permissions()),
-          ModalRoute.withName('/'),
-        );
-        return responseJson;
+        // Fluttertoast.showToast(msg: "Permission Applied");
+        // Navigator.of(context).pushAndRemoveUntil(
+        //   MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+        //   ModalRoute.withName('/'),
+        // );
+
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
@@ -479,15 +486,16 @@ class _NewPermissionState extends State<NewPermissions> {
 //      getUserByPermissionDate(uidd);
   }
 
-  getUserByPermissionDate(String selectedDate, String uiddd) async {
+  getUserByPermissionDate(
+      String selectedDate, String uiddd, String fromTime, String toTime) async {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
             "parameter1": "getUserPermissionCount",
-            "parameter2": selectedDate,
-            "parameter3": uiddd,
-            "parameter4": "string",
-            "parameter5": "string"
+            "parameter2": uiddd,
+            "parameter3": selectedDate,
+            "parameter4": fromTime,
+            "parameter5": toTime
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

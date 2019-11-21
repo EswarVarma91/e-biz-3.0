@@ -11,6 +11,7 @@ import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HotelRequestList extends StatefulWidget {
   @override
@@ -20,14 +21,22 @@ class HotelRequestList extends StatefulWidget {
 class _HotelRequestListState extends State<HotelRequestList> {
   static Dio dio = Dio(Config.options);
   bool pending, approved, cancel;
+  String profilename, uidd;
   String pendingCount = "-", approvedCount = "-", cancelledCount = "-";
   List<HotelRequestModel> trlm = List();
   List<HotelRequestModel> trlmList = List();
+
+  getUserDetails() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    profilename = preferences.getString("profileName");
+    uidd = preferences.getString("userId");
+  }
 
   @override
   void initState() {
     super.initState();
     getHotelData();
+    getUserDetails();
     pending = true;
     approved = false;
     cancel = false;
@@ -136,7 +145,9 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_ref_no.toString() ??
+                                      trlmList[index]
+                                              ?.hotel_ref_no
+                                              .toString() ??
                                           "",
                                       style: TextStyle(
                                           color: lwtColor,
@@ -187,7 +198,9 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_rating.toString() ??
+                                      trlmList[index]
+                                              ?.hotel_rating
+                                              .toString() ??
                                           "",
                                       style: TextStyle(
                                           color: Colors.grey,
@@ -310,37 +323,40 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                 ),
                                 pending
                                     ? SizedBox(
-                                  height: 30,
-                                  width: 70,
-                                  child: Material(
-                                    elevation: 2.0,
-                                    shadowColor: Colors.grey,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    color: lwtColor,
-                                    child: MaterialButton(
-                                      height: 22.0,
-                                      padding: EdgeInsets.all(3),
-                                      child: Text(
-                                        "View",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    ViewHotelRequest(
-                                                        trlmList[index].hotel_id,
-                                                        trlmList[index]
-                                                            .hotel_ref_no)));
-                                      },
-                                    ),
-                                  ),
-                                ):Container()
+                                        height: 30,
+                                        width: 70,
+                                        child: Material(
+                                          elevation: 2.0,
+                                          shadowColor: Colors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: lwtColor,
+                                          child: MaterialButton(
+                                            height: 22.0,
+                                            padding: EdgeInsets.all(3),
+                                            child: Text(
+                                              "View",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ViewHotelRequest(
+                                                              trlmList[index]
+                                                                  .hotel_id,
+                                                              trlmList[index]
+                                                                  .hotel_ref_no)));
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    : Container()
                               ],
                             )
                           ],
@@ -547,7 +563,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
 
   getHotelData() async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getHotelRequests"},
+        data: {"parameter1": "getHotelRequests", "parameter2": uidd},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
