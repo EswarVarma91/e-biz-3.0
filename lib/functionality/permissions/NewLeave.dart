@@ -35,6 +35,7 @@ class _NewLeaveState extends State<NewLeave> {
   List<LeavesCheckingDatesModel> lcdm;
   List<LeavesCheckingModel> lcm;
   static Dio dio = Dio(Config.options);
+  bool leave_is_Sl = false;
   ProgressDialog pr;
 
   @override
@@ -161,8 +162,10 @@ class _NewLeaveState extends State<NewLeave> {
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime(y, m, d - 9),
-                            maxTime: DateTime(y, m + 3, d),
+                            minTime: leave_is_Sl
+                                ? DateTime(y, m, d - 6)
+                                : DateTime(y, m, d),
+                            maxTime: DateTime(y, m, d - 1),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
@@ -206,8 +209,10 @@ class _NewLeaveState extends State<NewLeave> {
                                   //                            minTime: DateTime(2019, 3, 5),
                                   minTime: DateTime(int.parse(toA),
                                       int.parse(toB), int.parse(toC)),
-                                  maxTime:
-                                      DateTime(y, m, d + int.parse(leaveCount)),
+                                  maxTime: leave_is_Sl
+                                      ? DateTime(y, m, d - 1)
+                                      : DateTime(
+                                          y, m, d + int.parse(leaveCount)),
                                   theme: DatePickerTheme(
                                       backgroundColor: Colors.white,
                                       itemStyle: TextStyle(
@@ -377,9 +382,10 @@ class _NewLeaveState extends State<NewLeave> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       pr.hide();
       //      var responseJson = json.decode(response.data);
-      Fluttertoast.showToast(msg: "Leave Created");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+      Fluttertoast.showToast(msg: response.data.toString());
+      // Fluttertoast.showToast(msg: "Leave Created");
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
     } else {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
@@ -399,6 +405,11 @@ class _NewLeaveState extends State<NewLeave> {
         MaterialPageRoute(builder: (BuildContext context) => LeaveType()));
     List res = data.split(" ");
     leaveType = res[0].toString();
+    if (leaveType == "SL") {
+      leave_is_Sl = true;
+    } else {
+      leave_is_Sl = false;
+    }
     var result = int.parse(res[1]) - 1;
     leaveCount = result.toString();
   }
