@@ -71,6 +71,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  firebase_messaging:
+    dependency: "direct main"
+    description:
+      name: firebase_messaging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -83,13 +90,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.8"
-  flutter_multiselect:
-    dependency: "direct main"
-    description:
-      name: flutter_multiselect
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
   flutter_speed_dial:
     dependency: "direct main"
     description:
