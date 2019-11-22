@@ -20,6 +20,7 @@ class AddHotelRequest extends StatefulWidget {
 
 class _AddHotelRequestState extends State<AddHotelRequest> {
   String TtravelName,
+      multiUser,
       TravelNameId,
       _userRating,
       checkIn,
@@ -28,7 +29,8 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       checkOuts,
       TcomplaintTicketNo,
       TcomplaintId,
-      TcomplaintRefType,_packages;
+      TcomplaintRefType,
+      _packages;
   double ratingBar;
   TextEditingController _controllerLocation = new TextEditingController();
   TextEditingController _controllerPurpose = new TextEditingController();
@@ -83,6 +85,8 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               } else if (TcomplaintTicketNo.isEmpty) {
                 Fluttertoast.showToast(
                     msg: "Please select complaint ticket no.!");
+              } else if (multiUser.isEmpty) {
+                Fluttertoast.showToast(msg: "Please Select Members!");
               } else {
                 insertHotelRequest();
               }
@@ -269,27 +273,34 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                 ),
               ),
             ),
-            // ListTile(
-            //   title: TextFormField(
-            //     controller: TextEditingController(text: _packages),
-            //     keyboardType: TextInputType.text,
-            //     decoration: InputDecoration(
-            //       prefixIcon: Icon(Icons.chrome_reader_mode),
-            //       labelText: "Package",
-            //       border: OutlineInputBorder(
-            //         borderRadius: BorderRadius.circular(10.0),
-            //       ),
-            //     ),
-            //   ),
-            //   trailing: Icon(Icons.add),
-            //   onTap:()async {
-            //       var data = await Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (BuildContext context) =>
-            //                 PackageSelection("Package Selection")));
-            //   },
-            // )
+            ListTile(
+              title: TextFormField(
+                controller: TextEditingController(text: _packages),
+                keyboardType: TextInputType.text,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.chrome_reader_mode),
+                  labelText: "Package",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              trailing: Icon(Icons.add),
+              onTap: () async {
+                var data = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            PackageSelection("Package Selection")));
+                multiUser = data.split(" U")[0].toString();
+                if (data.split(" U")[1].toString() == null) {
+                  _packages = _packages;
+                } else {
+                  _packages = data.split(" U")[1].toString();
+                }
+              },
+            )
           ],
         ),
       ),
@@ -339,6 +350,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
           "hotelPurpose": _controllerPurpose.text,
           "hotelCreatedBy": profilename,
           "hotelModifiedBy": profilename,
+          "list" : multiUser.toString(),
           "refId": TcomplaintId,
           "refType": TcomplaintRefType,
           "uId": TravelNameId,
@@ -359,72 +371,5 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
-  }
-
-  // FlutterTagging(
-  //               addButtonWidget: _buildAddButton(), 
-  //               chipsColor: lwtColor,
-  //               chipsFontColor: Colors.white,
-  //               deleteIcon: Icon(Icons.cancel,color: Colors.white),
-  //               chipsPadding: EdgeInsets.all(2.0),
-  //               chipsFontSize: 14.0,
-  //               chipsSpacing: 5.0,
-  //               suggestionsCallback:  (pattern) async {
-  //                 return await TagSearchService.getSuggestions(pattern);
-  //               },
-  //               textFieldDecoration: InputDecoration(
-  //                   border: OutlineInputBorder(),
-  //                   hintText: "Tags",
-  //                   labelText: "Enter tags"),
-  //                   onChanged: (result) {
-  //                 setState(() {
-  //                   text = result.toString();
-  //                 });
-  //               },
-                
-  //             )
-
-  Widget _buildAddButton() {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        color: Colors.pinkAccent,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 15.0,
-          ),
-          Text(
-            "Add New Tag",
-            style: TextStyle(color: Colors.white, fontSize: 14.0),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TagSearchService {
-  static Future<List> getSuggestions(String query) async {
-    await Future.delayed(Duration(milliseconds: 400), null);
-    List<dynamic> tagList = <dynamic>[];
-    tagList.add({'name': "Flutter", 'value': 1});
-    tagList.add({'name': "HummingBird", 'value': 2});
-    tagList.add({'name': "Dart", 'value': 3});
-    List<dynamic> filteredTagList = <dynamic>[];
-    if (query.isNotEmpty) {
-      filteredTagList.add({'name': query, 'value': 0});
-    }
-    for (var tag in tagList) {
-      if (tag['name'].toLowerCase().contains(query)) {
-        filteredTagList.add(tag);
-      }
-    }
-    return filteredTagList;
   }
 }

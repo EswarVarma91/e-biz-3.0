@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
@@ -165,7 +166,9 @@ class _NewLeaveState extends State<NewLeave> {
                             minTime: leave_is_Sl
                                 ? DateTime(y, m, d - 6)
                                 : DateTime(y, m, d),
-                            maxTime: DateTime(y, m, d - 1),
+                            maxTime: leave_is_Sl
+                                ? DateTime(y, m, d - 1)
+                                : DateTime(y, m + 2, d),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
@@ -333,18 +336,6 @@ class _NewLeaveState extends State<NewLeave> {
   }
 
   void callServiceInsert() async {
-    print("esko CallInsert : " +
-        fromDate +
-        ", " +
-        _controller1.text +
-        ", " +
-        toDate +
-        "," +
-        leaveType +
-        ", " +
-        uuid +
-        " " +
-        fullname);
     var response;
     if (_color1 == true) {
       response = await dio.post(ServicesApi.insertLeave,
@@ -425,7 +416,23 @@ class _NewLeaveState extends State<NewLeave> {
       Fluttertoast.showToast(msg: "Enter your Purpose");
     } else {
       //Service Call
-      checkleaveStatus(fromDate, toDate, uuid);
+      if (leaveType == "CAL") {
+        var now = DateTime.now();
+
+        // if (fromDate == toDate) {
+        //   var data = await dio.post(ServicesApi.getData,
+        //       data: {"parameter1": "getCurrentTime"},
+        //       options:
+        //           Options(contentType: ContentType.parse("application/json")));
+        //   if (data.statusCode == 200 || data.statusCode == 201) {
+        //      print(DateFormat("HH:mm:ss").parse(json.decode(data.data["timeC"].toString()).toString()).difference(DateFormat("HH:mm:ss").parse("09:00:00")));
+        //   } else if (data.statusCode == 401) {
+        //     throw Exception("Exception");
+        //   }
+        // }
+
+        checkleaveStatus(fromDate, toDate, uuid);
+      }
     }
   }
 
@@ -554,7 +561,7 @@ class _NewLeaveState extends State<NewLeave> {
         }
       }
       if (dlist.length <= 0) {
-        callServiceInsert();
+        // callServiceInsert();
       } else {
         pr.hide();
         Fluttertoast.showToast(

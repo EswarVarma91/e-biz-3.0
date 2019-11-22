@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/hotel/DownTeamMembers.dart';
 import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:eaglebiz/model/DownTeamMembersModel.dart';
+import 'package:eaglebiz/model/HotelUserDetailsModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
@@ -33,11 +34,12 @@ class _PackageSelectionState extends State<PackageSelection> {
   List<DownTeamMembersModel> listReferals = [];
   List<DownTeamMembersModel> fliterReferals = [];
   List<DownTeamMembersModel> dataCheck = [];
-  String uidd;
+  List<HotelUserDetailsModel> htdm = [];
+  String uidd, multiUser;
   List result;
   bool _isChecked = false;
   List selectedList = [];
-  List<DownTeamMembersModel> createJList=[];
+  List<DownTeamMembersModel> createJList = [];
   final _debouncer = Debouncer(milliseconds: 500);
 
   void onChanged(bool value) {
@@ -76,27 +78,18 @@ class _PackageSelectionState extends State<PackageSelection> {
           title: Text(
             data,
             style: TextStyle(color: Colors.white),
-          ),actions: <Widget>[
+          ),
+          actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check),
-              onPressed: (){
+              onPressed: () {
                 print(selectedList);
-                // var data1= selectedList.toString().replaceAll("[", "");
-                // var data2= data1.replaceAll("]", " ");
-                // List result = data2.split(", ");
-                // for(int i=0;i<result.length;i++){
-                //   print(result[i]);
-                  
-                // }
+                var data1 = selectedList.toString().replaceAll("[", "");
+                var data2 = data1.replaceAll("]", "");
+                var result = data2.replaceAll(" ", "");
+                print(result);
 
-                // for(int i=0;i<listReferals.length;i++){
-                //   for(int j=0;j<result.length;j++){
-
-                //   }
-                // }
-                
-                // print(result[0]);
-                // print(result[1]);
+                getUserDetailsNameId(result);
               },
             )
           ],
@@ -107,7 +100,8 @@ class _PackageSelectionState extends State<PackageSelection> {
             return CheckboxListTile(
               value: selectedList.contains(listReferals[index].u_id),
               onChanged: (bool selected) {
-                _onCSelected(selected, listReferals[index].u_id,listReferals[index].FullName);
+                _onCSelected(selected, listReferals[index].u_id,
+                    listReferals[index].FullName);
               },
               title: Text(
                 listReferals[index].FullName,
@@ -134,6 +128,36 @@ class _PackageSelectionState extends State<PackageSelection> {
             .toList();
         listReferals = dataCheck;
         fliterReferals = dataCheck;
+      });
+    } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
+    }
+  }
+
+  void getUserDetailsNameId(String result) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {
+          "parameter1": "getHotelUserId_Name",
+          "parameter2": result,
+        },
+        options: Options(
+          contentType: ContentType.parse('application/json'),
+        ));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      List list=[];
+      setState(() {
+        htdm = (json.decode(response.data) as List)
+            .map((data) => new HotelUserDetailsModel.fromJson(data))
+            .toList();
+
+        multiUser = response.data;
+
+        for (int i = 0; i < htdm.length; i++) {
+              list.add(htdm[i].itemName);
+        }
+        var one= list.toString().replaceAll("[", "");
+        var two = one.replaceAll("]", "");
+        Navigator.pop(context, multiUser + " U"+two);
       });
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");

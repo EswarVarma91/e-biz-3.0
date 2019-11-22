@@ -18,7 +18,8 @@ class LateEarlyComingModel {
   String hr_approval;
   String bt_out_time;
 
-//  LateEarlyComingModel(this.att_actual_day_count, this.att_out_time,this.att_work_status,this.att_request_date);
+  LateEarlyComingModel(this.att_actual_day_count, this.att_out_time,
+      this.att_work_status, this.att_request_date);
 
   LateEarlyComingModel.fromJson(Map<String, dynamic> json)
       : att_actual_day_count = json['att_actual_day_count'],
