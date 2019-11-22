@@ -24,7 +24,7 @@ dependencies:
   progress_dialog: ^1.2.0
   flutter_speed_dial: ^1.2.4
   expandable: ^3.0.1
-  flutter_tagging: ^2.0.0+2
+  flutter_multiselect: ^0.4.0
 
 
 dev_dependencies:

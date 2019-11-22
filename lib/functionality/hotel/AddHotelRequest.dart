@@ -1,15 +1,14 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/hotel/DownTeamMembers.dart';
 import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
+import 'package:eaglebiz/functionality/hotel/PackageSelection.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/main.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +28,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       checkOuts,
       TcomplaintTicketNo,
       TcomplaintId,
-      TcomplaintRefType;
+      TcomplaintRefType,_packages;
   double ratingBar;
   TextEditingController _controllerLocation = new TextEditingController();
   TextEditingController _controllerPurpose = new TextEditingController();
@@ -37,6 +36,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
   int y, m, d;
   String toA, toB, toC, profilename;
   static Dio dio = Dio(Config.options);
+  String text = "Nothing to show";
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -142,9 +142,9 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               maxLength: 1,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.star),
-                  border: OutlineInputBorder(),
-                  labelText: "Enter Rating",
-                  ),
+                border: OutlineInputBorder(),
+                labelText: "Enter Rating",
+              ),
             )),
             ListTile(
               title: TextFormField(
@@ -269,7 +269,27 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                 ),
               ),
             ),
-            
+            // ListTile(
+            //   title: TextFormField(
+            //     controller: TextEditingController(text: _packages),
+            //     keyboardType: TextInputType.text,
+            //     decoration: InputDecoration(
+            //       prefixIcon: Icon(Icons.chrome_reader_mode),
+            //       labelText: "Package",
+            //       border: OutlineInputBorder(
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //     ),
+            //   ),
+            //   trailing: Icon(Icons.add),
+            //   onTap:()async {
+            //       var data = await Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (BuildContext context) =>
+            //                 PackageSelection("Package Selection")));
+            //   },
+            // )
           ],
         ),
       ),
@@ -339,5 +359,72 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
+  }
+
+  // FlutterTagging(
+  //               addButtonWidget: _buildAddButton(), 
+  //               chipsColor: lwtColor,
+  //               chipsFontColor: Colors.white,
+  //               deleteIcon: Icon(Icons.cancel,color: Colors.white),
+  //               chipsPadding: EdgeInsets.all(2.0),
+  //               chipsFontSize: 14.0,
+  //               chipsSpacing: 5.0,
+  //               suggestionsCallback:  (pattern) async {
+  //                 return await TagSearchService.getSuggestions(pattern);
+  //               },
+  //               textFieldDecoration: InputDecoration(
+  //                   border: OutlineInputBorder(),
+  //                   hintText: "Tags",
+  //                   labelText: "Enter tags"),
+  //                   onChanged: (result) {
+  //                 setState(() {
+  //                   text = result.toString();
+  //                 });
+  //               },
+                
+  //             )
+
+  Widget _buildAddButton() {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        color: Colors.pinkAccent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(
+            Icons.add,
+            color: Colors.white,
+            size: 15.0,
+          ),
+          Text(
+            "Add New Tag",
+            style: TextStyle(color: Colors.white, fontSize: 14.0),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TagSearchService {
+  static Future<List> getSuggestions(String query) async {
+    await Future.delayed(Duration(milliseconds: 400), null);
+    List<dynamic> tagList = <dynamic>[];
+    tagList.add({'name': "Flutter", 'value': 1});
+    tagList.add({'name': "HummingBird", 'value': 2});
+    tagList.add({'name': "Dart", 'value': 3});
+    List<dynamic> filteredTagList = <dynamic>[];
+    if (query.isNotEmpty) {
+      filteredTagList.add({'name': query, 'value': 0});
+    }
+    for (var tag in tagList) {
+      if (tag['name'].toLowerCase().contains(query)) {
+        filteredTagList.add(tag);
+      }
+    }
+    return filteredTagList;
   }
 }

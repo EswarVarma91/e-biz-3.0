@@ -83,13 +83,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.8"
-  flutter_keyboard_visibility:
-    dependency: transitive
+  flutter_multiselect:
+    dependency: "direct main"
     description:
-      name: flutter_keyboard_visibility
+      name: flutter_multiselect
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.0"
+    version: "0.4.0"
   flutter_speed_dial:
     dependency: "direct main"
     description:
@@ -104,25 +104,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
-  flutter_tagging:
-    dependency: "direct main"
-    description:
-      name: flutter_tagging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+2"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_typeahead:
-    dependency: transitive
-    description:
-      name: flutter_typeahead
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.7.0"
   fluttertoast:
     dependency: "direct main"
     description:
