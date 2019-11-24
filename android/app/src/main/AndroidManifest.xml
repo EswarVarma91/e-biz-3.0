@@ -12,10 +12,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="eaglebiz">
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true"></service>
+     
 
         <meta-data
             android:name="flutterEmbedding"
@@ -39,6 +36,11 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+             <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>

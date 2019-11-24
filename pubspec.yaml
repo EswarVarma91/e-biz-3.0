@@ -25,6 +25,7 @@ dependencies:
   flutter_speed_dial: ^1.2.4
   expandable: ^3.0.1
   firebase_messaging: ^6.0.1
+  flutter_local_notifications: ^0.7.1+1
 
 
 

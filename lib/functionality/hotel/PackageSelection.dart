@@ -8,8 +8,6 @@ import 'package:eaglebiz/model/HotelUserDetailsModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_multiselect/flutter_multiselect.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../main.dart';
