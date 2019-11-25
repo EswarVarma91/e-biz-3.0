@@ -20,6 +20,7 @@ import 'package:eaglebiz/model/TaskListModel.dart';
 import 'package:eaglebiz/model/UserLocationModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -86,6 +87,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   StreamProvider<UserLocationModel> userlocationstrem;
   List<TaskListModel> tasklistModel = [];
   var userlocation;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   getEmpCode() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -99,6 +101,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
       AttendanceModel attendanceModel =
           AttendanceModel(userId, "-", "-", "-", "-", "-", "-");
       dbHelper.save(attendanceModel);
+      _firebaseMessaging.getToken().then((String token) {
+        assert(token != null);
+        insertToken(userId, token);
+      });
     });
   }
 
@@ -128,6 +134,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   @override
   void initState() {
     super.initState();
+
     getEmpCode();
     _localGet();
     connectivity = Connectivity();
@@ -156,16 +163,16 @@ class _HomePageLocationState extends State<HomePageLocation> {
       if (userlocation != null) {
         lati = userlocation.latitude;
         longi = userlocation.longitude;
-//        var currentTime=DateFormat("HH:mm").format(now);
-//        var checkCurrentTime=DateFormat("HH:mm").parse(currentTime.toString());
-//        var checkMorningTime=DateFormat("HH:mm").parse("08:00");
-//        var checkNightTime=DateFormat("HH:mm").parse("20:00");
-//        checkCurrentTime.difference(checkMorningTime).inMinutes.toString();
-//        if(checkCurrentTime.difference(checkMorningTime).inMinutes>=-1 && checkCurrentTime.difference(checkNightTime).inMinutes<=1)
-//        {
-//          const oneMin = const Duration(minutes:15);
-//          new Timer.periodic(oneMin, (Timer t) => sendUserLocation(lati,longi));
-//        }
+        //        var currentTime=DateFormat("HH:mm").format(now);
+        //        var checkCurrentTime=DateFormat("HH:mm").parse(currentTime.toString());
+        //        var checkMorningTime=DateFormat("HH:mm").parse("08:00");
+        //        var checkNightTime=DateFormat("HH:mm").parse("20:00");
+        //        checkCurrentTime.difference(checkMorningTime).inMinutes.toString();
+        //        if(checkCurrentTime.difference(checkMorningTime).inMinutes>=-1 && checkCurrentTime.difference(checkNightTime).inMinutes<=1)
+        //        {
+        //          const oneMin = const Duration(minutes:15);
+        //          new Timer.periodic(oneMin, (Timer t) => sendUserLocation(lati,longi));
+        //        }
       }
     });
     return Scaffold(
@@ -177,25 +184,25 @@ class _HomePageLocationState extends State<HomePageLocation> {
         automaticallyImplyLeading: false,
         actions: <Widget>[
           /* Padding(
-                    padding: EdgeInsets.only(right: 0),
-                    child: Stack(
-                      children: <Widget>[
-                       Padding(
-                         padding: EdgeInsets.only(top: 4),
-                         child:IconButton(icon: Icon(Icons.notifications,color: Colors.white,),onPressed: (){
-                           Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NotificationScreen()));
-                         },),
-                       ),
-                        Positioned(
-                          top: 15,
-                          left: 26,
-                          child: Icon(Icons.brightness_1,
-                          color: Colors.red,
-                          size: 12.0,),
+                        padding: EdgeInsets.only(right: 0),
+                        child: Stack(
+                          children: <Widget>[
+                           Padding(
+                             padding: EdgeInsets.only(top: 4),
+                             child:IconButton(icon: Icon(Icons.notifications,color: Colors.white,),onPressed: (){
+                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NotificationScreen()));
+                             },),
+                           ),
+                            Positioned(
+                              top: 15,
+                              left: 26,
+                              child: Icon(Icons.brightness_1,
+                              color: Colors.red,
+                              size: 12.0,),
+                            )
+                          ],
                         )
-                      ],
-                    )
-                  ),*/
+                      ),*/
           Padding(
             padding: EdgeInsets.only(right: 0),
             child: IconButton(
@@ -838,6 +845,21 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else {
         return null;
       }
+    }
+  }
+
+  insertToken(String uid, String token) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "insertToken",
+          "parameter2": uid,
+          "parameter3": token
+        },
+        options: Options(contentType: ContentType.parse('application/json')));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
     }
   }
 }

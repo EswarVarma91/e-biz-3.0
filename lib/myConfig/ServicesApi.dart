@@ -1,6 +1,8 @@
 class ServicesApi {
   //========= New DataBase ebizdb=========//
 
+  static String FCM_KEY= "AAAAw1WdJb0:APA91bGlArheK9iRSc6GV-rYXv8x9oxmMqwvPHk0KB5ldHKiJLLCXJKverdMqAFpRZC11brzEbyKgxnolHXw3MgeFP9Vmbk37isb1rz2uKoM2ylJnWrrKxmXHcP-q8w1a4thssxRFqoU";
+
   static String basic_url = "http://192.168.2.5:8383/"; //Live
 
   // static String basic_url = "http://192.168.2.3:8080/"; //test

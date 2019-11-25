@@ -142,21 +142,22 @@ class _PackageSelectionState extends State<PackageSelection> {
           contentType: ContentType.parse('application/json'),
         ));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      List list=[];
+      List list = [];
+      String Users;
+      var two;
       setState(() {
         htdm = (json.decode(response.data) as List)
             .map((data) => new HotelUserDetailsModel.fromJson(data))
             .toList();
-
-        multiUser = response.data;
-
         for (int i = 0; i < htdm.length; i++) {
-              list.add(htdm[i].itemName);
+          list.add(htdm[i].itemName);
         }
-        var one= list.toString().replaceAll("[", "");
-        var two = one.replaceAll("]", "");
-        Navigator.pop(context, multiUser + " U"+two);
+        var one = list.toString().replaceAll("[", "");
+        Users = one.replaceAll("]", "");
+        Navigator.pop(context, htdm);
       });
+      SharedPreferences pre = await SharedPreferences.getInstance();
+      pre.setString("Users", Users);
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }

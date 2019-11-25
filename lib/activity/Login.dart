@@ -29,13 +29,15 @@ class _LoginState extends State<Login> {
   var _controller1 = TextEditingController();
   var _controller2 = TextEditingController();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
     connectivity = Connectivity();
-     var initializationSettingsAndroid = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('@mipmap/ic_launcher');
 
     var initializationSettingsIOS = new IOSInitializationSettings(
         onDidReceiveLocalNotification: onDidRecieveLocalNotification);
@@ -68,11 +70,11 @@ class _LoginState extends State<Login> {
     });
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
-      print(token);
+      // print(token);
     });
   }
 
-  Future displayNotification(Map<String, dynamic> message) async{
+  Future displayNotification(Map<String, dynamic> message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'channelid', 'flutterfcm', 'your channel description',
         importance: Importance.Max, priority: Priority.High);
@@ -84,8 +86,10 @@ class _LoginState extends State<Login> {
       message['notification']['title'],
       message['notification']['body'],
       platformChannelSpecifics,
-      payload: 'hello',);
+      payload: 'hello',
+    );
   }
+
   Future onSelectNotification(String payload) async {
     if (payload != null) {
       debugPrint('notification payload: ' + payload);
@@ -97,8 +101,7 @@ class _LoginState extends State<Login> {
         timeInSecForIos: 1,
         backgroundColor: Colors.black54,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
     /*Navigator.push(
       context,
       new MaterialPageRoute(builder: (context) => new SecondScreen(payload)),
@@ -111,27 +114,26 @@ class _LoginState extends State<Login> {
     showDialog(
       context: context,
       builder: (BuildContext context) => new CupertinoAlertDialog(
-            title: new Text(title),
-            content: new Text(body),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                child: new Text('Ok'),
-                onPressed: () async {
-                  Navigator.of(context, rootNavigator: true).pop();
-                  await Fluttertoast.showToast(
-                      msg: "Notification Clicked",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIos: 1,
-                      backgroundColor: Colors.black54,
-                      textColor: Colors.white,
-                      fontSize: 16.0
-                  );
-                },
-              ),
-            ],
+        title: new Text(title),
+        content: new Text(body),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            child: new Text('Ok'),
+            onPressed: () async {
+              Navigator.of(context, rootNavigator: true).pop();
+              await Fluttertoast.showToast(
+                  msg: "Notification Clicked",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIos: 1,
+                  backgroundColor: Colors.black54,
+                  textColor: Colors.white,
+                  fontSize: 16.0);
+            },
           ),
+        ],
+      ),
     );
   }
 
@@ -313,6 +315,7 @@ class _LoginState extends State<Login> {
             loginData.designation);
 
         var navigator = Navigator.of(context);
+
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('/'),

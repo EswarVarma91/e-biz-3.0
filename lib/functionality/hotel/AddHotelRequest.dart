@@ -5,6 +5,7 @@ import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
 import 'package:eaglebiz/functionality/hotel/PackageSelection.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/main.dart';
+import 'package:eaglebiz/model/HotelUserDetailsModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,6 @@ class AddHotelRequest extends StatefulWidget {
 
 class _AddHotelRequestState extends State<AddHotelRequest> {
   String TtravelName,
-      multiUser,
       TravelNameId,
       _userRating,
       checkIn,
@@ -32,6 +32,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       TcomplaintRefType,
       _packages;
   double ratingBar;
+  List<HotelUserDetailsModel> multiUser;
   TextEditingController _controllerLocation = new TextEditingController();
   TextEditingController _controllerPurpose = new TextEditingController();
   TextEditingController _controllerRating = new TextEditingController();
@@ -293,11 +294,13 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
                             PackageSelection("Package Selection")));
-                multiUser = data.split(" U")[0].toString();
-                if (data.split(" U")[1].toString() == null) {
+                SharedPreferences pre = await SharedPreferences.getInstance();
+                var Users = pre.getString("Users");
+                multiUser = data;
+                if (Users == null) {
                   _packages = _packages;
                 } else {
-                  _packages = data.split(" U")[1].toString();
+                  _packages = Users;
                 }
               },
             )
@@ -350,7 +353,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
           "hotelPurpose": _controllerPurpose.text,
           "hotelCreatedBy": profilename,
           "hotelModifiedBy": profilename,
-          "list" : multiUser.toString(),
+          "list": multiUser,
           "refId": TcomplaintId,
           "refType": TcomplaintRefType,
           "uId": TravelNameId,
@@ -361,7 +364,8 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
         ));
     if (response.statusCode == 200 || response.statusCode == 201) {
       Fluttertoast.showToast(msg: "Success");
-
+      SharedPreferences pre = await SharedPreferences.getInstance();
+      pre.setString("Users", "");
       var navigator = Navigator.of(context);
       navigator.pushAndRemoveUntil(
         MaterialPageRoute(
