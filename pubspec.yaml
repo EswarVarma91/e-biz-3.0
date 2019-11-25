@@ -37,8 +37,7 @@ flutter:
   assets:
     - assets/images/ebiz.png
     - assets/images/as.png
-  sounds:
-    - assets/sounds/pluck.mp3
+
   fonts:
     - family: Roboto
       fonts:

@@ -77,7 +77,7 @@ class _LoginState extends State<Login> {
   Future displayNotification(Map<String, dynamic> message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'channelid', 'flutterfcm', 'your channel description',
-        importance: Importance.Max, priority: Priority.High,sound: 'assets/sound/pluck.mp3');
+        importance: Importance.Max, priority: Priority.High,);
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
