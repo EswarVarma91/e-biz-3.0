@@ -26,8 +26,7 @@ dependencies:
   expandable: ^3.0.1
   firebase_messaging: ^6.0.1
   flutter_local_notifications: ^0.7.1+1
-
-
+  http: ^0.12.0+2
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +37,8 @@ flutter:
   assets:
     - assets/images/ebiz.png
     - assets/images/as.png
+  sounds:
+    - assets/sounds/pluck.mp3
   fonts:
     - family: Roboto
       fonts:

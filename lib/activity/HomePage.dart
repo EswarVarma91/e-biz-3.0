@@ -183,26 +183,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
         ),
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          /* Padding(
-                        padding: EdgeInsets.only(right: 0),
-                        child: Stack(
-                          children: <Widget>[
-                           Padding(
-                             padding: EdgeInsets.only(top: 4),
-                             child:IconButton(icon: Icon(Icons.notifications,color: Colors.white,),onPressed: (){
-                               Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NotificationScreen()));
-                             },),
-                           ),
-                            Positioned(
-                              top: 15,
-                              left: 26,
-                              child: Icon(Icons.brightness_1,
-                              color: Colors.red,
-                              size: 12.0,),
-                            )
-                          ],
-                        )
-                      ),*/
           Padding(
             padding: EdgeInsets.only(right: 0),
             child: IconButton(

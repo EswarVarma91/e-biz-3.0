@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/permissions/Permissions.dart';
 import 'package:eaglebiz/model/CheckPermissionsRestrictions.dart';
+import 'package:eaglebiz/model/FirebaseModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import '../../main.dart';
+import 'package:http/http.dart' as http;
 
 class NewPermissions extends StatefulWidget {
   @override
@@ -28,7 +30,8 @@ class _NewPermissionState extends State<NewPermissions> {
       fromTime = "",
       toTime = "",
       uidd,
-      typeP;
+      typeP,
+      rl_token;
   int y, m, d;
   ProgressDialog pr;
   var fullname;
@@ -37,6 +40,7 @@ class _NewPermissionState extends State<NewPermissions> {
   List<String> dSplit = [];
   List<String> aSplit = [];
   List<CheckPermissionRestrictions> checkPermissionRestrictions;
+  List<FirebaseModel> fm;
 
   @override
   void initState() {
@@ -453,16 +457,15 @@ class _NewPermissionState extends State<NewPermissions> {
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        pr.hide();
-        var responseJson = json.decode(response.data);
-
         if (response.data.toString() == '"Success"') {
-          Fluttertoast.showToast(msg: response.data.toString());
-          // Fluttertoast.showToast(msg: "Permission Applied");
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => Permissions()),
-            ModalRoute.withName('/'),
-          );
+          getReportingLevelToken(
+              selectDateS, fromTime, toTime, fullname, _controller1.text, uidd);
+          // Fluttertoast.showToast(msg: response.data.toString());
+          // // Fluttertoast.showToast(msg: "Permission Applied");
+          // Navigator.of(context).pushAndRemoveUntil(
+          //   MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+          //   ModalRoute.withName('/'),
+          // );
         } else if (response.data.toString() ==
             '"Exceeded your permission hours"') {
           Fluttertoast.showToast(msg: "Not More than 2 Hours");
@@ -472,11 +475,8 @@ class _NewPermissionState extends State<NewPermissions> {
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
-      } else
-        pr.hide();
-      throw Exception('Authentication Error');
+      }
     } on DioError catch (exception) {
-      pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         pr.hide();
@@ -496,7 +496,7 @@ class _NewPermissionState extends State<NewPermissions> {
       fullname = preferences.getString("fullname");
       uidd = preferences.getString("userId");
     });
-//      getUserByPermissionDate(uidd);
+    //      getUserByPermissionDate(uidd);
   }
 
   getUserByPermissionDate(
@@ -539,5 +539,76 @@ class _NewPermissionState extends State<NewPermissions> {
         return null;
       }
     }
+  }
+
+  void getReportingLevelToken(String date, String fromTime, String toTime,
+      fullname, String purpose, String uidd) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getReportingLevelToken", "parameter2": uidd},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fm = (json.decode(response.data) as List)
+              .map((data) => new FirebaseModel.fromJson(data))
+              .toList();
+        });
+        var data = fm[0].reporting.toString();
+        // Fluttertoast.showToast(msg: "Stopped");
+        pushNotification(data, date, fromTime, toTime, purpose, uidd);
+      } else {
+        pr.hide();
+
+        Fluttertoast.showToast(
+            msg: "Your reporting level doesn't have mobile app");
+        Fluttertoast.showToast(msg: response.data.toString());
+        // Fluttertoast.showToast(msg: "Permission Applied");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+          ModalRoute.withName('/'),
+        );
+      }
+    } else if (response.statusCode == 401) {}
+  }
+
+  void pushNotification(String to, String date, String fromTime, String toTime,
+      String purpose, String uidd) async {
+    Map<String, dynamic> notification = {
+      'body': "Hello.! Sir i am " +
+          fullname +
+          " i want 2hours of permission for " +
+          purpose +
+          " From " +
+          fromTime +
+          " To " +
+          toTime +
+          ". So kindly accept my permission.",
+      'title': 'Permission Request',
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+      pr.hide();
+      Fluttertoast.showToast(msg: "Permission Applied");
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+        ModalRoute.withName('/'),
+      );
   }
 }
