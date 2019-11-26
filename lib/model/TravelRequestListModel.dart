@@ -8,6 +8,10 @@ class TravelRequestListModel {
   String journeyDate;
   String tra_purpose;
   int tra_status;
+  String tra_mode;
+  String tra_mode_type;
+  String tra_class;
+  String tra_required_datetime;
   int tra_is_cancelled;
   int approved_status;
 
@@ -19,7 +23,7 @@ class TravelRequestListModel {
       this.tra_to,
       this.journeyDate,
       this.tra_purpose,
-      this.tra_status,this.approved_status,this.tra_id,this.tra_is_cancelled);
+      this.tra_status,this.approved_status,this.tra_id,this.tra_is_cancelled,this.tra_class,this.tra_mode_type,this.tra_mode,this.tra_required_datetime);
 
   TravelRequestListModel.fromJson(Map<String, dynamic> json)
       : tra_id = json['tra_id'],
@@ -31,6 +35,10 @@ class TravelRequestListModel {
         journeyDate = json['journeyDate'],
         tra_purpose = json['tra_purpose'],
         tra_status = json['tra_status'],
+        tra_class = json['tra_class'],
+        tra_mode_type = json['tra_mode_type'],
+        tra_mode = json['tra_mode'],
+        tra_required_datetime = json['tra_required_datetime'],
         tra_is_cancelled= json['tra_is_cancelled'],
         approved_status=json['approved_status'];
 }

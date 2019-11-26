@@ -34,7 +34,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
   double minWidth = 55;
   bool isCollapsed = false;
   int currentSelectedIndex = 0;
-  var downteam, profilename;
+  var downteam, profilename, hrCnt, salesCnt, travelCnt;
 
   List<NavigationModel> listMain = [];
 
@@ -42,44 +42,40 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   List<NavigationModel> navigationItemsPermissions = [
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   List<NavigationModel> navigationItemsSales = [
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   List<NavigationModel> navigationItemsTask = [
     NavigationModel(title: "Tasks", icon: Icons.assignment),
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   List<NavigationModel> navigationItemsTravel = [
@@ -87,11 +83,9 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-
-//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   List<NavigationModel> navigationItemsApprovals = [
@@ -99,23 +93,9 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-//    NavigationModel(title: "Location", icon: Icons.location_searching,),
-  ];
-  List<NavigationModel> navigationItemsLocation = [
-    NavigationModel(
-      title: "Location",
-      icon: Icons.location_searching,
-    ),
-    NavigationModel(title: "Home", icon: Icons.home),
-    NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
-    NavigationModel(title: "Tasks", icon: Icons.assignment),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
-    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
-    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
-//    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
   ];
 
   List<NavigationModel> navigationItemsHotels = [
@@ -123,10 +103,9 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Home", icon: Icons.home),
     NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
     NavigationModel(title: "Tasks", icon: Icons.assignment),
-    NavigationModel(title: "Leaves & Permissions", icon: Icons.event_busy),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
-//    NavigationModel(title: "Location", icon: Icons.location_searching),
   ];
 
   getFullName() async {
@@ -134,8 +113,11 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     setState(() {
       downteam = preferences.getString("downTeamId");
       profilename = preferences.getString("profileName");
+      hrCnt = preferences.getString("hrCnt");
+      travelCnt = preferences.getString("travelCnt");
+      salesCnt = preferences.getString("salesCnt");
       print(downteam);
-      if (downteam == "null") {
+      if (downteam == "null" || downteam == null) {
         if (result.toString() == "1") {
           navigationItems.removeWhere((a) => a.title == "Approvals");
           listMain = navigationItems;
@@ -155,12 +137,23 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           navigationItemsHotels.removeWhere((a) => a.title == "Approvals");
           listMain = navigationItemsHotels;
         }
-
-//        else if(result.toString()=="6"){
-//          navigationItemsLocation.removeWhere((a)=>a.title=="Approvals");
-//          listMain=navigationItemsLocation;
-//        }
-      } else {
+      } else if (salesCnt == 1) {
+        if(result.toString()=="1"){
+          listMain=navigationItems;
+        }else if(result.toString()=="2"){
+          listMain=navigationItemsSales;
+        }else if(result.toString()=="3"){
+          listMain=navigationItemsTask;
+        }else if(result.toString()=="4"){
+          listMain=navigationItemsPermissions;
+        }else if(result.toString()=="5"){
+          listMain=navigationItemsApprovals;
+        }else if(result.toString()=="7"){
+          listMain=navigationItemsTravel;
+        }else if(result.toString()=="8"){
+          listMain=navigationItemsHotels;
+        }
+      } else if(downteam!=null || downteam!="null") {
         if (result.toString() == "1") {
           listMain = navigationItems;
         } else if (result.toString() == "2") {
@@ -176,9 +169,6 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
         } else if (result.toString() == "8") {
           listMain = navigationItemsHotels;
         }
-//        else if(result.toString()=="6"){
-//        listMain=navigationItemsLocation;
-//      }
       }
     });
   }
@@ -225,8 +215,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                           MaterialPageRoute(
                               builder: (BuildContext context) => TaskPlanner()),
                         );
-                      } else if (listMain[counter].title ==
-                          "Leaves & Permissions") {
+                      } else if (listMain[counter].title == "L & P") {
                         var navigator = Navigator.of(context);
                         navigator.push(
                           MaterialPageRoute(
@@ -245,17 +234,12 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                               builder: (BuildContext context) => Approvals()),
                         );
                       } else if (listMain[counter].title == "Location") {
-                        if (downteam != null) {
-                          var navigator = Navigator.of(context);
-                          navigator.push(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    MapsActivity()),
-                          );
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "You dont have a Permission");
-                        }
+                        var navigator = Navigator.of(context);
+                        navigator.push(
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  MapsActivity()),
+                        );
                       } else if (listMain[counter].title == "Travel Request") {
                         var navigator = Navigator.of(context);
                         navigator.push(

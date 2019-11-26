@@ -292,8 +292,11 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "Enter Password");
     } else {
       var response = await _makePostRequest(email, password);
-      LoginModel loginData = LoginModel.fromJson(json.decode(response));
-      if (loginData.cnt == 1) {
+      loginList=(json.decode(response) as List)
+              .map((data) => new LoginModel.fromJson(data))
+              .toList();
+      
+      if (loginList[0].cnt==1) {
         String email = _controller1.text;
 //        print(email + "," + loginData.userId.toString() + "," +
 //            loginData.fullName.toString() + "," +
@@ -303,16 +306,19 @@ class _LoginState extends State<Login> {
 //            loginData.departmentName.toString());
         _writeData(
             email,
-            loginData.uId,
-            loginData.fullName,
-            loginData.uEmpCode.toString(),
-            loginData.profileName,
-            loginData.downTeamIds,
-            loginData.mobileNumber,
-            loginData.branchid,
-            loginData.emailId,
-            loginData.department,
-            loginData.designation);
+            loginList[0].uId,
+            loginList[0].fullName,
+            loginList[0].uEmpCode.toString(),
+            loginList[0].hrCnt.toString(),
+            loginList[0].travelCnt.toString(),
+            loginList[0].salesCnt.toString(),
+            loginList[0].profileName,
+            loginList[0].downTeamIds,
+            loginList[0].mobileNumber,
+            loginList[0].branchid,
+            loginList[0].emailId,
+            loginList[0].department,
+            loginList[0].designation);
 
         var navigator = Navigator.of(context);
 
@@ -320,7 +326,7 @@ class _LoginState extends State<Login> {
           MaterialPageRoute(builder: (BuildContext context) => HomePage()),
           ModalRoute.withName('/'),
         );
-      } else if (loginData.cnt == 0) {
+      } else if (loginList[0].cnt == 0) {
         Fluttertoast.showToast(msg: "Please check the credentials.!");
       }
     }
@@ -328,8 +334,8 @@ class _LoginState extends State<Login> {
 
   _makePostRequest(String email, String password) async {
     try {
-      var response = await dio.post(ServicesApi.new_login_url,
-          data: {"userName": email, "password": password});
+      var response = await dio.post(ServicesApi.getData,
+          data: {"parameter1": "checkUserLogin", "parameter2": email,"parameter3":password});
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.data);
         return response.data;
@@ -361,6 +367,9 @@ class _LoginState extends State<Login> {
       int uId,
       String fullName,
       String uEmpCode,
+      String hrCnt,
+      String travelCnt,
+      String salesCnt,
       String profileName,
       String downTeamId,
       String mobilenumber,
@@ -373,6 +382,9 @@ class _LoginState extends State<Login> {
     preferences.setString("userId", uId.toString());
     preferences.setString("fullname", fullName);
     preferences.setString("uEmpCode", uEmpCode);
+    preferences.setString("hrCnt", hrCnt);
+    preferences.setString("travelCnt", travelCnt);
+    preferences.setString("salesCnt", salesCnt);
     preferences.setString("profileName", profileName.toString());
     preferences.setString("downTeamId", downTeamId.toString());
     preferences.setString("mobilenumber", mobilenumber.toString());

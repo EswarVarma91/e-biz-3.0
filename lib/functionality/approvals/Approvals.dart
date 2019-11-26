@@ -4,9 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:eaglebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:eaglebiz/main.dart';
 import 'package:eaglebiz/model/FirebaseUserModel.dart';
+import 'package:eaglebiz/model/HotelRequestModel.dart';
 import 'package:eaglebiz/model/LateEarlyComingModel.dart';
 import 'package:eaglebiz/model/LeavesModel.dart';
 import 'package:eaglebiz/model/PermissionModel.dart';
+import 'package:eaglebiz/model/TravelRequestListModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,17 +35,17 @@ class _ApprovalsState extends State<Approvals> {
       profilename,
       leavesCount = "-",
       permissionsCount = "-",
-      earlygoingCount = "-",
-      latecomingCount = "-",
+      travelCount = "-",
+      hotelCount = "-",
       fullname;
-  bool _leavesA, _permissionsA, _earlygoingA, _latecomingA;
+  bool _leavesA, _permissionsA, _travelrequestA, _hotelrequestA;
   static var now = DateTime.now();
   static Dio dio = Dio(Config.options);
   List<LeavesModel> leaveList = new List();
   List<PermissionModel> permissionsList = new List();
-  List<LateEarlyComingModel> earlygoingList = new List();
+  List<HotelRequestModel> hrlm = new List();
   List<LateEarlyComingModel> datacheck = new List();
-  List<LateEarlyComingModel> latecomingList = new List();
+  List<TravelRequestListModel> trlm = new List();
   List<FirebaseUserModel> fum;
   ProgressDialog pr;
 
@@ -60,8 +62,8 @@ class _ApprovalsState extends State<Approvals> {
     super.initState();
     _leavesA = true;
     _permissionsA = false;
-    _earlygoingA = false;
-    _latecomingA = false;
+    _travelrequestA = false;
+    _hotelrequestA = false;
     getFullName();
     getUserID().then((val) => setState(() {
           uidd = val;
@@ -73,8 +75,8 @@ class _ApprovalsState extends State<Approvals> {
     setState(() {
       leavesCount = leaveList.length?.toString() ?? "0";
       permissionsCount = permissionsList.length?.toString() ?? "0";
-      latecomingCount = latecomingList.length?.toString() ?? "0";
-      earlygoingCount = earlygoingList.length?.toString() ?? "0";
+      travelCount = trlm.length?.toString() ?? "0";
+      hotelCount = hrlm.length?.toString() ?? "0";
     });
   }
 
@@ -110,14 +112,14 @@ class _ApprovalsState extends State<Approvals> {
                   padding: const EdgeInsets.only(right: 1, top: 1),
                   child: permissionMaterial(),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 1, top: 1),
-                //   child: earlygoingMaterial(),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 1, top: 1),
-                //   child: latecomingMaterial(),
-                // ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: travelMaterial(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 1, top: 1),
+                  child: hotelMaterial(),
+                ),
               ],
               staggeredTiles: [
                 StaggeredTile.extent(4, 75.0),
@@ -129,24 +131,28 @@ class _ApprovalsState extends State<Approvals> {
           ),
           _leavesA
               ? Container(
-                  margin: EdgeInsets.only(left: 60, right: 2, top: 90),
+                  margin: EdgeInsets.only(left: 60, right: 2, top: 180),
                   child: leavesAListView(),
                 )
               : Container(),
           _permissionsA
               ? Container(
-                  margin: EdgeInsets.only(left: 60, right: 2, top: 90),
+                  margin: EdgeInsets.only(left: 60, right: 2, top: 180),
                   child: permissionsAListView(),
                 )
               : Container(),
-          // _earlygoingA? Container(
-          //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
-          //   child:  earlygoingAListView(),
-          // ):Container(),
-          // _latecomingA ? Container(
-          //   margin: EdgeInsets.only(left: 60, right: 2, top: 180),
-          //   child:  latecomingAListView(),
-          // ):Container(),
+          _travelrequestA
+              ? Container(
+                  margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+                  child: travelAListView(),
+                )
+              : Container(),
+          _hotelrequestA
+              ? Container(
+                  margin: EdgeInsets.only(left: 60, right: 2, top: 180),
+                  child: hotelAListView(),
+                )
+              : Container(),
           CollapsingNavigationDrawer("5"),
           //ListView.builder(itemBuilder: null)
         ],
@@ -168,11 +174,11 @@ class _ApprovalsState extends State<Approvals> {
             if (_permissionsA == true) {
               _permissionsA = !_permissionsA;
               checkServices();
-            } else if (_earlygoingA == true) {
-              _earlygoingA = !_earlygoingA;
+            } else if (_travelrequestA == true) {
+              _travelrequestA = !_travelrequestA;
               checkServices();
-            } else if (_latecomingA == true) {
-              _latecomingA = !_latecomingA;
+            } else if (_hotelrequestA == true) {
+              _hotelrequestA = !_hotelrequestA;
               checkServices();
             } else if (_leavesA == false) {
               _permissionsA = !_permissionsA;
@@ -234,14 +240,14 @@ class _ApprovalsState extends State<Approvals> {
             if (_leavesA == true) {
               _leavesA = !_leavesA;
               checkServices();
-            } else if (_earlygoingA == true) {
-              _earlygoingA = !_earlygoingA;
+            } else if (_travelrequestA == true) {
+              _travelrequestA = !_travelrequestA;
               checkServices();
-            } else if (_latecomingA == true) {
-              _latecomingA = !_latecomingA;
+            } else if (_hotelrequestA == true) {
+              _hotelrequestA = !_hotelrequestA;
               checkServices();
             } else if (_permissionsA == false) {
-              _earlygoingA = !_earlygoingA;
+              _travelrequestA = !_travelrequestA;
               checkServices();
             }
           });
@@ -286,16 +292,16 @@ class _ApprovalsState extends State<Approvals> {
     );
   }
 
-  Material earlygoingMaterial() {
+  Material travelMaterial() {
     return Material(
-      color: _earlygoingA ? lwtColor : Colors.white,
+      color: _travelrequestA ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      shadowColor: _earlygoingA ? lwtColor : Colors.white,
+      shadowColor: _travelrequestA ? lwtColor : Colors.white,
       child: InkWell(
         onTap: () {
           setState(() {
-            _earlygoingA = !_earlygoingA;
+            _travelrequestA = !_travelrequestA;
             checkServices();
             if (_leavesA == true) {
               _leavesA = !_leavesA;
@@ -303,11 +309,11 @@ class _ApprovalsState extends State<Approvals> {
             } else if (_permissionsA == true) {
               _permissionsA = !_permissionsA;
               checkServices();
-            } else if (_latecomingA == true) {
-              _latecomingA = !_latecomingA;
+            } else if (_hotelrequestA == true) {
+              _hotelrequestA = !_hotelrequestA;
               checkServices();
-            } else if (_earlygoingA == false) {
-              _latecomingA = !_latecomingA;
+            } else if (_travelrequestA == false) {
+              _hotelrequestA = !_hotelrequestA;
               checkServices();
             }
           });
@@ -324,10 +330,10 @@ class _ApprovalsState extends State<Approvals> {
                     Padding(
                       padding: EdgeInsets.only(top: 5),
                       child: Text(
-                        "Early Going",
+                        "Travel",
                         style: TextStyle(
                           fontSize: 15.0, fontFamily: "Roboto",
-                          color: _earlygoingA ? Colors.white : lwtColor,
+                          color: _travelrequestA ? Colors.white : lwtColor,
                           //Color(0xFF272D34),
                         ),
                       ),
@@ -335,11 +341,11 @@ class _ApprovalsState extends State<Approvals> {
                     Padding(
                       padding: EdgeInsets.only(top: 5, bottom: 5),
                       child: Text(
-                        earlygoingCount,
+                        travelCount,
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: "Roboto",
-                            color: _earlygoingA ? Colors.white : lwtColor),
+                            color: _travelrequestA ? Colors.white : lwtColor),
                       ),
                     ),
                   ],
@@ -352,27 +358,27 @@ class _ApprovalsState extends State<Approvals> {
     );
   }
 
-  Material latecomingMaterial() {
+  Material hotelMaterial() {
     return Material(
-      color: _latecomingA ? lwtColor : Colors.white,
+      color: _hotelrequestA ? lwtColor : Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      shadowColor: _latecomingA ? lwtColor : Colors.white,
+      shadowColor: _hotelrequestA ? lwtColor : Colors.white,
       child: InkWell(
         onTap: () {
           setState(() {
-            _latecomingA = !_latecomingA;
+            _hotelrequestA = !_hotelrequestA;
             checkServices();
             if (_leavesA == true) {
               _leavesA = !_leavesA;
               checkServices();
-            } else if (_earlygoingA == true) {
-              _earlygoingA = !_earlygoingA;
+            } else if (_travelrequestA == true) {
+              _travelrequestA = !_travelrequestA;
               checkServices();
             } else if (_permissionsA == true) {
               _permissionsA = !_permissionsA;
               checkServices();
-            } else if (_latecomingA == false) {
+            } else if (_hotelrequestA == false) {
               _leavesA = !_leavesA;
               checkServices();
             }
@@ -390,10 +396,10 @@ class _ApprovalsState extends State<Approvals> {
                     Padding(
                       padding: EdgeInsets.only(top: 5),
                       child: Text(
-                        "Late Coming",
+                        "Hotel",
                         style: TextStyle(
                           fontSize: 15.0, fontFamily: "Roboto",
-                          color: _latecomingA ? Colors.white : lwtColor,
+                          color: _hotelrequestA ? Colors.white : lwtColor,
                           //Color(0xFF272D34),
                         ),
                       ),
@@ -401,11 +407,11 @@ class _ApprovalsState extends State<Approvals> {
                     Padding(
                       padding: EdgeInsets.only(top: 5, bottom: 5),
                       child: Text(
-                        latecomingCount,
+                        hotelCount,
                         style: TextStyle(
                             fontSize: 20.0,
                             fontFamily: "Roboto",
-                            color: _latecomingA ? Colors.white : lwtColor),
+                            color: _hotelrequestA ? Colors.white : lwtColor),
                       ),
                     ),
                   ],
@@ -722,300 +728,153 @@ class _ApprovalsState extends State<Approvals> {
         });
   }
 
-  // earlygoingAListView() {
-  //   return ListView.builder(
-  //       itemCount: earlygoingList == null ? 0 : earlygoingList.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return Card(
-  //           elevation: 5.0,
-  //           child: Container(
-  //             padding: EdgeInsets.only(top: 10,bottom: 10),
-  //             child: ListTile(
-  //               subtitle: Column(
-  //                 children: <Widget>[
-  //                   Row(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: <Widget>[
-  //                       Container(
-  //                         padding: EdgeInsets.all(2),
-  //                         child: Text(
-  //                           earlygoingList[index]?.att_request_by ?? 'NA',
-  //                           style: TextStyle(
-  //                               color: lwtColor,
-  //                               fontSize: 12,
-  //                               fontWeight: FontWeight.bold),
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   Padding(
-  //                     padding: EdgeInsets.only(top: 8),
-  //                   ),
-  //                  Container(
-  //                    padding: EdgeInsets.only(left: 5),
-  //                    child: Column(
-  //                      children: <Widget>[
-  //                        Row(
-  //                          children: <Widget>[
-  //                            Text("Date                      :     ",style: TextStyle(fontSize: 8,),),
-  //                            Padding(
-  //                              padding: EdgeInsets.only(top: 4),
-  //                            ),
-  //                            Text(displayDateFormat(earlygoingList[index]?.att_date) ?? 'NA',
-  //                              style: TextStyle(
-  //                                  color: lwtColor,
-  //                                  fontSize: 10,
-  //                                  fontWeight: FontWeight.bold
-  //                              ),
-  //                            ),
-  //                          ],
-  //                        ),
-  //                        Padding(
-  //                          padding: EdgeInsets.only(top: 6),
-  //                        ),
-  //                        Row(
-  //                          children: <Widget>[
-  //                            Text("Out Time              :     ",style: TextStyle(fontSize: 8,),),
-  //                            Padding(
-  //                              padding: EdgeInsets.only(top: 4),
-  //                            ),
-  //                            Text(earlygoingList[index]?.att_out_time ?? 'NA',
-  //                              style: TextStyle(
-  //                                  color: lwtColor,
-  //                                  fontSize: 10,
-  //                                  fontWeight: FontWeight.bold
-  //                              ),
-  //                            ),
-  //                          ],
-  //                        ),
-  //                        Padding(
-  //                          padding: EdgeInsets.only(top: 6),
-  //                        ),
-  //                        Row(
-  //                          children: <Widget>[
-  //                            Text("Work Status         :     ",style: TextStyle(fontSize: 8,),),
-  //                            Padding(
-  //                              padding: EdgeInsets.only(top: 4),
-  //                            ),
-  //                            Text(earlygoingList[index]?.att_work_status ?? '' + "NA.",
-  //                              style: TextStyle(
-  //                                  color: lwtColor,
-  //                                  fontSize: 10,
-  //                                  fontWeight: FontWeight.bold
-  //                              ),
-  //                            ),
-  //                          ],
-  //                        ),
-  //                        Padding(
-  //                          padding: EdgeInsets.only(top: 6),
-  //                        ),
-  //                        Row(
-  //                          children: <Widget>[
-  //                                  Text("Reason                 :     ",style: TextStyle(fontSize: 8,),),
-  //                            Padding(
-  //                              padding: EdgeInsets.only(top: 4),
-  //                            ),
-  //                            Expanded(
-  //                              child: Text(earlygoingList[index]?.att_request_remarks ?? '' + "NA.",
-  //                                style: TextStyle(
-  //                                    color: lwtColor,
-  //                                    fontSize: 10,
-  //                                    fontWeight: FontWeight.bold
-  //                                ),
-  //                              ),
-  //                            ),
-  //                          ],
-  //                        ),
-  //                      ],
-  //                    ),
-  //                  )
-  //                 ],
-  //               ),
-  //               trailing: Container(
-  //                 padding: EdgeInsets.only(top: 20),
-  //                 child: IconButton(
-  //                   icon: Icon(Icons.check_circle,color: lwtColor,size: 40,),
-  //                   onPressed: (){
-  //                     earlygoingRequest(earlygoingList[index]);
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
+  travelAListView() {
+    return ListView.builder(
+        itemCount: trlm == null ? 0 : trlm.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            elevation: 5.0,
+            child: Container(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: ListTile(
+                subtitle: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(2),
+                          child: Text(
+                            trlm[index]?.fullName ?? 'NA',
+                            style: TextStyle(
+                                color: lwtColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                    ),
+                  ],
+                ),
+                trailing: Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.check_circle,
+                      color: lwtColor,
+                      size: 40,
+                    ),
+                    onPressed: () {
+                      travelRequest(trlm[index]);
+                    },
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
-  // latecomingAListView() {
-  //   return ListView.builder(
-  //       itemCount: latecomingList == null ? 0 : latecomingList.length,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return Card(
-  //           elevation: 5.0,
-  //           child: Container(
-  //             padding: EdgeInsets.only(top: 10,bottom: 10),
-  //             child: ListTile(
-  //               subtitle: Column(
-  //                 children: <Widget>[
-  //                   Row(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: <Widget>[
-  //                       Container(
-  //                         padding: EdgeInsets.all(2),
-  //                         child: Text(latecomingList[index].att_request_by[0].toUpperCase()+ latecomingList[index].att_request_by.substring(1) ?? 'NA',
-  //                               style: TextStyle(
-  //                                   color: lwtColor,
-  //                                   fontSize: 12,
-  //                                   fontWeight: FontWeight.bold),
-  //                             ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   Padding(
-  //                     padding: EdgeInsets.only(top: 8),
-  //                   ),
-  //                   Container(
-  //                     padding: EdgeInsets.only(left: 5),
-  //                     child: Column(
-  //                       children: <Widget>[
-  //                         Row(
-  //                           children: <Widget>[
-  //                             Text("Date                      :     ",style: TextStyle(fontSize: 8,),),
-  //                             Padding(
-  //                               padding: EdgeInsets.only(top: 4),
-  //                             ),
-  //                             Text(displayDateFormat(latecomingList[index]?.att_date) ?? 'NA',
-  //                               style: TextStyle(
-  //                                   color: lwtColor,
-  //                                   fontSize: 10,
-  //                                   fontWeight: FontWeight.bold
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Padding(
-  //                           padding: EdgeInsets.only(top: 6),
-  //                         ),
-  //                         Row(
-  //                           children: <Widget>[
-  //                             Text("In Time                 :     ",style: TextStyle(fontSize: 8,),),
-  //                             Padding(
-  //                               padding: EdgeInsets.only(top: 4),
-  //                             ),
-  //                             Text(latecomingList[index]?.att_tour_in_time ?? 'NA',
-  //                               style: TextStyle(
-  //                                   color: lwtColor,
-  //                                   fontSize: 10,
-  //                                   fontWeight: FontWeight.bold
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Padding(
-  //                           padding: EdgeInsets.only(top: 6),
-  //                         ),
-  //                         Row(
-  //                           children: <Widget>[
-  //                             Text("Work Status         :     ",style: TextStyle(fontSize: 8,),),
-  //                             Padding(
-  //                               padding: EdgeInsets.only(top: 4),
-  //                             ),
-  //                             Text(latecomingList[index]?.att_work_status ?? '' + "NA.",
-  //                               style: TextStyle(
-  //                                   color: lwtColor,
-  //                                   fontSize: 10,
-  //                                   fontWeight: FontWeight.bold
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                         Padding(
-  //                           padding: EdgeInsets.only(top: 6),
-  //                         ),
-  //                         Row(
-  //                           children: <Widget>[
-  //                             Text("Reason                 :     ",style: TextStyle(fontSize: 8,),),
-  //                             Padding(
-  //                               padding: EdgeInsets.only(top: 4),
-  //                             ),
-  //                             Expanded(
-  //                               child: Text(latecomingList[index]?.att_request_remarks ?? '' + "NA.",
-  //                                 style: TextStyle(
-  //                                     color: lwtColor,
-  //                                     fontSize: 10,
-  //                                     fontWeight: FontWeight.bold
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   )
-  //                 ],
-  //               ),
-  //               trailing: Container(
-  //                 padding: EdgeInsets.only(top: 20),
-  //                 child: IconButton(
-  //                   icon: Icon(Icons.check_circle,size: 40,color: lwtColor,),
-  //                   onPressed: (){
-  //                     latecomingRequest(latecomingList[index]);
-  //                   },
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         );
-  //       });
-  //       }
+  hotelAListView() {
+    return ListView.builder(
+        itemCount: hrlm == null ? 0 : hrlm.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            elevation: 5.0,
+            child: Container(
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              child: ListTile(
+                subtitle: Column(
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(2),
+                          child: Text(
+                            hrlm[index]?.travellerName??
+                                'NA',
+                            style: TextStyle(
+                                color: lwtColor,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                    
+                  ],
+                ),
+                trailing: Container(
+                  padding: EdgeInsets.only(top: 20),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.check_circle,
+                      size: 40,
+                      color: lwtColor,
+                    ),
+                    onPressed: () {
+                      hotelRequest(hrlm[index]);
+                    },
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
-  // void earlygoingRequest(LateEarlyComingModel earlygoingList) {
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return CupertinoAlertDialog(
-  //           title: new Text('Do you want to Approve.?'),
-  //           actions: <Widget>[
-  //             new CupertinoButton(
-  //               onPressed: () {
-  //                 cancelLateEarlyServiceCall(earlygoingList);
-  //               },
-  //               child: new Text('Reject'),
-  //             ),
-  //             new CupertinoButton(
-  //               onPressed: ()  {
-  //                 approveLateEarlyServiceCall(earlygoingList);
-  //               },
-  //               child: new Text('Approve'),),
-  //           ],
-  //         );
-  //       });
-  // }
+  void travelRequest(TravelRequestListModel trlm) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text('Do you want to Approve.?'),
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  // cancelLateEarlyServiceCall(trlm);
+                },
+                child: new Text('Reject'),
+              ),
+              new CupertinoButton(
+                onPressed: () {
+                  // approveLateEarlyServiceCall(trlm);
+                },
+                child: new Text('Approve'),
+              ),
+            ],
+          );
+        });
+  }
 
-  //  latecomingRequest(LateEarlyComingModel lateearlycomingModel) {
-  //   showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) {
-  //         return CupertinoAlertDialog(
-  //           title: new Text('Do you want to Approve.?'),
-  //           actions: <Widget>[
-  //             new CupertinoButton(
-  //               onPressed: () {
-  //                 cancelLateEarlyServiceCall(lateearlycomingModel);
-  //               },
-  //               child: new Text('Reject'),
-  //             ),
-  //             new CupertinoButton(
-  //               onPressed: ()  {
-  //                 approveLateEarlyServiceCall(lateearlycomingModel);
-  //               },
-  //               child: new Text('Approve'),),
-  //           ],
-  //         );
-  //       });
-  // }
+   hotelRequest(HotelRequestModel hrm) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text('Do you want to Approve.?'),
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  // cancelLateEarlyServiceCall(lateearlycomingModel);
+                },
+                child: new Text('Reject'),
+              ),
+              new CupertinoButton(
+                onPressed: ()  {
+                  // approveLateEarlyServiceCall(lateearlycomingModel);
+                },
+                child: new Text('Approve'),),
+            ],
+          );
+        });
+  }
 
   alertpermissionCheck(PermissionModel permissionModel) {
     showDialog(
@@ -1109,62 +968,41 @@ class _ApprovalsState extends State<Approvals> {
 
       ///==================================
 
-//      var response2 = await dio.post(ServicesApi.emp_Data,
-//          data: {
-//            "actionMode": "GetDownTeamLatecomingByMonth",
-//            "parameter1": uidd.toString(),
-//            "parameter2": DateFormat("yyyy-MM-").format(now).toString()+"01",
-//            "parameter3": "string",
-//            "parameter4": "string",
-//            "parameter5": "string"
-//          },
-//          options: Options(contentType: ContentType.parse('application/json'),
-//          ));
-//      if (response2.statusCode == 200 || response2.statusCode == 201) {
-//        setState(() {
-//          datacheck=
-//              (json.decode(response2.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
-//          datacheck.removeWhere((a)=> a.att_id=="-");
-//          datacheck.removeWhere((a)=>a.tl_approval=="1");
-//          datacheck.removeWhere((a)=>a.tl_approval=="2");
-//          datacheck.removeWhere((a)=>a.hr_approval=="1");
-//          datacheck.removeWhere((a)=>a.hr_approval=="2");
-//          latecomingList=datacheck;
-//          print(latecomingList);
-////          print(list1.toString());
-//
-//        });
-////        CheckServices();
-//      }
+      var response2 = await dio.post(ServicesApi.getData,
+          data: {
+            "parameter1": "getTravelRequestByDownTeam",
+            "parameter2": uidd
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response2.statusCode == 200 || response2.statusCode == 201) {
+        setState(() {
+          trlm = (json.decode(response2.data) as List)
+              .map((data) => TravelRequestListModel.fromJson(data))
+              .toList();
+          print(trlm);
+        });
+        checkServices();
+      }
 //      //=======================================================
-//      print(DateFormat("yyyy-MM-").format(now).toString()+"01");
-//      var response3 = await dio.post(ServicesApi.emp_Data,
-//          data: {
-//            "actionMode": "GetDownTeamEarlyGoingByMonth",
-//            "parameter1": uidd.toString(),
-//            "parameter2": DateFormat("yyyy-MM-").format(now).toString()+"01",
-//            "parameter3": "string",
-//            "parameter4": "string",
-//            "parameter5": "string"
-//          },
-//          options: Options(contentType: ContentType.parse('application/json'),
-//          ));
-//      if (response3.statusCode == 200 || response3.statusCode == 201) {
-//        setState(() {
-//          datacheck =
-//              (json.decode(response3.data) as List).map((data) => new LateEarlyComingModel.fromJson(data)).toList();
-//          datacheck.removeWhere((a)=> a.att_id=="-");
-//          datacheck.removeWhere((a)=>a.tl_approval=="1");
-//          datacheck.removeWhere((a)=>a.tl_approval=="2");
-//          datacheck.removeWhere((a)=>a.hr_approval=="1");
-//          datacheck.removeWhere((a)=>a.hr_approval=="2");
-//          earlygoingList=datacheck;
-////          print(list1.toString());
-//
-//        });
-
-//      }
-//      checkServices();
+      var response3 = await dio.post(ServicesApi.getData,
+          data: {
+            "parameter1": "getHotelRequestByDownTeam",
+            "parameter2": uidd
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response3.statusCode == 200 || response3.statusCode == 201) {
+        setState(() {
+          hrlm = (json.decode(response3.data) as List)
+              .map((data) => HotelRequestModel.fromJson(data))
+              .toList();
+          print(trlm);
+        });
+        checkServices();
+      }
       //===================================================
     } on DioError catch (exception) {
       if (exception == null ||
@@ -1483,10 +1321,16 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   void pushLeavesNotification(
-      String to, String el_from_date, String el_to_date, String status)async {
+      String to, String el_from_date, String el_to_date, String status) async {
     Map<String, dynamic> notification = {
-      'body':
-          fullname + " has " + status + " your request on this " + el_from_date + " to "+el_to_date+".",
+      'body': fullname +
+          " has " +
+          status +
+          " your request on this " +
+          el_from_date +
+          " to " +
+          el_to_date +
+          ".",
       'title': 'Leave Approval',
     };
     Map<String, dynamic> data = {

@@ -1,5 +1,5 @@
 class LoginModel {
-  final int cnt, uId, uEmpCode;
+  final int cnt, uId, uEmpCode,hrCnt,travelCnt,salesCnt;
   final String fullName,
       profileName,
       downTeamIds,
@@ -13,6 +13,9 @@ class LoginModel {
       this.cnt,
       this.uId,
       this.uEmpCode,
+      this.hrCnt,
+      this.travelCnt,
+      this.salesCnt,
       this.fullName,
       this.profileName,
       this.downTeamIds,
@@ -26,6 +29,9 @@ class LoginModel {
       : cnt = json['cnt'],
         uId = json['uId'],
         uEmpCode = json['uEmpCode'],
+        hrCnt = json['hrCnt'],
+        travelCnt = json['travelCnt'],
+        salesCnt = json['salesCnt'],
         fullName = json['fullName'],
         profileName = json['profileName'],
         downTeamIds = json['downTeamIds'],
@@ -39,6 +45,9 @@ class LoginModel {
         'cnt': cnt,
         'uId': uId,
         'uEmpCode': uEmpCode,
+        'hrCnt':hrCnt,
+        'travelCnt':travelCnt,
+        'salesCnt':salesCnt,
         'fullName': fullName,
         'profileName': profileName,
         'downTeamIds': downTeamIds,
