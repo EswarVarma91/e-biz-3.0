@@ -94,14 +94,14 @@ class _LoginState extends State<Login> {
     if (payload != null) {
       debugPrint('notification payload: ' + payload);
     }
-    await Fluttertoast.showToast(
-        msg: "Notification Clicked",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.black54,
-        textColor: Colors.white,
-        fontSize: 16.0);
+    // await Fluttertoast.showToast(
+    //     msg: "Notification Clicked",
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.BOTTOM,
+    //     timeInSecForIos: 1,
+    //     backgroundColor: Colors.black54,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0);
     /*Navigator.push(
       context,
       new MaterialPageRoute(builder: (context) => new SecondScreen(payload)),
