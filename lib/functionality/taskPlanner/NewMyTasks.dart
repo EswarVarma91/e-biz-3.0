@@ -422,7 +422,7 @@ class _NewTaskState extends State<NewMyTasks> {
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-          ModalRoute.withName('/'),
+          ModalRoute.withName('/'), 
         );
       } else {
         pr.hide();

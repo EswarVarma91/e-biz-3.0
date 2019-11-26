@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:eaglebiz/model/FirebaseUserModel.dart';
 import 'package:eaglebiz/model/RestrictPermissionsModel.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
@@ -13,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
+import 'package:http/http.dart' as http;
 
 class NewProjectTasks extends StatefulWidget {
   @override
@@ -28,8 +30,9 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   var chooseResource = "Select Resource";
   var projectId;
   var resourceId;
-  String profileName;
+  String profileName, fullName;
   ProgressDialog pr;
+  List<FirebaseUserModel> fum;
   var now = DateTime.now();
 
   @override
@@ -42,6 +45,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       profileName = preferences.getString("profileName");
+      fullName = preferences.getString('fullname');
       uidd = preferences.getString("userId");
     });
   }
@@ -258,14 +262,8 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         ));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-//      var responseJson = json.decode(response.data);
-      Fluttertoast.showToast(msg: "Task Created");
-      pr.hide();
-      var navigator = Navigator.of(context);
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-        ModalRoute.withName('/'),
-      );
+      getFirebaseToken(
+          fullName, _controller1.text, _controller2.text, resourceId);
     } else {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
@@ -294,4 +292,73 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
       Fluttertoast.showToast(msg: "Please try after some time.");
     }
   }
+
+  void getFirebaseToken(String fullName, String taskName,
+      String taskDescription, resourceId) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getUserToken", "parameter2": resourceId},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fum = (json.decode(response.data) as List)
+              .map((data) => new FirebaseUserModel.fromJson(data))
+              .toList();
+        });
+        var data = fum[0].token.toString();
+        // Fluttertoast.showToast(msg: "Stopped");
+        pushNotification(data, fullName, taskName, taskDescription);
+      } else {
+        pr.hide();
+        Fluttertoast.showToast(msg: "Task Assigned");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+          ModalRoute.withName('/'),
+        );
+      }
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushNotification(String to, String fullName, String taskName,
+      String taskDescription) async {
+    Map<String, dynamic> notification = {
+      'body': fullName +" has created a task for you"+" '"+"$taskName"+"'",
+      'title': 'Project Task',
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+    pr.hide();
+    Fluttertoast.showToast(msg: "Task Assigned");
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+      ModalRoute.withName('/'),
+    );
+  }
 }
+
+//  Fluttertoast.showToast(msg: "Task Assigned");
+//       pr.hide();
+//       var navigator = Navigator.of(context);
+//       navigator.pushAndRemoveUntil(
+//         MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+//         ModalRoute.withName('/'),
+//       );

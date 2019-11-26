@@ -4,7 +4,7 @@ import 'dart:core';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/permissions/Permissions.dart';
 import 'package:eaglebiz/model/CheckPermissionsRestrictions.dart';
-import 'package:eaglebiz/model/FirebaseModel.dart';
+import 'package:eaglebiz/model/FirebaseReportingLevelModel.dart';
 import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,7 +40,7 @@ class _NewPermissionState extends State<NewPermissions> {
   List<String> dSplit = [];
   List<String> aSplit = [];
   List<CheckPermissionRestrictions> checkPermissionRestrictions;
-  List<FirebaseModel> fm;
+  List<FirebaseReportingLevelModel> fm;
 
   @override
   void initState() {
@@ -550,7 +550,7 @@ class _NewPermissionState extends State<NewPermissions> {
       if (response.data != null) {
         setState(() {
           fm = (json.decode(response.data) as List)
-              .map((data) => new FirebaseModel.fromJson(data))
+              .map((data) => new FirebaseReportingLevelModel.fromJson(data))
               .toList();
         });
         var data = fm[0].reporting.toString();

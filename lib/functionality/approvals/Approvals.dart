@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:eaglebiz/main.dart';
+import 'package:eaglebiz/model/FirebaseUserModel.dart';
 import 'package:eaglebiz/model/LateEarlyComingModel.dart';
 import 'package:eaglebiz/model/LeavesModel.dart';
 import 'package:eaglebiz/model/PermissionModel.dart';
@@ -11,8 +12,10 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class Approvals extends StatefulWidget {
   @override
@@ -41,6 +44,7 @@ class _ApprovalsState extends State<Approvals> {
   List<LateEarlyComingModel> earlygoingList = new List();
   List<LateEarlyComingModel> datacheck = new List();
   List<LateEarlyComingModel> latecomingList = new List();
+  List<FirebaseUserModel> fum;
   ProgressDialog pr;
 
   getFullName() async {
@@ -1194,11 +1198,11 @@ class _ApprovalsState extends State<Approvals> {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        pr.hide();
-        setState(() {
-          getPendingApprovals();
-        });
-        Navigator.pop(context);
+        // pr.hide();
+        // getPendingApprovals();
+        // Navigator.pop(context);
+        getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
+            "Cancelled", leaveList.u_id.toString());
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -1232,12 +1236,8 @@ class _ApprovalsState extends State<Approvals> {
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        pr.dismiss();
-        setState(() {
-          getPendingApprovals();
-        });
-        Navigator.pop(context);
-//        CheckServices();
+        getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
+            "Approved", leaveList.u_id.toString());
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -1272,12 +1272,11 @@ class _ApprovalsState extends State<Approvals> {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        pr.hide();
-        setState(() {
-          getPendingApprovals();
-        });
-        Navigator.pop(context);
-//        CheckServices();
+        // pr.hide();
+        // getPendingApprovals();
+        // Navigator.pop(context);
+        getUserPermissionToken(permissionModel.per_date, "Approved",
+            permissionModel.u_id.toString());
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -1311,12 +1310,11 @@ class _ApprovalsState extends State<Approvals> {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        setState(() {
-          getPendingApprovals();
-        });
-        pr.hide();
-        Navigator.pop(context);
-//        CheckServices();
+        // getPendingApprovals();
+        // pr.hide();
+        // Navigator.pop(context);
+        getUserPermissionToken(permissionModel.per_date, "Cancelled",
+            permissionModel.u_id.toString());
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -1334,77 +1332,182 @@ class _ApprovalsState extends State<Approvals> {
     }
   }
 
-//   ///===============================
-//   void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
-//     try {
-//       var  response = await dio.put(ServicesApi.ChangeLeaveStatus,
-//           data: {
-//             "actionMode": "RejectAttendanceReqByTL ",
-//             "parameter1": listdata.u_emp_code.toString(),
-//             "parameter2": listdata.att_date.toString(),
-//             "parameter3": profilename,
-//             "parameter4": listdata.att_id.toString(),
-//             "parameter5": "string"
-//           },
-//           options: Options(contentType: ContentType.parse('application/json'),
-//           ));
-//       if (response.statusCode == 200 || response.statusCode == 201) {
-//         setState(() {
-//           getPendingApprovals();
-//         });
-//         Navigator.pop(context);
-// //        CheckServices();
-//       }
-//     } on DioError catch (exception) {
-//       if (exception == null ||
-//           exception.toString().contains('SocketException')) {
-//         throw Exception("Network Error");
-//       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-//           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-//         throw Exception(
-//             "Could'nt connect, please ensure you have a stable network.");
-//       } else {
-//         return null;
-//       }
-//     }
-//   }
+  //   ///===============================
+  //   void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
+  //     try {
+  //       var  response = await dio.put(ServicesApi.ChangeLeaveStatus,
+  //           data: {
+  //             "actionMode": "RejectAttendanceReqByTL ",
+  //             "parameter1": listdata.u_emp_code.toString(),
+  //             "parameter2": listdata.att_date.toString(),
+  //             "parameter3": profilename,
+  //             "parameter4": listdata.att_id.toString(),
+  //             "parameter5": "string"
+  //           },
+  //           options: Options(contentType: ContentType.parse('application/json'),
+  //           ));
+  //       if (response.statusCode == 200 || response.statusCode == 201) {
+  //         setState(() {
+  //           getPendingApprovals();
+  //         });
+  //         Navigator.pop(context);
+  // //        CheckServices();
+  //       }
+  //     } on DioError catch (exception) {
+  //       if (exception == null ||
+  //           exception.toString().contains('SocketException')) {
+  //         throw Exception("Network Error");
+  //       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+  //           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+  //         throw Exception(
+  //             "Could'nt connect, please ensure you have a stable network.");
+  //       } else {
+  //         return null;
+  //       }
+  //     }
+  //   }
 
-//   void approveLateEarlyServiceCall(LateEarlyComingModel listdata) async {
-//     try {
-//       var  response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
-//           data: {
-//             "actionMode": "ApproveAttendanceReqByTL",
-//             "parameter1": listdata.u_emp_code.toString(),
-//             "parameter2": listdata.att_date.toString(),
-//             "parameter3": profilename,
-//             "parameter4": listdata.att_id.toString(),
-//             "parameter5": "string"
-//           },
-//           options: Options(contentType: ContentType.parse('application/json'),
-//           ));
-//       if (response.statusCode == 200 || response.statusCode == 201) {
-//         setState(() {
-//           getPendingApprovals();
-//         });
-//         Navigator.pop(context);
-// //        CheckServices();
-//       }
-//     } on DioError catch (exception) {
-//       if (exception == null ||
-//           exception.toString().contains('SocketException')) {
-//         throw Exception("Network Error");
-//       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-//           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-//         throw Exception(
-//             "Could'nt connect, please ensure you have a stable network.");
-//       } else {
-//         return null;
-//       }
-//     }
-//   }
+  //   void approveLateEarlyServiceCall(LateEarlyComingModel listdata) async {
+  //     try {
+  //       var  response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
+  //           data: {
+  //             "actionMode": "ApproveAttendanceReqByTL",
+  //             "parameter1": listdata.u_emp_code.toString(),
+  //             "parameter2": listdata.att_date.toString(),
+  //             "parameter3": profilename,
+  //             "parameter4": listdata.att_id.toString(),
+  //             "parameter5": "string"
+  //           },
+  //           options: Options(contentType: ContentType.parse('application/json'),
+  //           ));
+  //       if (response.statusCode == 200 || response.statusCode == 201) {
+  //         setState(() {
+  //           getPendingApprovals();
+  //         });
+  //         Navigator.pop(context);
+  // //        CheckServices();
+  //       }
+  //     } on DioError catch (exception) {
+  //       if (exception == null ||
+  //           exception.toString().contains('SocketException')) {
+  //         throw Exception("Network Error");
+  //       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+  //           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+  //         throw Exception(
+  //             "Could'nt connect, please ensure you have a stable network.");
+  //       } else {
+  //         return null;
+  //       }
+  //     }
+  //   }
 
   displayDateFormat(String elFromDate) {
     List<String> a = elFromDate.split("-");
     return a[2] + "-" + a[1] + "-" + a[0];
+  }
+
+  void getUserPermissionToken(String date, String status, String puidd) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getUserToken", "parameter2": puidd},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fum = (json.decode(response.data) as List)
+              .map((data) => new FirebaseUserModel.fromJson(data))
+              .toList();
+        });
+        var to = fum[0].token.toString();
+        // Fluttertoast.showToast(msg: "Stopped");
+        pushPermissionsNotification(to, date, status);
+      } else {
+        pr.hide();
+        Navigator.pop(context);
+      }
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushPermissionsNotification(
+      String to, String date, String status) async {
+    Map<String, dynamic> notification = {
+      'body':
+          fullname + " has " + status + " your request on this " + date + ".",
+      'title': 'Permission Approval',
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    pr.hide();
+    Navigator.pop(context);
+  }
+
+  void getUserLeavesToken(String el_from_date, String el_to_date, String status,
+      String puidd) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getUserToken", "parameter2": puidd},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fum = (json.decode(response.data) as List)
+              .map((data) => new FirebaseUserModel.fromJson(data))
+              .toList();
+        });
+        var to = fum[0].token.toString();
+        // Fluttertoast.showToast(msg: "Stopped");
+        pushLeavesNotification(to, el_from_date, el_to_date, status);
+      } else {
+        pr.hide();
+        Navigator.pop(context);
+      }
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushLeavesNotification(
+      String to, String el_from_date, String el_to_date, String status)async {
+    Map<String, dynamic> notification = {
+      'body':
+          fullname + " has " + status + " your request on this " + el_from_date + " to "+el_to_date+".",
+      'title': 'Leave Approval',
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    pr.hide();
+    Navigator.pop(context);
   }
 }
