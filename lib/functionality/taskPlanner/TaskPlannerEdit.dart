@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/taskPlanner/TaskPlanner.dart';
@@ -6,7 +7,9 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
+import 'package:http/http.dart' as http;
 
 class TaskPlannerEdit extends StatefulWidget {
   String dp_id, profilename;
@@ -18,7 +21,7 @@ class TaskPlannerEdit extends StatefulWidget {
 }
 
 class _TaskPlannerEditState extends State<TaskPlannerEdit> {
-  String dp_id, mainStatus, profilename;
+  String dp_id, mainStatus, profilename, fullname;
   ProgressDialog pr;
   _TaskPlannerEditState(this.dp_id, this.profilename);
   TextEditingController _controllerReason = TextEditingController();
@@ -26,9 +29,16 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
   static Dio dio = Dio(Config.options);
   final List<String> listTaskStatus = ['Open', 'Progress', 'Closed'];
 
+  getUserDetails() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    profilename = preferences.getString("profileName");
+    fullname = preferences.getString("fullname");
+  }
+
   @override
   void initState() {
     super.initState();
+    getUserDetails();
   }
 
   @override
@@ -168,13 +178,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        pr.hide();
-        Fluttertoast.showToast(msg: "Status Updated.!");
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-          ModalRoute.withName('/'),
-        );
-        // getUserIdDayPlan(dp_id, createdUid);
+        getdayPlanbyId(mainStatus.toString(), dp_id.toString());
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
@@ -190,11 +194,77 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       }
     }
   }
 
-  void getUserIdDayPlan(String dp_id, createdUid) {}
+  void getdayPlanbyId(String mainStatus, String dp_id) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getdayPlanbyId", "parameter2": dp_id},
+        options: Options(contentType: ContentType.parse("application/json")));
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var dp_task = json.decode(response.data)[0]['dp_task'];
+      var token = json.decode(response.data)[0]['token'];
+      if (token == null || token == "null") {
+        pushNotification(dp_task.toString(), token, mainStatus);
+      } else {
+        pr.hide();
+        Fluttertoast.showToast(msg: "Status Updated.!");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+          ModalRoute.withName('/'),
+        );
+      }
+    }
+  }
+
+  void pushNotification(String dp_task, String to, String mainStatus) async {
+    Map<String, dynamic> notification;
+    if (mainStatus == "1") {
+      notification = {
+        'body': dp_task + " has been reopened by " + fullname,
+        'title': 'Task Allocation',
+        //
+      };
+    } else if (mainStatus == "2") {
+      notification = {
+        'body': dp_task + " has been started by " + fullname,
+        'title': 'Task Allocation',
+        //
+      };
+    } else if (mainStatus == "3") {
+      notification = {
+        'body': dp_task + " has been closed by " + fullname,
+        'title': 'Task Allocation',
+        //
+      };
+    }
+
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    pr.hide();
+    Fluttertoast.showToast(msg: "Status Updated.!");
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+      ModalRoute.withName('/'),
+    );
+  }
 }
