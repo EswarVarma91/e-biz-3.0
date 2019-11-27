@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/hotel/DownTeamMembers.dart';
 import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
@@ -40,12 +41,13 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
       purposeH;
 
   int y, m, d;
-  String toA, toB, toC, profilename;
+  String toA, toB, toC, profilename, fullname;
   static Dio dio = Dio(Config.options);
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     profilename = preferences.getString("profileName");
+    fullname = preferences.getString("fullname");
   }
 
   @override
@@ -81,7 +83,9 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
             ),
             onPressed: () {
               if (checkIn.isEmpty) {
+                Fluttertoast.showToast(msg: "Choose Check-In");
               } else if (checkOut.isEmpty) {
+                Fluttertoast.showToast(msg: "Choose Check-Out");
               } else {
                 edithoteRequestService(checkIn, checkOut);
               }
@@ -292,14 +296,55 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
         },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var navigator = Navigator.of(context);
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => HotelRequestList()),
-        ModalRoute.withName('/'),
-      );
+      getUseridByhotelId(hotel_id.toString());
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
+  }
+
+  void getUseridByhotelId(String hotel_id) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var req_no = json.decode(response.data)[0]['hotel_req_no'];
+      var token = json.decode(response.data)[0]['token'];
+      pushNotification(req_no, token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushNotification(String reqNo, String to) async {
+    Map<String, dynamic> notification = {
+      'body': "Hotel request " + reqNo + " has been modified by " + fullname,
+      'title': 'Hotel Request',
+      //
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+    Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
+    var navigator = Navigator.of(context);
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => HotelRequestList()),
+      ModalRoute.withName('/'),
+    );
   }
 }

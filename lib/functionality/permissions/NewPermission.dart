@@ -90,15 +90,15 @@ class _NewPermissionState extends State<NewPermissions> {
               var totimeCheck = DateFormat("HH:mm:ss").parse(toTime.toString());
 
               if (selectDate.isEmpty) {
-                Fluttertoast.showToast(msg: "Please Select Date");
+                Fluttertoast.showToast(msg: "Choose 'Date' for Application.");
               } else if (fromTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Please Select From Time");
+                Fluttertoast.showToast(msg: "Choose your 'From Time'.");
               } else if (toTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Please Select To Time");
+                Fluttertoast.showToast(msg: "Choose your 'To Time'.");
               } else if (_controller1.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Please Enter Purpose");
+                Fluttertoast.showToast(msg: "Enter the purpose for Permission.");
               } else if (!totimeCheck.isAfter(fromtimeCheck)) {
-                Fluttertoast.showToast(msg: "Please check your timings");
+                Fluttertoast.showToast(msg: "Invalid Timings Selected.");
               } else if (personal == true) {
                 // if (totimeCheck.difference(fromtimeCheck).inMinutes <= 120) {
                 //Service Call
@@ -294,7 +294,7 @@ class _NewPermissionState extends State<NewPermissions> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        "Official".toUpperCase(),
+                        "Office Movement".toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.0,
                           fontFamily: "Roboto",
@@ -433,7 +433,7 @@ class _NewPermissionState extends State<NewPermissions> {
                 pr.hide();
                 Fluttertoast.showToast(
                     msg:
-                        "Sorry! You have already requested a permission for this date.");
+                        "Sorry..! You have already requested a permission for this date.");
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
                       builder: (BuildContext context) => Permissions()),
@@ -443,16 +443,16 @@ class _NewPermissionState extends State<NewPermissions> {
             } else {
               pr.hide();
               Fluttertoast.showToast(
-                  msg: "Sorry! You have excedded your monthly limit.");
+                  msg: "Sorry..! You have excedded your monthly limit.");
             }
           } else {
             pr.hide();
             Fluttertoast.showToast(
-                msg: "Sorry! You have trying to request in non working hours.");
+                msg: "Sorry..! You have trying to request in non working hours.");
           }
         } else {
           pr.hide();
-          Fluttertoast.showToast(msg: 'Something went wrong.!');
+          Fluttertoast.showToast(msg: 'Check your internet connection.');
         }
       }
 
@@ -468,7 +468,7 @@ class _NewPermissionState extends State<NewPermissions> {
           // );
         } else if (response.data.toString() ==
             '"Exceeded your permission hours"') {
-          Fluttertoast.showToast(msg: "Not More than 2 Hours");
+          Fluttertoast.showToast(msg: "Permission not allowed for more than 2 hours.");
         } else {
           Fluttertoast.showToast(msg: response.data.toString());
         }
@@ -485,7 +485,7 @@ class _NewPermissionState extends State<NewPermissions> {
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       }
     }
   }
@@ -520,7 +520,7 @@ class _NewPermissionState extends State<NewPermissions> {
             .toList();
         if (checkPermissionRestrictions.isEmpty ||
             checkPermissionRestrictions == null) {
-          Fluttertoast.showToast(msg: 'Something went wrong.!');
+          Fluttertoast.showToast(msg: 'Check your internet connection.');
         } else {
           return 0;
         }
@@ -534,7 +534,7 @@ class _NewPermissionState extends State<NewPermissions> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -560,7 +560,7 @@ class _NewPermissionState extends State<NewPermissions> {
         pr.hide();
 
         Fluttertoast.showToast(
-            msg: "Your reporting level doesn't have mobile app");
+            msg: "Sorry..! Your reporting level doesn't have mobile app");
         Fluttertoast.showToast(msg: response.data.toString());
         // Fluttertoast.showToast(msg: "Permission Applied");
         Navigator.of(context).pushAndRemoveUntil(
@@ -574,16 +574,17 @@ class _NewPermissionState extends State<NewPermissions> {
   void pushNotification(String to, String date, String fromTime, String toTime,
       String purpose, String uidd) async {
     Map<String, dynamic> notification = {
-      'body': "Hello.! Sir i am " +
+      'body': 
           fullname +
-          " i want 2hours of permission for " +
-          purpose +
-          " From " +
+          " has requested for 2hours of permission" +
+          " From: " +
           fromTime +
-          " To " +
-          toTime +
-          ". So kindly accept my permission.",
+          " To: " + 
+          toTime + " Purpose:"+
+          purpose +
+          ". Approval Requested.",
       'title': 'Permission Request',
+      //
     };
     Map<String, dynamic> data = {
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',

@@ -94,7 +94,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
           if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-              d.dpTaskType == "Self") {
+              d.dpTaskType == "Self"&&
+            d.createdUid.toString() == uidd) {
             return true;
           }
           return false;
@@ -102,21 +103,24 @@ class _TaskPlannerState extends State<TaskPlanner> {
       ).toList();
       //open filter
       list4 = list1.where((d) {
-        if (d.dp_status.toString() == "1" && d.dpTaskType == "Self") {
+        if (d.dp_status.toString() == "1" && d.dpTaskType == "Self" &&
+            d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
       }).toList();
       //progress filter
       list5 = list1.where((d) {
-        if (d.dp_status.toString() == "2" && d.dpTaskType == "Self") {
+        if (d.dp_status.toString() == "2" && d.dpTaskType == "Self" &&
+            d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
       }).toList();
       //closed filter
       list6 = list1.where((d) {
-        if (d.dp_status.toString() == "3" && d.dpTaskType == "Self") {
+        if (d.dp_status.toString() == "3" && d.dpTaskType == "Self" &&
+            d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
@@ -149,8 +153,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       list3 = list1.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
         if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-            d.dpTaskType == "Team" &&
-            d.dp_created_by == profilename) {
+            d.dpTaskType == "Team" ) {
           return true;
         }
         return false;
@@ -158,8 +161,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //open
       list4 = list1.where((d) {
         if (d.dp_status.toString() == "1" &&
-            d.dpTaskType == "Team" &&
-            d.dp_created_by == profilename) {
+            d.dpTaskType == "Team" ) {
           return true;
         }
         return false;
@@ -167,8 +169,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //progress
       list5 = list1.where((d) {
         if (d.dp_status.toString() == "2" &&
-            d.dpTaskType == "Team" &&
-            d.dp_created_by == profilename) {
+            d.dpTaskType == "Team" ) {
           return true;
         }
         return false;
@@ -176,8 +177,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //closed
       list6 = list1.where((d) {
         if (d.dp_status.toString() == "3" &&
-            d.dpTaskType == "Team" &&
-            d.dp_created_by == profilename) {
+            d.dpTaskType == "Team" ) {
           return true;
         }
         return false;
@@ -210,29 +210,31 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today
       list3 = list22.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-            d.dp_given_by == profilename) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck ) {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list22.where((d) {
-        if (d.dp_status.toString() == "1" && d.dp_given_by == profilename) {
+        if (d.dp_status.toString() == "1" &&
+            d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list22.where((d) {
-        if (d.dp_status.toString() == "2" && d.dp_given_by == profilename) {
+        if (d.dp_status.toString() == "2" &&
+            d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list22.where((d) {
-        if (d.dp_status.toString() == "3" && d.dp_given_by == profilename) {
+        if (d.dp_status.toString() == "3" &&
+            d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
@@ -866,7 +868,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -888,6 +890,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ListTile(
+                    title: Text("EDP_"+list2[index]?.dp_id.toString()??'NA',style: TextStyle(color: lwtColor,fontSize: 10,fontWeight: FontWeight.bold,),),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

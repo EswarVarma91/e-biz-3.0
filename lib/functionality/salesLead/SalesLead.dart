@@ -57,7 +57,7 @@ class StateSalesLead extends State<SalesLead> {
             if (result != ConnectivityResult.none) {
               pendingListM();
             } else {
-              Fluttertoast.showToast(msg: "No Internet.!");
+              Fluttertoast.showToast(msg: "Check your internet connection.");
             }
           });
         }));
@@ -333,7 +333,7 @@ class StateSalesLead extends State<SalesLead> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -369,7 +369,7 @@ class StateSalesLead extends State<SalesLead> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }

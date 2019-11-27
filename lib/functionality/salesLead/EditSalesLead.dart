@@ -98,19 +98,19 @@ class _EditSalesLeadState extends State<EditSalesLead> {
             ),
             onPressed: () {
               if (customerName.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Customer Name');
+                Fluttertoast.showToast(msg: "Enter 'Customer Name'");
               } else if (requirement.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Requirement');
+                Fluttertoast.showToast(msg: "Enter 'Requirement'");
               } else if (contactName.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Name');
+                Fluttertoast.showToast(msg: "Enter 'Contact Name'");
               } else if (contactDesignation.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Designation');
+                Fluttertoast.showToast(msg: "Enter 'Contact Designation'");
               } else if (contactEmail.text.isEmpty ||
                   validateEmail(contactEmail.text) == false) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Email');
+                Fluttertoast.showToast(msg: "Enter 'Contact Email'");
               } else if (contactMobile.text.isEmpty ||
                   validateMobile(contactMobile.text) == false) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Mobile');
+                Fluttertoast.showToast(msg: "Enter 'Contact Mobile'");
               } else {
                 //Service Call
                 _callUpdateMethod();
@@ -250,7 +250,7 @@ class _EditSalesLeadState extends State<EditSalesLead> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         var responseJson = json.decode(response.data);
-        Fluttertoast.showToast(msg: "Sales Lead Updated Successfully!");
+        Fluttertoast.showToast(msg: "Sales Lead Updated Successfully.");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
           ModalRoute.withName('/'),
@@ -271,7 +271,7 @@ class _EditSalesLeadState extends State<EditSalesLead> {
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       }
     }
   }

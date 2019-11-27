@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:eaglebiz/functionality/hotel/EditHotelRequest.dart';
 import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
 import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
@@ -25,7 +26,7 @@ class ViewHotelRequest extends StatefulWidget {
 
 class _ViewHotelRequestState extends State<ViewHotelRequest> {
   int hotel_id;
-  String reqNo, profilename;
+  String reqNo, profilename,fullname;
   bool _editEnable = true;
   _ViewHotelRequestState(this.hotel_id, this.reqNo);
   Dio dio = Dio(Config.options);
@@ -35,6 +36,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     profilename = preferences.getString("profileName");
+    fullname = preferences.getString("fullname");
   }
 
   @override
@@ -710,7 +712,8 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                             ),
                                             Text(
                                               hrbtidh[index]
-                                                      ?.hotel_his_rating.toString() ??
+                                                      ?.hotel_his_rating
+                                                      .toString() ??
                                                   "",
                                               style: TextStyle(
                                                   color: Colors.grey,
@@ -790,7 +793,8 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                                 width: 180,
                                                 child: Text(
                                                   hrbtidh[index]
-                                                          ?.hotel_his_basic_cost.toString() ??
+                                                          ?.hotel_his_basic_cost
+                                                          .toString() ??
                                                       "",
                                                   style: TextStyle(
                                                       color: Colors.grey,
@@ -813,7 +817,9 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                             ),
                                             Container(
                                                 child: Text(
-                                              hrbtidh[index]?.hotel_his_tax.toString() ??
+                                              hrbtidh[index]
+                                                      ?.hotel_his_tax
+                                                      .toString() ??
                                                   "",
                                               style: TextStyle(
                                                   color: Colors.grey,
@@ -846,7 +852,8 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                                 width: 180,
                                                 child: Text(
                                                   hrbtidh[index]
-                                                          ?.hotel_his_charges.toString() ??
+                                                          ?.hotel_his_charges
+                                                          .toString() ??
                                                       "",
                                                   style: TextStyle(
                                                       color: Colors.grey,
@@ -870,7 +877,8 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                             Container(
                                                 child: Text(
                                               hrbtidh[index]
-                                                      ?.hotel_his_total_cost.toString() ??
+                                                      ?.hotel_his_total_cost
+                                                      .toString() ??
                                                   "",
                                               style: TextStyle(
                                                   color: Colors.grey,
@@ -975,29 +983,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
     }
   }
 
-  void cancelRequest(int hotel_id) async {
-    var response = await dio.post(ServicesApi.updateData,
-        data: {
-          "parameter1": "updateHotelRequestStatus",
-          "parameter2": hotel_id,
-          "parameter3": profilename
-        },
-        options: Options(
-          contentType: ContentType.parse("application/json"),
-        ));
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var navigator = Navigator.of(context);
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => HotelRequestList()),
-        ModalRoute.withName('/'),
-      );
-    } else if (response.statusCode == 401) {
-      throw Exception("Incorrect data");
-    }
-  }
-
-  getDataHotelrequestHistorybytId(int hotel_id) async {
+    getDataHotelrequestHistorybytId(int hotel_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
           "parameter1": "getHotelRequestHistorybyId",
@@ -1015,5 +1001,76 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
+  }
+
+  void cancelRequest(int hotel_id) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "cancelHotelRequestStatus",
+          "parameter2": hotel_id,
+          "parameter3": profilename
+        },
+        options: Options(
+          contentType: ContentType.parse("application/json"),
+        ));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // var navigator = Navigator.of(context);
+      // navigator.pushAndRemoveUntil(
+      //   MaterialPageRoute(
+      //       builder: (BuildContext context) => HotelRequestList()),
+      //   ModalRoute.withName('/'),
+      // );
+      getUseridByhotelId(hotel_id.toString());
+    } else if (response.statusCode == 401) {
+      throw Exception("Incorrect data");
+    }
+  }
+
+
+
+ void getUseridByhotelId(String hotel_id) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var req_no = json.decode(response.data)[0]['hotel_req_no'];
+      var token = json.decode(response.data)[0]['token'];
+      pushNotification(req_no, token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushNotification(String reqNo, String to) async {
+    Map<String, dynamic> notification = {
+      'body': "Hotel request " + reqNo + " has been cancelled by " + fullname,
+      'title': 'Hotel Request',
+      //
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+    Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
+    var navigator = Navigator.of(context);
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => HotelRequestList()),
+      ModalRoute.withName('/'),
+    );
   }
 }

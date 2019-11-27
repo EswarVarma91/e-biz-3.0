@@ -11,9 +11,10 @@ class HotelRequestModel {
   int hotel_status;
   int hotel_is_cancelled;
   int approved_status;
+  int u_id;
 
   HotelRequestModel(this.hotel_id,this.hotel_ref_no,this.proj_oano,this.travellerName,this.hotel_rating,this.hotel_location,
-  this.hotel_check_in,this.hotel_check_out,this.hotel_purpose,this.hotel_status,this.approved_status,this.hotel_is_cancelled);
+  this.hotel_check_in,this.hotel_check_out,this.hotel_purpose,this.hotel_status,this.approved_status,this.hotel_is_cancelled,this.u_id);
 
   HotelRequestModel.fromJson(Map<String, dynamic> json)
       : hotel_id = json['hotel_id'],
@@ -27,7 +28,8 @@ class HotelRequestModel {
         hotel_purpose = json['hotel_purpose'],
         hotel_status = json['hotel_status'],
         hotel_is_cancelled=json['hotel_is_cancelled'],
-        approved_status=json['approved_status'];
+        approved_status=json['approved_status'],
+        u_id=json['u_id'];
 }
 
 

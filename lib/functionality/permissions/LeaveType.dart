@@ -174,7 +174,7 @@ class _LeaveTypeState extends State<LeaveType> {
               Navigator.pop(context, "CAL " + lcm.cal);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry.! you dont have CAL Leaves");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'CAL' Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -233,7 +233,7 @@ class _LeaveTypeState extends State<LeaveType> {
               Navigator.pop(context, "CL " + lcm.cl);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry.! you dont have CL Leaves");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'CL' Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -292,7 +292,7 @@ class _LeaveTypeState extends State<LeaveType> {
               Navigator.pop(context, "CO " + lcm.co);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry.! you dont have CO Leaves");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'CO' Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -351,7 +351,7 @@ class _LeaveTypeState extends State<LeaveType> {
               Navigator.pop(context, "CL " + lcm.ml);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry.! you dont have ML Leaves");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'ML' Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -410,7 +410,7 @@ class _LeaveTypeState extends State<LeaveType> {
               Navigator.pop(context, "SL " + lcm.sl);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry.! you dont have SL Leaves");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'SL' Leaves to proceed with the Request.");
           }
         },
         child: Center(

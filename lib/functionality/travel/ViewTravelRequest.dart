@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/travel/EditTravelRequest.dart';
 import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
@@ -25,7 +25,7 @@ class ViewTravelRequest extends StatefulWidget {
 
 class _ViewTravelRequestState extends State<ViewTravelRequest> {
   int tra_id;
-  String reqNo,profilename;
+  String reqNo,profilename,fullname;
   bool _editEnable = true;
   _ViewTravelRequestState(this.tra_id, this.reqNo);
   Dio dio = Dio(Config.options);
@@ -35,6 +35,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     profilename = preferences.getString("profileName");
+    fullname = preferences.getString("fullname");
   }
   @override
   void initState() {
@@ -1150,19 +1151,62 @@ getUserDetails() async {
 
   void cancelRequest(int tra_id) async {
     var response = await dio.post(ServicesApi.updateData,
-        data: {"parameter1": "updateTravelRequestStatus", "parameter2": tra_id,"parameter3":profilename},
+        data: {"parameter1": "cancelTravelRequestStatus", "parameter2": tra_id,"parameter3":profilename},
         options: Options(
           contentType: ContentType.parse("application/json"),
         ));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var navigator = Navigator.of(context);
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => TravelRequestList()),
-        ModalRoute.withName('/'),
-      );
+      getUseridBytraId(tra_id);
     }else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
   }
+
+
+void getUseridBytraId(int tra_id) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getTokenbytraId", "parameter2": tra_id},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var req_no = json.decode(response.data)[0]['tra_req_no'];
+      var token = json.decode(response.data)[0]['token'];
+      pushNotification(req_no, token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushNotification(String reqNo, String to) async {
+    Map<String, dynamic> notification = {
+      'body': "Travel request " + reqNo + " has been cancelled by " + fullname,
+      'title': 'Travel Request',
+      //
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+    Fluttertoast.showToast(msg: "Travel Request Generated.");
+    var navigator = Navigator.of(context);
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
+      ModalRoute.withName('/'),
+    );
+  }
+
 }

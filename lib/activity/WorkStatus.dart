@@ -214,7 +214,7 @@ class _WorkStatusState extends State<WorkStatus> {
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     } else
-      Fluttertoast.showToast(msg: "Check your internet connection.!");
+      Fluttertoast.showToast(msg: "Check your internet connection.");
 //        Navigator.pop(context,s);
     throw Exception('Authentication Error');
   }

@@ -262,7 +262,7 @@ class _SearchDownTeamState extends State<SearchDownTeam> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -297,7 +297,7 @@ class _SearchDownTeamState extends State<SearchDownTeam> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }

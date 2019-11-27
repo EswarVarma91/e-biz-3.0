@@ -145,7 +145,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         pushAttendance();
       } else {
         _localGet();
-        Fluttertoast.showToast(msg: "No Internet.!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     });
   }
@@ -316,7 +316,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
               });
             }
           } else {
-            Fluttertoast.showToast(msg: "You Can't Change Work Status!");
+            Fluttertoast.showToast(msg: "Work status once confirmed, cannot be changed.");
           }
         },
         child: Center(
@@ -423,14 +423,14 @@ class _HomePageLocationState extends State<HomePageLocation> {
                       userlocation.longitude.toString(),
                       DateFormat("yyyy-MM-dd").format(now1).toString());
                 } else {
-                  Fluttertoast.showToast(msg: "Please Turn on Gps");
+                  Fluttertoast.showToast(msg: "Please Turn on GPS, to mark attendance., to mark attendance.");
                 }
               });
             } else {
-              Fluttertoast.showToast(msg: 'Day was Started ');
+              Fluttertoast.showToast(msg: 'Day Start has already been marked');
             }
           } else {
-            Fluttertoast.showToast(msg: "Choose Your Work Status");
+            Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
           }
         },
         child: Center(
@@ -478,22 +478,21 @@ class _HomePageLocationState extends State<HomePageLocation> {
       child: InkWell(
         onTap: () {
           if (timeStart == "-") {
-            Fluttertoast.showToast(msg: "Please Start Your Day");
+            Fluttertoast.showToast(msg: "Day Start need to be marked before marking day end.");
           } else if (workStatus == "-" ||
               workStatus == " " ||
               workStatus == "") {
-            Fluttertoast.showToast(msg: "Please Choose Your Work Status");
+            Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
           } else if (timeEnd == "-") {
             setState(() {
               if (userlocation != null) {
                 roundedAlertDialog(userlocation);
               } else {
-                Fluttertoast.showToast(msg: "Please Turn on Gps");
+                Fluttertoast.showToast(msg: "Please Turn on GPS, to mark attendance.");
               }
             });
           } else {
-            //
-            Fluttertoast.showToast(msg: 'Day was Ended');
+            Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
           }
         },
         child: Center(
@@ -550,7 +549,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           paidCount = data.paidCount.toString();
         });
       } else {
-        Fluttertoast.showToast(msg: "Some error occurred!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -559,7 +558,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -592,7 +591,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           }
         });
       } else {
-        Fluttertoast.showToast(msg: "Some error occurred!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -601,7 +600,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -665,8 +664,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         print(res.toString());
+        Fluttertoast.showToast(msg:"Day Start marked sucessfully.");
       } else {
-        Fluttertoast.showToast(msg: "Some error occurred!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -675,7 +675,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -701,7 +701,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         var res = json.decode(response.data);
         print(res.toString());
       } else {
-        Fluttertoast.showToast(msg: "Some error occurred!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -710,7 +710,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -736,7 +736,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         var res = json.decode(response.data);
         print(res.toString());
       } else {
-        Fluttertoast.showToast(msg: "Some error occurred!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -745,7 +745,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }
@@ -812,7 +812,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           taskPending = data.pendingCount.toString();
         });
       } else {
-        Fluttertoast.showToast(msg: "Some error occurred!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -821,7 +821,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }

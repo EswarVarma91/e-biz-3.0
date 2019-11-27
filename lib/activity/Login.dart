@@ -287,7 +287,7 @@ class _LoginState extends State<Login> {
     String email = _controller1.text.toString();
     String password = _controller2.text.toString();
     if (email.isEmpty) {
-      Fluttertoast.showToast(msg: "Enter EmpCode");
+      Fluttertoast.showToast(msg: "Enter Empployee Code");
     } else if (password.isEmpty) {
       Fluttertoast.showToast(msg: "Enter Password");
     } else {
@@ -327,7 +327,7 @@ class _LoginState extends State<Login> {
           ModalRoute.withName('/'),
         );
       } else if (loginList[0].cnt == 0) {
-        Fluttertoast.showToast(msg: "Please check the credentials.!");
+        Fluttertoast.showToast(msg: "Invalid credentials.");
       }
     }
   }
@@ -340,22 +340,22 @@ class _LoginState extends State<Login> {
         print(response.data);
         return response.data;
       } else if (response.statusCode == 401) {
-        Fluttertoast.showToast(msg: "Incorrect Email/Password");
-        throw Exception("Incorrect Email/Password");
+        Fluttertoast.showToast(msg: "Invalid credentials.");
+        throw Exception("Invalid Credentials");
       } else {
-        Fluttertoast.showToast(msg: "Incorrect Email/Password");
+        Fluttertoast.showToast(msg: "Invalid credentials.");
         throw Exception('Authentication Error');
       }
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-        Fluttertoast.showToast(msg: "No Internet.!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        Fluttertoast.showToast(msg: "Please check your Internet connection.!");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       } else {
         return null;
       }

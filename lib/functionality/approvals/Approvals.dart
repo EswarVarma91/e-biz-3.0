@@ -14,7 +14,6 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -41,11 +40,11 @@ class _ApprovalsState extends State<Approvals> {
   bool _leavesA, _permissionsA, _travelrequestA, _hotelrequestA;
   static var now = DateTime.now();
   static Dio dio = Dio(Config.options);
-  List<LeavesModel> leaveList = new List();
-  List<PermissionModel> permissionsList = new List();
-  List<HotelRequestModel> hrlm = new List();
-  List<LateEarlyComingModel> datacheck = new List();
-  List<TravelRequestListModel> trlm = new List();
+  List<LeavesModel> leaveList = List();
+  List<PermissionModel> permissionsList = List();
+  List<HotelRequestModel> hrlm = List();
+  List<LateEarlyComingModel> datacheck = List();
+  List<TravelRequestListModel> trlm = List();
   List<FirebaseUserModel> fum;
   ProgressDialog pr;
 
@@ -82,7 +81,7 @@ class _ApprovalsState extends State<Approvals> {
 
   @override
   Widget build(BuildContext context) {
-    pr = new ProgressDialog(context);
+    pr = ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
       appBar: AppBar(
@@ -613,53 +612,7 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "From Time            :     ",
-                                style: TextStyle(
-                                  fontSize: 8,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 5),
-                              ),
-                              Text(
-                                permissionsList[index]?.per_from_time ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "To Time                 :     ",
-                                style: TextStyle(
-                                  fontSize: 8,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Text(
-                                permissionsList[index]?.per_to_time ?? 'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "Date                       :     ",
+                                "From Date         :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -669,7 +622,60 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                               Text(
                                 displayDateFormat(
-                                        permissionsList[index]?.per_date) ??
+                                        leaveList[index]?.el_from_date) ??
+                                    'NA',
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "To Date              :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                displayDateFormat(
+                                        leaveList[index]?.el_to_date) ??
+                                    'NA',
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "No of Days        :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                leaveList[index]
+                                            ?.el_noofdays
+                                            .toString()
+                                            .split(".")[0] +
+                                        " Days" ??
                                     '' + "NA.",
                                 style: TextStyle(
                                     color: lwtColor,
@@ -684,7 +690,7 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "Reason                  :     ",
+                                "Reason              :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -694,8 +700,7 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                               Expanded(
                                 child: Text(
-                                  permissionsList[index]?.per_purpose ??
-                                      '' + "NA.",
+                                  leaveList[index]?.el_reason ?? '',
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
@@ -729,102 +734,424 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   travelAListView() {
-    return ListView.builder(
-        itemCount: trlm == null ? 0 : trlm.length,
+    return Container(
+      child: ListView.builder(
+        itemCount: trlm?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            elevation: 5.0,
+          return Container(
+              child: Card(
             child: Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: ListTile(
-                subtitle: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          child: Text(
-                            trlm[index]?.fullName ?? 'NA',
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Request No.",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            trlm[index].reqNo,
                             style: TextStyle(
                                 color: lwtColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        checkTravelRequestStatus(trlm[index].tra_status),
+                        style: TextStyle(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Traveller Name",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            trlm[index].fullName,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Date",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            trlm[index].journeyDate,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "From",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            trlm[index].tra_from,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "To",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            trlm[index].tra_to,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Text(
+                            "Purpose.",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Container(
+                              width: 180,
+                              child: Text(
+                                trlm[index].tra_purpose,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              )),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            "Complaint Ticket No.",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Container(
+                              width: 180,
+                              child: Text(
+                                trlm[index].proj_oano,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 70,
+                        child: Material(
+                          elevation: 2.0,
+                          shadowColor: Colors.grey,
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: lwtColor,
+                          child: MaterialButton(
+                            height: 22.0,
+                            padding: EdgeInsets.all(3),
+                            child: Text(
+                              "Approval",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              travelRequest(trlm[index]);
+                            },
                           ),
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8),
-                    ),
-                  ],
-                ),
-                trailing: Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.check_circle,
-                      color: lwtColor,
-                      size: 40,
-                    ),
-                    onPressed: () {
-                      travelRequest(trlm[index]);
-                    },
+                      ),
+                    ],
                   ),
-                ),
+                ],
               ),
             ),
-          );
-        });
+            color: Colors.white,
+          ));
+        },
+      ),
+    );
   }
 
   hotelAListView() {
-    return ListView.builder(
-        itemCount: hrlm == null ? 0 : hrlm.length,
+    return Container(
+      child: ListView.builder(
+        itemCount: hrlm?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-            elevation: 5.0,
+          return Container(
+              child: Card(
             child: Container(
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              child: ListTile(
-                subtitle: Column(
-                  children: <Widget>[
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(2),
-                          child: Text(
-                            hrlm[index]?.travellerName??
-                                'NA',
+              padding: EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Request No.",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.hotel_ref_no.toString() ?? "",
                             style: TextStyle(
                                 color: lwtColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        checkHotelRequestStatus(hrlm[index].hotel_status),
+                        style: TextStyle(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Traveller Name",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.travellerName ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Hotel Rating",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.hotel_rating.toString() ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Hotel Check In",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.hotel_check_in ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Hotel Check Out",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.hotel_check_out ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Purpose",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.hotel_purpose ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Location",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.hotel_location ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Complaint No.",
+                            style: TextStyle(fontSize: 7, color: Colors.black),
+                          ),
+                          Text(
+                            hrlm[index]?.proj_oano ?? "",
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        width: 70,
+                        child: Material(
+                          elevation: 2.0,
+                          shadowColor: Colors.grey,
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: lwtColor,
+                          child: MaterialButton(
+                            height: 22.0,
+                            padding: EdgeInsets.all(3),
+                            child: Text(
+                              "Approval",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () {
+                              hotelRequest(hrlm[index]);
+                            },
                           ),
                         ),
-                      ],
-                    ),
-                    
-                  ],
-                ),
-                trailing: Container(
-                  padding: EdgeInsets.only(top: 20),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.check_circle,
-                      size: 40,
-                      color: lwtColor,
-                    ),
-                    onPressed: () {
-                      hotelRequest(hrlm[index]);
-                    },
-                  ),
-                ),
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
-          );
-        });
+            color: Colors.white,
+          ));
+        },
+      ),
+    );
   }
 
   void travelRequest(TravelRequestListModel trlm) {
@@ -833,44 +1160,57 @@ class _ApprovalsState extends State<Approvals> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text('Do you want to Approve.?'),
+            title: Text('Do you want to Approve.?'),
             actions: <Widget>[
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
-                  // cancelLateEarlyServiceCall(trlm);
+                  cancelTravelRequestServiceCall(trlm);
                 },
-                child: new Text('Reject'),
+                child: Text('Reject'),
               ),
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
-                  // approveLateEarlyServiceCall(trlm);
+                  approveTravelRequestServiceCall(trlm);
                 },
-                child: new Text('Approve'),
+                child: Text('Approve'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Quit'),
               ),
             ],
           );
         });
   }
 
-   hotelRequest(HotelRequestModel hrm) {
+  hotelRequest(HotelRequestModel hrm) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text('Do you want to Approve.?'),
+            title: Text('Do you want to Approve.?'),
             actions: <Widget>[
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
-                  // cancelLateEarlyServiceCall(lateearlycomingModel);
+                  cancelHotelRequestServiceCall(hrm);
                 },
-                child: new Text('Reject'),
+                child: Text('Reject'),
               ),
-              new CupertinoButton(
-                onPressed: ()  {
-                  // approveLateEarlyServiceCall(lateearlycomingModel);
+              CupertinoButton(
+                onPressed: () {
+                  approveHotelRequestServiceCall(hrm);
                 },
-                child: new Text('Approve'),),
+                child: Text('Approve'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Quit'),
+              ),
             ],
           );
         });
@@ -882,48 +1222,76 @@ class _ApprovalsState extends State<Approvals> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text('Do you want to Approve.?'),
+            title: Text('Do you want to Approve.?'),
             actions: <Widget>[
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
                   cancelPermissionServiceCall(permissionModel);
                 },
-                child: new Text('Reject'),
+                child: Text('Reject'),
               ),
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
                   approvePermissionServiceCall(permissionModel);
                 },
-                child: new Text('Approve'),
+                child: Text('Approve'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Quit'),
               ),
             ],
           );
         });
   }
 
-  void alertleavesCheck(LeavesModel leaveList) {
+  alertleavesCheck(LeavesModel leaveList) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text('Do you want to Approve.?'),
+            title: Text('Do you want to Approve.?'),
             actions: <Widget>[
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
                   cancelLeavesServiceCall(leaveList);
                 },
-                child: new Text('Reject'),
+                child: Text('Reject'),
               ),
-              new CupertinoButton(
+              CupertinoButton(
                 onPressed: () {
                   approveLeavesServiceCall(leaveList);
                 },
-                child: new Text('Approve'),
+                child: Text('Approve'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Quit'),
               ),
             ],
           );
         });
+  }
+
+  String checkTravelRequestStatus(int tra_status) {
+    if (tra_status == 1) {
+      return "Pending";
+    } else {
+      return "";
+    }
+  }
+
+  String checkHotelRequestStatus(int tra_status) {
+    if (tra_status == 1) {
+      return "Pending";
+    } else {
+      return "";
+    }
   }
 
   getPendingApprovals() async {
@@ -939,7 +1307,7 @@ class _ApprovalsState extends State<Approvals> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           leaveList = (json.decode(response.data) as List)
-              .map((data) => new LeavesModel.fromJson(data))
+              .map((data) => LeavesModel.fromJson(data))
               .toList();
           print(leaveList.toString());
         });
@@ -985,12 +1353,9 @@ class _ApprovalsState extends State<Approvals> {
         });
         checkServices();
       }
-//      //=======================================================
+      //      //=======================================================
       var response3 = await dio.post(ServicesApi.getData,
-          data: {
-            "parameter1": "getHotelRequestByDownTeam",
-            "parameter2": uidd
-          },
+          data: {"parameter1": "getHotelRequestByDownTeam", "parameter2": uidd},
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
@@ -1040,7 +1405,7 @@ class _ApprovalsState extends State<Approvals> {
         // getPendingApprovals();
         // Navigator.pop(context);
         getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
-            "Cancelled", leaveList.u_id.toString());
+            "Rejected", leaveList.u_id.toString());
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -1151,7 +1516,7 @@ class _ApprovalsState extends State<Approvals> {
         // getPendingApprovals();
         // pr.hide();
         // Navigator.pop(context);
-        getUserPermissionToken(permissionModel.per_date, "Cancelled",
+        getUserPermissionToken(permissionModel.per_date, "Rejected",
             permissionModel.u_id.toString());
       }
     } on DioError catch (exception) {
@@ -1170,74 +1535,65 @@ class _ApprovalsState extends State<Approvals> {
     }
   }
 
-  //   ///===============================
-  //   void cancelLateEarlyServiceCall(LateEarlyComingModel listdata) async {
-  //     try {
-  //       var  response = await dio.put(ServicesApi.ChangeLeaveStatus,
-  //           data: {
-  //             "actionMode": "RejectAttendanceReqByTL ",
-  //             "parameter1": listdata.u_emp_code.toString(),
-  //             "parameter2": listdata.att_date.toString(),
-  //             "parameter3": profilename,
-  //             "parameter4": listdata.att_id.toString(),
-  //             "parameter5": "string"
-  //           },
-  //           options: Options(contentType: ContentType.parse('application/json'),
-  //           ));
-  //       if (response.statusCode == 200 || response.statusCode == 201) {
-  //         setState(() {
-  //           getPendingApprovals();
-  //         });
-  //         Navigator.pop(context);
-  // //        CheckServices();
-  //       }
-  //     } on DioError catch (exception) {
-  //       if (exception == null ||
-  //           exception.toString().contains('SocketException')) {
-  //         throw Exception("Network Error");
-  //       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-  //           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-  //         throw Exception(
-  //             "Could'nt connect, please ensure you have a stable network.");
-  //       } else {
-  //         return null;
-  //       }
-  //     }
-  //   }
+  cancelTravelRequestServiceCall(TravelRequestListModel trlm) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "cancelTravelRequestStatus",
+          "parameter2": trlm.tra_id,
+          "parameter3": profilename
+        },
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      getUserTravelToken(trlm.reqNo, "Rejected", trlm.u_id.toString());
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
 
-  //   void approveLateEarlyServiceCall(LateEarlyComingModel listdata) async {
-  //     try {
-  //       var  response = await dio.put(ServicesApi.leaves_Permissions_daytime_approvals_userLocation,
-  //           data: {
-  //             "actionMode": "ApproveAttendanceReqByTL",
-  //             "parameter1": listdata.u_emp_code.toString(),
-  //             "parameter2": listdata.att_date.toString(),
-  //             "parameter3": profilename,
-  //             "parameter4": listdata.att_id.toString(),
-  //             "parameter5": "string"
-  //           },
-  //           options: Options(contentType: ContentType.parse('application/json'),
-  //           ));
-  //       if (response.statusCode == 200 || response.statusCode == 201) {
-  //         setState(() {
-  //           getPendingApprovals();
-  //         });
-  //         Navigator.pop(context);
-  // //        CheckServices();
-  //       }
-  //     } on DioError catch (exception) {
-  //       if (exception == null ||
-  //           exception.toString().contains('SocketException')) {
-  //         throw Exception("Network Error");
-  //       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-  //           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-  //         throw Exception(
-  //             "Could'nt connect, please ensure you have a stable network.");
-  //       } else {
-  //         return null;
-  //       }
-  //     }
-  //   }
+  approveTravelRequestServiceCall(TravelRequestListModel trlm) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "approveTravelRequestStatus",
+          "parameter2": trlm.tra_id,
+          "parameter3": profilename
+        },
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      getUserTravelToken(trlm.reqNo, "Approved", trlm.u_id.toString());
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  cancelHotelRequestServiceCall(HotelRequestModel hrlm) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "cancelHotelRequestStatus",
+          "parameter2": hrlm.hotel_id,
+          "parameter3": profilename
+        },
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      getUserHotelToken(hrlm.hotel_ref_no, "Rejected", hrlm.u_id.toString());
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  approveHotelRequestServiceCall(HotelRequestModel hrlm) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "approveHotelRequestStatus",
+          "parameter2": hrlm.hotel_id,
+          "parameter3": profilename
+        },
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      getUserHotelToken(hrlm.hotel_ref_no, "Approved", hrlm.u_id.toString());
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
 
   displayDateFormat(String elFromDate) {
     List<String> a = elFromDate.split("-");
@@ -1252,7 +1608,7 @@ class _ApprovalsState extends State<Approvals> {
       if (response.data != null) {
         setState(() {
           fum = (json.decode(response.data) as List)
-              .map((data) => new FirebaseUserModel.fromJson(data))
+              .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
         var to = fum[0].token.toString();
@@ -1270,8 +1626,12 @@ class _ApprovalsState extends State<Approvals> {
   void pushPermissionsNotification(
       String to, String date, String status) async {
     Map<String, dynamic> notification = {
-      'body':
-          fullname + " has " + status + " your request on this " + date + ".",
+      'body': fullname +
+          " has " +
+          status +
+          " your permission request for " +
+          date +
+          ".",
       'title': 'Permission Approval',
     };
     Map<String, dynamic> data = {
@@ -1292,6 +1652,7 @@ class _ApprovalsState extends State<Approvals> {
     // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
+    getPendingApprovals();
     pr.hide();
     Navigator.pop(context);
   }
@@ -1305,7 +1666,7 @@ class _ApprovalsState extends State<Approvals> {
       if (response.data != null) {
         setState(() {
           fum = (json.decode(response.data) as List)
-              .map((data) => new FirebaseUserModel.fromJson(data))
+              .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
         var to = fum[0].token.toString();
@@ -1326,7 +1687,7 @@ class _ApprovalsState extends State<Approvals> {
       'body': fullname +
           " has " +
           status +
-          " your request on this " +
+          " your leave request for " +
           el_from_date +
           " to " +
           el_to_date +
@@ -1351,6 +1712,109 @@ class _ApprovalsState extends State<Approvals> {
     // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
+    getPendingApprovals();
+    pr.hide();
+    Navigator.pop(context);
+  }
+
+  void getUserTravelToken(String reqno, String status, String puidd) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getUserToken", "parameter2": puidd},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fum = (json.decode(response.data) as List)
+              .map((data) => FirebaseUserModel.fromJson(data))
+              .toList();
+        });
+        var to = fum[0].token.toString();
+        // Fluttertoast.showToast(msg: "Stopped");
+        pushTravelNotification(to, reqno, status);
+      } else {
+        pr.hide();
+        Navigator.pop(context);
+      }
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushTravelNotification(String to, String reqno, String status) async {
+    Map<String, dynamic> notification = {
+      'body': "Your request no. " + reqno + "has been " + status + ".",
+      'title': 'Travel Approval',
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    getPendingApprovals();
+    pr.hide();
+    Navigator.pop(context);
+  }
+
+  void getUserHotelToken(String reqno, String status, String puidd) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getUserToken", "parameter2": puidd},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fum = (json.decode(response.data) as List)
+              .map((data) => FirebaseUserModel.fromJson(data))
+              .toList();
+        });
+        var to = fum[0].token.toString();
+        // Fluttertoast.showToast(msg: "Stopped");
+        pushHotelNotification(to, reqno, status);
+      } else {
+        pr.hide();
+        Navigator.pop(context);
+      }
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushHotelNotification(String to, String reqno, String status) async {
+    Map<String, dynamic> notification = {
+      'body': "Your request no. " + reqno + "has been " + status + ".",
+      'title': 'Hotel Approval',
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    getPendingApprovals();
     pr.hide();
     Navigator.pop(context);
   }

@@ -109,24 +109,24 @@ class _NewTaskState extends State<NewMyTasks> {
                 //Service Call
                 if (office == true) {
                   if (_controller1.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter Task Name");
+                    Fluttertoast.showToast(msg: "Enter 'Task Name'");
                   } else if (_controller2.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter Task Details");
+                    Fluttertoast.showToast(msg: "Enter 'Task Details'");
                   } else {
                     myTaskService("1");
                   }
 //                    Fluttertoast.showToast(msg: "Office");
                 } else if (onsite == true) {
                   if (_controller1.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter Task Name");
+                    Fluttertoast.showToast(msg: "Enter 'Task Name'");
                   } else if (_controller2.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter Task Details");
+                    Fluttertoast.showToast(msg: "Enter 'Task Details'");
                   } else if (_controller3.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter Location");
+                    Fluttertoast.showToast(msg: "Enter 'Location'");
                   } else if (_controller4.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter Contact Person");
+                    Fluttertoast.showToast(msg: "Enter 'Contact Person'");
                   } else if (reasonType == "Reason" || reasonType == "null") {
-                    Fluttertoast.showToast(msg: "Enter Reason");
+                    Fluttertoast.showToast(msg: "Enter 'Reason'");
                   } else {
                     myTaskService("2");
                   }
@@ -358,7 +358,7 @@ class _NewTaskState extends State<NewMyTasks> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        "In-Station".toUpperCase(),
+                        "Out-of Office".toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.0,
                           fontFamily: "Roboto",
@@ -426,7 +426,7 @@ class _NewTaskState extends State<NewMyTasks> {
         );
       } else {
         pr.hide();
-        Fluttertoast.showToast(msg: "Please try after some time.");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } else if (s == "2") {
       print(profileName +
@@ -471,7 +471,7 @@ class _NewTaskState extends State<NewMyTasks> {
         );
       } else {
         pr.hide();
-        Fluttertoast.showToast(msg: "Please try after some time.");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     }
   }

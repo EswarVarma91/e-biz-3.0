@@ -92,12 +92,12 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               onPressed: () {
                 //Service Call
                 //Service Call
-                if (choosePerson == "Select Member" || choosePerson == "null") {
-                  Fluttertoast.showToast(msg: "Please select member");
+                if (choosePerson == "Select 'Member'" || choosePerson == "null") {
+                  Fluttertoast.showToast(msg: "Select 'Member'");
                 } else if (_controller1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter Task Name");
+                  Fluttertoast.showToast(msg: "Enter 'Task Name'");
                 } else if (_controller2.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter Task Descrption");
+                  Fluttertoast.showToast(msg: "Enter 'Task Descrption'");
                 } else {
 //                  print("One : "+profileName+","+_controller1.text+","+_controller2.text+","+resourceId.toString());
                   CallTeamTaskApi();
@@ -211,7 +211,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           resourceId, _controller1.text, _controller2.text, profileName);
     } else {
       pr.hide();
-      Fluttertoast.showToast(msg: "Please try after some time.");
+      Fluttertoast.showToast(msg: "Check your internet connection.");
     }
   }
 
@@ -232,7 +232,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
         pushNotification(data, profileName, taskName, taskDescription);
       } else {
         pr.hide();
-        Fluttertoast.showToast(msg: "Task Assigned");
+        Fluttertoast.showToast(msg: "Task Allocated");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
           ModalRoute.withName('/'),
@@ -246,8 +246,8 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   void pushNotification(String to, String profileName, String taskName,
       String taskDescription) async {
     Map<String, dynamic> notification = {
-      'body': fullName +" has created a task for you"+" '"+"$taskName"+"'",
-      'title': 'Team Task',
+      'body': fullName +" has assigned a task for you"+" '"+"$taskName"+"'",
+      'title': 'TL Task Allocation',
     };
     Map<String, dynamic> data = {
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',

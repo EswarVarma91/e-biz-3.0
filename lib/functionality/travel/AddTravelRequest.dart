@@ -1,7 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/hotel/DownTeamMembers.dart';
-import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:eaglebiz/functionality/travel/ProjectSelection.dart';
 import 'package:eaglebiz/functionality/travel/TravelRequestList.dart';
 import 'package:eaglebiz/functionality/travel/TravelSelection.dart';
@@ -10,8 +10,8 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AddTravelRequest extends StatefulWidget {
   @override
@@ -40,12 +40,13 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
   static Dio dio = Dio(Config.options);
   int y, m, d, hh, mm, ss;
   int year, month, day, hour, minute;
-  String uid, profilename;
+  String uid, profilename, fullname;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     uid = preferences.getString("userId");
     profilename = preferences.getString("profileName");
+    fullname = preferences.getString("fullname");
   }
 
   @override
@@ -80,28 +81,27 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
             onPressed: () {
               if (Tmode == "Flight") {
                 if (TravelNameId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select traveller name!");
+                  Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
                 } else if (Tmode.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select mode!");
+                  Fluttertoast.showToast(msg: "Select 'Mode'.");
                 } else if (TmodeType.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select mode type!");
+                  Fluttertoast.showToast(msg: "Select 'Mode Type'.");
                 } else if (Tclass.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select class!");
+                  Fluttertoast.showToast(msg: "Select 'Class'.");
                 } else if (Tfrom.isEmpty) {
-                  Fluttertoast.showToast(
-                      msg: "Please select from station code!");
+                  Fluttertoast.showToast(msg: "Select from 'Station Code'.");
                 } else if (Tto.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select to station code!");
+                  Fluttertoast.showToast(msg: "Select to 'Station Code'.");
                 } else if (TrarrivalDateTime.isEmpty) {
                   Fluttertoast.showToast(
-                      msg: "Please select journey date and time!");
+                      msg: "Select 'Journey date and time'.");
                 } else if (TcomaplaintId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select complaint no. !");
+                  Fluttertoast.showToast(msg: "Select 'Complaint No'.");
                 } else if (_controllerPurpose1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select purpose!");
+                  Fluttertoast.showToast(msg: "Select 'Purpose'.");
                 } else if (TrequiredDateTime.isEmpty) {
                   Fluttertoast.showToast(
-                      msg: "Please select required date and time!");
+                      msg: "Select 'Required date and time'.");
                 } else {
                   insertTravelRequest(
                       TravelNameId,
@@ -118,27 +118,27 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 }
               } else {
                 if (TravelNameId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select traveller name!");
+                  Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
                 } else if (Tmode.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select mode!");
+                  Fluttertoast.showToast(msg: "Select 'Mode'.");
                 } else if (TmodeType.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select mode type!");
+                  Fluttertoast.showToast(msg: "Select 'Mode Type'.");
                 } else if (Tclass.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select class!");
+                  Fluttertoast.showToast(msg: "Select 'Class'.");
                 } else if (_controllerFrom1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please enter from address!");
+                  Fluttertoast.showToast(msg: "Enter from 'Address'.");
                 } else if (_controllerTo1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please enter to address!");
+                  Fluttertoast.showToast(msg: "Enter to 'Address'.");
                 } else if (TrarrivalDateTime.isEmpty) {
                   Fluttertoast.showToast(
-                      msg: "Please select journey date and time!");
+                      msg: "Select 'Journey Date and Time'.");
                 } else if (TcomaplaintId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select complaint no. !");
+                  Fluttertoast.showToast(msg: "Select 'Complaint No'.");
                 } else if (_controllerPurpose1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Please select purpose!");
+                  Fluttertoast.showToast(msg: "Select 'Purpose'.");
                 } else if (TrequiredDateTime.isEmpty) {
                   Fluttertoast.showToast(
-                      msg: "Please select required date and time!");
+                      msg: "Select 'Required Date and Time'.");
                 } else {
                   insertTravelRequest(
                       TravelNameId,
@@ -281,7 +281,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     });
                   }
                 } else {
-                  Fluttertoast.showToast(msg: "Please select mode.");
+                  Fluttertoast.showToast(msg: " select mode.");
                 }
               },
             ),
@@ -411,7 +411,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
               onTap: () async {
                 DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
-                    minTime: DateTime(year, month, day, hour, minute+1),
+                    minTime: DateTime(year, month, day, hour, minute + 1),
                     maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
                   changeDateT(date);
                 }, onConfirm: (date) {
@@ -471,23 +471,22 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     String newDate = date.toString();
     List<String> d = [];
     d = newDate.split(".");
-  
 
     // print(d[0]);
     setState(() {
       List<String> aa = [];
       aa = d[0].split(" ");
-      String date=aa[0].toString();
-      String time=aa[1].toString();
-      List<String> bb=[];
+      String date = aa[0].toString();
+      String time = aa[1].toString();
+      List<String> bb = [];
       bb = date.split("-");
       year = int.parse(bb[0].toString());
       month = int.parse(bb[1].toString());
       day = int.parse(bb[2].toString());
-      List<String> cc=[];
+      List<String> cc = [];
       cc = time.split(":");
-      hour=int.parse(cc[0].toString());
-      minute=int.parse(cc[1].toString());
+      hour = int.parse(cc[0].toString());
+      minute = int.parse(cc[1].toString());
 
       TrarrivalDateTime = d[0].toString();
     });
@@ -537,16 +536,61 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         ));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      Fluttertoast.showToast(msg: "Success");
-
-      var navigator = Navigator.of(context);
-      navigator.pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (BuildContext context) => TravelRequestList()),
-        ModalRoute.withName('/'),
-      );
+      getUserRequestNo(travelNameId.toString());
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
+  }
+
+  void getUserRequestNo(String travelNameId) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {
+          "parameter1": "GetTokenTravelRequest",
+          "parameter2": travelNameId
+        },
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var req_no = json.decode(response.data)[0]['tra_req_no'];
+      var token = json.decode(response.data)[0]['token'];
+      pushNotification(req_no.toString(), token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  void pushNotification(String reqNo, String to) async {
+    Map<String, dynamic> notification = {
+      'body': "A new travel request " +
+          reqNo +
+          " has been generated by " +
+          fullname,
+      'title': 'Travel Request',
+      //
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    http.Response r = await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+    Fluttertoast.showToast(msg: "Travel Request Generated.");
+    var navigator = Navigator.of(context);
+    navigator.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
+      ModalRoute.withName('/'),
+    );
   }
 }

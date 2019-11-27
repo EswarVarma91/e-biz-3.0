@@ -71,22 +71,22 @@ class _NewSalesLeadState extends State<NewSalesLead> {
             ),
             onPressed: () {
               if (_controller1.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Customer Name');
+                Fluttertoast.showToast(msg: "Enter 'Customer Name'");
               } else if (_controller2.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Requirement');
+                Fluttertoast.showToast(msg: "Enter 'Requirement'");
               } else if (_controller3.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Name');
+                Fluttertoast.showToast(msg: "Enter 'Contact Name'");
               } else if (_controller4.text.isEmpty) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Designation');
+                Fluttertoast.showToast(msg: "Enter 'Contact Designation'");
               } else if (_controller5.text.isEmpty ||
                   validateEmail(_controller5.text) == false) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Email');
+                Fluttertoast.showToast(msg: "Enter 'Contact Email'");
               } else if (_controller6.text.isEmpty ||
                   validateMobile(_controller6.text) == false) {
-                Fluttertoast.showToast(msg: 'Please Enter Contact Mobile');
+                Fluttertoast.showToast(msg: "Please Enter 'Contact Mobile'");
               } else if (result.toString() == null ||
                   result.toString() == "Referred By") {
-                Fluttertoast.showToast(msg: 'Please Select Referred By');
+                Fluttertoast.showToast(msg: "Choose 'Referred By'");
               } else {
                 //Service Call
                 _callInsertMethod();
@@ -232,7 +232,7 @@ class _NewSalesLeadState extends State<NewSalesLead> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();
         var responseJson = json.decode(response.data);
-        Fluttertoast.showToast(msg: "New Sales Lead Created!");
+        Fluttertoast.showToast(msg: "Sales Request Generated.");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => SalesLead()),
           ModalRoute.withName('/'),
@@ -253,7 +253,7 @@ class _NewSalesLeadState extends State<NewSalesLead> {
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       }
     }
   }

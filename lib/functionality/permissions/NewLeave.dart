@@ -407,42 +407,27 @@ class _NewLeaveState extends State<NewLeave> {
 
   _checkDay() async {
     if (fromDate.isEmpty) {
-      Fluttertoast.showToast(msg: 'Choose your From Date');
+      Fluttertoast.showToast(msg: "Choose your 'From Date'.");
     } else if (toDate.isEmpty) {
-      Fluttertoast.showToast(msg: 'Choose your To Date');
+      Fluttertoast.showToast(msg: "Choose your 'To Date'.");
     } else if (leaveType == 'Leave Type' || leaveType == "null") {
-      Fluttertoast.showToast(msg: 'Select Leave Type');
+      Fluttertoast.showToast(msg: 'Select the Leave Type.');
     } else if (_controller1.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Enter your Purpose");
+      Fluttertoast.showToast(msg: "Enter the Purpose for Leave.");
     } else {
       //Service Call
-      if (leaveType == "CAL") {
-        var now = DateTime.now();
 
-        // if (fromDate == toDate) {
-        //   var data = await dio.post(ServicesApi.getData,
-        //       data: {"parameter1": "getCurrentTime"},
-        //       options:
-        //           Options(contentType: ContentType.parse("application/json")));
-        //   if (data.statusCode == 200 || data.statusCode == 201) {
-        //      print(DateFormat("HH:mm:ss").parse(json.decode(data.data["timeC"].toString()).toString()).difference(DateFormat("HH:mm:ss").parse("09:00:00")));
-        //   } else if (data.statusCode == 401) {
-        //     throw Exception("Exception");
-        //   }
-        // }
-
-        checkleaveStatus(fromDate, toDate, uuid);
-      }
+      checkleaveStatus(fromDate, toDate, uuid);
     }
   }
 
   _checkhalfday() async {
     if (fromDate.isEmpty) {
-      Fluttertoast.showToast(msg: 'Choose your Date');
+      Fluttertoast.showToast(msg: "Choose 'Date' for Application.");
     } else if (leaveType == 'Leave Type' || leaveType == "null") {
-      Fluttertoast.showToast(msg: 'Select Leave Type');
+      Fluttertoast.showToast(msg: 'Select the Leave Type.');
     } else if (_controller1.text.isEmpty) {
-      Fluttertoast.showToast(msg: "Enter your Purpose");
+      Fluttertoast.showToast(msg: "Enter the Purpose for Leave.");
     } else {
       //Service Call
       checkleaveStatus(fromDate, fromDate, uuid);
@@ -504,7 +489,7 @@ class _NewLeaveState extends State<NewLeave> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Expanded(child: Text("Please check this dates ")),
+                        Expanded(child: Text("Check this dates")),
                       ],
                     ),
                     SizedBox(
@@ -514,7 +499,7 @@ class _NewLeaveState extends State<NewLeave> {
                       children: <Widget>[
                         Expanded(
                             child: Text(
-                          list.toString(),
+                          list.toString().replaceAll("[", "").replaceAll("}", "").toString(),
                           style: TextStyle(
                               color: Colors.red, fontWeight: FontWeight.bold),
                         )),
@@ -565,7 +550,7 @@ class _NewLeaveState extends State<NewLeave> {
       } else {
         pr.hide();
         Fluttertoast.showToast(
-            msg: "Sorry! You have already requested a leave for this date(s).");
+            msg: "Sorry..! You have already requested a leave for this date.");
       }
     } else if (response.statusCode == 401) {
       throw Exception("Something went wrong.!");

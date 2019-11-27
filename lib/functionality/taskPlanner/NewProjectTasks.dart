@@ -53,7 +53,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   @override
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context);
-    pr.style(message: 'Please wait...');
+    pr.style(message: 'wait...');
     return WillPopScope(
       // ignore: missing_return
       onWillPop: () {
@@ -96,16 +96,16 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
               ),
               onPressed: () {
                 //Service Call
-                if (chooseProject == "Select Project" ||
+                if (chooseProject == "Select 'Project'" ||
                     chooseProject == "null") {
-                  Fluttertoast.showToast(msg: "Please select project");
-                } else if (chooseResource == "Select Resource" ||
+                  Fluttertoast.showToast(msg: "select 'project'");
+                } else if (chooseResource == "Select 'Resource'" ||
                     chooseResource == "null") {
-                  Fluttertoast.showToast(msg: "Please select resource");
+                  Fluttertoast.showToast(msg: "select 'Resource'");
                 } else if (_controller1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter Task Name");
+                  Fluttertoast.showToast(msg: "Enter 'Task Name'");
                 } else if (_controller2.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter Task Descrption");
+                  Fluttertoast.showToast(msg: "Enter 'Task Descrption'");
                 } else {
                   CallProjectTaskApi();
                 }
@@ -196,7 +196,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                       onPressed: () {
                         if (projectId == null) {
                           Fluttertoast.showToast(
-                              msg: "Please choose a project");
+                              msg: "Choose a 'Project'");
                         } else {
                           _navigateresourceMethod(context);
                         }
@@ -235,7 +235,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
       chooseResource = string[0];
       resourceId = string[1];
     } else {
-      Fluttertoast.showToast(msg: "Sorry! You are not a project incharge.");
+      Fluttertoast.showToast(msg: "Sorry..! You are not a project incharge.");
     }
   }
 
@@ -266,7 +266,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
           fullName, _controller1.text, _controller2.text, resourceId);
     } else {
       pr.hide();
-      Fluttertoast.showToast(msg: "Please try after some time.");
+      Fluttertoast.showToast(msg: "Check your internet connection.");
     }
   }
 
@@ -289,7 +289,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
       return dataCheck[0].status.toString();
     } else {
       pr.hide();
-      Fluttertoast.showToast(msg: "Please try after some time.");
+      Fluttertoast.showToast(msg: "Check your internet connection.");
     }
   }
 
@@ -310,7 +310,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         pushNotification(data, fullName, taskName, taskDescription);
       } else {
         pr.hide();
-        Fluttertoast.showToast(msg: "Task Assigned");
+        Fluttertoast.showToast(msg: "Task Allocated");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
           ModalRoute.withName('/'),
@@ -324,8 +324,8 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   void pushNotification(String to, String fullName, String taskName,
       String taskDescription) async {
     Map<String, dynamic> notification = {
-      'body': fullName +" has created a task for you"+" '"+"$taskName"+"'",
-      'title': 'Project Task',
+      'body': fullName +" has assigned a task for you"+" '"+"$taskName"+"'",
+      'title': 'PMC Task Allocation',
     };
     Map<String, dynamic> data = {
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
@@ -347,7 +347,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
     pr.hide();
-    Fluttertoast.showToast(msg: "Task Assigned");
+    Fluttertoast.showToast(msg: "Task Allocated");
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
       ModalRoute.withName('/'),

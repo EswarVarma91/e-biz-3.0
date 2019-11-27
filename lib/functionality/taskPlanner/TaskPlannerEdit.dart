@@ -68,9 +68,6 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                         roundedAlertBox(3);
                       });
                     }
-//                    Fluttertoast.showToast(msg: listLeaves[index]);
-//                    Navigator.pop(context, listTaskStatus[index].toString());
-                    //Go to the next screen with Navigator.push
                   },
                 ),
               ),
@@ -118,7 +115,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                     child: TextFormField(
                       controller: _controllerReason,
                       decoration: InputDecoration(
-                        hintText: "Write your feedback of the task ",
+                        hintText: "Task Feedback",
                         border: InputBorder.none,
                       ),
                       maxLines: 8,
@@ -128,7 +125,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                     onTap: () {
                       if (_controllerReason.text.isEmpty) {
                         Fluttertoast.showToast(
-                            msg: "Please write your feedback");
+                            msg: "Please Provide your Task Feedback.");
                       } else {
                         _callServiceUpdateStatus(
                             _idstatus, _controllerReason.text);
@@ -177,6 +174,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
           MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
           ModalRoute.withName('/'),
         );
+        // getUserIdDayPlan(dp_id, createdUid);
       } else if (response.statusCode == 401) {
         pr.hide();
         throw Exception("Incorrect data");
@@ -193,8 +191,10 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
         throw Exception(
-            "Could'nt connect, please ensure you have a stable network.");
+            "Check your internet connection.");
       }
     }
   }
+
+  void getUserIdDayPlan(String dp_id, createdUid) {}
 }
