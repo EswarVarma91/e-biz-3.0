@@ -25,18 +25,19 @@ class ViewTravelRequest extends StatefulWidget {
 
 class _ViewTravelRequestState extends State<ViewTravelRequest> {
   int tra_id;
-  String reqNo,profilename,fullname;
+  String reqNo, profilename, fullname;
   bool _editEnable = true;
   _ViewTravelRequestState(this.tra_id, this.reqNo);
   Dio dio = Dio(Config.options);
   List<TravelRequestByTId> trbtid = List();
   List<TravelHistoryModel> trh = List();
 
-getUserDetails() async {
+  getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     profilename = preferences.getString("profileName");
     fullname = preferences.getString("fullname");
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -492,7 +493,11 @@ getUserDetails() async {
                 ),
               ),
             ),
-            Text("Booking History",style: TextStyle(color: lwtColor,fontSize: 15,fontWeight: FontWeight.bold)),
+            Text("Booking History",
+                style: TextStyle(
+                    color: lwtColor,
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold)),
             Container(
               child: Expanded(
                 child: ListView.builder(
@@ -1151,26 +1156,49 @@ getUserDetails() async {
 
   void cancelRequest(int tra_id) async {
     var response = await dio.post(ServicesApi.updateData,
-        data: {"parameter1": "cancelTravelRequestStatus", "parameter2": tra_id,"parameter3":profilename},
+        data: {
+          "parameter1": "cancelTravelRequestStatus",
+          "parameter2": tra_id,
+          "parameter3": profilename
+        },
         options: Options(
           contentType: ContentType.parse("application/json"),
         ));
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridBytraId(tra_id);
-    }else if (response.statusCode == 401) {
+    } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
   }
 
-
-void getUseridBytraId(int tra_id) async {
+  void getUseridBytraId(int tra_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getTokenbytraId", "parameter2": tra_id},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var req_no = json.decode(response.data)[0]['tra_req_no'];
-      var token = json.decode(response.data)[0]['token'];
-      pushNotification(req_no, token);
+      if (response.data != "null" || response.data != null) {
+        var req_no = json.decode(response.data)[0]['tra_req_no'];
+        var token = json.decode(response.data)[0]['token'];
+        if (token != null || token != "null") {
+          pushNotification(req_no, token);
+        } else {
+          Fluttertoast.showToast(msg: "Travel Request Cancelled.");
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => TravelRequestList()),
+            ModalRoute.withName('/'),
+          );
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Travel Request Cancelled.");
+        var navigator = Navigator.of(context);
+        navigator.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => TravelRequestList()),
+          ModalRoute.withName('/'),
+        );
+      }
     } else if (response.statusCode == 401) {
       throw (Exception);
     }
@@ -1201,12 +1229,11 @@ void getUseridBytraId(int tra_id) async {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
-    Fluttertoast.showToast(msg: "Travel Request Generated.");
+    Fluttertoast.showToast(msg: "Travel Request Cancelled.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),
       ModalRoute.withName('/'),
     );
   }
-
 }

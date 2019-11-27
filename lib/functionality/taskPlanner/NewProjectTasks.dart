@@ -307,7 +307,16 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         });
         var data = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushNotification(data, fullName, taskName, taskDescription);
+        if(data!=null||data!="null"){
+          pushNotification(data, fullName, taskName, taskDescription);
+        }else{
+          pr.hide();
+        Fluttertoast.showToast(msg: "Task Allocated");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+          ModalRoute.withName('/'),
+        );
+        }
       } else {
         pr.hide();
         Fluttertoast.showToast(msg: "Task Allocated");

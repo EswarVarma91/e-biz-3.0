@@ -26,7 +26,7 @@ class ViewHotelRequest extends StatefulWidget {
 
 class _ViewHotelRequestState extends State<ViewHotelRequest> {
   int hotel_id;
-  String reqNo, profilename,fullname;
+  String reqNo, profilename, fullname;
   bool _editEnable = true;
   _ViewHotelRequestState(this.hotel_id, this.reqNo);
   Dio dio = Dio(Config.options);
@@ -983,7 +983,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
     }
   }
 
-    getDataHotelrequestHistorybytId(int hotel_id) async {
+  getDataHotelrequestHistorybytId(int hotel_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
           "parameter1": "getHotelRequestHistorybyId",
@@ -1026,16 +1026,35 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
     }
   }
 
-
-
- void getUseridByhotelId(String hotel_id) async {
+  void getUseridByhotelId(String hotel_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
         options: Options(contentType: ContentType.parse("application/json")));
+
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var req_no = json.decode(response.data)[0]['hotel_req_no'];
-      var token = json.decode(response.data)[0]['token'];
-      pushNotification(req_no, token);
+      if (response.data != "null" || response.data != null) {
+        var req_no = json.decode(response.data)[0]['hotel_req_no'];
+        var token = json.decode(response.data)[0]['token'];
+        if (token != null || token != "null") {
+          pushNotification(req_no, token);
+        } else {
+          Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => HotelRequestList()),
+            ModalRoute.withName('/'),
+          );
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
+        var navigator = Navigator.of(context);
+        navigator.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => HotelRequestList()),
+          ModalRoute.withName('/'),
+        );
+      }
     } else if (response.statusCode == 401) {
       throw (Exception);
     }
@@ -1066,7 +1085,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
-    Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
+    Fluttertoast.showToast(msg: "Hotel Request Cancelled.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => HotelRequestList()),

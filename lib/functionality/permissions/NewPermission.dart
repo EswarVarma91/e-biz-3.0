@@ -96,7 +96,8 @@ class _NewPermissionState extends State<NewPermissions> {
               } else if (toTime.isEmpty) {
                 Fluttertoast.showToast(msg: "Choose your 'To Time'.");
               } else if (_controller1.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Enter the purpose for Permission.");
+                Fluttertoast.showToast(
+                    msg: "Enter the purpose for Permission.");
               } else if (!totimeCheck.isAfter(fromtimeCheck)) {
                 Fluttertoast.showToast(msg: "Invalid Timings Selected.");
               } else if (personal == true) {
@@ -448,7 +449,8 @@ class _NewPermissionState extends State<NewPermissions> {
           } else {
             pr.hide();
             Fluttertoast.showToast(
-                msg: "Sorry..! You have trying to request in non working hours.");
+                msg:
+                    "Sorry..! You have trying to request in non working hours.");
           }
         } else {
           pr.hide();
@@ -468,7 +470,8 @@ class _NewPermissionState extends State<NewPermissions> {
           // );
         } else if (response.data.toString() ==
             '"Exceeded your permission hours"') {
-          Fluttertoast.showToast(msg: "Permission not allowed for more than 2 hours.");
+          Fluttertoast.showToast(
+              msg: "Permission not allowed for more than 2 hours.");
         } else {
           Fluttertoast.showToast(msg: response.data.toString());
         }
@@ -484,8 +487,7 @@ class _NewPermissionState extends State<NewPermissions> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       }
     }
   }
@@ -533,8 +535,7 @@ class _NewPermissionState extends State<NewPermissions> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -555,14 +556,19 @@ class _NewPermissionState extends State<NewPermissions> {
         });
         var data = fm[0].reporting.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushNotification(data, date, fromTime, toTime, purpose, uidd);
+        if (data != null || data != "null") {
+          pushNotification(data, date, fromTime, toTime, purpose, uidd);
+        } else {
+          pr.hide();
+          Fluttertoast.showToast(msg: "Permission Applied");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+            ModalRoute.withName('/'),
+          );
+        }
       } else {
         pr.hide();
-
-        Fluttertoast.showToast(
-            msg: "Sorry..! Your reporting level doesn't have mobile app");
-        Fluttertoast.showToast(msg: response.data.toString());
-        // Fluttertoast.showToast(msg: "Permission Applied");
+        Fluttertoast.showToast(msg: "Permission Applied");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => Permissions()),
           ModalRoute.withName('/'),
@@ -574,13 +580,13 @@ class _NewPermissionState extends State<NewPermissions> {
   void pushNotification(String to, String date, String fromTime, String toTime,
       String purpose, String uidd) async {
     Map<String, dynamic> notification = {
-      'body': 
-          fullname +
+      'body': fullname +
           " has requested for 2hours of permission" +
           " From: " +
           fromTime +
-          " To: " + 
-          toTime + " Purpose:"+
+          " To: " +
+          toTime +
+          " Purpose:" +
           purpose +
           ". Approval Requested.",
       'title': 'Permission Request',
@@ -605,11 +611,11 @@ class _NewPermissionState extends State<NewPermissions> {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
-      pr.hide();
-      Fluttertoast.showToast(msg: "Permission Applied");
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => Permissions()),
-        ModalRoute.withName('/'),
-      );
+    pr.hide();
+    Fluttertoast.showToast(msg: "Permission Applied");
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+      ModalRoute.withName('/'),
+    );
   }
 }

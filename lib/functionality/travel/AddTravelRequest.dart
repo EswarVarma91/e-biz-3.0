@@ -550,9 +550,29 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var req_no = json.decode(response.data)[0]['tra_req_no'];
-      var token = json.decode(response.data)[0]['token'];
-      pushNotification(req_no.toString(), token);
+      if (response.data != "null" || response.data != null) {
+        var req_no = json.decode(response.data)[0]['tra_req_no'];
+        var token = json.decode(response.data)[0]['token'];
+        if (token != null || token != "null") {
+          pushNotification(req_no.toString(), token);
+        } else {
+          Fluttertoast.showToast(msg: "Travel Request Generated.");
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => TravelRequestList()),
+            ModalRoute.withName('/'),
+          );
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Travel Request Generated.");
+        var navigator = Navigator.of(context);
+        navigator.pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (BuildContext context) => TravelRequestList()),
+          ModalRoute.withName('/'),
+        );
+      }
     } else if (response.statusCode == 401) {
       throw (Exception);
     }

@@ -1613,7 +1613,12 @@ class _ApprovalsState extends State<Approvals> {
         });
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushPermissionsNotification(to, date, status);
+        if (to != null || to != "null") {
+          pushPermissionsNotification(to, date, status);
+        } else {
+          pr.hide();
+          Navigator.pop(context);
+        }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1671,7 +1676,12 @@ class _ApprovalsState extends State<Approvals> {
         });
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushLeavesNotification(to, el_from_date, el_to_date, status);
+        if (to != "null" || to != null) {
+          pushLeavesNotification(to, el_from_date, el_to_date, status);
+        } else {
+          pr.hide();
+          Navigator.pop(context);
+        }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1730,7 +1740,12 @@ class _ApprovalsState extends State<Approvals> {
         });
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushTravelNotification(to, reqno, status);
+        if (to != null || to != "null") {
+          pushTravelNotification(to, reqno, status);
+        } else {
+          pr.hide();
+          Navigator.pop(context);
+        }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1781,7 +1796,12 @@ class _ApprovalsState extends State<Approvals> {
         });
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushHotelNotification(to, reqno, status);
+        if(to!=null||to!="null"){
+          pushHotelNotification(to, reqno, status);
+        }else{
+          pr.hide();
+          Navigator.pop(context);
+        }
       } else {
         pr.hide();
         Navigator.pop(context);

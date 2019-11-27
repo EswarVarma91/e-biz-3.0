@@ -25,7 +25,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   var _controller2 = TextEditingController();
   var choosePerson = "Select Member";
   var resourceId;
-  String profileName,fullName;
+  String profileName, fullName;
   ProgressDialog pr;
   List<FirebaseUserModel> fum;
   static Dio dio = Dio(Config.options);
@@ -92,7 +92,8 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               onPressed: () {
                 //Service Call
                 //Service Call
-                if (choosePerson == "Select 'Member'" || choosePerson == "null") {
+                if (choosePerson == "Select 'Member'" ||
+                    choosePerson == "null") {
                   Fluttertoast.showToast(msg: "Select 'Member'");
                 } else if (_controller1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter 'Task Name'");
@@ -229,7 +230,16 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
         });
         var data = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        pushNotification(data, profileName, taskName, taskDescription);
+        if (data != null || data != "null") {
+          pushNotification(data, profileName, taskName, taskDescription);
+        } else {
+          pr.hide();
+          Fluttertoast.showToast(msg: "Task Allocated");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+            ModalRoute.withName('/'),
+          );
+        }
       } else {
         pr.hide();
         Fluttertoast.showToast(msg: "Task Allocated");
@@ -246,7 +256,8 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   void pushNotification(String to, String profileName, String taskName,
       String taskDescription) async {
     Map<String, dynamic> notification = {
-      'body': fullName +" has assigned a task for you"+" '"+"$taskName"+"'",
+      'body':
+          fullName + " has assigned a task for you" + " '" + "$taskName" + "'",
       'title': 'TL Task Allocation',
     };
     Map<String, dynamic> data = {
