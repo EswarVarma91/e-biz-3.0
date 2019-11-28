@@ -1538,7 +1538,7 @@ class _ApprovalsState extends State<Approvals> {
   cancelTravelRequestServiceCall(TravelRequestListModel trlm) async {
     var response = await dio.post(ServicesApi.updateData,
         data: {
-          "parameter1": "cancelTravelRequestStatus",
+          "parameter1": "rejectTravelRequestStatus",
           "parameter2": trlm.tra_id,
           "parameter3": profilename
         },
@@ -1568,7 +1568,7 @@ class _ApprovalsState extends State<Approvals> {
   cancelHotelRequestServiceCall(HotelRequestModel hrlm) async {
     var response = await dio.post(ServicesApi.updateData,
         data: {
-          "parameter1": "cancelHotelRequestStatus",
+          "parameter1": "rejectHotelRequestStatus",
           "parameter2": hrlm.hotel_id,
           "parameter3": profilename
         },

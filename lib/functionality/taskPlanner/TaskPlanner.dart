@@ -94,8 +94,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
           if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-              d.dpTaskType == "Self"&&
-            d.createdUid.toString() == uidd) {
+              d.dpTaskType == "Self" &&
+              d.createdUid.toString() == uidd) {
             return true;
           }
           return false;
@@ -103,7 +103,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
       ).toList();
       //open filter
       list4 = list1.where((d) {
-        if (d.dp_status.toString() == "1" && d.dpTaskType == "Self" &&
+        if (d.dp_status.toString() == "1" &&
+            d.dpTaskType == "Self" &&
             d.createdUid.toString() == uidd) {
           return true;
         }
@@ -111,7 +112,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
       }).toList();
       //progress filter
       list5 = list1.where((d) {
-        if (d.dp_status.toString() == "2" && d.dpTaskType == "Self" &&
+        if (d.dp_status.toString() == "2" &&
+            d.dpTaskType == "Self" &&
             d.createdUid.toString() == uidd) {
           return true;
         }
@@ -119,7 +121,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
       }).toList();
       //closed filter
       list6 = list1.where((d) {
-        if (d.dp_status.toString() == "3" && d.dpTaskType == "Self" &&
+        if (d.dp_status.toString() == "3" &&
+            d.dpTaskType == "Self" &&
             d.createdUid.toString() == uidd) {
           return true;
         }
@@ -153,31 +156,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
       list3 = list1.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
         if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-            d.dpTaskType == "Team" ) {
+            d.dpTaskType == "Team") {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list1.where((d) {
-        if (d.dp_status.toString() == "1" &&
-            d.dpTaskType == "Team" ) {
+        if (d.dp_status.toString() == "1" && d.dpTaskType == "Team") {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list1.where((d) {
-        if (d.dp_status.toString() == "2" &&
-            d.dpTaskType == "Team" ) {
+        if (d.dp_status.toString() == "2" && d.dpTaskType == "Team") {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list1.where((d) {
-        if (d.dp_status.toString() == "3" &&
-            d.dpTaskType == "Team" ) {
+        if (d.dp_status.toString() == "3" && d.dpTaskType == "Team") {
           return true;
         }
         return false;
@@ -210,31 +210,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today
       list3 = list22.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck ) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list22.where((d) {
-        if (d.dp_status.toString() == "1" &&
-            d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "1" && d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list22.where((d) {
-        if (d.dp_status.toString() == "2" &&
-            d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "2" && d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list22.where((d) {
-        if (d.dp_status.toString() == "3" &&
-            d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "3" && d.createdUid.toString() == uidd) {
           return true;
         }
         return false;
@@ -867,8 +864,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -884,13 +880,17 @@ class _TaskPlannerState extends State<TaskPlanner> {
               margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
               child: InkWell(
                 child: Container(
-                    /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
-                        borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
-                        )),*/
                     child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text("EDP_"+list2[index]?.dp_id.toString()??'NA',style: TextStyle(color: lwtColor,fontSize: 10,fontWeight: FontWeight.bold,),),
+                      title: Text(
+                        "EDP_" + list2[index]?.dp_id.toString() ?? 'NA',
+                        style: TextStyle(
+                          color: lwtColor,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -1076,11 +1076,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     profilename)));
                                   }
                                 }
-                                /* var navigator = Navigator.of(context);
-                            navigator.push(
-                              MaterialPageRoute(builder: (BuildContext context) => EditSalesLead(listpending[index])),
-//                          ModalRoute.withName('/'),
-                            );*/
                               },
                             )),
                 )),
