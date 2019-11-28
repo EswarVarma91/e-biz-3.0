@@ -308,7 +308,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
               });
             } else if (data == "2") {
               setState(() {
-                workStatus = "At-office";
+                workStatus = "At-Office";
               });
             } else {
               setState(() {
@@ -404,7 +404,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if(workStatus != "At-office"){
+          if(workStatus != "At-Office"){
           if (workStatus == "Tour") {
             if (timeStart == "-") {
               var now1 = DateTime.now();
@@ -481,7 +481,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if(workStatus!="At-office"){
+          if(workStatus!="At-Office"){
           if(workStatus=="Tour"){
           if (timeStart == "-") {
             Fluttertoast.showToast(msg: "Day Start need to be marked before marking day end.");

@@ -56,7 +56,7 @@ class _WorkStatusState extends State<WorkStatus> {
             if (workStatus == "Tour") {
               _isSelectedW = false;
               _isSelectedT = true;
-            } else if (workStatus == "Working") {
+            } else if (workStatus == "At-Office") {
               _isSelectedT = false;
               _isSelectedW = true;
             }
@@ -149,7 +149,7 @@ class _WorkStatusState extends State<WorkStatus> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          WorkStatusModel wm = WorkStatusModel(userId, "At-office");
+          WorkStatusModel wm = WorkStatusModel(userId, "At-Office");
           dbHelper.updateWStatus(wm);
           _callworkStatus("2");
         },
@@ -165,7 +165,7 @@ class _WorkStatusState extends State<WorkStatus> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        "At-office".toUpperCase(),
+                        "At-Office".toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.0,
                           color: _isSelectedW ? Colors.white : lwtColor,
@@ -203,7 +203,7 @@ class _WorkStatusState extends State<WorkStatus> {
             "parameter1": "UpdateEmpTourinAttendance",
             "parameter2": empCode.toString(),
             "parameter3": currDate.toString(),
-            "parameter4": "At-office"
+            "parameter4": "At-Office"
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
