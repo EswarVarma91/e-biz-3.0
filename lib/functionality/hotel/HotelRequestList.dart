@@ -573,7 +573,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
   }
 
   getHotelData(String uidd) async {
-    pr.show();
+   
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getHotelRequests", "parameter2": uidd},
         options: Options(
@@ -601,10 +601,10 @@ class _HotelRequestListState extends State<HotelRequestList> {
             .length
             .toString();
       });
-      pr.hide();
+  
       checkServices();
     } else if (response.statusCode == 401) {
-      pr.hide();
+    
       throw Exception("Incorrect data");
     }
   }

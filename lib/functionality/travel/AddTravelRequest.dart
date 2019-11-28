@@ -367,7 +367,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "From",
+                        labelText: "From(Source)",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -466,7 +466,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "To",
+                        labelText: "To(Destination)",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),

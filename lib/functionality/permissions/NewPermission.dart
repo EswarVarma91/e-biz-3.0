@@ -515,9 +515,11 @@ class _NewPermissionState extends State<NewPermissions> {
           // );
         } else if (response.data.toString() ==
             '"Exceeded your permission hours"') {
+              pr.hide();
           Fluttertoast.showToast(
               msg: "Permission not allowed for more than 2 hours.");
         } else {
+          pr.hide();
           Fluttertoast.showToast(msg: response.data.toString());
         }
       } else if (response.statusCode == 401) {
@@ -525,6 +527,7 @@ class _NewPermissionState extends State<NewPermissions> {
         throw Exception("Incorrect data");
       }
     } on DioError catch (exception) {
+      pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         pr.hide();

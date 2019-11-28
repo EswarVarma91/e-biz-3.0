@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:eaglebiz/functionality/hotel/EditHotelRequest.dart';
 import 'package:eaglebiz/functionality/hotel/HotelRequestList.dart';
@@ -78,7 +79,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
               icon: Icon(Icons.delete, color: Colors.white),
               onPressed: () {
                 ///Delete Request
-                cancelRequest(hotel_id);
+                alertHotelDialog(hotel_id);
               },
             )
           ],
@@ -250,7 +251,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: <Widget>[
                                       Text(
-                                        "Complaint No.",
+                                        "OA/Complaint Ticket No.",
                                         style: TextStyle(
                                             fontSize: 7, color: Colors.black),
                                       ),
@@ -272,12 +273,12 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-                                        "Hotel Name",
+                                        "Created By",
                                         style: TextStyle(
                                             fontSize: 7, color: Colors.black),
                                       ),
                                       Text(
-                                        hrbtid[index]?.hotel_his_name ?? "-",
+                                        hrbtid[index]?.hotel_created_by ?? "-",
                                         style: TextStyle(
                                             color: Colors.grey,
                                             fontWeight: FontWeight.bold,
@@ -289,54 +290,6 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                               ),
                               SizedBox(
                                 height: 6,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: <Widget>[
-                                      Text(
-                                        "Created By",
-                                        style: TextStyle(
-                                            fontSize: 7, color: Colors.black),
-                                      ),
-                                      Container(
-                                          width: 180,
-                                          child: Text(
-                                            hrbtid[index]?.hotel_created_by ??
-                                                "-",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 10),
-                                          )),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        "Class",
-                                        style: TextStyle(
-                                            fontSize: 7, color: Colors.black),
-                                      ),
-                                      Text(
-                                        hrbtid[index]?.hotel_his_address ?? "-",
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10),
-                                      ),
-                                    ],
-                                  )
-                                ],
                               ),
                               SizedBox(
                                 height: 6,
@@ -1025,21 +978,21 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
       //       builder: (BuildContext context) => HotelRequestList()),
       //   ModalRoute.withName('/'),
       // );
-      getUseridByhotelId(hotel_id.toString());
+      getUseridByhotelId(hotel_id);
     } else if (response.statusCode == 401) {
       pr.hide();
       throw Exception("Incorrect data");
     }
   }
 
-  void getUseridByhotelId(String hotel_id) async {
+  void getUseridByhotelId(int hotel_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
         options: Options(contentType: ContentType.parse("application/json")));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
-        var req_no = json.decode(response.data)[0]['hotel_req_no'];
+        var req_no = json.decode(response.data)[0]['hotel_ref_no'];
         var token = json.decode(response.data)[0]['token'];
         if (token != null || token != "null") {
           pushNotification(req_no, token);
@@ -1095,11 +1048,37 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
     pr.hide();
+    pr.dismiss();
     Fluttertoast.showToast(msg: "Hotel Request Cancelled.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => HotelRequestList()),
       ModalRoute.withName('/'),
     );
+  }
+
+  void alertHotelDialog(int hid) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to Cancel.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  cancelRequest(hid);
+                },
+                child: Text('Yes'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+            ],
+          );
+        });
   }
 }

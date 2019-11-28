@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:eaglebiz/functionality/travel/EditTravelRequest.dart';
@@ -79,7 +80,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
             IconButton(
               icon: Icon(Icons.delete, color: Colors.white),
               onPressed: () {
-                cancelRequest(tra_id);
+                alertTravelDialog(tra_id);
               },
             )
           ],
@@ -244,7 +245,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
                                     mainAxisSize: MainAxisSize.max,
                                     children: <Widget>[
                                       Text(
-                                        "Complaint No..",
+                                        "OA/Complaint Ticket No.",
                                         style: TextStyle(
                                             fontSize: 7, color: Colors.black),
                                       ),
@@ -1112,6 +1113,31 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
             )
           ],
         ));
+  }
+
+      void alertTravelDialog(int t_id) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to Cancel.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  cancelRequest(t_id);
+                },
+                child: Text('Yes'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+            ],
+          );
+        });
   }
 
   void getDataTravelrequestbytId(int tra_id) async {

@@ -12,18 +12,17 @@ import '../../main.dart';
 import 'package:http/http.dart' as http;
 
 class TaskPlannerEdit extends StatefulWidget {
-  String dp_id, profilename;
-  TaskPlannerEdit(this.dp_id, this.profilename);
+  String dp_task, profilename, dp_id;
+  TaskPlannerEdit(this.dp_task, this.dp_id);
 
   @override
-  _TaskPlannerEditState createState() =>
-      _TaskPlannerEditState(dp_id, profilename);
+  _TaskPlannerEditState createState() => _TaskPlannerEditState(dp_task, dp_id);
 }
 
 class _TaskPlannerEditState extends State<TaskPlannerEdit> {
-  String dp_id, mainStatus, profilename, fullname;
+  String dp_id, mainStatus, profilename, fullname, dp_task;
   ProgressDialog pr;
-  _TaskPlannerEditState(this.dp_id, this.profilename);
+  _TaskPlannerEditState(this.dp_task, this.dp_id);
   TextEditingController _controllerReason = TextEditingController();
 
   static Dio dio = Dio(Config.options);
@@ -48,7 +47,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            dp_id.toString(),
+            dp_task.toString(),
             style: TextStyle(color: Colors.white),
           ),
           iconTheme: IconThemeData(color: Colors.white)),
@@ -169,10 +168,10 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
       var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "update",
-            "dpId": dp_id.toString(),
+            "dpId": dp_id,
             "dpModifiedBy": profilename,
-            "dpReason": reason.toString(),
-            "dpStatus": mainStatus.toString()
+            "dpReason": reason,
+            "dpStatus": mainStatus
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -180,19 +179,24 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         getdayPlanbyId(mainStatus.toString(), dp_id.toString());
       } else if (response.statusCode == 401) {
+        Navigator.pop(context);
         pr.hide();
         throw Exception("Incorrect data");
       } else
-        pr.hide();
+        Navigator.pop(context);
+      pr.hide();
       throw Exception('Authentication Error');
     } on DioError catch (exception) {
+      Navigator.pop(context);
       pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
+        Navigator.pop(context);
         pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        Navigator.pop(context);
         pr.hide();
         throw Exception("Check your internet connection.");
       }
@@ -210,6 +214,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
       if (token != null || token != "null") {
         pushNotification(dp_task.toString(), token, mainStatus);
       } else {
+        Navigator.pop(context);
         pr.hide();
         Fluttertoast.showToast(msg: "Status Updated.!");
         Navigator.of(context).pushAndRemoveUntil(
@@ -260,6 +265,8 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
     // todo - set the relevant values
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
+
+    Navigator.pop(context);
     pr.hide();
     Fluttertoast.showToast(msg: "Status Updated.!");
     Navigator.of(context).pushAndRemoveUntil(

@@ -1019,7 +1019,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     list2[index]
                                                         .dp_task
                                                         .toString(),
-                                                    profilename)));
+                                                        list2[index].dp_id.toString(),)));
                                   } else if (_color3 == true) {
                                     Navigator.push(
                                         context,
@@ -1029,7 +1029,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     list2[index]
                                                         .dp_task
                                                         .toString(),
-                                                    profilename)));
+                                                        list2[index].dp_id.toString(),)));
                                   }
                                 } else if (teamTasks == true) {
                                   if (_color1 == true || _color2 == true) {
@@ -1041,7 +1041,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     list2[index]
                                                         .dp_task
                                                         .toString(),
-                                                    profilename)));
+                                                        list2[index].dp_id.toString(),)));
                                   } else if (_color3 == true) {
                                     Navigator.push(
                                         context,
@@ -1051,7 +1051,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     list2[index]
                                                         .dp_task
                                                         .toString(),
-                                                    profilename)));
+                                                        list2[index].dp_id.toString(),)));
                                   }
                                 } else if (projectTasks == true) {
                                   if (_color1 == true || _color2 == true) {
@@ -1063,7 +1063,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     list2[index]
                                                         .dp_task
                                                         .toString(),
-                                                    profilename)));
+                                                        list2[index].dp_id.toString(),)));
                                   } else if (_color3 == true) {
                                     Navigator.push(
                                         context,
@@ -1073,7 +1073,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                                     list2[index]
                                                         .dp_task
                                                         .toString(),
-                                                    profilename)));
+                                                        list2[index].dp_id.toString(),)));
                                   }
                                 }
                               },

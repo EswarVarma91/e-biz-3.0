@@ -92,8 +92,6 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                 Fluttertoast.showToast(msg: "Enter Purpose.");
               } else if (TcomplaintTicketNo.isEmpty) {
                 Fluttertoast.showToast(msg: "Choose Complaint Ticket No.");
-              } else if (multiUser.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose Members.");
               } else {
                 insertHotelRequest();
               }

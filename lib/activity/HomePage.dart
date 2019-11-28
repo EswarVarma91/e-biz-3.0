@@ -231,7 +231,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 ),
               ],
               staggeredTiles: [
-                StaggeredTile.extent(4, 100.0),
+                StaggeredTile.extent(4, 120.0),
                 StaggeredTile.extent(2, 100.0),
                 StaggeredTile.extent(2, 100.0),
                 StaggeredTile.extent(2, 100.0),
@@ -271,10 +271,16 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(2.0),
                     child: Text(
                       paidCount != null ? paidCount : "".toString(),
                       style: TextStyle(fontSize: 25.0, color: lwtColor),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(0.0),
+                    child: Text("Days",
+                      style: TextStyle(fontSize: 12.0, color: lwtColor),
                     ),
                   ),
                 ],
@@ -342,7 +348,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                       padding: EdgeInsets.all(8.0),
                       child: Text(
                         workStatus != null ? workStatus : "",
-                        style: TextStyle(fontSize: 25.0, color: lwtColor),
+                        style: TextStyle(fontSize: 20.0, color: lwtColor),
                       ),
                     ),
                   ],
