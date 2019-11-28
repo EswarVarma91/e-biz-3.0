@@ -215,7 +215,20 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.calendar_today),
+              trailing: IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () {
+                  DatePicker.showDateTimePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(y, m, d, hh, mm),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
+                      onChanged: (date) {
+                    changeDateF(date);
+                  }, onConfirm: (date) {
+                    changeDateF(date);
+                  }, locale: LocaleType.en);
+                },
+              ),
               onTap: () async {
                 DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
@@ -240,7 +253,20 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.calendar_today),
+              trailing: IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () {
+                  DatePicker.showDateTimePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(year, month, day, hour, minute + 1),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
+                      onChanged: (date) {
+                    changeDateT(date);
+                  }, onConfirm: (date) {
+                    changeDateT(date);
+                  }, locale: LocaleType.en);
+                },
+              ),
               onTap: () async {
                 DatePicker.showDateTimePicker(context,
                     showTitleActions: true,

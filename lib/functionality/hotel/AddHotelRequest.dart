@@ -114,7 +114,19 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(icon:Icon(Icons.add),onPressed: ()async{
+                var data = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            DownTeamMembers("Traveller Name")));
+                if (data != null) {
+                  setState(() {
+                    TtravelName = data.split(" USR_")[0].toString();
+                    TravelNameId = data.split(" USR_")[1].toString();
+                  });
+                }
+              },),
               onTap: () async {
                 var data = await Navigator.push(
                     context,
@@ -154,6 +166,28 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               ),
             )),
             ListTile(
+              onTap: () {
+                setState(() {
+                  checkOut = "";
+                  checkOuts = "";
+                });
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(y, m, d),
+                    maxTime: DateTime(y, m + 3, d),
+                    theme: DatePickerTheme(
+                        backgroundColor: Colors.white,
+                        itemStyle: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                        ),
+                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
+                    onChanged: (date) {
+                  changeDateF(date);
+                }, onConfirm: (date) {
+                  changeDateF(date);
+                }, currentTime: DateTime.now(), locale: LocaleType.en);
+              },
               title: TextFormField(
                 enabled: false,
                 controller: TextEditingController(text: checkIns),
@@ -196,6 +230,25 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               ),
             ),
             ListTile(
+              onTap: () {
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(
+                        int.parse(toA), int.parse(toB), int.parse(toC)),
+                    maxTime: DateTime(y, m + 3, d),
+                    theme: DatePickerTheme(
+                        backgroundColor: Colors.white,
+                        itemStyle: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                        ),
+                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
+                    onChanged: (date) {
+                  changeDateT(date);
+                }, onConfirm: (date) {
+                  changeDateT(date);
+                }, currentTime: DateTime.now(), locale: LocaleType.en);
+              },
               title: TextFormField(
                 enabled: false,
                 controller: TextEditingController(text: checkOuts),
@@ -247,7 +300,23 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ProjectSelection("OA/Complaint Ticket No.")));
+                  if (data != null) {
+                    setState(() {
+                      TcomplaintTicketNo = data.split(" P_")[0].toString();
+                      TcomplaintId = data.split(" P_")[1].toString();
+                      TcomplaintRefType = data.split(" P_")[2].toString();
+                    });
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,
@@ -289,7 +358,24 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              PackageSelection("Package Selection")));
+                  SharedPreferences pre = await SharedPreferences.getInstance();
+                  var Users = pre.getString("Users");
+                  multiUser = data;
+                  if (Users == null) {
+                    _packages = _packages;
+                  } else {
+                    _packages = Users;
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,

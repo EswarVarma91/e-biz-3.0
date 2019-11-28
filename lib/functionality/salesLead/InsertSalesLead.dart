@@ -181,13 +181,9 @@ class _NewSalesLeadState extends State<NewSalesLead> {
               ),
             ),
             ListTile(
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                color: lwtColor,
-                onPressed: () {
-                  _navigatereferMethod(context);
-                },
-              ),
+              onTap: () {
+                _navigatereferMethod(context);
+              },
               title: TextFormField(
                 controller: TextEditingController(
                     text: result[0].toUpperCase() + result.substring(1)),
@@ -200,6 +196,14 @@ class _NewSalesLeadState extends State<NewSalesLead> {
                   ),
                 ),
               ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.add,
+                ),
+                onPressed: () {
+                  _navigatereferMethod(context);
+                },
+              ),
             ),
           ],
         ),
@@ -207,6 +211,13 @@ class _NewSalesLeadState extends State<NewSalesLead> {
     );
   }
 
+// IconButton(
+//                 icon: Icon(Icons.add),
+//                 color: lwtColor,
+//                 onPressed: () {
+//                   _navigatereferMethod(context);
+//                 },
+//               ),
   void _callInsertMethod() async {
     pr.show();
     try {
@@ -252,8 +263,7 @@ class _NewSalesLeadState extends State<NewSalesLead> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       }
     }
   }

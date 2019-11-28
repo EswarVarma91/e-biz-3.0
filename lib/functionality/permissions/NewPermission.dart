@@ -146,6 +146,25 @@ class _NewPermissionState extends State<NewPermissions> {
               child: ListView(
                 children: <Widget>[
                   ListTile(
+                    onTap: (){
+                      DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(y, m, d),
+                            maxTime: DateTime(y, m, d + 1),
+                            theme: DatePickerTheme(
+                                backgroundColor: Colors.white,
+                                itemStyle: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 20,
+                                ),
+                                doneStyle: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 12)), onChanged: (date) {
+                          changeDate(date);
+                        }, onConfirm: (date) {
+                          changeDate(date);
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                    },
                     title: TextFormField(
                       enabled: false,
                       controller: TextEditingController(text: selectDateS),
@@ -186,6 +205,14 @@ class _NewPermissionState extends State<NewPermissions> {
                     ),
                   ),
                   ListTile(
+                    onTap: () {
+                      DatePicker.showTimePicker(context, showTitleActions: true,
+                          onChanged: (time) {
+                        changeTime(time, "from");
+                      }, onConfirm: (time) {
+                        changeTime(time, "from");
+                      }, currentTime: DateTime.now());
+                    },
                     trailing: IconButton(
                       icon: Icon(
                         Icons.access_time,
@@ -215,6 +242,14 @@ class _NewPermissionState extends State<NewPermissions> {
                     ),
                   ),
                   ListTile(
+                    onTap: () {
+                      DatePicker.showTimePicker(context, showTitleActions: true,
+                          onChanged: (time) {
+                        changeTime(time, "to");
+                      }, onConfirm: (time) {
+                        changeTime(time, "to");
+                      }, currentTime: DateTime.now());
+                    },
                     trailing: IconButton(
                       icon: Icon(
                         Icons.access_time,
@@ -295,7 +330,7 @@ class _NewPermissionState extends State<NewPermissions> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        "Office Movement".toUpperCase(),
+                        "Official".toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.0,
                           fontFamily: "Roboto",
@@ -392,7 +427,7 @@ class _NewPermissionState extends State<NewPermissions> {
     try {
       var response;
       if (official == true) {
-        typeP = "Office";
+        typeP = "official";
         response = await dio.post(ServicesApi.insertPermission,
             data: {
               "vactionmode": "insert",

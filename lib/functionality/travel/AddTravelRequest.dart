@@ -176,7 +176,22 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              DownTeamMembers("Traveller Name")));
+                  if (data != null) {
+                    setState(() {
+                      TtravelName = data.split(" USR_")[0].toString();
+                      TravelNameId = data.split(" USR_")[1].toString();
+                    });
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,
@@ -204,7 +219,30 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              TravelSelection("2", "")));
+                  if (data != null) {
+                    setState(() {
+                      Tmode = data.toString();
+                    });
+                    if (data.toString() == "Flight") {
+                      setState(() {
+                        _isItflight = true;
+                      });
+                    } else {
+                      setState(() {
+                        _isItflight = false;
+                      });
+                    }
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,
@@ -240,7 +278,21 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              TravelSelection("3", "")));
+                  if (data != null) {
+                    setState(() {
+                      TmodeType = data.toString();
+                    });
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,
@@ -267,7 +319,25 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  if (Tmode != null) {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                TravelSelection("4", Tmode)));
+                    if (data != null) {
+                      setState(() {
+                        Tclass = data.toString();
+                      });
+                    }
+                  } else {
+                    Fluttertoast.showToast(msg: " select mode.");
+                  }
+                },
+              ),
               onTap: () async {
                 if (Tmode != null) {
                   var data = await Navigator.push(
@@ -299,7 +369,22 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                         ),
                       ),
                     ),
-                    trailing: Icon(Icons.add),
+                    trailing: IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () async {
+                        var data = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TravelSelection("5", Tmode)));
+                        if (data != null) {
+                          setState(() {
+                            Tfrom = data.split(" U_")[0].toString();
+                            // TfromId = data.split(" U_")[1].toString();
+                          });
+                        }
+                      },
+                    ),
                     onTap: () async {
                       var data = await Navigator.push(
                           context,
@@ -341,7 +426,22 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                         ),
                       ),
                     ),
-                    trailing: Icon(Icons.add),
+                    trailing: IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () async {
+                        var data = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TravelSelection("6", Tmode)));
+                        if (data != null) {
+                          setState(() {
+                            Tto = data.split(" U_")[0].toString();
+                            // TtoId = data.split(" U_")[1].toString();
+                          });
+                        }
+                      },
+                    ),
                     onTap: () async {
                       var data = await Navigator.push(
                           context,
@@ -382,7 +482,20 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.calendar_today),
+              trailing: IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () {
+                  DatePicker.showDateTimePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(y, m, d, hh, mm),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
+                      onChanged: (date) {
+                    changeDateF(date);
+                  }, onConfirm: (date) {
+                    changeDateF(date);
+                  }, locale: LocaleType.en);
+                },
+              ),
               onTap: () async {
                 DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
@@ -407,7 +520,20 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.calendar_today),
+              trailing: IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () {
+                  DatePicker.showDateTimePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(year, month, day, hour, minute + 1),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
+                      onChanged: (date) {
+                    changeDateT(date);
+                  }, onConfirm: (date) {
+                    changeDateT(date);
+                  }, locale: LocaleType.en);
+                },
+              ),
               onTap: () async {
                 DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
@@ -432,7 +558,23 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   ),
                 ),
               ),
-              trailing: Icon(Icons.add),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ProjectSelection("OA/Complaint Ticket No.")));
+                  if (data != null) {
+                    setState(() {
+                      TcomaplaintTicketNo = data.split(" P_")[0].toString();
+                      TcomaplaintId = data.split(" P_")[1].toString();
+                      TcomaplaintRefType = data.split(" P_")[2].toString();
+                    });
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,

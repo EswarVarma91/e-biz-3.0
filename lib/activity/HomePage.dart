@@ -308,7 +308,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
               });
             } else if (data == "2") {
               setState(() {
-                workStatus = "Working";
+                workStatus = "At-office";
               });
             } else {
               setState(() {
@@ -331,7 +331,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        "Work Status".toUpperCase(),
+                        "Work Location".toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.0,
                           color: Color(0xFF272D34),
@@ -404,7 +404,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (workStatus == "Tour" || workStatus == "Working") {
+          if(workStatus != "At-office"){
+          if (workStatus == "Tour") {
             if (timeStart == "-") {
               var now1 = DateTime.now();
               setState(() {
@@ -432,6 +433,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
           } else {
             Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
           }
+        }else{
+          Fluttertoast.showToast(msg: "Attendace accept through Bio-Metric only.");
+        }
         },
         child: Center(
           child: Padding(
@@ -477,6 +481,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
+          if(workStatus!="At-office"){
+          if(workStatus=="Tour"){
           if (timeStart == "-") {
             Fluttertoast.showToast(msg: "Day Start need to be marked before marking day end.");
           } else if (workStatus == "-" ||
@@ -493,6 +499,12 @@ class _HomePageLocationState extends State<HomePageLocation> {
             });
           } else {
             Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
+          }
+          }else{
+            Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
+          }
+          }else{
+            Fluttertoast.showToast(msg:"Attendace accept through Bio-Metric only.");
           }
         },
         child: Center(

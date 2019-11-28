@@ -111,6 +111,9 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           children: <Widget>[
             SizedBox(height: 15),
             ListTile(
+              onTap: () {
+                _navigateMemeberMethod(context);
+              },
               title: TextFormField(
                 enabled: false,
                 controller: TextEditingController(

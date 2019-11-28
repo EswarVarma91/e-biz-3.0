@@ -136,6 +136,28 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
               ),
             )),
             ListTile(
+              onTap: () {
+                setState(() {
+                    checkOut = "";
+                    checkOuts = "";
+                  });
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(y, m, d),
+                    maxTime: DateTime(y, m + 3, d),
+                    theme: DatePickerTheme(
+                        backgroundColor: Colors.white,
+                        itemStyle: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                        ),
+                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
+                    onChanged: (date) {
+                  changeDateF(date);
+                }, onConfirm: (date) {
+                  changeDateF(date);
+                }, currentTime: DateTime.now(), locale: LocaleType.en);
+              },
               title: TextFormField(
                 enabled: false,
                 controller: TextEditingController(text: checkIns),
@@ -180,6 +202,25 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
               ),
             ),
             ListTile(
+              onTap: () {
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(
+                        int.parse(toA), int.parse(toB), int.parse(toC)),
+                    maxTime: DateTime(y, m + 3, d),
+                    theme: DatePickerTheme(
+                        backgroundColor: Colors.white,
+                        itemStyle: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 20,
+                        ),
+                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
+                    onChanged: (date) {
+                  changeDateT(date);
+                }, onConfirm: (date) {
+                  changeDateT(date);
+                }, currentTime: DateTime.now(), locale: LocaleType.en);
+              },
               title: TextFormField(
                 enabled: false,
                 controller: TextEditingController(text: checkOuts),

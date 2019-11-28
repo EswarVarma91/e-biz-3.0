@@ -120,6 +120,9 @@ class _NewLeaveState extends State<NewLeave> {
               child: ListView(
                 children: <Widget>[
                   ListTile(
+                    onTap: (){
+                      selectLeaveType(context);
+                    },
                     title: TextFormField(
                       enabled: false,
                       controller: TextEditingController(text: leaveType),
@@ -142,6 +145,29 @@ class _NewLeaveState extends State<NewLeave> {
                     ),
                   ),
                   ListTile(
+                    onTap: (){
+                      DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: leave_is_Sl
+                                ? DateTime(y, m, d - 6)
+                                : DateTime(y, m, d),
+                            maxTime: leave_is_Sl
+                                ? DateTime(y, m, d - 1)
+                                : DateTime(y, m + 2, d),
+                            theme: DatePickerTheme(
+                                backgroundColor: Colors.white,
+                                itemStyle: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 20,
+                                ),
+                                doneStyle: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 12)), onChanged: (date) {
+                          changeDateF(date);
+                        }, onConfirm: (date) {
+                          changeDateF(date);
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                    },
                     title: TextFormField(
                       enabled: false,
                       controller: TextEditingController(text: fromDateS),
@@ -188,6 +214,32 @@ class _NewLeaveState extends State<NewLeave> {
                   _color1
                       ? Container()
                       : ListTile(
+                        onTap: (){
+                          DatePicker.showDatePicker(context,
+                                  showTitleActions: true,
+                                  //                            minTime: DateTime(2019, 3, 5),
+                                  minTime: DateTime(int.parse(toA),
+                                      int.parse(toB), int.parse(toC)),
+                                  maxTime: leave_is_Sl
+                                      ? DateTime(y, m, d - 1)
+                                      : DateTime(
+                                          y, m, d + int.parse(leaveCount)),
+                                  theme: DatePickerTheme(
+                                      backgroundColor: Colors.white,
+                                      itemStyle: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 20,
+                                      ),
+                                      doneStyle: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 12)), onChanged: (date) {
+                                changeDateT(date);
+                              }, onConfirm: (date) {
+                                changeDateT(date);
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.en);
+                        },
                           title: TextFormField(
                             enabled: false,
                             controller: TextEditingController(text: toDateS),

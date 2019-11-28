@@ -123,6 +123,9 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                 children: <Widget>[
                   SizedBox(height: 15),
                   ListTile(
+                    onTap: () {
+                      _navigatereferMethod(context);
+                    },
                     title: TextFormField(
                       enabled: false,
                       controller: TextEditingController(
@@ -175,6 +178,13 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                     ),
                   ),
                   ListTile(
+                    onTap: () {
+                      if (projectId == null) {
+                        Fluttertoast.showToast(msg: "Choose a 'Project'");
+                      } else {
+                        _navigateresourceMethod(context);
+                      }
+                    },
                     title: TextFormField(
                       enabled: false,
                       controller: TextEditingController(

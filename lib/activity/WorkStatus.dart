@@ -71,7 +71,7 @@ class _WorkStatusState extends State<WorkStatus> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Work Status",
+          "Work Location",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),
@@ -149,7 +149,7 @@ class _WorkStatusState extends State<WorkStatus> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          WorkStatusModel wm = WorkStatusModel(userId, "Working");
+          WorkStatusModel wm = WorkStatusModel(userId, "At-office");
           dbHelper.updateWStatus(wm);
           _callworkStatus("2");
         },
@@ -165,7 +165,7 @@ class _WorkStatusState extends State<WorkStatus> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        "Working".toUpperCase(),
+                        "At-office".toUpperCase(),
                         style: TextStyle(
                           fontSize: 12.0,
                           color: _isSelectedW ? Colors.white : lwtColor,
@@ -203,7 +203,7 @@ class _WorkStatusState extends State<WorkStatus> {
             "parameter1": "UpdateEmpTourinAttendance",
             "parameter2": empCode.toString(),
             "parameter3": currDate.toString(),
-            "parameter4": "Working"
+            "parameter4": "At-office"
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
