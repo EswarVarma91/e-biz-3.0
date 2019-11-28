@@ -27,13 +27,6 @@ class _LeaveTypeState extends State<LeaveType> {
       setState(() {
         lcm = LeavesCountModel.fromJson(json.decode(response.data));
       });
-      if(lcm==null){
-        sl==0;
-        ml==0;
-        co==0;
-        cl==0;
-        cal==0;
-      }
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
@@ -174,7 +167,7 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (lcm.cal != "0" || lcm.cal!=null) {
+          if (lcm.cal != "0") {
             if (int.parse(lcm.cal) >= 6) {
               Navigator.pop(context, "CAL 6");
             } else {
@@ -207,7 +200,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.cal ?? cal,
+                        lcm?.cal ?? "",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -233,7 +226,7 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: Colors.white,
       child: InkWell(
         onTap: () {
-          if (lcm.cl != "0" || lcm.cl!=null) {
+          if (lcm.cl != "0") {
             if (int.parse(lcm.cl) >= 6) {
               Navigator.pop(context, "CL 6");
             } else {
@@ -266,7 +259,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.cl ?? cl,
+                        lcm?.cl ?? "",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -292,7 +285,7 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: Colors.white,
       child: InkWell(
         onTap: () {
-          if (lcm.co != "0" || lcm.co!=null) {
+          if (lcm.co != "0") {
             if (int.parse(lcm.co) >= 6) {
               Navigator.pop(context, "CO 6");
             } else {
@@ -325,7 +318,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.co ?? co,
+                        lcm?.co ?? "",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -351,7 +344,7 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (lcm.ml != "0" || lcm.ml!=null) {
+          if (lcm.ml != "0") {
             if (int.parse(lcm.ml) >= 6) {
               Navigator.pop(context, "ML 6");
             } else {
@@ -384,7 +377,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.ml ?? ml,
+                        lcm?.ml ?? "",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -410,7 +403,7 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (lcm.sl != "0" || lcm.sl != null) {
+          if (lcm.sl != "0") {
             if (int.parse(lcm.sl) >= 6) {
               Navigator.pop(context, "SL 6");
             } else {
@@ -443,7 +436,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.sl ?? sl,
+                        lcm?.sl ?? "",
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
