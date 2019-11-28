@@ -56,6 +56,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
     setState(() {
       profilename = preferences.getString("profileName");
       fullname = preferences.getString("fullname");
+      uidd= preferences.getString("userId");
+      getTaskPlanner(uidd);
     });
   }
 
@@ -71,11 +73,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
     projectTasks = false;
     getProfileName();
     timeCheck = DateFormat("yyyy-MM-dd").format(now);
-    getUserID().then((val) => setState(() {
-          uidd = val;
-          print(uidd);
-          getTaskPlanner(uidd);
-        }));
     connectivity = Connectivity();
     streamSubscription =
         connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
@@ -210,28 +207,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today
       list3 = list22.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dp_given_by == profilename) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck ) {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list22.where((d) {
-        if (d.dp_status.toString() == "1" && d.dp_given_by == profilename) {
+        if (d.dp_status.toString() == "1" ) {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list22.where((d) {
-        if (d.dp_status.toString() == "2" && d.dp_given_by == profilename) {
+        if (d.dp_status.toString() == "2" ) {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list22.where((d) {
-        if (d.dp_status.toString() == "3" && d.dp_given_by == profilename) {
+        if (d.dp_status.toString() == "3" ) {
           return true;
         }
         return false;
@@ -841,7 +838,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
       response = await dio.post(ServicesApi.getData,
           data: {
             "parameter1": "GetAllProjectsTasks",
-            "parameter2": uiddd.toString()
+            "parameter2": uiddd.toString(),
+            "parameter3":profilename
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

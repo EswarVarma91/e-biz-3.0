@@ -34,12 +34,7 @@ dev_dependencies:
 
   flutter_launcher_icons: ^0.7.4
 
-flutter_icons:
-  image_path: "assets/images/ebiz.png"
-  image_path_android : "assets/images/ebiz.png"
-  image_path_ios: "assets/images/ebiz.png"
-  android: "launcher_icon"
-  ios: true
+
 
 flutter:
   uses-material-design: true

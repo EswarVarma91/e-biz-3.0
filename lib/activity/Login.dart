@@ -153,12 +153,13 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 120,
+                        height: 80,
                       ),
                       Container(
                         child: Image.asset(
                           'assets/images/ebiz.png',
                           width: 300,
+                          height: 60,
                         ),
                       ),
                       SizedBox(
