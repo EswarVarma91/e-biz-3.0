@@ -89,26 +89,36 @@ class _NewPermissionState extends State<NewPermissions> {
                   DateFormat("HH:mm:ss").parse(fromTime.toString());
               var totimeCheck = DateFormat("HH:mm:ss").parse(toTime.toString());
 
-              if (selectDate.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose 'Date' for Application.");
-              } else if (fromTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose your 'From Time'.");
-              } else if (toTime.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose your 'To Time'.");
-              } else if (_controller1.text.isEmpty) {
-                Fluttertoast.showToast(
-                    msg: "Enter the purpose for Permission.");
-              } else if (!totimeCheck.isAfter(fromtimeCheck)) {
-                Fluttertoast.showToast(msg: "Invalid Timings Selected.");
-              } else if (personal == true) {
-                // if (totimeCheck.difference(fromtimeCheck).inMinutes <= 120) {
-                //Service Call
-                permissionSerivceCall();
-                // } else {
-                //   Fluttertoast.showToast(msg: "Not More than 2Hours.!");
-                // }
+              if (personal == true) {
+                if (selectDate.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose Date for Application.");
+                } else if (fromTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose your From Time.");
+                } else if (toTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose your To Time.");
+                } else if (_controller1.text.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Enter the purpose for Permission.");
+                } else if (!totimeCheck.isAfter(fromtimeCheck)) {
+                  Fluttertoast.showToast(msg: "Invalid Timings Selected.");
+                } else {
+                  permissionSerivceCall();
+                }
               } else if (official == true) {
+                if (selectDate.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose Date for Application.");
+                } else if (fromTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose your From Time.");
+                } else if (toTime.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose your To Time.");
+                } else if (_controller1.text.isEmpty) {
+                  Fluttertoast.showToast(
+                      msg: "Enter the purpose for Permission.");
+                } else if (!totimeCheck.isAfter(fromtimeCheck)) {
+                  Fluttertoast.showToast(msg: "Invalid Timings Selected.");
+                } else {
                 permissionSerivceCall();
+                }
               }
             },
           )
@@ -146,24 +156,24 @@ class _NewPermissionState extends State<NewPermissions> {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    onTap: (){
+                    onTap: () {
                       DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(y, m, d),
-                            maxTime: DateTime(y, m, d + 1),
-                            theme: DatePickerTheme(
-                                backgroundColor: Colors.white,
-                                itemStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 20,
-                                ),
-                                doneStyle: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12)), onChanged: (date) {
-                          changeDate(date);
-                        }, onConfirm: (date) {
-                          changeDate(date);
-                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                          showTitleActions: true,
+                          minTime: DateTime(y, m, d),
+                          maxTime: DateTime(y, m, d + 1),
+                          theme: DatePickerTheme(
+                              backgroundColor: Colors.white,
+                              itemStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 20,
+                              ),
+                              doneStyle:
+                                  TextStyle(color: Colors.blue, fontSize: 12)),
+                          onChanged: (date) {
+                        changeDate(date);
+                      }, onConfirm: (date) {
+                        changeDate(date);
+                      }, currentTime: DateTime.now(), locale: LocaleType.en);
                     },
                     title: TextFormField(
                       enabled: false,
@@ -171,7 +181,7 @@ class _NewPermissionState extends State<NewPermissions> {
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.event),
-                        labelText: "Select Date".toUpperCase(),
+                        labelText: "Select Date",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -285,7 +295,7 @@ class _NewPermissionState extends State<NewPermissions> {
                       maxLength: 50,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "Purpose".toUpperCase(),
+                        labelText: "Purpose",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),

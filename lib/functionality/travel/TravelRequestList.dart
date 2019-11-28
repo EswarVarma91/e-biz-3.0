@@ -11,6 +11,7 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TravelRequestList extends StatefulWidget {
@@ -23,9 +24,14 @@ class _TravelRequestListState extends State<TravelRequestList> {
   List<TravelRequestListModel> trlm = List();
   List<TravelRequestListModel> trlmList = List();
   bool pending, approved, cancel;
-  String pendingCount = "-", approvedCount = "-", cancelledCount = "-",uidd,profilename;
+  ProgressDialog pr;
+  String pendingCount = "-",
+      approvedCount = "-",
+      cancelledCount = "-",
+      uidd,
+      profilename;
 
-getUserDetails() async {
+  getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       profilename = preferences.getString("profileName");
@@ -37,7 +43,7 @@ getUserDetails() async {
   @override
   void initState() {
     super.initState();
-     getUserDetails();
+    getUserDetails();
     pending = true;
     approved = false;
     cancel = false;
@@ -72,6 +78,8 @@ getUserDetails() async {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -296,7 +304,7 @@ getUserDetails() async {
                                   height: 10,
                                 ),
                                 pending
-                                    ?  SizedBox(
+                                    ? SizedBox(
                                         height: 30,
                                         width: 70,
                                         child: Material(
@@ -329,8 +337,8 @@ getUserDetails() async {
                                             },
                                           ),
                                         ),
-                                      ):Container()
-                                    ,
+                                      )
+                                    : Container(),
                               ],
                             ),
                           ],
@@ -536,8 +544,9 @@ getUserDetails() async {
   }
 
   getTravelData(String uidd) async {
+    pr.show();
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "GetAllTravelRequests","parameter2":uidd},
+        data: {"parameter1": "GetAllTravelRequests", "parameter2": uidd},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
@@ -563,9 +572,12 @@ getUserDetails() async {
             .length
             .toString();
       });
+      pr.hide();
       checkServices();
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw Exception("Incorrect data");
+      
     }
   }
 

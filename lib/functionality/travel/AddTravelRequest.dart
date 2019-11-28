@@ -10,6 +10,7 @@ import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,6 +37,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       TravelNameId,
       TcomaplaintId,
       TcomaplaintRefType;
+  ProgressDialog pr;
   bool _isItflight = false;
   static Dio dio = Dio(Config.options);
   int y, m, d, hh, mm, ss;
@@ -65,6 +67,8 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -405,7 +409,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "From",
+                        labelText: "From (Source)",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -420,7 +424,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "To",
+                        labelText: "To (Destination)",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
@@ -485,10 +489,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
               trailing: IconButton(
                 icon: Icon(Icons.calendar_today),
                 onPressed: () {
-                  DatePicker.showDateTimePicker(context,
+                  DatePicker.showDatePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(y, m, d, hh, mm),
-                      maxTime: DateTime(y + 1, m, d, hh, mm),
+                      minTime: DateTime(y, m, d ),
+                      maxTime: DateTime(y + 1, m, d),
                       onChanged: (date) {
                     changeDateF(date);
                   }, onConfirm: (date) {
@@ -497,10 +501,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 },
               ),
               onTap: () async {
-                DatePicker.showDateTimePicker(context,
+                DatePicker.showDatePicker(context,
                     showTitleActions: true,
-                    minTime: DateTime(y, m, d, hh, mm),
-                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
+                    minTime: DateTime(y, m, d),
+                    maxTime: DateTime(y + 1, m, d), onChanged: (date) {
                   changeDateF(date);
                 }, onConfirm: (date) {
                   changeDateF(date);
@@ -630,7 +634,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       hour = int.parse(cc[0].toString());
       minute = int.parse(cc[1].toString());
 
-      TrarrivalDateTime = d[0].toString();
+      TrarrivalDateTime = aa[0].toString();
     });
   }
 
@@ -656,6 +660,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       String tcomaplaintRefType,
       String trequiredDateTime,
       String purpose) async {
+        pr.show();
     var response = await dio.post(ServicesApi.insert_travel,
         data: {
           "actionMode": "insert",
@@ -680,6 +685,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserRequestNo(travelNameId.toString());
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw Exception("Incorrect data");
     }
   }
@@ -698,6 +704,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         if (token != null || token != "null") {
           pushNotification(req_no.toString(), token);
         } else {
+          pr.hide();
           Fluttertoast.showToast(msg: "Travel Request Generated.");
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
@@ -707,6 +714,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
           );
         }
       } else {
+        pr.hide();
         Fluttertoast.showToast(msg: "Travel Request Generated.");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
@@ -716,6 +724,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         );
       }
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw (Exception);
     }
   }
@@ -748,6 +757,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
+    pr.hide();
     Fluttertoast.showToast(msg: "Travel Request Generated.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(

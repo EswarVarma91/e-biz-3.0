@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -42,6 +43,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
   String toA, toB, toC, profilename, fullname;
   static Dio dio = Dio(Config.options);
   String text = "Nothing to show";
+  ProgressDialog pr;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -60,6 +62,8 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
   }
 
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -430,6 +434,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
   }
 
   insertHotelRequest() async {
+    pr.show();
     var now = DateTime.now();
     var response = await dio.post(ServicesApi.insert_hotel,
         data: {
@@ -453,6 +458,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserRequestNo(TravelNameId.toString());
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw Exception("Incorrect data");
     }
   }
@@ -471,6 +477,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
         if (token != null || token != "null") {
           pushNotification(req_no.toString(), token);
         } else {
+          pr.hide();
           Fluttertoast.showToast(msg: "Hotel Request Generated.");
           SharedPreferences pre = await SharedPreferences.getInstance();
           pre.setString("Users", "");
@@ -482,6 +489,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
           );
         }
       } else {
+        pr.hide();
         Fluttertoast.showToast(msg: "Hotel Request Generated.");
         SharedPreferences pre = await SharedPreferences.getInstance();
         pre.setString("Users", "");
@@ -493,6 +501,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
         );
       }
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw (Exception);
     }
   }
@@ -523,6 +532,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
+    pr.hide();
     Fluttertoast.showToast(msg: "Hotel Request Generated.");
     SharedPreferences pre = await SharedPreferences.getInstance();
     pre.setString("Users", "");

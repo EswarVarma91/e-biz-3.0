@@ -612,7 +612,7 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "From Date         :     ",
+                                "From Time         :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -620,9 +620,7 @@ class _ApprovalsState extends State<Approvals> {
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
-                              Text(
-                                displayDateFormat(
-                                        leaveList[index]?.el_from_date) ??
+                              Text(permissionsList[index]?.per_from_time ??
                                     'NA',
                                 style: TextStyle(
                                     color: lwtColor,
@@ -637,7 +635,7 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "To Date              :     ",
+                                "To Time              :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -645,38 +643,8 @@ class _ApprovalsState extends State<Approvals> {
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
-                              Text(
-                                displayDateFormat(
-                                        leaveList[index]?.el_to_date) ??
+                              Text(permissionsList[index]?.per_to_time??
                                     'NA',
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "No of Days        :     ",
-                                style: TextStyle(
-                                  fontSize: 8,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Text(
-                                leaveList[index]
-                                            ?.el_noofdays
-                                            .toString()
-                                            .split(".")[0] +
-                                        " Days" ??
-                                    '' + "NA.",
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
@@ -700,7 +668,7 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                               Expanded(
                                 child: Text(
-                                  leaveList[index]?.el_reason ?? '',
+                                  permissionsList[index]?.per_purpose ?? '',
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
@@ -1295,6 +1263,7 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   getPendingApprovals() async {
+    pr.show();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -1367,9 +1336,11 @@ class _ApprovalsState extends State<Approvals> {
           print(trlm);
         });
         checkServices();
+        pr.hide();
       }
       //===================================================
     } on DioError catch (exception) {
+      pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         throw Exception("Network Error");
@@ -1679,19 +1650,19 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
-        if(fum.isNotEmpty){
-        var to = fum[0].token.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if (to != "null" || to != null) {
-          pushLeavesNotification(to, el_from_date, el_to_date, status);
+        if (fum.isNotEmpty) {
+          var to = fum[0].token.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (to != "null" || to != null) {
+            pushLeavesNotification(to, el_from_date, el_to_date, status);
+          } else {
+            pr.hide();
+            Navigator.pop(context);
+          }
         } else {
           pr.hide();
           Navigator.pop(context);
         }
-      }else{
-        pr.hide();
-        Navigator.pop(context);
-      }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1748,19 +1719,19 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
-        if(fum.isNotEmpty){
-        var to = fum[0].token.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if (to != null || to != "null") {
-          pushTravelNotification(to, reqno, status);
+        if (fum.isNotEmpty) {
+          var to = fum[0].token.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (to != null || to != "null") {
+            pushTravelNotification(to, reqno, status);
+          } else {
+            pr.hide();
+            Navigator.pop(context);
+          }
         } else {
           pr.hide();
           Navigator.pop(context);
         }
-      }else{
-        pr.hide();
-        Navigator.pop(context);
-      }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1809,19 +1780,19 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
-        if(fum.isNotEmpty){
-        var to = fum[0].token.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if (to != null || to != "null") {
-          pushHotelNotification(to, reqno, status);
+        if (fum.isNotEmpty) {
+          var to = fum[0].token.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (to != null || to != "null") {
+            pushHotelNotification(to, reqno, status);
+          } else {
+            pr.hide();
+            Navigator.pop(context);
+          }
         } else {
           pr.hide();
           Navigator.pop(context);
         }
-      }else{
-        pr.hide();
-        Navigator.pop(context);
-      }
       } else {
         pr.hide();
         Navigator.pop(context);

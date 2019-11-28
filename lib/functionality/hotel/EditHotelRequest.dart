@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EditHotelRequest extends StatefulWidget {
@@ -43,6 +44,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
   int y, m, d;
   String toA, toB, toC, profilename, fullname;
   static Dio dio = Dio(Config.options);
+  ProgressDialog pr;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -68,6 +70,8 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
   }
 
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -327,6 +331,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
   }
 
   void edithoteRequestService(String checkIn, String checkOut) async {
+    pr.show();
     var response = await dio.post(ServicesApi.updateData,
         data: {
           "parameter1": "updateHotelRequest",
@@ -339,6 +344,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridByhotelId(hotel_id.toString());
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw Exception("Incorrect data");
     }
   }
@@ -354,6 +360,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
         if (token != null || token != "null") {
           pushNotification(req_no, token);
         } else {
+          pr.hide();
           Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
@@ -363,6 +370,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
           );
         }
       } else {
+        pr.hide();
         Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
@@ -372,6 +380,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
         );
       }
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw (Exception);
     }
   }
@@ -401,6 +410,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
+    pr.hide();
     Fluttertoast.showToast(msg: "Hotel Update Request Generated.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(

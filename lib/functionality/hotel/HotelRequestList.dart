@@ -11,6 +11,7 @@ import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HotelRequestList extends StatefulWidget {
@@ -25,6 +26,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
   String pendingCount = "-", approvedCount = "-", cancelledCount = "-";
   List<HotelRequestModel> trlm = List();
   List<HotelRequestModel> trlmList = List();
+  ProgressDialog pr;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -39,8 +41,6 @@ class _HotelRequestListState extends State<HotelRequestList> {
   void initState() {
     super.initState();
     getUserDetails();
-    
-    
     pending = true;
     approved = false;
     cancel = false;
@@ -74,6 +74,8 @@ class _HotelRequestListState extends State<HotelRequestList> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -566,6 +568,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
   }
 
   getHotelData(String uidd) async {
+    pr.show();
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getHotelRequests", "parameter2": uidd},
         options: Options(
@@ -593,8 +596,10 @@ class _HotelRequestListState extends State<HotelRequestList> {
             .length
             .toString();
       });
+      pr.hide();
       checkServices();
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw Exception("Incorrect data");
     }
   }
