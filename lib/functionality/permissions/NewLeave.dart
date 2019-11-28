@@ -120,7 +120,7 @@ class _NewLeaveState extends State<NewLeave> {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    onTap: (){
+                    onTap: () {
                       selectLeaveType(context);
                     },
                     title: TextFormField(
@@ -145,28 +145,28 @@ class _NewLeaveState extends State<NewLeave> {
                     ),
                   ),
                   ListTile(
-                    onTap: (){
+                    onTap: () {
                       DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: leave_is_Sl
-                                ? DateTime(y, m, d - 6)
-                                : DateTime(y, m, d),
-                            maxTime: leave_is_Sl
-                                ? DateTime(y, m, d - 1)
-                                : DateTime(y, m + 2, d),
-                            theme: DatePickerTheme(
-                                backgroundColor: Colors.white,
-                                itemStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 20,
-                                ),
-                                doneStyle: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12)), onChanged: (date) {
-                          changeDateF(date);
-                        }, onConfirm: (date) {
-                          changeDateF(date);
-                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                          showTitleActions: true,
+                          minTime: leave_is_Sl
+                              ? DateTime(y, m, d - 6)
+                              : DateTime(y, m, d),
+                          maxTime: leave_is_Sl
+                              ? DateTime(y, m, d - 1)
+                              : DateTime(y, m + 2, d),
+                          theme: DatePickerTheme(
+                              backgroundColor: Colors.white,
+                              itemStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 20,
+                              ),
+                              doneStyle:
+                                  TextStyle(color: Colors.blue, fontSize: 12)),
+                          onChanged: (date) {
+                        changeDateF(date);
+                      }, onConfirm: (date) {
+                        changeDateF(date);
+                      }, currentTime: DateTime.now(), locale: LocaleType.en);
                     },
                     title: TextFormField(
                       enabled: false,
@@ -214,32 +214,31 @@ class _NewLeaveState extends State<NewLeave> {
                   _color1
                       ? Container()
                       : ListTile(
-                        onTap: (){
-                          DatePicker.showDatePicker(context,
-                                  showTitleActions: true,
-                                  //                            minTime: DateTime(2019, 3, 5),
-                                  minTime: DateTime(int.parse(toA),
-                                      int.parse(toB), int.parse(toC)),
-                                  maxTime: leave_is_Sl
-                                      ? DateTime(y, m, d - 1)
-                                      : DateTime(
-                                          y, m, d + int.parse(leaveCount)),
-                                  theme: DatePickerTheme(
-                                      backgroundColor: Colors.white,
-                                      itemStyle: TextStyle(
+                          onTap: () {
+                            DatePicker.showDatePicker(context,
+                                showTitleActions: true,
+                                //                            minTime: DateTime(2019, 3, 5),
+                                minTime: DateTime(int.parse(toA),
+                                    int.parse(toB), int.parse(toC)),
+                                maxTime: leave_is_Sl
+                                    ? DateTime(y, m, d - 1)
+                                    : DateTime(y, m, d + int.parse(leaveCount)),
+                                theme: DatePickerTheme(
+                                    backgroundColor: Colors.white,
+                                    itemStyle: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 20,
+                                    ),
+                                    doneStyle: TextStyle(
                                         color: Colors.blue,
-                                        fontSize: 20,
-                                      ),
-                                      doneStyle: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 12)), onChanged: (date) {
-                                changeDateT(date);
-                              }, onConfirm: (date) {
-                                changeDateT(date);
-                              },
-                                  currentTime: DateTime.now(),
-                                  locale: LocaleType.en);
-                        },
+                                        fontSize: 12)), onChanged: (date) {
+                              changeDateT(date);
+                            }, onConfirm: (date) {
+                              changeDateT(date);
+                            },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en);
+                          },
                           title: TextFormField(
                             enabled: false,
                             controller: TextEditingController(text: toDateS),
@@ -387,53 +386,53 @@ class _NewLeaveState extends State<NewLeave> {
     });
   }
 
-  void callServiceInsert() async {
-    var response;
-    if (_color1 == true) {
-      response = await dio.post(ServicesApi.insertLeave,
-          data: {
-            "vactionmode": "insert",
-            "vel_created_by": fullname,
-            "vel_from_date": fromDate,
-            "vel_noofdays": 1,
-            "vel_reason": _controller1.text,
-            "vel_to_date": fromDate,
-            "vleave_type": leaveType,
-            "vu_id": uuid
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-    } else {
-      response = await dio.post(ServicesApi.insertLeave,
-          data: {
-            "vactionmode": "insert",
-            "vel_created_by": fullname,
-            "vel_from_date": fromDate,
-            "vel_noofdays": 0,
-            "vel_reason": _controller1.text,
-            "vel_to_date": toDate,
-            "vleave_type": leaveType,
-            "vu_id": uuid
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-    }
-    // print("Response :-"+response.toString());
+  // void callServiceInsert() async {
+  //   var response;
+  //   if (_color1 == true) {
+  //     response = await dio.post(ServicesApi.insertLeave,
+  //         data: {
+  //           "vactionmode": "insert",
+  //           "vel_created_by": fullname,
+  //           "vel_from_date": fromDate,
+  //           "vel_noofdays": 1,
+  //           "vel_reason": _controller1.text,
+  //           "vel_to_date": fromDate,
+  //           "vleave_type": leaveType,
+  //           "vu_id": uuid
+  //         },
+  //         options: Options(
+  //           contentType: ContentType.parse('application/json'),
+  //         ));
+  //   } else {
+  //     response = await dio.post(ServicesApi.insertLeave,
+  //         data: {
+  //           "vactionmode": "insert",
+  //           "vel_created_by": fullname,
+  //           "vel_from_date": fromDate,
+  //           "vel_noofdays": 0,
+  //           "vel_reason": _controller1.text,
+  //           "vel_to_date": toDate,
+  //           "vleave_type": leaveType,
+  //           "vu_id": uuid
+  //         },
+  //         options: Options(
+  //           contentType: ContentType.parse('application/json'),
+  //         ));
+  //   }
+  //   // print("Response :-"+response.toString());
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      pr.hide();
-      //      var responseJson = json.decode(response.data);
-      Fluttertoast.showToast(msg: response.data.toString());
-      // Fluttertoast.showToast(msg: "Leave Created");
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-    } else {
-      pr.hide();
-      Fluttertoast.showToast(msg: "Please try after some time.");
-    }
-  }
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     pr.hide();
+  //     //      var responseJson = json.decode(response.data);
+  //     Fluttertoast.showToast(msg: response.data.toString());
+  //     // Fluttertoast.showToast(msg: "Leave Created");
+  //     // Navigator.push(context,
+  //     //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+  //   } else {
+  //     pr.hide();
+  //     Fluttertoast.showToast(msg: "Please try after some time.");
+  //   }
+  // }
 
   void selectLeaveType(BuildContext context) async {
     fromDate = "";
@@ -468,8 +467,7 @@ class _NewLeaveState extends State<NewLeave> {
       Fluttertoast.showToast(msg: "Enter the Purpose for Leave.");
     } else {
       //Service Call
-
-      checkleaveStatus(fromDate, toDate, uuid);
+      checkLeavePolicy(branchId, fromDate, toDate, leaveType, uuid);
     }
   }
 
@@ -482,130 +480,25 @@ class _NewLeaveState extends State<NewLeave> {
       Fluttertoast.showToast(msg: "Enter the Purpose for Leave.");
     } else {
       //Service Call
-      checkleaveStatus(fromDate, fromDate, uuid);
+      checkLeavePolicy(branchId, fromDate, toDate, leaveType, uuid);
     }
   }
 
-  checkleaveStatus(String fromDate, String toDate, String uuidd) async {
-    pr.show();
-    print(branchId);
-    List list = [];
-    var response = await dio.post(ServicesApi.checkLeaveStatus,
+  void checkLeavePolicy(String branchId, String fromDate, String toDate,
+      String leaveType, String uuid) async{
+        var response=await dio.post(ServicesApi.leavePolicy,
         data: {
-          "actionmode": "GetAppliedLeaveDaysStatus",
-          "refid": branchId,
-          "refstart": fromDate,
-          "refend": toDate,
+          "branchId":branchId,
+          "fromDate":fromDate,
+          "toDate":toDate,
+          "leaveType":leaveType,
+          "userId":uuid
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      lcm = (json.decode(response.data) as List)
-          .map((data) => new LeavesCheckingModel.fromJson(data))
-          .toList();
-      for (int i = 0; i < lcm.length; i++) {
-        if (lcm[i].workingStatus == 0) {
-          print(lcm[i].date.toString());
-          list.add(lcm[i].date.toString());
+        options: Options(contentType: ContentType.parse("application/json")));
+        if(response.statusCode==200||response.statusCode==201){
+            
+        }else if(response.statusCode==401){
+          throw(Exception);
         }
       }
-      if (list.length > 0) {
-        pr.hide();
-        roundedAlertDialog(list, toDate);
-      } else {
-        getUserLeaves(fromDate, toDate, uuidd);
-      }
-    } else if (response.statusCode == 401) {
-      throw Exception("Incorrect data,!");
-    }
-  }
-
-  roundedAlertDialog(List list, String toDate) {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: Text(
-              "Leave Alert",
-              style: TextStyle(color: lwtColor),
-            ),
-            content: Container(
-              padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Container(
-                padding: EdgeInsets.only(left: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(child: Text("Check this dates")),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: Text(
-                          list.toString().replaceAll("[", "").replaceAll("}", "").toString(),
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.bold),
-                        )),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              CupertinoButton(
-                child: Text("Yes"),
-                onPressed: () {
-                  getUserLeaves(fromDate, toDate, uuid);
-                },
-              ),
-              CupertinoButton(
-                child: Text("No"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          );
-        });
-  }
-
-  getUserLeaves(String fromDate, String toDate, String uuid) async {
-    List dlist = [];
-    var response = await dio.post(ServicesApi.getData,
-        data: {
-          "parameter1": "getUserLeaveDates",
-          "parameter2": uuid,
-          "parameter3": fromDate,
-        },
-        options: Options(contentType: ContentType.parse('application/json')));
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      lcdm = (json.decode(response.data) as List)
-          .map((data) => new LeavesCheckingDatesModel.fromJson(data))
-          .toList();
-      for (int i = 0; i < lcdm.length; i++) {
-        if (lcdm[i].elc_date == fromDate || lcdm[i].elc_date == toDate) {
-          dlist.add(lcdm[i].elc_date);
-        }
-      }
-      if (dlist.length <= 0) {
-        // callServiceInsert();
-      } else {
-        pr.hide();
-        Fluttertoast.showToast(
-            msg: "Sorry..! You have already requested a leave for this date.");
-      }
-    } else if (response.statusCode == 401) {
-      throw Exception("Something went wrong.!");
-    }
-  }
 }
