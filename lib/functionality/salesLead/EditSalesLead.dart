@@ -231,7 +231,7 @@ class _EditSalesLeadState extends State<EditSalesLead> {
     try {
       var response = await dio.post(ServicesApi.Sales_Insert_Url,
           data: {
-            "actionMode": "update",
+            "actionMode": "updateNoRefer",
             "createdBy": profileName,
             "modifiedBy": profileName,
             "srContactEmail": contactEmail.text,
