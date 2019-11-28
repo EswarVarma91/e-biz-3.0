@@ -489,10 +489,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
               trailing: IconButton(
                 icon: Icon(Icons.calendar_today),
                 onPressed: () {
-                  DatePicker.showDatePicker(context,
+                  DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(y, m, d ),
-                      maxTime: DateTime(y + 1, m, d),
+                      minTime: DateTime(y, m, d, hh, mm ),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
                       onChanged: (date) {
                     changeDateF(date);
                   }, onConfirm: (date) {
@@ -501,10 +501,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 },
               ),
               onTap: () async {
-                DatePicker.showDatePicker(context,
+                DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
-                    minTime: DateTime(y, m, d),
-                    maxTime: DateTime(y + 1, m, d), onChanged: (date) {
+                    minTime: DateTime(y, m, d, hh, mm),
+                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
                   changeDateF(date);
                 }, onConfirm: (date) {
                   changeDateF(date);
@@ -634,7 +634,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       hour = int.parse(cc[0].toString());
       minute = int.parse(cc[1].toString());
 
-      TrarrivalDateTime = aa[0].toString();
+      TrarrivalDateTime = d[0].toString();
     });
   }
 
