@@ -22,11 +22,18 @@ class _LeaveTypeState extends State<LeaveType> {
   bool lop, sl, ml, co, cl, cal;
 
   getLeavesCount(String uidd) async {
-    var response = await dio.post(ServicesApi.getLeaves + "34");
+    var response = await dio.post(ServicesApi.getLeaves + uidd);
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         lcm = LeavesCountModel.fromJson(json.decode(response.data));
       });
+      if(lcm==null){
+        sl==0;
+        ml==0;
+        co==0;
+        cl==0;
+        cal==0;
+      }
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
     }
@@ -167,14 +174,14 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (lcm.cal != "0") {
+          if (lcm.cal != "0" || lcm.cal!=null) {
             if (int.parse(lcm.cal) >= 6) {
               Navigator.pop(context, "CAL 6");
             } else {
               Navigator.pop(context, "CAL " + lcm.cal);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'CAL' Leaves to proceed with the Request.");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient CAL Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -200,7 +207,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.cal ?? "",
+                        lcm?.cal ?? cal,
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -226,14 +233,14 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: Colors.white,
       child: InkWell(
         onTap: () {
-          if (lcm.cl != "0") {
+          if (lcm.cl != "0" || lcm.cl!=null) {
             if (int.parse(lcm.cl) >= 6) {
               Navigator.pop(context, "CL 6");
             } else {
               Navigator.pop(context, "CL " + lcm.cl);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'CL' Leaves to proceed with the Request.");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient CL Leaves to proceed with the request.");
           }
         },
         child: Center(
@@ -259,7 +266,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.cl ?? "",
+                        lcm?.cl ?? cl,
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -285,14 +292,14 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: Colors.white,
       child: InkWell(
         onTap: () {
-          if (lcm.co != "0") {
+          if (lcm.co != "0" || lcm.co!=null) {
             if (int.parse(lcm.co) >= 6) {
               Navigator.pop(context, "CO 6");
             } else {
               Navigator.pop(context, "CO " + lcm.co);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'CO' Leaves to proceed with the Request.");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient CO Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -318,7 +325,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.co ?? "",
+                        lcm?.co ?? co,
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -344,14 +351,14 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (lcm.ml != "0") {
+          if (lcm.ml != "0" || lcm.ml!=null) {
             if (int.parse(lcm.ml) >= 6) {
               Navigator.pop(context, "ML 6");
             } else {
               Navigator.pop(context, "CL " + lcm.ml);
             }
           } else {
-            Fluttertoast.showToast(msg: "Sorry..! Insufficient 'ML' Leaves to proceed with the Request.");
+            Fluttertoast.showToast(msg: "Sorry..! Insufficient ML Leaves to proceed with the Request.");
           }
         },
         child: Center(
@@ -377,7 +384,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.ml ?? "",
+                        lcm?.ml ?? ml,
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",
@@ -403,7 +410,7 @@ class _LeaveTypeState extends State<LeaveType> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (lcm.sl != "0") {
+          if (lcm.sl != "0" || lcm.sl != null) {
             if (int.parse(lcm.sl) >= 6) {
               Navigator.pop(context, "SL 6");
             } else {
@@ -436,7 +443,7 @@ class _LeaveTypeState extends State<LeaveType> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        lcm?.sl ?? "",
+                        lcm?.sl ?? sl,
                         style: TextStyle(
                           fontSize: 16.0,
                           fontFamily: "Roboto",

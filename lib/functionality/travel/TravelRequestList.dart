@@ -205,7 +205,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index].journeyDate,
+                                      displayDateFormat(trlmList[index].journeyDate),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -230,7 +230,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index].tra_from,
+                                      trlmList[index].tra_from[0].toUpperCase()+trlmList[index].tra_from.substring(1),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -247,7 +247,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index].tra_to,
+                                      trlmList[index].tra_to[0].toUpperCase()+trlmList[index].tra_to.substring(1),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -275,7 +275,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                     Container(
                                         width: 180,
                                         child: Text(
-                                          trlmList[index].tra_purpose,
+                                          trlmList[index].tra_purpose[0].toUpperCase()+trlmList[index].tra_purpose.substring(1),
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontWeight: FontWeight.bold,
@@ -541,6 +541,12 @@ class _TravelRequestListState extends State<TravelRequestList> {
         ),
       ),
     );
+  }
+
+
+  displayDateFormat(String elFromDate) {
+    List<String> a = elFromDate.split("-");
+    return a[2] + "-" + a[1] + "-" + a[0];
   }
 
   getTravelData(String uidd) async {

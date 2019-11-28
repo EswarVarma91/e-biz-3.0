@@ -232,7 +232,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_check_in ?? "",
+                                      displayDateFormat(trlmList[index]?.hotel_check_in) ?? "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -249,7 +249,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_check_out ?? "",
+                                      displayDateFormat(trlmList[index]?.hotel_check_out) ?? "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -274,7 +274,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_purpose ?? "",
+                                      trlmList[index]?.hotel_purpose[0].toUpperCase()+trlmList[index].hotel_purpose.substring(1) ?? "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -291,7 +291,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_location ?? "",
+                                      trlmList[index]?.hotel_location[0].toUpperCase()+trlmList[index].hotel_location.substring(1) ?? "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -565,6 +565,11 @@ class _HotelRequestListState extends State<HotelRequestList> {
         ),
       ),
     );
+  }
+
+  displayDateFormat(String elFromDate) {
+    List<String> a = elFromDate.split("-");
+    return a[2] + "-" + a[1] + "-" + a[0];
   }
 
   getHotelData(String uidd) async {

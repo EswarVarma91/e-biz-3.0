@@ -102,7 +102,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 } else if (TcomaplaintId.isEmpty) {
                   Fluttertoast.showToast(msg: "Select 'Complaint No'.");
                 } else if (_controllerPurpose1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Purpose'.");
+                  Fluttertoast.showToast(msg: "Enter 'Purpose'.");
                 } else if (TrequiredDateTime.isEmpty) {
                   Fluttertoast.showToast(
                       msg: "Select 'Required date and time'.");
@@ -139,7 +139,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 } else if (TcomaplaintId.isEmpty) {
                   Fluttertoast.showToast(msg: "Select 'Complaint No'.");
                 } else if (_controllerPurpose1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Purpose'.");
+                  Fluttertoast.showToast(msg: "Enter 'Purpose'.");
                 } else if (TrequiredDateTime.isEmpty) {
                   Fluttertoast.showToast(
                       msg: "Select 'Required Date and Time'.");
