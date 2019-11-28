@@ -554,10 +554,20 @@ class _NewPermissionState extends State<NewPermissions> {
               .map((data) => new FirebaseReportingLevelModel.fromJson(data))
               .toList();
         });
-        var data = fm[0].reporting.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if (data != null || data != "null") {
-          pushNotification(data, date, fromTime, toTime, purpose, uidd);
+        if (fm.isNotEmpty) {
+          var data = fm[0].reporting.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (data != null || data != "null") {
+            pushNotification(data, date, fromTime, toTime, purpose, uidd);
+          } else {
+            pr.hide();
+            Fluttertoast.showToast(msg: "Permission Applied");
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Permissions()),
+              ModalRoute.withName('/'),
+            );
+          }
         } else {
           pr.hide();
           Fluttertoast.showToast(msg: "Permission Applied");

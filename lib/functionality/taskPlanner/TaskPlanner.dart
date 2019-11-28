@@ -210,28 +210,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today
       list3 = list22.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dp_given_by == profilename) {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list22.where((d) {
-        if (d.dp_status.toString() == "1" && d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "1" && d.dp_given_by == profilename) {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list22.where((d) {
-        if (d.dp_status.toString() == "2" && d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "2" && d.dp_given_by == profilename) {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list22.where((d) {
-        if (d.dp_status.toString() == "3" && d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "3" && d.dp_given_by == profilename) {
           return true;
         }
         return false;

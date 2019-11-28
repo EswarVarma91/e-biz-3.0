@@ -53,7 +53,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   @override
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context);
-    pr.style(message: 'wait...');
+    pr.style(message: 'Please wait...');
     return WillPopScope(
       // ignore: missing_return
       onWillPop: () {
@@ -195,8 +195,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                       ),
                       onPressed: () {
                         if (projectId == null) {
-                          Fluttertoast.showToast(
-                              msg: "Choose a 'Project'");
+                          Fluttertoast.showToast(msg: "Choose a 'Project'");
                         } else {
                           _navigateresourceMethod(context);
                         }
@@ -305,17 +304,27 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
               .map((data) => new FirebaseUserModel.fromJson(data))
               .toList();
         });
-        var data = fum[0].token.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if(data!=null||data!="null"){
-          pushNotification(data, fullName, taskName, taskDescription);
-        }else{
+        if (fum.isNotEmpty) {
+          var data = fum[0].token.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (data != null || data != "null") {
+            pushNotification(data, fullName, taskName, taskDescription);
+          } else {
+            pr.hide();
+            Fluttertoast.showToast(msg: "Task Allocated");
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => TaskPlanner()),
+              ModalRoute.withName('/'),
+            );
+          }
+        } else {
           pr.hide();
-        Fluttertoast.showToast(msg: "Task Allocated");
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-          ModalRoute.withName('/'),
-        );
+          Fluttertoast.showToast(msg: "Task Allocated");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+            ModalRoute.withName('/'),
+          );
         }
       } else {
         pr.hide();
@@ -333,7 +342,8 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   void pushNotification(String to, String fullName, String taskName,
       String taskDescription) async {
     Map<String, dynamic> notification = {
-      'body': fullName +" has assigned a task for you"+" '"+"$taskName"+"'",
+      'body':
+          fullName + " has assigned a task for you" + " '" + "$taskName" + "'",
       'title': 'PMC Task Allocation',
     };
     Map<String, dynamic> data = {

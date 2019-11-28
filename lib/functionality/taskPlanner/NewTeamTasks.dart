@@ -228,10 +228,20 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               .map((data) => new FirebaseUserModel.fromJson(data))
               .toList();
         });
-        var data = fum[0].token.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if (data != null || data != "null") {
-          pushNotification(data, profileName, taskName, taskDescription);
+        if (fum.isNotEmpty) {
+          var data = fum[0].token.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (data != null || data != "null") {
+            pushNotification(data, profileName, taskName, taskDescription);
+          } else {
+            pr.hide();
+            Fluttertoast.showToast(msg: "Task Allocated");
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => TaskPlanner()),
+              ModalRoute.withName('/'),
+            );
+          }
         } else {
           pr.hide();
           Fluttertoast.showToast(msg: "Task Allocated");

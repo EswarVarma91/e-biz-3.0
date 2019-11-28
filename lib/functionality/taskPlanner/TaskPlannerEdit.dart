@@ -207,7 +207,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       var dp_task = json.decode(response.data)[0]['dp_task'];
       var token = json.decode(response.data)[0]['token'];
-      if (token == null || token == "null") {
+      if (token != null || token != "null") {
         pushNotification(dp_task.toString(), token, mainStatus);
       } else {
         pr.hide();

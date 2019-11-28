@@ -1611,10 +1611,15 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
-        var to = fum[0].token.toString();
-        // Fluttertoast.showToast(msg: "Stopped");
-        if (to != null || to != "null") {
-          pushPermissionsNotification(to, date, status);
+        if (fum.isNotEmpty) {
+          var to = fum[0].token.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (to != null || to != "null") {
+            pushPermissionsNotification(to, date, status);
+          } else {
+            pr.hide();
+            Navigator.pop(context);
+          }
         } else {
           pr.hide();
           Navigator.pop(context);
@@ -1674,6 +1679,7 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
+        if(fum.isNotEmpty){
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
         if (to != "null" || to != null) {
@@ -1682,6 +1688,10 @@ class _ApprovalsState extends State<Approvals> {
           pr.hide();
           Navigator.pop(context);
         }
+      }else{
+        pr.hide();
+        Navigator.pop(context);
+      }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1738,6 +1748,7 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
+        if(fum.isNotEmpty){
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
         if (to != null || to != "null") {
@@ -1746,6 +1757,10 @@ class _ApprovalsState extends State<Approvals> {
           pr.hide();
           Navigator.pop(context);
         }
+      }else{
+        pr.hide();
+        Navigator.pop(context);
+      }
       } else {
         pr.hide();
         Navigator.pop(context);
@@ -1794,14 +1809,19 @@ class _ApprovalsState extends State<Approvals> {
               .map((data) => FirebaseUserModel.fromJson(data))
               .toList();
         });
+        if(fum.isNotEmpty){
         var to = fum[0].token.toString();
         // Fluttertoast.showToast(msg: "Stopped");
-        if(to!=null||to!="null"){
+        if (to != null || to != "null") {
           pushHotelNotification(to, reqno, status);
-        }else{
+        } else {
           pr.hide();
           Navigator.pop(context);
         }
+      }else{
+        pr.hide();
+        Navigator.pop(context);
+      }
       } else {
         pr.hide();
         Navigator.pop(context);
