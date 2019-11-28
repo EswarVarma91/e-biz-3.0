@@ -472,7 +472,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
-        var req_no = json.decode(response.data)[0]['hotel_req_no'];
+        var req_no = json.decode(response.data)[0]['hotel_ref_no'];
         var token = json.decode(response.data)[0]['token'];
         if (token != null || token != "null") {
           pushNotification(req_no.toString(), token);

@@ -11,6 +11,7 @@ import 'package:eaglebiz/myConfig/Config.dart';
 import 'package:eaglebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewTravelRequest extends StatefulWidget {
@@ -31,6 +32,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
   Dio dio = Dio(Config.options);
   List<TravelRequestByTId> trbtid = List();
   List<TravelHistoryModel> trh = List();
+  ProgressDialog pr;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -48,6 +50,8 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context);
+    pr.style(message: 'Please wait...');
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -1155,6 +1159,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
   }
 
   void cancelRequest(int tra_id) async {
+    pr.show();
     var response = await dio.post(ServicesApi.updateData,
         data: {
           "parameter1": "cancelTravelRequestStatus",
@@ -1167,6 +1172,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridBytraId(tra_id);
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw Exception("Incorrect data");
     }
   }
@@ -1182,6 +1188,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
         if (token != null || token != "null") {
           pushNotification(req_no, token);
         } else {
+          pr.hide();
           Fluttertoast.showToast(msg: "Travel Request Cancelled.");
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
@@ -1191,6 +1198,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
           );
         }
       } else {
+        pr.hide();
         Fluttertoast.showToast(msg: "Travel Request Cancelled.");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
@@ -1200,6 +1208,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
         );
       }
     } else if (response.statusCode == 401) {
+      pr.hide();
       throw (Exception);
     }
   }
@@ -1229,6 +1238,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
     http.Response r = await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
+    pr.hide();
     Fluttertoast.showToast(msg: "Travel Request Cancelled.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(

@@ -311,7 +311,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Complaint No.",
+                                      "OA/Complaint Ticket No.",
                                       style: TextStyle(
                                           fontSize: 7, color: Colors.black),
                                     ),
