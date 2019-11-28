@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/activity/HomePage.dart';
-import 'package:eaglebiz/myConfig/Config.dart';
-import 'package:eaglebiz/myConfig/ServicesApi.dart';
-import 'package:eaglebiz/model/LoginModel.dart';
+import 'package:Ebiz/activity/HomePage.dart';
+import 'package:Ebiz/myConfig/Config.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:Ebiz/model/LoginModel.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';

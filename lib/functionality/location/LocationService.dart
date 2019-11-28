@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:eaglebiz/model/UserLocationModel.dart';
+import 'package:Ebiz/model/UserLocationModel.dart';
 import 'package:location/location.dart';
 
 class LocationService {

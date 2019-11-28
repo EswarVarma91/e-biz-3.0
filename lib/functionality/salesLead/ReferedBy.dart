@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/myConfig/Config.dart';
-import 'package:eaglebiz/myConfig/ServicesApi.dart';
-import 'package:eaglebiz/model/ReferedbyModel.dart';
+import 'package:Ebiz/myConfig/Config.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:Ebiz/model/ReferedbyModel.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

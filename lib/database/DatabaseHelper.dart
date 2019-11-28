@@ -1,10 +1,10 @@
 import 'dart:core';
 import 'dart:io' as io;
-import 'package:eaglebiz/model/AttendanceGettingModel.dart';
-import 'package:eaglebiz/model/AttendanceModel.dart';
-import 'package:eaglebiz/model/EndAttendanceModel.dart';
-import 'package:eaglebiz/model/StartAttendanceModel.dart';
-import 'package:eaglebiz/model/WorkStatusModel.dart';
+import 'package:Ebiz/model/AttendanceGettingModel.dart';
+import 'package:Ebiz/model/AttendanceModel.dart';
+import 'package:Ebiz/model/EndAttendanceModel.dart';
+import 'package:Ebiz/model/StartAttendanceModel.dart';
+import 'package:Ebiz/model/WorkStatusModel.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

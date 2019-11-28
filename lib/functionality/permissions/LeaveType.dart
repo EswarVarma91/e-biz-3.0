@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/functionality/approvals/Approvals.dart';
-import 'package:eaglebiz/main.dart';
-import 'package:eaglebiz/model/LeavesCountModel.dart';
-import 'package:eaglebiz/myConfig/Config.dart';
-import 'package:eaglebiz/myConfig/ServicesApi.dart';
+import 'package:Ebiz/functionality/approvals/Approvals.dart';
+import 'package:Ebiz/main.dart';
+import 'package:Ebiz/model/LeavesCountModel.dart';
+import 'package:Ebiz/myConfig/Config.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 
 class LeaveType extends StatefulWidget {

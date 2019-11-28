@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:eaglebiz/activity/HomePage.dart';
-import 'package:eaglebiz/activity/Login.dart';
+import 'package:Ebiz/activity/HomePage.dart';
+import 'package:Ebiz/activity/Login.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

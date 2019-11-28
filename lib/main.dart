@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:eaglebiz/activity/SplashScreen.dart';
+import 'package:Ebiz/activity/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

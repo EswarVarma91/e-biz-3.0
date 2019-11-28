@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
-import 'package:eaglebiz/model/ProjectListModel.dart';
-import 'package:eaglebiz/myConfig/Config.dart';
-import 'package:eaglebiz/myConfig/ServicesApi.dart';
+import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
+import 'package:Ebiz/model/ProjectListModel.dart';
+import 'package:Ebiz/myConfig/Config.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 
 class ProjectSelection extends StatefulWidget {

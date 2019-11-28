@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/myConfig/ServicesApi.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
 
 class Config {
   ServicesApi con = new ServicesApi();

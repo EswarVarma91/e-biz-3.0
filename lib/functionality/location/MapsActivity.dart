@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/commonDrawer/CollapsingNavigationDrawer.dart';
-import 'package:eaglebiz/functionality/location/LocationService.dart';
-import 'package:eaglebiz/model/LocationModel.dart';
-import 'package:eaglebiz/model/UserLocationModel.dart';
-import 'package:eaglebiz/myConfig/Config.dart';
+import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
+import 'package:Ebiz/functionality/location/LocationService.dart';
+import 'package:Ebiz/model/LocationModel.dart';
+import 'package:Ebiz/model/UserLocationModel.dart';
+import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';

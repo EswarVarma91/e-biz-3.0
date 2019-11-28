@@ -2,11 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:eaglebiz/myConfig/Config.dart';
-import 'package:eaglebiz/myConfig/ServicesApi.dart';
-import 'package:eaglebiz/functionality/salesLead/ReferedBy.dart';
-import 'package:eaglebiz/functionality/salesLead/SalesLead.dart';
-import 'package:eaglebiz/model/SalesPendingModel.dart';
+import 'package:Ebiz/myConfig/Config.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
+import 'package:Ebiz/functionality/salesLead/SalesLead.dart';
+import 'package:Ebiz/model/SalesPendingModel.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
