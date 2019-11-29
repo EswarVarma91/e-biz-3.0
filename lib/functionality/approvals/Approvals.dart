@@ -646,7 +646,7 @@ class _ApprovalsState extends State<Approvals> {
                                 padding: EdgeInsets.only(top: 4),
                               ),
                               Text(
-                                permissionsList[index]?.per_type ?? 'NA',
+                                permissionsList[index]?.per_type[0].toUpperCase()+permissionsList[index].per_type.substring(1)?? 'NA',
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
@@ -716,7 +716,7 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                               Expanded(
                                 child: Text(
-                                  permissionsList[index]?.per_purpose ?? '',
+                                  permissionsList[index]?.per_purpose[0].toUpperCase()+permissionsList[index].per_purpose.substring(1) ?? '',
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
@@ -886,7 +886,7 @@ class _ApprovalsState extends State<Approvals> {
                           Container(
                               width: 180,
                               child: Text(
-                                trlm[index].tra_purpose,
+                                trlm[index].tra_purpose[0].toUpperCase()+trlm[index].tra_purpose.substring(1),
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold,
