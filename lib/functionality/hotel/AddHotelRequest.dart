@@ -35,10 +35,12 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       TcomplaintRefType,
       _packages;
   double ratingBar;
-  List<HotelUserDetailsModel> multiUser;
+  List<HotelUserDetailsModel> multiUser = [];
   TextEditingController _controllerLocation = new TextEditingController();
   TextEditingController _controllerPurpose = new TextEditingController();
   TextEditingController _controllerRating = new TextEditingController();
+  TextEditingController _controllerRemarks = new TextEditingController();
+
   int y, m, d;
   String toA, toB, toC, profilename, fullname;
   static Dio dio = Dio(Config.options);
@@ -90,6 +92,8 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                 Fluttertoast.showToast(msg: "Choose Check-Out Time.");
               } else if (_controllerPurpose.text.isEmpty) {
                 Fluttertoast.showToast(msg: "Enter Purpose.");
+              } else if (_controllerRemarks.text.isEmpty) {
+                Fluttertoast.showToast(msg: "Enter Remarks.");
               } else if (TcomplaintTicketNo.isEmpty) {
                 Fluttertoast.showToast(msg: "Choose Complaint Ticket No.");
               } else {
@@ -116,19 +120,22 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   ),
                 ),
               ),
-              trailing: IconButton(icon:Icon(Icons.add),onPressed: ()async{
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            DownTeamMembers("Traveller Name")));
-                if (data != null) {
-                  setState(() {
-                    TtravelName = data.split(" USR_")[0].toString();
-                    TravelNameId = data.split(" USR_")[1].toString();
-                  });
-                }
-              },),
+              trailing: IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              DownTeamMembers("Traveller Name")));
+                  if (data != null) {
+                    setState(() {
+                      TtravelName = data.split(" USR_")[0].toString();
+                      TravelNameId = data.split(" USR_")[1].toString();
+                    });
+                  }
+                },
+              ),
               onTap: () async {
                 var data = await Navigator.push(
                     context,
@@ -349,6 +356,19 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
             ),
             ListTile(
               title: TextFormField(
+                controller: _controllerRemarks,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.chrome_reader_mode),
+                  labelText: "Remarks",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              title: TextFormField(
                 enabled: false,
                 controller: TextEditingController(text: _packages),
                 keyboardType: TextInputType.text,
@@ -445,6 +465,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
           "hotelPurpose": _controllerPurpose.text,
           "hotelCreatedBy": profilename,
           "hotelModifiedBy": profilename,
+          "hotelRemarks": _controllerRemarks.text,
           "list": multiUser,
           "refId": TcomplaintId,
           "refType": TcomplaintRefType,
@@ -460,10 +481,9 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       pr.hide();
       pr.dismiss();
       throw Exception("Incorrect data");
-    } else if(response.statusCode==500){
+    } else if (response.statusCode == 500) {
       pr.hide();
     }
-    
   }
 
   void getUserRequestNo(String travelNameId) async {
@@ -506,7 +526,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     } else if (response.statusCode == 401) {
       pr.hide();
       throw (Exception);
-    }else if(response.statusCode==500){
+    } else if (response.statusCode == 500) {
       pr.hide();
     }
   }
