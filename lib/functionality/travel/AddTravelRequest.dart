@@ -480,7 +480,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Journey Date",
+                  labelText: "Journey Date & Time",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),

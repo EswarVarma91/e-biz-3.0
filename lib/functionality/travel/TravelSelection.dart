@@ -125,14 +125,14 @@ class _TravelSelectionState extends State<TravelSelection> {
       } else {
         dynamicData = false;
       }
-      return "From";
+      return "From (Source)";
     } else if (mode == "6") {
       if (res == "Flight") {
         dynamicData = true;
       } else {
         dynamicData = false;
       }
-      return "To";
+      return "To (Destination)";
     }
   }
 

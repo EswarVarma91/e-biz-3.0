@@ -103,6 +103,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       dbHelper.save(attendanceModel);
       _firebaseMessaging.getToken().then((String token) {
         assert(token != null);
+        print(token);
         insertToken(userId, token);
       });
     });

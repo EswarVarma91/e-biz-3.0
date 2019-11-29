@@ -43,8 +43,8 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    getUserDetails();
     getDataTravelrequestbytId(tra_id);
     getDataTravelrequestHistorybytId(tra_id);
   }

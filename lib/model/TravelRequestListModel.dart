@@ -14,6 +14,7 @@ class TravelRequestListModel {
   String tra_required_datetime;
   int tra_is_cancelled;
   int approved_status;
+  int tra_is_cancel_req;
   int u_id;
 
   TravelRequestListModel(
@@ -24,7 +25,7 @@ class TravelRequestListModel {
       this.tra_to,
       this.journeyDate,
       this.tra_purpose,
-      this.tra_status,this.approved_status,this.tra_id,this.tra_is_cancelled,this.tra_class,this.tra_mode_type,this.tra_mode,this.tra_required_datetime,this.u_id);
+      this.tra_status,this.approved_status,this.tra_id,this.tra_is_cancelled,this.tra_class,this.tra_mode_type,this.tra_mode,this.tra_required_datetime,this.u_id,this.tra_is_cancel_req);
 
   TravelRequestListModel.fromJson(Map<String, dynamic> json)
       : tra_id = json['tra_id'],
@@ -42,5 +43,6 @@ class TravelRequestListModel {
         tra_required_datetime = json['tra_required_datetime'],
         tra_is_cancelled= json['tra_is_cancelled'],
         approved_status=json['approved_status'],
+        tra_is_cancel_req=json['tra_is_cancel_req'],
         u_id=json['u_id'];
 }

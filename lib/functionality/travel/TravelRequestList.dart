@@ -56,21 +56,21 @@ class _TravelRequestListState extends State<TravelRequestList> {
       setState(() {
         trlmList = trlm
             .where((item) =>
-                item.approved_status != 1 && item.tra_is_cancelled != 1)
+                item.approved_status != 1 && item.tra_is_cancel_req != 1)
             .toList();
       });
     } else if (approved == true) {
       setState(() {
         trlmList = trlm
             .where((item) =>
-                item.approved_status == 1 && item.tra_is_cancelled == 0)
+                item.approved_status == 1 && item.tra_is_cancel_req == 0)
             .toList();
       });
     } else if (cancel == true) {
       setState(() {
         trlmList = trlm
             .where((item) =>
-                item.tra_is_cancelled == 1 && item.approved_status == 0)
+                item.tra_is_cancel_req == 1 && item.approved_status == 0)
             .toList();
       });
     }
@@ -572,17 +572,17 @@ class _TravelRequestListState extends State<TravelRequestList> {
             .toList();
         pendingCount = trlm
             .where((item) =>
-                item.approved_status != 1 && item.tra_is_cancelled != 1)
+                item.approved_status != 1 && item.tra_is_cancel_req != 1)
             .length
             .toString();
         approvedCount = trlm
             .where((item) =>
-                item.approved_status == 1 && item.tra_is_cancelled == 0)
+                item.approved_status == 1 && item.tra_is_cancel_req == 0)
             .length
             .toString();
         cancelledCount = trlm
             .where((item) =>
-                item.tra_is_cancelled == 1 && item.approved_status == 0)
+                item.tra_is_cancel_req == 1 && item.approved_status == 0)
             .length
             .toString();
       });

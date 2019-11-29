@@ -52,21 +52,21 @@ class _HotelRequestListState extends State<HotelRequestList> {
       setState(() {
         trlmList = trlm
             .where((item) =>
-                item.approved_status != 1 && item.hotel_is_cancelled != 1)
+                item.approved_status != 1 && item.hotel_is_cancel_req != 1)
             .toList();
       });
     } else if (approved == true) {
       setState(() {
         trlmList = trlm
             .where((item) =>
-                item.approved_status == 1 && item.hotel_is_cancelled == 0)
+                item.approved_status == 1 && item.hotel_is_cancel_req == 0)
             .toList();
       });
     } else if (cancel == true) {
       setState(() {
         trlmList = trlm
             .where((item) =>
-                item.hotel_is_cancelled == 1 && item.approved_status == 0)
+                item.hotel_is_cancel_req == 1 && item.approved_status == 0)
             .toList();
       });
     }
@@ -232,7 +232,9 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      displayDateFormat(trlmList[index]?.hotel_check_in) ?? "",
+                                      displayDateFormat(trlmList[index]
+                                              ?.hotel_check_in) ??
+                                          "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -249,7 +251,9 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      displayDateFormat(trlmList[index]?.hotel_check_out) ?? "",
+                                      displayDateFormat(trlmList[index]
+                                              ?.hotel_check_out) ??
+                                          "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -274,7 +278,13 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_purpose[0].toUpperCase()+trlmList[index].hotel_purpose.substring(1) ?? "",
+                                      trlmList[index]
+                                                  ?.hotel_purpose[0]
+                                                  .toUpperCase() +
+                                              trlmList[index]
+                                                  .hotel_purpose
+                                                  .substring(1) ??
+                                          "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -291,7 +301,13 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index]?.hotel_location[0].toUpperCase()+trlmList[index].hotel_location.substring(1) ?? "",
+                                      trlmList[index]
+                                                  ?.hotel_location[0]
+                                                  .toUpperCase() +
+                                              trlmList[index]
+                                                  .hotel_location
+                                                  .substring(1) ??
+                                          "",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -573,7 +589,6 @@ class _HotelRequestListState extends State<HotelRequestList> {
   }
 
   getHotelData(String uidd) async {
-   
     var response = await dio.post(ServicesApi.getData,
         data: {"parameter1": "getHotelRequests", "parameter2": uidd},
         options: Options(
@@ -587,24 +602,23 @@ class _HotelRequestListState extends State<HotelRequestList> {
             .toList();
         pendingCount = trlm
             .where((item) =>
-                item.approved_status != 1 && item.hotel_is_cancelled != 1)
+                item.approved_status != 1 && item.hotel_is_cancel_req != 1)
             .length
             .toString();
         approvedCount = trlm
             .where((item) =>
-                item.approved_status == 1 && item.hotel_is_cancelled == 0)
+                item.approved_status == 1 && item.hotel_is_cancel_req == 0)
             .length
             .toString();
         cancelledCount = trlm
             .where((item) =>
-                item.hotel_is_cancelled == 1 && item.approved_status == 0)
+                item.hotel_is_cancel_req == 1 && item.approved_status == 0)
             .length
             .toString();
       });
-  
+
       checkServices();
     } else if (response.statusCode == 401) {
-    
       throw Exception("Incorrect data");
     }
   }

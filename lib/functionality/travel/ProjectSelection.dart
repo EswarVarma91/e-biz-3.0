@@ -59,7 +59,7 @@ class _ProjectSelectionState extends State<ProjectSelection> {
                     fliterReferals = listReferals
                         .where((u) => (u.proj_name
                             .toLowerCase()
-                            .contains(string.toLowerCase())))
+                            .contains(string.toLowerCase())) || u.proj_oano.contains(string))
                         .toList();
                   });
                 });
