@@ -1241,7 +1241,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 
   void pushNotification(String reqNo, String to) async {
     Map<String, dynamic> notification = {
-      'body': "Travel request " + reqNo + " has been cancelled by " + fullname,
+      'body': "This Request No: " + reqNo + " has been cancelled by " + fullname,
       'title': 'Travel Request',
       //
     };

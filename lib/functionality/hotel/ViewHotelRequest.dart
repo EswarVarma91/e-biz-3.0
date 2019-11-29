@@ -1030,7 +1030,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
 
   void pushNotification(String reqNo, String to) async {
     Map<String, dynamic> notification = {
-      'body': "Hotel request " + reqNo + " has been cancelled by " + fullname,
+      'body': "This Request No: " + reqNo + " has been cancelled by " + fullname,
       'title': 'Hotel Request',
       //
     };

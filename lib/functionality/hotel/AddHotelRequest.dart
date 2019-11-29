@@ -349,6 +349,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
             ),
             ListTile(
               title: TextFormField(
+                enabled: false,
                 controller: TextEditingController(text: _packages),
                 keyboardType: TextInputType.text,
                 maxLines: 3,
