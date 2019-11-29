@@ -637,7 +637,30 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "From Time         :     ",
+                                "Permission Type     :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                permissionsList[index]?.per_type ?? 'NA',
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "From Time               :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -660,7 +683,7 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "To Time              :     ",
+                                "To Time                    :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -683,7 +706,7 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
-                                "Reason              :     ",
+                                "Reason                     :     ",
                                 style: TextStyle(
                                   fontSize: 8,
                                 ),
@@ -1288,7 +1311,6 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   getPendingApprovals() async {
-    pr.show();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -1361,11 +1383,9 @@ class _ApprovalsState extends State<Approvals> {
           print(trlm);
         });
         checkServices();
-        pr.hide();
       }
       //===================================================
     } on DioError catch (exception) {
-      pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         throw Exception("Network Error");
@@ -1728,8 +1748,9 @@ class _ApprovalsState extends State<Approvals> {
     // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
-    getPendingApprovals();
     pr.hide();
+    getPendingApprovals();
+
     Navigator.pop(context);
   }
 
@@ -1850,8 +1871,9 @@ class _ApprovalsState extends State<Approvals> {
     // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
+          pr.hide();
     getPendingApprovals();
-    pr.hide();
+  
     Navigator.pop(context);
   }
 }
