@@ -1200,6 +1200,8 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
     } else if (response.statusCode == 401) {
       pr.hide();
       throw Exception("Incorrect data");
+    }else if(response.statusCode==500){
+      pr.hide();
     }
   }
 
@@ -1236,6 +1238,8 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
     } else if (response.statusCode == 401) {
       pr.hide();
       throw (Exception);
+    }else if(response.statusCode==500){
+      pr.hide();
     }
   }
 

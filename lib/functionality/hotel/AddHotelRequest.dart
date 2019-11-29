@@ -458,8 +458,12 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       getUserRequestNo(TravelNameId.toString());
     } else if (response.statusCode == 401) {
       pr.hide();
+      pr.dismiss();
       throw Exception("Incorrect data");
+    } else if(response.statusCode==500){
+      pr.hide();
     }
+    
   }
 
   void getUserRequestNo(String travelNameId) async {
@@ -502,6 +506,8 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     } else if (response.statusCode == 401) {
       pr.hide();
       throw (Exception);
+    }else if(response.statusCode==500){
+      pr.hide();
     }
   }
 
