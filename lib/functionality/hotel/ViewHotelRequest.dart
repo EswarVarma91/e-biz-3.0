@@ -539,8 +539,8 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              hrbtidh[index]
-                                                      ?.hotel_his_check_in ??
+                                              displayDateFormat(hrbtidh[index]
+                                                      ?.hotel_his_check_in) ??
                                                   "",
                                               style: TextStyle(
                                                   color: Colors.grey,
@@ -560,8 +560,8 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                                   color: Colors.black),
                                             ),
                                             Text(
-                                              hrbtidh[index]
-                                                      ?.hotel_his_check_out ??
+                                              displayDateFormat(hrbtidh[index]
+                                                      ?.hotel_his_check_out) ??
                                                   "",
                                               style: TextStyle(
                                                   color: Colors.grey,
@@ -983,6 +983,12 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
       pr.hide();
       throw Exception("Incorrect data");
     }
+  }
+
+
+  displayDateFormat(String elFromDate) {
+    List<String> a = elFromDate.split("-");
+    return a[2] + "-" + a[1] + "-" + a[0];
   }
 
   void getUseridByhotelId(int hotel_id) async {

@@ -113,8 +113,7 @@ class _PackageSelectionState extends State<PackageSelection> {
   getDownTeamMembers(String uidds) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
-          "parameter1": "getDownTeamRequest",
-          "parameter2": uidd.toString(),
+          "parameter1": "GetAllEmps"
         },
         options: Options(
           contentType: ContentType.parse('application/json'),

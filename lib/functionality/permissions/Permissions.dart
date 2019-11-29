@@ -1467,7 +1467,6 @@ class _PermissionsState extends State<Permissions> {
 //   }
 
   getDataLeaves_Permissions() async {
-    pr.show();
     try {
       var leavesEmp = await dio.post(ServicesApi.getData,
 //          queryParameters: {"id": uuid},
@@ -1540,20 +1539,15 @@ class _PermissionsState extends State<Permissions> {
         });
       }
       checkServices();
-      pr.hide();
     } on DioError catch (exception) {
-      pr.hide();
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-        pr.hide();
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        pr.hide();
         throw Exception(
             "Could'nt connect, please ensure you have a stable network.");
       } else {
-        pr.hide();
         return null;
       }
     }

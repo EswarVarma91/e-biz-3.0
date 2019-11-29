@@ -164,7 +164,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.star),
                 border: OutlineInputBorder(),
-                labelText: "Enter Rating",
+                labelText: "Request Hotel Rating",
               ),
             )),
             ListTile(
