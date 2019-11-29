@@ -437,7 +437,7 @@ class _NewPermissionState extends State<NewPermissions> {
     try {
       var response;
       if (official == true) {
-        typeP = "official";
+        typeP = "Official";
         response = await dio.post(ServicesApi.insertPermission,
             data: {
               "vactionmode": "insert",
@@ -453,7 +453,7 @@ class _NewPermissionState extends State<NewPermissions> {
               contentType: ContentType.parse('application/json'),
             ));
       } else if (personal == true) {
-        typeP = "personal";
+        typeP = "Personal";
         var data =
             await getUserByPermissionDate(selectDate, uidd, fromTime, toTime);
         // ignore: unrelated_type_equality_checks
