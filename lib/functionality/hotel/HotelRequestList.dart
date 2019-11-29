@@ -189,7 +189,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                     Text(
                                       trlmList[index]?.travellerName ?? "",
                                       style: TextStyle(
-                                          color: Colors.grey,
+                                          color: lwtColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10),
                                     ),

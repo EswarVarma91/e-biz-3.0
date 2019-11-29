@@ -612,6 +612,31 @@ class _ApprovalsState extends State<Approvals> {
                           Row(
                             children: <Widget>[
                               Text(
+                                "Permission Date     :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Text(
+                                displayDateFormat(
+                                        permissionsList[index]?.per_date) ??
+                                    'NA',
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
                                 "From Time         :     ",
                                 style: TextStyle(
                                   fontSize: 8,
@@ -620,8 +645,8 @@ class _ApprovalsState extends State<Approvals> {
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
-                              Text(permissionsList[index]?.per_from_time ??
-                                    'NA',
+                              Text(
+                                permissionsList[index]?.per_from_time ?? 'NA',
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
@@ -643,8 +668,8 @@ class _ApprovalsState extends State<Approvals> {
                               Padding(
                                 padding: EdgeInsets.only(top: 4),
                               ),
-                              Text(permissionsList[index]?.per_to_time??
-                                    'NA',
+                              Text(
+                                permissionsList[index]?.per_to_time ?? 'NA',
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,

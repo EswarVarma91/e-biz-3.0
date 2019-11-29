@@ -116,7 +116,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
                                       Text(
                                         trbtid[index]?.fullName ?? "",
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: lwtColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 10),
                                       ),
@@ -224,7 +224,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
                                       Text(
                                         trbtid[index]?.tra_mode ?? "",
                                         style: TextStyle(
-                                            color: lwtColor,
+                                            color: Colors.grey,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 10),
                                       ),

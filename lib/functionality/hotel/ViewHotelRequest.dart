@@ -115,7 +115,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                       Text(
                                         hrbtid[index]?.travellerName ?? "-",
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: lwtColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 10),
                                       ),
@@ -230,7 +230,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
                                                 .toString() ??
                                             "-",
                                         style: TextStyle(
-                                            color: lwtColor,
+                                            color: Colors.grey,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 10),
                                       ),

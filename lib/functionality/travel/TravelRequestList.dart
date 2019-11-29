@@ -190,7 +190,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                     Text(
                                       trlmList[index].fullName,
                                       style: TextStyle(
-                                          color: Colors.grey,
+                                          color: lwtColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10),
                                     ),
