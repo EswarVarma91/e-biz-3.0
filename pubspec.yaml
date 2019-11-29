@@ -50,3 +50,16 @@ flutter:
         - asset: assets/fonts/Roboto-Bold.ttf
         - asset: assets/fonts/Roboto-Light.ttf
         - asset: assets/fonts/Roboto-Medium.ttf
+    - family: Dancing Script
+      fonts:
+        - asset: assets/fonts/DancingScript.ttf
+    - family: Cormorant
+      fonts:
+        - asset: assets/fonts/Cormorant-Regular.ttf
+    - family: PermanentMarker
+      fonts:
+        - asset: assets/fonts/PermanentMarker-Regular.ttf
+    - family: Tangerine
+      fonts:
+        - asset: assets/fonts/Tangerine-Regular.ttf
+    

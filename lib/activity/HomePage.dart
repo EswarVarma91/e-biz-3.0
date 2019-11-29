@@ -41,8 +41,8 @@ class HomePageState extends State<HomePage> {
 
   _MyHomePageState() {
     methodChannel.setMethodCallHandler((call) {
-      Fluttertoast.showToast(msg: "Hello Eagle Biz");
-      print("test " + call.method);
+      Fluttertoast.showToast(msg: " ");
+      print(" " + call.method);
     });
   }
 
@@ -76,9 +76,13 @@ class _HomePageLocationState extends State<HomePageLocation> {
       userId = "-",
       timeStart = "-",
       timeEnd = "-",
-      workStatus = "-";
+      workStatus = "-",
+      monthA = "           ",
+      yearA = "         ",
+      yearB = "         ";
   var dbHelper = DatabaseHelper();
   var now = DateTime.now();
+
   List<AttendanceModel> atteModel = [];
   Future<List<AttendanceModel>> attList;
   Connectivity connectivity;
@@ -98,6 +102,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       userId = preferences.getString("userId");
       getPaidCount(empCode);
       getPendingCount(userId);
+      // getCurrentDate();
       AttendanceModel attendanceModel =
           AttendanceModel(userId, "-", "-", "-", "-", "-", "-");
       dbHelper.save(attendanceModel);
@@ -135,6 +140,12 @@ class _HomePageLocationState extends State<HomePageLocation> {
   @override
   void initState() {
     super.initState();
+    var now = DateTime.now();
+    var checkDate = DateFormat("yyyy-MMMM-dd").format(now).toString();
+    print(checkDate);
+    monthA = checkDate.split("-")[1].toString().substring(0, 3);
+    yearA = checkDate.split("-")[0].toString().substring(0, 2);
+    yearB = checkDate.split("-")[0].toString().substring(2, 4);
 
     getEmpCode();
     _localGet();
@@ -210,8 +221,19 @@ class _HomePageLocationState extends State<HomePageLocation> {
               crossAxisSpacing: 12.0,
               mainAxisSpacing: 12.0,
               children: <Widget>[
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 5, top: 10),
+                //   child: dashboard(),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.only(right: 5, top: 10),
+                //   child: dashboardold(),
+                // ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 5, top: 10),
+                  padding: const EdgeInsets.only(
+                    right: 5,
+                    top: 10,
+                  ),
                   child: dashboard1(),
                 ),
                 Padding(
@@ -232,6 +254,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 ),
               ],
               staggeredTiles: [
+                // StaggeredTile.extent(1, 120.0),
+                // StaggeredTile.extent(1, 120.0),
+                // StaggeredTile.extent(3, 120.0),
                 StaggeredTile.extent(4, 120.0),
                 StaggeredTile.extent(2, 100.0),
                 StaggeredTile.extent(2, 100.0),
@@ -254,10 +279,46 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: Center(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(2.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(
+                width: 5,
+              ),
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text(
+                          yearA,
+                          style: TextStyle(
+                              fontSize: 34.0,
+                              color: Color(0xFF272D34),
+                              fontFamily: "Cormorant"),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Text(
+                          yearB,
+                          style: TextStyle(
+                              fontSize: 65.0,
+                              color: Color(0xFF272D34),
+                              fontFamily: "Cormorant",
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  )
+                  //
+                ],
+              ),
+              SizedBox(
+                width: 5,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -275,16 +336,39 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     padding: EdgeInsets.all(2.0),
                     child: Text(
                       paidCount != null ? paidCount : "".toString(),
-                      style: TextStyle(fontSize: 25.0, color: lwtColor),
+                      style: TextStyle(fontSize: 35.0, color: lwtColor),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(0.0),
-                    child: Text("Days",
+                    child: Text(
+                      "Days",
                       style: TextStyle(fontSize: 12.0, color: lwtColor),
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(0.0),
+                    child: Text(
+                      monthA,
+                      style: TextStyle(
+                          fontSize: 40.0,
+                          color: Color(0xFF272D34),
+                          fontFamily: "Cormorant",
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 5,
               ),
             ],
           ),
@@ -292,6 +376,101 @@ class _HomePageLocationState extends State<HomePageLocation> {
       ),
     );
   }
+
+  // Material dashboard() {
+  //   return Material(
+  //     color: Colors.white,
+  //     elevation: 14.0,
+  //     borderRadius: BorderRadius.circular(24.0),
+  //     shadowColor: lwtColor,
+  //     child: Center(
+  //       child: Padding(
+  //         padding: EdgeInsets.all(8.0),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: <Widget>[
+  //             Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: <Widget>[
+  //                 Padding(
+  //                   padding: EdgeInsets.all(2.0),
+  //                   child: Text(
+  //                     dateA?.toString()??0,
+  //                     style: TextStyle(
+  //                       fontSize: 22.0,
+  //                       color: Color(0xFF272D34),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: EdgeInsets.all(2.0),
+  //                   child: Text(monthA?.substring(0,3)??"",
+  //                     style: TextStyle(fontSize: 10.0, color: lwtColor),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: EdgeInsets.all(0.0),
+  //                   child: Text(
+  //                     yearA?.toString()??0,
+  //                     style: TextStyle(fontSize: 12.0, color: lwtColor),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Material dashboardold() {
+  //   return Material(
+  //     color: Colors.white,
+  //     elevation: 14.0,
+  //     borderRadius: BorderRadius.circular(24.0),
+  //     shadowColor: lwtColor,
+  //     child: Center(
+  //       child: Padding(
+  //         padding: EdgeInsets.all(8.0),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: <Widget>[
+  //             Column(
+  //               mainAxisAlignment: MainAxisAlignment.center,
+  //               children: <Widget>[
+  //                 Padding(
+  //                   padding: EdgeInsets.all(2.0),
+  //                   child: Text(
+  //                     "Attendance".toUpperCase(),
+  //                     style: TextStyle(
+  //                       fontSize: 12.0,
+  //                       color: Color(0xFF272D34),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: EdgeInsets.all(2.0),
+  //                   child: Text(
+  //                     paidCount != null ? paidCount : "".toString(),
+  //                     style: TextStyle(fontSize: 25.0, color: lwtColor),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: EdgeInsets.all(0.0),
+  //                   child: Text(
+  //                     "Days",
+  //                     style: TextStyle(fontSize: 12.0, color: lwtColor),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Material dashboard2() {
     return Material(
@@ -323,7 +502,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
               });
             }
           } else {
-            Fluttertoast.showToast(msg: "Work status once confirmed, cannot be changed.");
+            Fluttertoast.showToast(
+                msg: "Work status once confirmed, cannot be changed.");
           }
         },
         child: Center(
@@ -411,38 +591,43 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if(workStatus != "At-Office"){
-          if (workStatus == "Tour") {
-            if (timeStart == "-") {
-              var now1 = DateTime.now();
-              setState(() {
-                if (userlocation != null) {
-                  timeStart = DateFormat("HH:mm:ss").format(now1).toString();
-                  StartAttendanceModel am = StartAttendanceModel(
-                      userId,
-                      timeStart,
-                      userlocation.latitude.toString(),
-                      userlocation.longitude.toString());
-                  dbHelper.updateStart(am);
+          if (workStatus != "At-Office") {
+            if (workStatus == "Tour") {
+              if (timeStart == "-") {
+                var now1 = DateTime.now();
+                setState(() {
+                  if (userlocation != null) {
+                    timeStart = DateFormat("HH:mm:ss").format(now1).toString();
+                    StartAttendanceModel am = StartAttendanceModel(
+                        userId,
+                        timeStart,
+                        userlocation.latitude.toString(),
+                        userlocation.longitude.toString());
+                    dbHelper.updateStart(am);
 
-                  _insertStartTimeService(
-                      timeStart,
-                      userlocation.latitude.toString(),
-                      userlocation.longitude.toString(),
-                      DateFormat("yyyy-MM-dd").format(now1).toString());
-                } else {
-                  Fluttertoast.showToast(msg: "Please Turn on GPS, to mark attendance., to mark attendance.");
-                }
-              });
+                    _insertStartTimeService(
+                        timeStart,
+                        userlocation.latitude.toString(),
+                        userlocation.longitude.toString(),
+                        DateFormat("yyyy-MM-dd").format(now1).toString());
+                  } else {
+                    Fluttertoast.showToast(
+                        msg:
+                            "Please Turn on GPS, to mark attendance., to mark attendance.");
+                  }
+                });
+              } else {
+                Fluttertoast.showToast(
+                    msg: 'Day Start has already been marked');
+              }
             } else {
-              Fluttertoast.showToast(msg: 'Day Start has already been marked');
+              Fluttertoast.showToast(
+                  msg: "Choose your work status, to mark attendance.");
             }
           } else {
-            Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
+            Fluttertoast.showToast(
+                msg: "Attendace accept through Bio-Metric only.");
           }
-        }else{
-          Fluttertoast.showToast(msg: "Attendace accept through Bio-Metric only.");
-        }
         },
         child: Center(
           child: Padding(
@@ -488,30 +673,35 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if(workStatus!="At-Office"){
-          if(workStatus=="Tour"){
-          if (timeStart == "-") {
-            Fluttertoast.showToast(msg: "Day Start need to be marked before marking day end.");
-          } else if (workStatus == "-" ||
-              workStatus == " " ||
-              workStatus == "") {
-            Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
-          } else if (timeEnd == "-") {
-            setState(() {
-              if (userlocation != null) {
-                roundedAlertDialog(userlocation);
+          if (workStatus != "At-Office") {
+            if (workStatus == "Tour") {
+              if (timeStart == "-") {
+                Fluttertoast.showToast(
+                    msg: "Day Start need to be marked before marking day end.");
+              } else if (workStatus == "-" ||
+                  workStatus == " " ||
+                  workStatus == "") {
+                Fluttertoast.showToast(
+                    msg: "Choose your work status, to mark attendance.");
+              } else if (timeEnd == "-") {
+                setState(() {
+                  if (userlocation != null) {
+                    roundedAlertDialog(userlocation);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Please Turn on GPS, to mark attendance.");
+                  }
+                });
               } else {
-                Fluttertoast.showToast(msg: "Please Turn on GPS, to mark attendance.");
+                Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
               }
-            });
+            } else {
+              Fluttertoast.showToast(
+                  msg: "Choose your work status, to mark attendance.");
+            }
           } else {
-            Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
-          }
-          }else{
-            Fluttertoast.showToast(msg: "Choose your work status, to mark attendance.");
-          }
-          }else{
-            Fluttertoast.showToast(msg:"Attendace accept through Bio-Metric only.");
+            Fluttertoast.showToast(
+                msg: "Attendace accept through Bio-Metric only.");
           }
         },
         child: Center(
@@ -576,8 +766,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -618,8 +807,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -683,7 +871,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         print(res.toString());
-        Fluttertoast.showToast(msg:"Day Start marked sucessfully.");
+        Fluttertoast.showToast(msg: "Day Start marked sucessfully.");
       } else {
         Fluttertoast.showToast(msg: "Check your internet connection.");
       }
@@ -693,8 +881,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -728,8 +915,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -763,8 +949,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -839,8 +1024,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -861,4 +1045,17 @@ class _HomePageLocationState extends State<HomePageLocation> {
       throw (Exception);
     }
   }
+
+  // void getCurrentDate() async {
+  //   var response = await dio.post(ServicesApi.getData,
+  //       data: {"parameter1": "getCurrentDate"},
+  //       options: Options(contentType: ContentType.parse("application/json")));
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     dateA = json.decode(response.data)[0]['dateC'];
+  //     monthA = json.decode(response.data)[0]['monthC'];
+  //     yearA = json.decode(response.data)[0]['yearC'];
+  //   } else if (response.statusCode == 401) {
+  //     throw (Exception);
+  //   } else if (response.statusCode == 500) {}
+  // }
 }

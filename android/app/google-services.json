@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "838954984893",
-    "firebase_url": "https://ebiz3-78dd4.firebaseio.com",
-    "project_id": "ebiz3-78dd4",
-    "storage_bucket": "ebiz3-78dd4.appspot.com"
+    "project_number": "323705608437",
+    "firebase_url": "https://ebiz-84614.firebaseio.com",
+    "project_id": "ebiz-84614",
+    "storage_bucket": "ebiz-84614.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:838954984893:android:ab43139c8af6647a409ed4",
+        "mobilesdk_app_id": "1:323705608437:android:d435f6a5c7c290cc204dbc",
         "android_client_info": {
           "package_name": "com.example.eaglebiz"
         }
       },
       "oauth_client": [
         {
-          "client_id": "838954984893-r79vo5avjb0u0v8nfvifsq6teo1vp864.apps.googleusercontent.com",
+          "client_id": "323705608437-j9petmgsoj0g23abcvj8lf18psgitoai.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.eaglebiz",
@@ -23,28 +23,21 @@
           }
         },
         {
-          "client_id": "838954984893-gkj61r75q6qtssni270hf59mjrc266b5.apps.googleusercontent.com",
+          "client_id": "323705608437-ivnjvtsi0afn9ko53f8uc6vsi8roel9u.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyArH93uMgJDZZE6UhJ2cZCnskLCqIT9gqc"
+          "current_key": "AIzaSyB2yWNohblJcR5iwZQnSM4xTv3FyQndosE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "838954984893-gkj61r75q6qtssni270hf59mjrc266b5.apps.googleusercontent.com",
+              "client_id": "323705608437-ivnjvtsi0afn9ko53f8uc6vsi8roel9u.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "838954984893-dp2g1garteevdmp5q7j6dfritbgies73.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.eaglebiz"
-              }
             }
           ]
         }
