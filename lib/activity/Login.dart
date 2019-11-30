@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
-        print('on message ${message}');
+        print('on message $message');
         // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
         displayNotification(message);
         // _showItemDialog(message);
