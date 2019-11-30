@@ -148,12 +148,8 @@ class _NewLeaveState extends State<NewLeave> {
                     onTap: () {
                       DatePicker.showDatePicker(context,
                           showTitleActions: true,
-                          minTime: leave_is_Sl
-                              ? DateTime(y, m, d - 6)
-                              : DateTime(y, m, d),
-                          maxTime: leave_is_Sl
-                              ? DateTime(y, m, d - 1)
-                              : DateTime(y, m + 2, d),
+                          minTime: DateTime(y, m - 1, d),
+                          maxTime: DateTime(y, m + 2, d),
                           theme: DatePickerTheme(
                               backgroundColor: Colors.white,
                               itemStyle: TextStyle(
@@ -189,12 +185,8 @@ class _NewLeaveState extends State<NewLeave> {
                       onPressed: () {
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: leave_is_Sl
-                                ? DateTime(y, m, d - 6)
-                                : DateTime(y, m, d),
-                            maxTime: leave_is_Sl
-                                ? DateTime(y, m, d - 1)
-                                : DateTime(y, m + 2, d),
+                            minTime: DateTime(y, m - 2, d),
+                            maxTime: DateTime(y, m + 2, d),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
@@ -218,11 +210,8 @@ class _NewLeaveState extends State<NewLeave> {
                             DatePicker.showDatePicker(context,
                                 showTitleActions: true,
                                 //                            minTime: DateTime(2019, 3, 5),
-                                minTime: DateTime(int.parse(toA),
-                                    int.parse(toB), int.parse(toC)),
-                                maxTime: leave_is_Sl
-                                    ? DateTime(y, m-1, d )
-                                    : DateTime(y, m+2, d ),
+                                minTime: DateTime(y, m - 2, d),
+                                maxTime: DateTime(y, m + 2, d),
                                 theme: DatePickerTheme(
                                     backgroundColor: Colors.white,
                                     itemStyle: TextStyle(
@@ -261,12 +250,8 @@ class _NewLeaveState extends State<NewLeave> {
                               DatePicker.showDatePicker(context,
                                   showTitleActions: true,
                                   //                            minTime: DateTime(2019, 3, 5),
-                                  minTime: DateTime(int.parse(toA),
-                                      int.parse(toB), int.parse(toC)),
-                                  maxTime: leave_is_Sl
-                                      ? DateTime(y, m-1, d )
-                                      : DateTime(
-                                          y, m+2, d ),
+                                  minTime: DateTime(y, m - 2, d),
+                                  maxTime: DateTime(y, m + 2, d),
                                   theme: DatePickerTheme(
                                       backgroundColor: Colors.white,
                                       itemStyle: TextStyle(
@@ -447,13 +432,6 @@ class _NewLeaveState extends State<NewLeave> {
         MaterialPageRoute(builder: (BuildContext context) => LeaveType()));
     List res = data.split(" ");
     leaveType = res[0].toString();
-    if (leaveType == "SL") {
-      leave_is_Sl = true;
-    } else {
-      leave_is_Sl = false;
-    }
-    var result = int.parse(res[1]) - 1;
-    leaveCount = result.toString();
   }
 
   _checkDay() async {
@@ -485,52 +463,137 @@ class _NewLeaveState extends State<NewLeave> {
   }
 
   void checkLeavePolicy(String branchId, String fromDate, String toDate,
-      String leaveType, String uuid) async{
-        var response=await dio.post(ServicesApi.leavePolicy,
+      String leaveType, String uuid) async {
+    var response = await dio.post(ServicesApi.leavePolicy,
         data: {
-          "branchId":branchId,
-          "fromDate":fromDate,
-          "toDate":toDate,
-          "leaveType":leaveType,
-          "userId":uuid
+          "branchId": branchId,
+          "fromDate": fromDate,
+          "toDate": toDate,
+          "leaveType": leaveType,
+          "userId": uuid
         },
         options: Options(contentType: ContentType.parse("application/json")));
-        if(response.statusCode==200||response.statusCode==201){
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // int noofBeforeDays = json.decode(response.data)['NO_OF_BEFORE_DAYS'];
+      // int totaleffectiveDays =json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
 
-          bool ifit_isholiday=json.decode(response.data)['IF_IT_IS_HOLIDAY'];
-          bool alreadyonLeave=json.decode(response.data)['ALREADY_ON_LEAVE'];
-          bool suffcientLeaves=json.decode(response.data)['SUFFICIENT_LEAVES'];
-          bool emergencyLeaves=json.decode(response.data)['EMERGENCY_LEAVES'];
-          bool sickLeaves=json.decode(response.data)['SICK_LEAVE'];
-          bool before5Days=json.decode(response.data)['BEFORE_5DAYS'];
-          int noofBeforeDays=json.decode(response.data)['NO_OF_BEFORE_DAYS'];
-          int totaleffectiveDays=json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
-          int status=json.decode(response.data)['STATUS'];
+      // List pastContinousDays =json.decode(response.data)['PAST_CONTINOUS_DAYS'];
 
-
-          if(ifit_isholiday==false){
-            if(alreadyonLeave==false){
-              if(suffcientLeaves==true){
-                if(leaveType=="SL"){
-                  if(sickLeaves==true){
-
-                  }else{
-                    
+      if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
+        if (json.decode(response.data)['ALREADY_ON_LEAVE'] == false) {
+          if (json.decode(response.data)['SUFFICIENT_LEAVES'] == true) {
+            if (leaveType == "SL") {
+              if (json.decode(response.data)['SICK_LEAVE'] == true &&
+                  json.decode(response.data)['STATUS'] == 1) {
+                //insert data
+                callServiceInsert();
+              } else {
+                Fluttertoast.showToast(
+                    msg:
+                        "Sick leave should apply previous dates only on joined date.");
+              }
+            } else if (leaveType == "CAL") {
+              if (json.decode(response.data)['EMERGENCY_LEAVES'] == true &&
+                  json.decode(response.data)['STATUS'] == 1) {
+                //insert data
+                callServiceInsert();
+              } else {
+                if (json.decode(response.data)['BEFORE_5DAYS'] == true) {
+                  if (json.decode(response.data)['STATUS'] == 1) {
+                    //insert data
+                    callServiceInsert();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg:
+                            "You are exceeding the maximum number of leave days.");
+                  }
+                } else {
+                  if (json
+                          .decode(response.data)['EFFECTIVE_LEAVES_DATES']
+                          .length >
+                      1) {
+                    Fluttertoast.showToast(
+                        msg: "You should apply before 6 days of applied date.");
+                  } else {
+                    Fluttertoast.showToast(
+                        msg:
+                            "You should apply emergency leave before start time of branch on current date.");
                   }
                 }
-                  
-              }else{
-                print("insuffcient leaves");
               }
-            }else{
-              print("applied on holiday");
+            } else if (leaveType == "CL") {
+              if ("Fixed Term" == "Fixed Term") {
+                if (json.decode(response.data)['EMERGENCY_LEAVES'] &&
+                    json.decode(response.data)['STATUS'] == 1) {
+                  //insert data
+                  callServiceInsert();
+                } else {
+                  if (json.decode(response.data)['BEFORE_5DAYS'] == true) {
+                    if (json.decode(response.data)['STATUS'] == 1) {
+                      //insert data
+                      callServiceInsert();
+                    } else {
+                      Fluttertoast.showToast(
+                          msg:
+                              "You are exceeding the maximum number of leave days.");
+                    }
+                  } else {
+                    if (json
+                            .decode(response.data)['EFFECTIVE_LEAVES_DATES']
+                            .length >
+                        1) {
+                      Fluttertoast.showToast(
+                          msg:
+                              "You should apply before 6 days of current date.");
+                    } else {
+                      Fluttertoast.showToast(
+                          msg:
+                              "You should apply emergency leave before start time of branch on current date.");
+                    }
+                  }
+                }
+              } else {
+                if (json.decode(response.data)['EMERGENCY_LEAVES'] == true &&
+                    json.decode(response.data)['STATUS'] == 1) {
+                  //insert data
+                  callServiceInsert();
+                } else {
+                  if (json.decode(response.data)['BEFORE_5DAYS'] == true &&
+                      json.decode(response.data)['STATUS'] == 1) {
+                    //insert data
+                    callServiceInsert();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "You should apply before 6 days of current data.");
+                  }
+                }
+              }
+            } else {
+              if (json.decode(response.data)['BEFORE_5DAYS'] == true) {
+                if (json.decode(response.data)['STATUS'] == 1) {
+                  //insert data
+                  callServiceInsert();
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          'You are exceeding the maximum number of leave days.');
+                }
+              } else {
+                Fluttertoast.showToast(
+                    msg: "You should apply before 6 days of current date.");
+              }
             }
-          }else{
-            print("ifit_isholiday: true");
+          } else {
+            Fluttertoast.showToast(msg: "You have insufficient leaves.");
           }
-            
-        }else if(response.statusCode==401){
-          throw(Exception);
+        } else {
+          Fluttertoast.showToast(msg: "You have already applied leave on these dates.");
         }
+      } else {
+        Fluttertoast.showToast(msg: "You are applying on leave on holiday.");
       }
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
 }
