@@ -221,8 +221,8 @@ class _NewLeaveState extends State<NewLeave> {
                                 minTime: DateTime(int.parse(toA),
                                     int.parse(toB), int.parse(toC)),
                                 maxTime: leave_is_Sl
-                                    ? DateTime(y, m, d - 1)
-                                    : DateTime(y, m, d + int.parse(leaveCount)),
+                                    ? DateTime(y, m-1, d )
+                                    : DateTime(y, m+2, d ),
                                 theme: DatePickerTheme(
                                     backgroundColor: Colors.white,
                                     itemStyle: TextStyle(
@@ -264,9 +264,9 @@ class _NewLeaveState extends State<NewLeave> {
                                   minTime: DateTime(int.parse(toA),
                                       int.parse(toB), int.parse(toC)),
                                   maxTime: leave_is_Sl
-                                      ? DateTime(y, m, d - 1)
+                                      ? DateTime(y, m-1, d )
                                       : DateTime(
-                                          y, m, d + int.parse(leaveCount)),
+                                          y, m+2, d ),
                                   theme: DatePickerTheme(
                                       backgroundColor: Colors.white,
                                       itemStyle: TextStyle(
@@ -386,53 +386,53 @@ class _NewLeaveState extends State<NewLeave> {
     });
   }
 
-  // void callServiceInsert() async {
-  //   var response;
-  //   if (_color1 == true) {
-  //     response = await dio.post(ServicesApi.insertLeave,
-  //         data: {
-  //           "vactionmode": "insert",
-  //           "vel_created_by": fullname,
-  //           "vel_from_date": fromDate,
-  //           "vel_noofdays": 1,
-  //           "vel_reason": _controller1.text,
-  //           "vel_to_date": fromDate,
-  //           "vleave_type": leaveType,
-  //           "vu_id": uuid
-  //         },
-  //         options: Options(
-  //           contentType: ContentType.parse('application/json'),
-  //         ));
-  //   } else {
-  //     response = await dio.post(ServicesApi.insertLeave,
-  //         data: {
-  //           "vactionmode": "insert",
-  //           "vel_created_by": fullname,
-  //           "vel_from_date": fromDate,
-  //           "vel_noofdays": 0,
-  //           "vel_reason": _controller1.text,
-  //           "vel_to_date": toDate,
-  //           "vleave_type": leaveType,
-  //           "vu_id": uuid
-  //         },
-  //         options: Options(
-  //           contentType: ContentType.parse('application/json'),
-  //         ));
-  //   }
-  //   // print("Response :-"+response.toString());
+  void callServiceInsert() async {
+    var response;
+    if (_color1 == true) {
+      response = await dio.post(ServicesApi.insertLeave,
+          data: {
+            "vactionmode": "insert",
+            "vel_created_by": fullname,
+            "vel_from_date": fromDate,
+            "vel_noofdays": 1,
+            "vel_reason": _controller1.text,
+            "vel_to_date": fromDate,
+            "vleave_type": leaveType,
+            "vu_id": uuid
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+    } else {
+      response = await dio.post(ServicesApi.insertLeave,
+          data: {
+            "vactionmode": "insert",
+            "vel_created_by": fullname,
+            "vel_from_date": fromDate,
+            "vel_noofdays": 0,
+            "vel_reason": _controller1.text,
+            "vel_to_date": toDate,
+            "vleave_type": leaveType,
+            "vu_id": uuid
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+    }
+    // print("Response :-"+response.toString());
 
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     pr.hide();
-  //     //      var responseJson = json.decode(response.data);
-  //     Fluttertoast.showToast(msg: response.data.toString());
-  //     // Fluttertoast.showToast(msg: "Leave Created");
-  //     // Navigator.push(context,
-  //     //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-  //   } else {
-  //     pr.hide();
-  //     Fluttertoast.showToast(msg: "Please try after some time.");
-  //   }
-  // }
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      pr.hide();
+      //      var responseJson = json.decode(response.data);
+      Fluttertoast.showToast(msg: response.data.toString());
+      // Fluttertoast.showToast(msg: "Leave Created");
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+    } else {
+      pr.hide();
+      Fluttertoast.showToast(msg: "Please try after some time.");
+    }
+  }
 
   void selectLeaveType(BuildContext context) async {
     fromDate = "";
@@ -496,6 +496,38 @@ class _NewLeaveState extends State<NewLeave> {
         },
         options: Options(contentType: ContentType.parse("application/json")));
         if(response.statusCode==200||response.statusCode==201){
+
+          bool ifit_isholiday=json.decode(response.data)['IF_IT_IS_HOLIDAY'];
+          bool alreadyonLeave=json.decode(response.data)['ALREADY_ON_LEAVE'];
+          bool suffcientLeaves=json.decode(response.data)['SUFFICIENT_LEAVES'];
+          bool emergencyLeaves=json.decode(response.data)['EMERGENCY_LEAVES'];
+          bool sickLeaves=json.decode(response.data)['SICK_LEAVE'];
+          bool before5Days=json.decode(response.data)['BEFORE_5DAYS'];
+          int noofBeforeDays=json.decode(response.data)['NO_OF_BEFORE_DAYS'];
+          int totaleffectiveDays=json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
+          int status=json.decode(response.data)['STATUS'];
+
+
+          if(ifit_isholiday==false){
+            if(alreadyonLeave==false){
+              if(suffcientLeaves==true){
+                if(leaveType=="SL"){
+                  if(sickLeaves==true){
+
+                  }else{
+                    
+                  }
+                }
+                  
+              }else{
+                print("insuffcient leaves");
+              }
+            }else{
+              print("applied on holiday");
+            }
+          }else{
+            print("ifit_isholiday: true");
+          }
             
         }else if(response.statusCode==401){
           throw(Exception);
