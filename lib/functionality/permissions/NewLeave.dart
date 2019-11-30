@@ -508,10 +508,7 @@ class _NewLeaveState extends State<NewLeave> {
                             "You are exceeding the maximum number of leave days.");
                   }
                 } else {
-                  if (json
-                          .decode(response.data)['EFFECTIVE_LEAVES_DATES']
-                          .length >
-                      1) {
+                  if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES'])>1) {
                     Fluttertoast.showToast(
                         msg: "You should apply before 6 days of applied date.");
                   } else {
@@ -539,7 +536,7 @@ class _NewLeaveState extends State<NewLeave> {
                     }
                   } else {
                     if (json
-                            .decode(response.data)['EFFECTIVE_LEAVES_DATES']
+                            .decode(response.data)['EFFECTIVE_LEAVE_DATES']
                             .length >
                         1) {
                       Fluttertoast.showToast(
@@ -587,7 +584,8 @@ class _NewLeaveState extends State<NewLeave> {
             Fluttertoast.showToast(msg: "You have insufficient leaves.");
           }
         } else {
-          Fluttertoast.showToast(msg: "You have already applied leave on these dates.");
+          Fluttertoast.showToast(
+              msg: "You have already applied leave on these dates.");
         }
       } else {
         Fluttertoast.showToast(msg: "You are applying on leave on holiday.");
@@ -595,5 +593,11 @@ class _NewLeaveState extends State<NewLeave> {
     } else if (response.statusCode == 401) {
       throw (Exception);
     }
+  }
+
+  listData(data) {
+    List list=data;
+    print(list.length-1);
+    return list.length;
   }
 }
