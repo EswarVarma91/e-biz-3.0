@@ -165,8 +165,10 @@ class _NewLeaveState extends State<NewLeave> {
                     onTap: () {
                       DatePicker.showDatePicker(context,
                           showTitleActions: true,
-                          minTime: DateTime(y, m - 1, d),
-                          maxTime: DateTime(y, m + 2, d),
+                          minTime: leave_is_Sl
+                              ? DateTime(y, m, d - 6)
+                              : DateTime(y, m, d),
+                          maxTime: DateTime(y, m + 1, d),
                           theme: DatePickerTheme(
                               backgroundColor: Colors.white,
                               itemStyle: TextStyle(
@@ -204,8 +206,10 @@ class _NewLeaveState extends State<NewLeave> {
                         toDate = "";
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime(y, m - 2, d),
-                            maxTime: DateTime(y, m + 2, d),
+                            minTime: leave_is_Sl
+                                ? DateTime(y, m, d - 6)
+                                : DateTime(y, m, d),
+                            maxTime: DateTime(y, m + 1, d),
                             theme: DatePickerTheme(
                                 backgroundColor: Colors.white,
                                 itemStyle: TextStyle(
@@ -231,8 +235,11 @@ class _NewLeaveState extends State<NewLeave> {
                             DatePicker.showDatePicker(context,
                                 showTitleActions: true,
                                 //                            minTime: DateTime(2019, 3, 5),
-                                minTime: DateTime(y, m - 2, d),
-                                maxTime: DateTime(y, m + 2, d),
+                                minTime: DateTime(int.parse(toA),
+                                    int.parse(toB), int.parse(toC)),
+                                maxTime: leave_is_Sl
+                                    ? DateTime(y, m, d)
+                                    : DateTime(y, m + 2, d),
                                 theme: DatePickerTheme(
                                     backgroundColor: Colors.white,
                                     itemStyle: TextStyle(
@@ -271,8 +278,11 @@ class _NewLeaveState extends State<NewLeave> {
                               DatePicker.showDatePicker(context,
                                   showTitleActions: true,
                                   //                            minTime: DateTime(2019, 3, 5),
-                                  minTime: DateTime(y, m - 2, d),
-                                  maxTime: DateTime(y, m + 2, d),
+                                  minTime: DateTime(int.parse(toA),
+                                      int.parse(toB), int.parse(toC)),
+                                  maxTime: leave_is_Sl
+                                      ? DateTime(y, m, d)
+                                      : DateTime(y, m + 2, d),
                                   theme: DatePickerTheme(
                                       backgroundColor: Colors.white,
                                       itemStyle: TextStyle(
@@ -366,12 +376,12 @@ class _NewLeaveState extends State<NewLeave> {
       toA = aa[0].toString();
       toB = aa[1].toString();
       toC = aa[2].toString();
-      print("esko C Date" +
-          toA.toString() +
-          "-" +
-          toB.toString() +
-          "-" +
-          toC.toString());
+      // print("esko C Date" +
+      //     toA.toString() +
+      //     "-" +
+      //     toB.toString() +
+      //     "-" +
+      //     toC.toString());
       fromDate = d[0].toString();
       fromDateS = toC + "-" + toB + "-" + toA;
     });
@@ -405,6 +415,11 @@ class _NewLeaveState extends State<NewLeave> {
         MaterialPageRoute(builder: (BuildContext context) => LeaveType()));
     List res = data.split(" ");
     leaveType = res[0].toString();
+    if(leaveType=="SL"){
+      leave_is_Sl=true;
+    }else{
+      leave_is_Sl=false;
+    }
   }
 
   _checkDay() async {
@@ -431,7 +446,7 @@ class _NewLeaveState extends State<NewLeave> {
       Fluttertoast.showToast(msg: "Enter the Purpose for Leave.");
     } else {
       //Service Call
-      checkLeavePolicy(branchId, fromDate, toDate, leaveType, uuid);
+      checkLeavePolicy(branchId, fromDate, fromDate, leaveType, uuid);
     }
   }
 
@@ -478,14 +493,12 @@ class _NewLeaveState extends State<NewLeave> {
     }
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      // pr.hide();
-      //      var responseJson = json.decode(response.data);
-      // Fluttertoast.showToast(msg: response.data.toString());
-      // Fluttertoast.showToast(msg: "Leave Generated");
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-      getReportingLevelToken(
-          fromDateS, toDateS, fullname, _controller1.text, leaveType, uuid);
+      pr.hide();
+      Fluttertoast.showToast(msg: "Leave Generated");
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+      // getReportingLevelToken(
+      //     fromDateS, toDateS, fullname, _controller1.text, leaveType, uuid);
     } else if (response.statusCode == 500) {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
@@ -522,8 +535,9 @@ class _NewLeaveState extends State<NewLeave> {
               .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       }
+      if(listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES'])<7){
 
-      if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
+          if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
         if (json.decode(response.data)['ALREADY_ON_LEAVE'] == false) {
           if (json.decode(response.data)['SUFFICIENT_LEAVES'] == true) {
             if (leaveType == "SL") {
@@ -553,8 +567,7 @@ class _NewLeaveState extends State<NewLeave> {
                   }
                 } else {
                   if (listData(
-                          json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >
-                      1) {
+                          json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
                     Fluttertoast.showToast(
                         msg: "You should apply before 6 days of applied date.");
                   } else {
@@ -635,7 +648,11 @@ class _NewLeaveState extends State<NewLeave> {
         }
       } else {
         Fluttertoast.showToast(msg: "You are applying on leave on holiday.");
+      } 
+      }else{
+        Fluttertoast.showToast(msg: "You are exceeding the maximum number of leave days.");
       }
+      
     } else if (response.statusCode == 401) {
       throw (Exception);
     }
@@ -643,7 +660,6 @@ class _NewLeaveState extends State<NewLeave> {
 
   listData(data) {
     List list = data;
-    print(list.length - 1);
     return list.length;
   }
 
