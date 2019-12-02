@@ -1,10 +1,9 @@
 class LoginModel {
-  final int cnt, uId, uEmpCode,hrCnt,travelCnt,salesCnt;
+  final int cnt, uId, uEmpCode,hrCnt,travelCnt,salesCnt,branchid;
   final String fullName,
       profileName,
       downTeamIds,
       mobileNumber,
-      branchid,
       emailId,
       department,
       designation;
@@ -36,7 +35,7 @@ class LoginModel {
         profileName = json['profileName'],
         downTeamIds = json['downTeamIds'],
         mobileNumber = json['mobileNumber'],
-        branchid = json['branchId'],
+        branchid = json['branchid'],
         emailId = json['emailId'],
         department = json['department'],
         designation = json['designation'];

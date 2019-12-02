@@ -315,7 +315,7 @@ class _LoginState extends State<Login> {
             loginList[0].profileName,
             loginList[0].downTeamIds,
             loginList[0].mobileNumber,
-            loginList[0].branchid,
+            loginList[0].branchid.toString(),
             loginList[0].emailId,
             loginList[0].department,
             loginList[0].designation);

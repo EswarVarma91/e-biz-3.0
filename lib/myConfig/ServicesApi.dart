@@ -29,7 +29,7 @@ class ServicesApi {
       basic_url + global_Service + "updateAnyGlobalDataForMobile";
 
   //Leaves
-  static String insertLeave = basic_url + hrms_Service + "saveEmpLeave";
+  static String insertLeave = basic_url + hrms_Service + "saveEmployeeLeave";
   static String ChangeLeaveStatus =
       basic_url + hrms_Service + "update/leave/status";
   static String checkLeaveStatus = basic_url + hrms_Service + "get/hruser/data";

@@ -31,13 +31,23 @@ class _NewLeaveState extends State<NewLeave> {
   String toDate = "", toDateS = "";
   int y, m, d;
   String toA, toB, toC;
-  String uuid, leaveType = "Leave Type", status, fullname, leaveCount, branchId;
+  String uuid,
+      leaveType = "Leave Type",
+      status,
+      fullname,
+      leaveCount,
+      branchId,
+      profilename,
+      empCode;
+  List<dynamic> effectiveDates = [];
+  List<String> effeDates=[];
   List<RestrictPermissionsModel> restrictpermissionModel;
   List<LeavesCheckingDatesModel> lcdm;
   List<LeavesCheckingModel> lcm;
   static Dio dio = Dio(Config.options);
   bool leave_is_Sl = false;
   ProgressDialog pr;
+  List li1;
 
   @override
   void initState() {
@@ -55,6 +65,8 @@ class _NewLeaveState extends State<NewLeave> {
     uuid = preferences.getString("userId");
     fullname = preferences.getString("fullname");
     branchId = preferences.getString("branchid");
+    profilename = preferences.getString("profileName");
+    empCode = preferences.getString("uEmpCode");
   }
 
   @override
@@ -183,6 +195,8 @@ class _NewLeaveState extends State<NewLeave> {
                         color: lwtColor,
                       ),
                       onPressed: () {
+                        toDateS = "";
+                        toDate = "";
                         DatePicker.showDatePicker(context,
                             showTitleActions: true,
                             minTime: DateTime(y, m - 2, d),
@@ -207,6 +221,8 @@ class _NewLeaveState extends State<NewLeave> {
                       ? Container()
                       : ListTile(
                           onTap: () {
+                            toDateS = "";
+                            toDate = "";
                             DatePicker.showDatePicker(context,
                                 showTitleActions: true,
                                 //                            minTime: DateTime(2019, 3, 5),
@@ -372,18 +388,24 @@ class _NewLeaveState extends State<NewLeave> {
   }
 
   void callServiceInsert() async {
+    String str = json.encode(effectiveDates);
     var response;
     if (_color1 == true) {
       response = await dio.post(ServicesApi.insertLeave,
           data: {
             "vactionmode": "insert",
+            "halfDayLeave": 1,
             "vel_created_by": fullname,
             "vel_from_date": fromDate,
             "vel_noofdays": 1,
             "vel_reason": _controller1.text,
             "vel_to_date": fromDate,
             "vleave_type": leaveType,
-            "vu_id": uuid
+            "vu_id": uuid,
+            "vel_status": 0,
+            "empCode": empCode,
+            "firstName": profilename,
+            "totalEffectiveDates": effeDates,
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -392,19 +414,25 @@ class _NewLeaveState extends State<NewLeave> {
       response = await dio.post(ServicesApi.insertLeave,
           data: {
             "vactionmode": "insert",
-            "vel_created_by": fullname,
+            "halfDayLeave": 0,
+            "vel_created_by": profilename,
             "vel_from_date": fromDate,
             "vel_noofdays": 0,
             "vel_reason": _controller1.text,
             "vel_to_date": toDate,
             "vleave_type": leaveType,
-            "vu_id": uuid
+            "vu_id": uuid,
+            "vel_status": 0,
+            "empCode": empCode,
+            "firstName": profilename,
+            "totalEffectiveDates": effeDates,
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
     }
-    // print("Response :-"+response.toString());
+    print(str);
+    print(effeDates);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       pr.hide();
@@ -413,7 +441,7 @@ class _NewLeaveState extends State<NewLeave> {
       // Fluttertoast.showToast(msg: "Leave Created");
       // Navigator.push(context,
       //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-    } else {
+    } else if (response.statusCode == 500) {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
     }
@@ -479,12 +507,24 @@ class _NewLeaveState extends State<NewLeave> {
 
       // List pastContinousDays =json.decode(response.data)['PAST_CONTINOUS_DAYS'];
 
+      if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
+        effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
+        for(String sDates in effectiveDates){
+          effeDates.add('"'+sDates+'"');
+        }
+      } else {
+        effectiveDates = json.decode(response.data)['LEAVES'];
+        for(String sDates in effectiveDates){
+          effeDates.add('"'+sDates+'"');
+        }
+      }
+
       if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
         if (json.decode(response.data)['ALREADY_ON_LEAVE'] == false) {
           if (json.decode(response.data)['SUFFICIENT_LEAVES'] == true) {
             if (leaveType == "SL") {
               if (json.decode(response.data)['SICK_LEAVE'] == true &&
-                  json.decode(response.data)['STATUS'] == 1) {
+                  json.decode(response.data)['STATUS'] == "1") {
                 //insert data
                 callServiceInsert();
               } else {
@@ -494,12 +534,12 @@ class _NewLeaveState extends State<NewLeave> {
               }
             } else if (leaveType == "CAL") {
               if (json.decode(response.data)['EMERGENCY_LEAVES'] == true &&
-                  json.decode(response.data)['STATUS'] == 1) {
+                  json.decode(response.data)['STATUS'] == "1") {
                 //insert data
                 callServiceInsert();
               } else {
-                if (json.decode(response.data)['BEFORE_5DAYS'] == true) {
-                  if (json.decode(response.data)['STATUS'] == 1) {
+                if (json.decode(response.data)['BEFORE_6DAYS'] == true) {
+                  if (json.decode(response.data)['STATUS'] == "1") {
                     //insert data
                     callServiceInsert();
                   } else {
@@ -508,7 +548,9 @@ class _NewLeaveState extends State<NewLeave> {
                             "You are exceeding the maximum number of leave days.");
                   }
                 } else {
-                  if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES'])>1) {
+                  if (listData(
+                          json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >
+                      1) {
                     Fluttertoast.showToast(
                         msg: "You should apply before 6 days of applied date.");
                   } else {
@@ -521,12 +563,12 @@ class _NewLeaveState extends State<NewLeave> {
             } else if (leaveType == "CL") {
               if ("Fixed Term" == "Fixed Term") {
                 if (json.decode(response.data)['EMERGENCY_LEAVES'] &&
-                    json.decode(response.data)['STATUS'] == 1) {
+                    json.decode(response.data)['STATUS'] == "1") {
                   //insert data
                   callServiceInsert();
                 } else {
-                  if (json.decode(response.data)['BEFORE_5DAYS'] == true) {
-                    if (json.decode(response.data)['STATUS'] == 1) {
+                  if (json.decode(response.data)['BEFORE_6DAYS'] == true) {
+                    if (json.decode(response.data)['STATUS'] == "1") {
                       //insert data
                       callServiceInsert();
                     } else {
@@ -551,12 +593,12 @@ class _NewLeaveState extends State<NewLeave> {
                 }
               } else {
                 if (json.decode(response.data)['EMERGENCY_LEAVES'] == true &&
-                    json.decode(response.data)['STATUS'] == 1) {
+                    json.decode(response.data)['STATUS'] == "1") {
                   //insert data
                   callServiceInsert();
                 } else {
-                  if (json.decode(response.data)['BEFORE_5DAYS'] == true &&
-                      json.decode(response.data)['STATUS'] == 1) {
+                  if (json.decode(response.data)['BEFORE_6DAYS'] == true &&
+                      json.decode(response.data)['STATUS'] == "1") {
                     //insert data
                     callServiceInsert();
                   } else {
@@ -566,8 +608,8 @@ class _NewLeaveState extends State<NewLeave> {
                 }
               }
             } else {
-              if (json.decode(response.data)['BEFORE_5DAYS'] == true) {
-                if (json.decode(response.data)['STATUS'] == 1) {
+              if (json.decode(response.data)['BEFORE_6DAYS'] == true) {
+                if (json.decode(response.data)['STATUS'] == "1") {
                   //insert data
                   callServiceInsert();
                 } else {
@@ -596,8 +638,8 @@ class _NewLeaveState extends State<NewLeave> {
   }
 
   listData(data) {
-    List list=data;
-    print(list.length-1);
+    List list = data;
+    print(list.length - 1);
     return list.length;
   }
 }
