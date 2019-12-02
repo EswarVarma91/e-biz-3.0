@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Ebiz/model/FirebaseReportingLevelModel.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/functionality/permissions/LeaveType.dart';
 import 'package:Ebiz/functionality/permissions/Permissions.dart';
@@ -17,6 +18,7 @@ import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
+import 'package:http/http.dart' as http;
 
 class NewLeave extends StatefulWidget {
   @override
@@ -49,6 +51,7 @@ class _NewLeaveState extends State<NewLeave> {
   bool leave_is_Sl = false;
   ProgressDialog pr;
   List li1;
+  List<FirebaseReportingLevelModel> fm;
 
   @override
   void initState() {
@@ -433,7 +436,6 @@ class _NewLeaveState extends State<NewLeave> {
   }
 
   void callServiceInsert() async {
-
     var response;
     if (_color1 == true) {
       response = await dio.post(ServicesApi.insertLeave,
@@ -474,15 +476,16 @@ class _NewLeaveState extends State<NewLeave> {
             contentType: ContentType.parse('application/json'),
           ));
     }
-  
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      pr.hide();
+      // pr.hide();
       //      var responseJson = json.decode(response.data);
       // Fluttertoast.showToast(msg: response.data.toString());
-      Fluttertoast.showToast(msg: "Leave Created");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+      // Fluttertoast.showToast(msg: "Leave Generated");
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+      getReportingLevelToken(
+          fromDateS, toDateS, fullname, _controller1.text, leaveType, uuid);
     } else if (response.statusCode == 500) {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
@@ -509,12 +512,14 @@ class _NewLeaveState extends State<NewLeave> {
       if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
         effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
         for (String sDates in effectiveDates) {
-          effeDates.add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
+          effeDates
+              .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       } else {
         effectiveDates = json.decode(response.data)['LEAVES'];
         for (String sDates in effectiveDates) {
-          effeDates.add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
+          effeDates
+              .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       }
 
@@ -640,5 +645,93 @@ class _NewLeaveState extends State<NewLeave> {
     List list = data;
     print(list.length - 1);
     return list.length;
+  }
+
+  void getReportingLevelToken(String fromDateS, String toDateS, String fullname,
+      String purpose, String leaveType, String uidd) async {
+    var response = await dio.post(ServicesApi.getData,
+        data: {"parameter1": "getReportingLevelToken", "parameter2": uidd},
+        options: Options(contentType: ContentType.parse("application/json")));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.data != null) {
+        setState(() {
+          fm = (json.decode(response.data) as List)
+              .map((data) => new FirebaseReportingLevelModel.fromJson(data))
+              .toList();
+        });
+        if (fm.isNotEmpty) {
+          var data = fm[0].reporting.toString();
+          // Fluttertoast.showToast(msg: "Stopped");
+          if (data != null || data != "null") {
+            pushNotification(
+                data, fromDateS, toDateS, fullname, purpose, leaveType);
+          } else {
+            pr.hide();
+            Fluttertoast.showToast(msg: "Leave Applied");
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => Permissions()),
+              ModalRoute.withName('/'),
+            );
+          }
+        } else {
+          pr.hide();
+          Fluttertoast.showToast(msg: "Leave Applied");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+            ModalRoute.withName('/'),
+          );
+        }
+      } else {
+        pr.hide();
+        Fluttertoast.showToast(msg: "Leave Applied");
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+          ModalRoute.withName('/'),
+        );
+      }
+    } else if (response.statusCode == 401) {}
+  }
+
+  void pushNotification(String to, String fromDateS, String toDateS,
+      String fullname, String purpose, String leaveType) async {
+    Map<String, dynamic> notification = {
+      'body': fullname +
+          " has requested fa leave" +
+          " From: " +
+          fromDateS +
+          " To: " +
+          toDateS +
+          " Purpose:" +
+          purpose +
+          ". Approval Requested.",
+      'title': 'Leave Request',
+      //
+    };
+    Map<String, dynamic> data = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+    };
+    Map<String, dynamic> message = {
+      'notification': notification,
+      'priority': 'high',
+      'data': data,
+      'to': to, // this is optional - used to send to one device
+    };
+    Map<String, String> headers = {
+      'Authorization': "key=" + ServicesApi.FCM_KEY,
+      'Content-Type': 'application/json',
+    };
+    // todo - set the relevant values
+    await http.post(ServicesApi.fcm_Send,
+        headers: headers, body: json.encode(message));
+    // print(jsonDecode(r.body)["success"]);
+    pr.hide();
+    Fluttertoast.showToast(msg: "Leave Applied");
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (BuildContext context) => Permissions()),
+      ModalRoute.withName('/'),
+    );
   }
 }

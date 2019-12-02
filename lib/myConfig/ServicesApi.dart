@@ -2,7 +2,7 @@ class ServicesApi {
   //========= New DataBase ebizdb=========//
 
   static String fcm_Send="https://fcm.googleapis.com/fcm/send";
-  static String FCM_KEY= "AAAAw1WdJb0:APA91bGlArheK9iRSc6GV-rYXv8x9oxmMqwvPHk0KB5ldHKiJLLCXJKverdMqAFpRZC11brzEbyKgxnolHXw3MgeFP9Vmbk37isb1rz2uKoM2ylJnWrrKxmXHcP-q8w1a4thssxRFqoU";
+  static String FCM_KEY= "AAAAS15bmPU:APA91bFKAfKKD0YiHXI37U-iIUg1C0RVWdhvZ6kJyWh6Fd4is70mmfUzGwcFdpIjw-Ytl7pnPwhPvb7bOror0kSgyDLSne9v1uEaa1JgmEH5c_ffV4lI9iP1PHejAmUzVHPoboG4aJsI";
 
   static String basic_url = "http://192.168.2.5:8383/"; //Live
 
