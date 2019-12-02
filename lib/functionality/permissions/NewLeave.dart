@@ -38,7 +38,7 @@ class _NewLeaveState extends State<NewLeave> {
       leaveCount,
       branchId,
       profilename,
-      empCode;
+      empCode,fixedTerm;
   List<dynamic> effectiveDates = [];
   List<String> effeDates=[];
   List<RestrictPermissionsModel> restrictpermissionModel;
@@ -67,6 +67,7 @@ class _NewLeaveState extends State<NewLeave> {
     branchId = preferences.getString("branchid");
     profilename = preferences.getString("profileName");
     empCode = preferences.getString("uEmpCode");
+    fixedTerm = preferences.getString("fixedTerm");
   }
 
   @override
@@ -437,10 +438,10 @@ class _NewLeaveState extends State<NewLeave> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       pr.hide();
       //      var responseJson = json.decode(response.data);
-      Fluttertoast.showToast(msg: response.data.toString());
-      // Fluttertoast.showToast(msg: "Leave Created");
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+      // Fluttertoast.showToast(msg: response.data.toString());
+      Fluttertoast.showToast(msg: "Leave Created");
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
     } else if (response.statusCode == 500) {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
@@ -561,7 +562,7 @@ class _NewLeaveState extends State<NewLeave> {
                 }
               }
             } else if (leaveType == "CL") {
-              if ("Fixed Term" == "Fixed Term") {
+              if (fixedTerm == "1") {
                 if (json.decode(response.data)['EMERGENCY_LEAVES'] &&
                     json.decode(response.data)['STATUS'] == "1") {
                   //insert data

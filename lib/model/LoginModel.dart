@@ -6,7 +6,7 @@ class LoginModel {
       mobileNumber,
       emailId,
       department,
-      designation;
+      designation,fixedTerm;
 
   LoginModel(
       this.cnt,
@@ -22,7 +22,7 @@ class LoginModel {
       this.branchid,
       this.emailId,
       this.department,
-      this.designation);
+      this.designation,this.fixedTerm);
 
   LoginModel.fromJson(Map<String, dynamic> json)
       : cnt = json['cnt'],
@@ -38,7 +38,8 @@ class LoginModel {
         branchid = json['branchid'],
         emailId = json['emailId'],
         department = json['department'],
-        designation = json['designation'];
+        designation = json['designation'],
+        fixedTerm = json['fixedTerm'];
 
   Map<String, dynamic> toJson() => {
         'cnt': cnt,
@@ -55,5 +56,6 @@ class LoginModel {
         'emailId': emailId,
         'department': department,
         'designation': designation,
+        'fixedTerm' : fixedTerm,
       };
 }

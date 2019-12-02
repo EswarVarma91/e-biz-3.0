@@ -318,7 +318,8 @@ class _LoginState extends State<Login> {
             loginList[0].branchid.toString(),
             loginList[0].emailId,
             loginList[0].department,
-            loginList[0].designation);
+            loginList[0].designation,
+            loginList[0].fixedTerm);
 
         var navigator = Navigator.of(context);
 
@@ -376,7 +377,7 @@ class _LoginState extends State<Login> {
       String branchid,
       String emailId,
       String department,
-      String designation) async {
+      String designation,String fixedTerm) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("data", userEmail);
     preferences.setString("userId", uId.toString());
@@ -392,5 +393,6 @@ class _LoginState extends State<Login> {
     preferences.setString("emailId", emailId.toString());
     preferences.setString("department", department.toString());
     preferences.setString("designation", designation.toString());
+    preferences.setString("fixedTerm",fixedTerm.toString());
   }
 }
