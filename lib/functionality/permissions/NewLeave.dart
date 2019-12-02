@@ -507,7 +507,7 @@ class _NewLeaveState extends State<NewLeave> {
       // int totaleffectiveDays =json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
 
       // List pastContinousDays =json.decode(response.data)['PAST_CONTINOUS_DAYS'];
-
+        effeDates.clear();
       if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
         effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
         for(String sDates in effectiveDates){

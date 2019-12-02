@@ -319,7 +319,7 @@ class _LoginState extends State<Login> {
             loginList[0].emailId,
             loginList[0].department,
             loginList[0].designation,
-            loginList[0].fixedTerm);
+            loginList[0].fixedTerm.toString());
 
         var navigator = Navigator.of(context);
 

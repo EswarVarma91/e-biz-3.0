@@ -1861,11 +1861,7 @@ class _PermissionsState extends State<Permissions> {
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {
-                  cancelRequestServiceCall(
-                      leavesModel.el_id.toString(),
-                      leavesModel.leave_type,
-                      leavesModel.el_noofdays.toString(),
-                      i);
+                  cancelRequestServiceCall(leavesModel.el_id.toString(),leavesModel.leave_type,leavesModel.el_noofdays.toString(),i);
                 },
                 child: new Text('Yes'),
               ),
