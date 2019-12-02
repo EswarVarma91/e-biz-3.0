@@ -505,8 +505,8 @@ class _NewLeaveState extends State<NewLeave> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       // int noofBeforeDays = json.decode(response.data)['NO_OF_BEFORE_DAYS'];
       // int totaleffectiveDays =json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
-
       // List pastContinousDays =json.decode(response.data)['PAST_CONTINOUS_DAYS'];
+      
         effeDates.clear();
       if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
         effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
