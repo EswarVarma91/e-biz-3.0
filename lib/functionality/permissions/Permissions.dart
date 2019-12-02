@@ -220,134 +220,134 @@ class _PermissionsState extends State<Permissions> {
           list22 = list66;
         });
       }
-    } else if (latecoming == true) {
-      lateearly = true;
-      list333 = latecomingList.where((d) {
-        if (d.att_id == "-") {
-          return true;
-        }
-        return false;
-      }).toList();
-      list444 = latecomingList.where((d) {
-        if (d.att_id != "-" &&
-            d.hr_approval != "1" &&
-            d.hr_approval != "2" &&
-            d.tl_approval != "1" &&
-            d.tl_approval != "2") {
-          return true;
-        }
-        return false;
-      }).toList();
+    // } else if (latecoming == true) {
+    //   lateearly = true;
+    //   list333 = latecomingList.where((d) {
+    //     if (d.att_id == "-") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
+    //   list444 = latecomingList.where((d) {
+    //     if (d.att_id != "-" &&
+    //         d.hr_approval != "1" &&
+    //         d.hr_approval != "2" &&
+    //         d.tl_approval != "1" &&
+    //         d.tl_approval != "2") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      list555 = latecomingList.where((d) {
-        if (d.hr_approval == "2") {
-          return true;
-        }
-        return false;
-      }).toList();
+    //   list555 = latecomingList.where((d) {
+    //     if (d.hr_approval == "2") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      list666 = latecomingList.where((d) {
-        if (d.hr_approval == "1") {
-          return true;
-        }
-        return false;
-      }).toList();
+    //   list666 = latecomingList.where((d) {
+    //     if (d.hr_approval == "1") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      setState(() {
-        pendingCount = list333?.length.toString() ?? "-";
-        approvedCount = list444?.length.toString() ?? "-";
-        cancelledCount = list555?.length.toString() ?? "-";
-        rejectedCount = list666?.length.toString() ?? "-";
-      });
+    //   setState(() {
+    //     pendingCount = list333?.length.toString() ?? "-";
+    //     approvedCount = list444?.length.toString() ?? "-";
+    //     cancelledCount = list555?.length.toString() ?? "-";
+    //     rejectedCount = list666?.length.toString() ?? "-";
+    //   });
 
-      if (_color1 == true) {
-        setState(() {
-          _isEditButton = true;
-          list222 = list333;
-        });
-      } else if (_color2 == true) {
-        setState(() {
-          _isEditButton = false;
-          list222 = list444;
-        });
-      } else if (_color3 == true) {
-        setState(() {
-          _isEditButton = false;
-          list222 = list555;
-        });
-      } else if (_color4 == true) {
-        setState(() {
-          _isEditButton = false;
-          list222 = list666;
-        });
-      }
-    } else if (earlygoing == true) {
-      lateearly = true;
-      latecoming = false;
-      list3333 = earlygoingList.where((d) {
-        if (d.att_id == "-" &&
-            d.hr_approval != "1" &&
-            d.hr_approval != "2" &&
-            d.tl_approval != "1" &&
-            d.tl_approval != "2") {
-          return true;
-        }
-        return false;
-      }).toList();
+    //   if (_color1 == true) {
+    //     setState(() {
+    //       _isEditButton = true;
+    //       list222 = list333;
+    //     });
+    //   } else if (_color2 == true) {
+    //     setState(() {
+    //       _isEditButton = false;
+    //       list222 = list444;
+    //     });
+    //   } else if (_color3 == true) {
+    //     setState(() {
+    //       _isEditButton = false;
+    //       list222 = list555;
+    //     });
+    //   } else if (_color4 == true) {
+    //     setState(() {
+    //       _isEditButton = false;
+    //       list222 = list666;
+    //     });
+    //   }
+    // } else if (earlygoing == true) {
+    //   lateearly = true;
+    //   latecoming = false;
+    //   list3333 = earlygoingList.where((d) {
+    //     if (d.att_id == "-" &&
+    //         d.hr_approval != "1" &&
+    //         d.hr_approval != "2" &&
+    //         d.tl_approval != "1" &&
+    //         d.tl_approval != "2") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      list4444 = earlygoingList.where((d) {
-        if (d.att_id != "-" &&
-            d.hr_approval != "1" &&
-            d.hr_approval != "2" &&
-            d.tl_approval != "1" &&
-            d.tl_approval != "2" &&
-            d.att_work_status != "Absent") {
-          return true;
-        }
-        return false;
-      }).toList();
+    //   list4444 = earlygoingList.where((d) {
+    //     if (d.att_id != "-" &&
+    //         d.hr_approval != "1" &&
+    //         d.hr_approval != "2" &&
+    //         d.tl_approval != "1" &&
+    //         d.tl_approval != "2" &&
+    //         d.att_work_status != "Absent") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      list5555 = earlygoingList.where((d) {
-        if (d.hr_approval == "2") {
-          return true;
-        }
-        return false;
-      }).toList();
+    //   list5555 = earlygoingList.where((d) {
+    //     if (d.hr_approval == "2") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      list6666 = earlygoingList.where((d) {
-        if (d.hr_approval == "1") {
-          return true;
-        }
-        return false;
-      }).toList();
+    //   list6666 = earlygoingList.where((d) {
+    //     if (d.hr_approval == "1") {
+    //       return true;
+    //     }
+    //     return false;
+    //   }).toList();
 
-      setState(() {
-        pendingCount = list3333?.length.toString() ?? "-";
-        approvedCount = list4444?.length.toString() ?? "-";
-        cancelledCount = list5555?.length.toString() ?? "-";
-        rejectedCount = list6666?.length.toString() ?? "-";
-      });
-      if (_color1 == true) {
-        setState(() {
-          _isEditButton = true;
-          list2222 = list3333;
-        });
-      } else if (_color2 == true) {
-        setState(() {
-          _isEditButton = false;
-          list2222 = list4444;
-        });
-      } else if (_color3 == true) {
-        setState(() {
-          _isEditButton = false;
-          list2222 = list5555;
-        });
-      } else if (_color4 == true) {
-        setState(() {
-          _isEditButton = false;
-          list2222 = list6666;
-        });
-      }
+    //   setState(() {
+    //     pendingCount = list3333?.length.toString() ?? "-";
+    //     approvedCount = list4444?.length.toString() ?? "-";
+    //     cancelledCount = list5555?.length.toString() ?? "-";
+    //     rejectedCount = list6666?.length.toString() ?? "-";
+    //   });
+    //   if (_color1 == true) {
+    //     setState(() {
+    //       _isEditButton = true;
+    //       list2222 = list3333;
+    //     });
+    //   } else if (_color2 == true) {
+    //     setState(() {
+    //       _isEditButton = false;
+    //       list2222 = list4444;
+    //     });
+    //   } else if (_color3 == true) {
+    //     setState(() {
+    //       _isEditButton = false;
+    //       list2222 = list5555;
+    //     });
+    //   } else if (_color4 == true) {
+    //     setState(() {
+    //       _isEditButton = false;
+    //       list2222 = list6666;
+    //     });
+    //   }
     }
   }
 
@@ -419,18 +419,8 @@ class _PermissionsState extends State<Permissions> {
                     padding: const EdgeInsets.only(right: 1, top: 1),
                     child: permissionsM(),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 1,top: 1),
-                  //   child:  latecomingM(),
-                  // ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 1,top: 1),
-                  //   child:  earlygoingM(),
-                  // ),
                 ],
                 staggeredTiles: [
-                  StaggeredTile.extent(2, 45.0),
-                  StaggeredTile.extent(2, 45.0),
                   StaggeredTile.extent(2, 45.0),
                   StaggeredTile.extent(2, 45.0),
                 ],
@@ -1861,7 +1851,11 @@ class _PermissionsState extends State<Permissions> {
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {
-                  cancelRequestServiceCall(leavesModel.el_id.toString(),leavesModel.leave_type,leavesModel.el_noofdays.toString(),i);
+                  cancelRequestServiceCall(
+                      leavesModel.el_id.toString(),
+                      leavesModel.leave_type,
+                      leavesModel.el_noofdays.toString(),
+                      i);
                 },
                 child: new Text('Yes'),
               ),
