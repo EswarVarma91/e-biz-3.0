@@ -38,9 +38,10 @@ class _NewLeaveState extends State<NewLeave> {
       leaveCount,
       branchId,
       profilename,
-      empCode,fixedTerm;
+      empCode,
+      fixedTerm;
   List<dynamic> effectiveDates = [];
-  List<String> effeDates=[];
+  List<String> effeDates = [];
   List<RestrictPermissionsModel> restrictpermissionModel;
   List<LeavesCheckingDatesModel> lcdm;
   List<LeavesCheckingModel> lcm;
@@ -388,66 +389,6 @@ class _NewLeaveState extends State<NewLeave> {
     });
   }
 
-  void callServiceInsert() async {
-    String str = json.encode(effectiveDates);
-    var response;
-    if (_color1 == true) {
-      response = await dio.post(ServicesApi.insertLeave,
-          data: {
-            "vactionmode": "insert",
-            "halfDayLeave": 1,
-            "vel_created_by": fullname,
-            "vel_from_date": fromDate,
-            "vel_noofdays": 1,
-            "vel_reason": _controller1.text,
-            "vel_to_date": fromDate,
-            "vleave_type": leaveType,
-            "vu_id": uuid,
-            "vel_status": 0,
-            "empCode": empCode,
-            "firstName": profilename,
-            "totalEffectiveDates": effeDates,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-    } else {
-      response = await dio.post(ServicesApi.insertLeave,
-          data: {
-            "vactionmode": "insert",
-            "halfDayLeave": 0,
-            "vel_created_by": profilename,
-            "vel_from_date": fromDate,
-            "vel_noofdays": 0,
-            "vel_reason": _controller1.text,
-            "vel_to_date": toDate,
-            "vleave_type": leaveType,
-            "vu_id": uuid,
-            "vel_status": 0,
-            "empCode": empCode,
-            "firstName": profilename,
-            "totalEffectiveDates": effeDates,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-    }
-    print(str);
-    print(effeDates);
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      pr.hide();
-      //      var responseJson = json.decode(response.data);
-      // Fluttertoast.showToast(msg: response.data.toString());
-      Fluttertoast.showToast(msg: "Leave Created");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-    } else if (response.statusCode == 500) {
-      pr.hide();
-      Fluttertoast.showToast(msg: "Please try after some time.");
-    }
-  }
-
   void selectLeaveType(BuildContext context) async {
     fromDate = "";
     fromDateS = "";
@@ -491,6 +432,63 @@ class _NewLeaveState extends State<NewLeave> {
     }
   }
 
+  void callServiceInsert() async {
+
+    var response;
+    if (_color1 == true) {
+      response = await dio.post(ServicesApi.insertLeave,
+          data: {
+            "vactionmode": "insert",
+            "halfDayLeave": 1,
+            "vel_created_by": fullname,
+            "vel_from_date": fromDate,
+            "vel_noofdays": 1,
+            "vel_reason": _controller1.text,
+            "vel_to_date": fromDate,
+            "vleave_type": leaveType,
+            "vu_id": uuid,
+            "empCode": empCode,
+            "firstName": profilename,
+            "totalEffectiveDates": effeDates,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+    } else {
+      response = await dio.post(ServicesApi.insertLeave,
+          data: {
+            "vactionmode": "insert",
+            "halfDayLeave": 0,
+            "vel_created_by": profilename,
+            "vel_from_date": fromDate,
+            "vel_noofdays": 0,
+            "vel_reason": _controller1.text,
+            "vel_to_date": toDate,
+            "vleave_type": leaveType,
+            "vu_id": uuid,
+            "empCode": empCode,
+            "firstName": profilename,
+            "totalEffectiveDates": effeDates,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+    }
+  
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      pr.hide();
+      //      var responseJson = json.decode(response.data);
+      // Fluttertoast.showToast(msg: response.data.toString());
+      Fluttertoast.showToast(msg: "Leave Created");
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+    } else if (response.statusCode == 500) {
+      pr.hide();
+      Fluttertoast.showToast(msg: "Please try after some time.");
+    }
+  }
+
   void checkLeavePolicy(String branchId, String fromDate, String toDate,
       String leaveType, String uuid) async {
     var response = await dio.post(ServicesApi.leavePolicy,
@@ -506,17 +504,17 @@ class _NewLeaveState extends State<NewLeave> {
       // int noofBeforeDays = json.decode(response.data)['NO_OF_BEFORE_DAYS'];
       // int totaleffectiveDays =json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
       // List pastContinousDays =json.decode(response.data)['PAST_CONTINOUS_DAYS'];
-      
-        effeDates.clear();
+
+      effeDates.clear();
       if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
         effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
-        for(String sDates in effectiveDates){
-          effeDates.add('"'+sDates+'"');
+        for (String sDates in effectiveDates) {
+          effeDates.add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       } else {
         effectiveDates = json.decode(response.data)['LEAVES'];
-        for(String sDates in effectiveDates){
-          effeDates.add('"'+sDates+'"');
+        for (String sDates in effectiveDates) {
+          effeDates.add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       }
 
