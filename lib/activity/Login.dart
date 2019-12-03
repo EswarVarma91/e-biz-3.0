@@ -157,8 +157,9 @@ class _LoginState extends State<Login> {
                       ),
                       Container(
                         child: Image.asset(
-                          'assets/images/eaglbiz.png',
+                          'assets/images/eaglebiz.png',
                           width: 300,
+                          height: 80,
                         ),
                       ),
                       SizedBox(

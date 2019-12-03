@@ -195,6 +195,12 @@ class _HomePageLocationState extends State<HomePageLocation> {
         ),
         automaticallyImplyLeading: false,
         actions: <Widget>[
+          // IconButton(
+          //   icon: Image.asset('images/ebiz.png'),
+          //   onPressed: (){
+
+          //   },
+          // ),
           Padding(
             padding: EdgeInsets.only(right: 0),
             child: IconButton(

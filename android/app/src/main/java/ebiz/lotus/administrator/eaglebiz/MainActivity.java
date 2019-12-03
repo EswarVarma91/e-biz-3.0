@@ -1,4 +1,4 @@
-package ebiz.lotus.eaglebiz;
+package ebiz.lotus.administrator.eaglebiz;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

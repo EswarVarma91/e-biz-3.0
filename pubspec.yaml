@@ -42,6 +42,8 @@ flutter:
     - assets/images/ebiz.png
     - assets/images/as.png
     - assets/images/eaglbiz.png
+    - assets/images/eaglebiz.png
+    
 
   fonts:
     - family: Roboto
