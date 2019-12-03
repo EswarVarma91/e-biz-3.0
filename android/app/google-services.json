@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "323705608437",
-    "firebase_url": "https://ebiz-84614.firebaseio.com",
-    "project_id": "ebiz-84614",
-    "storage_bucket": "ebiz-84614.appspot.com"
+    "project_number": "316456132800",
+    "firebase_url": "https://ebiz3-lotusv.firebaseio.com",
+    "project_id": "ebiz3-lotusv",
+    "storage_bucket": "ebiz3-lotusv.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:323705608437:android:d435f6a5c7c290cc204dbc",
+        "mobilesdk_app_id": "1:316456132800:android:15865f5ec87ce7e2a5cd25",
         "android_client_info": {
-          "package_name": "com.example.eaglebiz"
+          "package_name": "ebiz.lotus.administrator.eaglebiz"
         }
       },
       "oauth_client": [
         {
-          "client_id": "323705608437-j9petmgsoj0g23abcvj8lf18psgitoai.apps.googleusercontent.com",
+          "client_id": "316456132800-vd8aokamsk1s309p0e0b3n9tfn8ok01s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.eaglebiz",
+            "package_name": "ebiz.lotus.administrator.eaglebiz",
             "certificate_hash": "e56601dc5da099a6fc098d68ae4caf64afb340ef"
           }
         },
         {
-          "client_id": "323705608437-ivnjvtsi0afn9ko53f8uc6vsi8roel9u.apps.googleusercontent.com",
+          "client_id": "316456132800-0a9shcv0ljcv7dnmerko71dg716f2h2f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB2yWNohblJcR5iwZQnSM4xTv3FyQndosE"
+          "current_key": "AIzaSyBeimN6OasFqFN6JhSJJWPAPhYoQAtWlSY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "323705608437-ivnjvtsi0afn9ko53f8uc6vsi8roel9u.apps.googleusercontent.com",
+              "client_id": "316456132800-0a9shcv0ljcv7dnmerko71dg716f2h2f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
