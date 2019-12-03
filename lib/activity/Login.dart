@@ -153,7 +153,7 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 120,
+                        height: 80,
                       ),
                       Container(
                         child: Image.asset(
@@ -162,8 +162,14 @@ class _LoginState extends State<Login> {
                           height: 80,
                         ),
                       ),
+                      Container(
+                        child: Image.asset(
+                          'assets/images/ebiz.png',
+                          height: 60,
+                        ),
+                      ),
                       SizedBox(
-                        height: 50,
+                        height: 20,
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height / 2,
@@ -254,7 +260,8 @@ class _LoginState extends State<Login> {
                             //     ),
                             //   ),
                             // ),
-                            Spacer(),
+                            // Spacer(),
+                            SizedBox(height: 80,),
 
                             Material(
                               borderRadius: BorderRadius.circular(32.0),

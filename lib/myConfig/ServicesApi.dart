@@ -2,12 +2,15 @@ class ServicesApi {
   //========= New DataBase ebizdb=========//
 
   static String fcm_Send="https://fcm.googleapis.com/fcm/send";
-  static String FCM_KEY= "AAAAS15bmPU:APA91bFKAfKKD0YiHXI37U-iIUg1C0RVWdhvZ6kJyWh6Fd4is70mmfUzGwcFdpIjw-Ytl7pnPwhPvb7bOror0kSgyDLSne9v1uEaa1JgmEH5c_ffV4lI9iP1PHejAmUzVHPoboG4aJsI";
+  static String FCM_KEY= "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";
 
   // static String basic_url = "http://192.168.2.5:8383/"; //dev
+  // static String basic_url = "http://192.168.2.3:8080/"; //test
+  static String basic_url = "http://192.168.3.51:8083/"; //production
 
-  static String basic_url = "http://192.168.3.51:8083/"; //test\
-  static String hrms_Service="http://192.168.2.5:8383/hrms.service.prod/";
+  // static String hrms_Service="http://192.168.2.5:8383/hrms.service/"; //dev
+  // static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
+  static String hrms_Service="http://192.168.2.5:8383/hrms.service.prod/"; //live
 
   static String new_login_url = basic_url + "global.service/validate/user";
 
@@ -30,21 +33,18 @@ class ServicesApi {
       basic_url + global_Service + "updateAnyGlobalDataForMobile";
 
   //Leaves
-  static String insertLeave = basic_url + hrms_Service + "hrms/saveEmployeeLeave";
-  static String ChangeLeaveStatus =
-      basic_url + hrms_Service + "hrms/update/leave/status";
-  static String checkLeaveStatus = basic_url + hrms_Service + "hrms/get/hruser/data";
+  static String insertLeave = hrms_Service + "hrms/saveEmployeeLeave";
+  static String ChangeLeaveStatus = hrms_Service + "hrms/update/leave/status";
+  static String checkLeaveStatus =  hrms_Service + "hrms/get/hruser/data";
 
   //Permissions
-  static String insertPermission =
-      basic_url + hrms_Service + "hrms/saveEmpPermission";
-  static String ChangePermissionStatus =
-      basic_url + hrms_Service + "hrms/update/Permission/status";
+  static String insertPermission = hrms_Service + "hrms/saveEmpPermission";
+  static String ChangePermissionStatus =hrms_Service + "hrms/update/Permission/status";
   static String getLeaves =
       basic_url + att_Service + "attendance/get/user/leaves?id=";
 
   //Day Plan (Insert, Update):- Self, Team, Project
-  static String saveDayPlan = basic_url + hrms_Service + "hrms/saveDayPlan";
+  static String saveDayPlan = hrms_Service + "hrms/saveDayPlan";
 
   //Travel Insertion
   static String insert_travel =
