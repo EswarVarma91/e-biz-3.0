@@ -116,7 +116,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       hrCnt = preferences.getString("hrCnt");
       travelCnt = preferences.getString("travelCnt");
       salesCnt = preferences.getString("salesCnt");
-      print(downteam);
+      // print(downteam);
+
       if (downteam == "null" || downteam == null) {
         if (result.toString() == "1") {
           navigationItems.removeWhere((a) => a.title == "Approvals");
@@ -138,22 +139,22 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           listMain = navigationItemsHotels;
         }
       } else if (salesCnt == 1) {
-        if(result.toString()=="1"){
-          listMain=navigationItems;
-        }else if(result.toString()=="2"){
-          listMain=navigationItemsSales;
-        }else if(result.toString()=="3"){
-          listMain=navigationItemsTask;
-        }else if(result.toString()=="4"){
-          listMain=navigationItemsPermissions;
-        }else if(result.toString()=="5"){
-          listMain=navigationItemsApprovals;
-        }else if(result.toString()=="7"){
-          listMain=navigationItemsTravel;
-        }else if(result.toString()=="8"){
-          listMain=navigationItemsHotels;
+        if (result.toString() == "1") {
+          listMain = navigationItems;
+        } else if (result.toString() == "2") {
+          listMain = navigationItemsSales;
+        } else if (result.toString() == "3") {
+          listMain = navigationItemsTask;
+        } else if (result.toString() == "4") {
+          listMain = navigationItemsPermissions;
+        } else if (result.toString() == "5") {
+          listMain = navigationItemsApprovals;
+        } else if (result.toString() == "7") {
+          listMain = navigationItemsTravel;
+        } else if (result.toString() == "8") {
+          listMain = navigationItemsHotels;
         }
-      } else if(downteam!=null || downteam!="null") {
+      } else if (downteam != null || downteam != "null") {
         if (result.toString() == "1") {
           listMain = navigationItems;
         } else if (result.toString() == "2") {
@@ -264,15 +265,6 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                 itemCount: listMain.length,
               ),
             ),
-            /*IconButton(
-              icon: Icon(Icons.person),
-              color: lwtColor,
-              iconSize: 38,
-              onPressed: ()  {
-//                _logout();
-
-              },
-            ),*/
             IconButton(
               icon: Icon(Icons.exit_to_app),
               color: lwtColor,

@@ -88,6 +88,7 @@ class _ApprovalsState extends State<Approvals> {
         title: Text(
           "Approvals",
           style: TextStyle(color: Colors.white),
+          
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),

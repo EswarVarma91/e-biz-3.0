@@ -76,8 +76,12 @@ class _LoginState extends State<Login> {
 
   Future displayNotification(Map<String, dynamic> message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        'channelid', 'flutterfcm', 'your channel description',
-        importance: Importance.Max, priority: Priority.High,);
+      'channelid',
+      'flutterfcm',
+      'your channel description',
+      importance: Importance.Max,
+      priority: Priority.High,
+    );
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
@@ -153,28 +157,19 @@ class _LoginState extends State<Login> {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 80,
+                        height: 60,
                       ),
-                      Container(
-                        child: Image.asset(
-                          'assets/images/eaglebiz.png',
-                          width: 300,
-                          height: 80,
-                        ),
+                      SizedBox(
+                        height: 55,
                       ),
                       Container(
                         child: Image.asset(
                           'assets/images/ebiz.png',
-                          height: 60,
+                          height: 80,
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
                       Container(
-                        height: MediaQuery.of(context).size.height / 2,
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(top: 62),
+                        padding: EdgeInsets.only(top: 32),
                         child: Column(
                           children: <Widget>[
                             Container(
@@ -206,7 +201,7 @@ class _LoginState extends State<Login> {
                             Container(
                               width: MediaQuery.of(context).size.width / 1.2,
                               height: 45,
-                              margin: EdgeInsets.only(top: 32),
+                              margin: EdgeInsets.only(top: 22),
                               padding: EdgeInsets.only(
                                   top: 4, left: 16, right: 16, bottom: 4),
                               decoration: BoxDecoration(
@@ -246,29 +241,15 @@ class _LoginState extends State<Login> {
                                     )),
                               ),
                             ),
-
-                            // Align(
-                            //   alignment: Alignment.centerRight,
-                            //   child: Padding(
-                            //     padding: const EdgeInsets.only(
-                            //         top: 16, right: 32
-                            //     ),
-                            //     child: Text('Forgot Password ?',
-                            //       style: TextStyle(
-                            //           color: Colors.grey
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Spacer(),
-                            SizedBox(height: 80,),
-
+                            SizedBox(
+                              height: 20,
+                            ),
                             Material(
                               borderRadius: BorderRadius.circular(32.0),
                               shadowColor: lwtColor,
                               elevation: 15.0,
                               child: MaterialButton(
-                                minWidth: 280.0,
+                                minWidth: 300.0,
                                 height: 42.0,
                                 onPressed: () async {
                                   _loginmethod();
@@ -278,6 +259,18 @@ class _LoginState extends State<Login> {
                                         color: lwtColor,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 190,
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                'assets/images/eaglebiz.png',
+                                width: 150,
+                                height: 60,
                               ),
                             ),
                           ],
@@ -300,11 +293,11 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "Enter Password");
     } else {
       var response = await _makePostRequest(email, password);
-      loginList=(json.decode(response) as List)
-              .map((data) => new LoginModel.fromJson(data))
-              .toList();
-      
-      if (loginList[0].cnt==1) {
+      loginList = (json.decode(response) as List)
+          .map((data) => new LoginModel.fromJson(data))
+          .toList();
+
+      if (loginList[0].cnt == 1) {
         String email = _controller1.text;
 //        print(email + "," + loginData.userId.toString() + "," +
 //            loginData.fullName.toString() + "," +
@@ -343,8 +336,11 @@ class _LoginState extends State<Login> {
 
   _makePostRequest(String email, String password) async {
     try {
-      var response = await dio.post(ServicesApi.getData,
-          data: {"parameter1": "checkUserLogin", "parameter2": email,"parameter3":password});
+      var response = await dio.post(ServicesApi.getData, data: {
+        "parameter1": "checkUserLogin",
+        "parameter2": email,
+        "parameter3": password
+      });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.data);
         return response.data;
@@ -363,8 +359,7 @@ class _LoginState extends State<Login> {
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -385,7 +380,8 @@ class _LoginState extends State<Login> {
       String branchid,
       String emailId,
       String department,
-      String designation,String fixedTerm) async {
+      String designation,
+      String fixedTerm) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("data", userEmail);
     preferences.setString("userId", uId.toString());
@@ -401,6 +397,6 @@ class _LoginState extends State<Login> {
     preferences.setString("emailId", emailId.toString());
     preferences.setString("department", department.toString());
     preferences.setString("designation", designation.toString());
-    preferences.setString("fixedTerm",fixedTerm.toString());
+    preferences.setString("fixedTerm", fixedTerm.toString());
   }
 }

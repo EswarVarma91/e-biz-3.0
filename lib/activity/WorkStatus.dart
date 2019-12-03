@@ -203,7 +203,7 @@ class _WorkStatusState extends State<WorkStatus> {
             "parameter1": "UpdateEmpTourinAttendance",
             "parameter2": empCode.toString(),
             "parameter3": currDate.toString(),
-            "parameter4": "At-Office"
+            "parameter4": "Working"
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

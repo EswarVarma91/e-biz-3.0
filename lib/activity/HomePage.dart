@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Ebiz/main.dart' as prefix0;
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/ProfileScreen.dart';
@@ -195,12 +196,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
         ),
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          // IconButton(
-          //   icon: Image.asset('images/ebiz.png'),
-          //   onPressed: (){
-
-          //   },
-          // ),
           Padding(
             padding: EdgeInsets.only(right: 0),
             child: IconButton(
@@ -219,6 +214,16 @@ class _HomePageLocationState extends State<HomePageLocation> {
         children: <Widget>[
           Container(
             color: Colors.white,
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: 5, right: 5),
+            alignment: Alignment.bottomRight,
+            child: Image.asset(
+              'assets/images/ebiz.png',
+              color: lwtColor,
+              height: 80,
+              width: 80,
+            ),
           ),
           Container(
             margin: EdgeInsets.only(left: 65, right: 5, top: 0),
