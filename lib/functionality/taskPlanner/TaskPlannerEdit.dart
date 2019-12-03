@@ -182,10 +182,10 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
         Navigator.pop(context);
         pr.hide();
         throw Exception("Incorrect data");
-      } else
+      } else {
         Navigator.pop(context);
-      pr.hide();
-      throw Exception('Authentication Error');
+        pr.hide();
+      }
     } on DioError catch (exception) {
       Navigator.pop(context);
       pr.hide();

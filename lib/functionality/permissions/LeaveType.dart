@@ -7,7 +7,7 @@ class LeaveType extends StatefulWidget {
 }
 
 class _LeaveTypeState extends State<LeaveType> {
-  final List<String> listLeaves = ['CL', 'CAL', 'SL', 'CO', 'ML'  ];
+  final List<String> listLeaves = ['CL', 'CAL', 'SL', 'CO', 'ML' ,'LOP' ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

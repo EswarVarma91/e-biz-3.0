@@ -494,7 +494,7 @@ class _NewLeaveState extends State<NewLeave> {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       pr.hide();
-      Fluttertoast.showToast(msg: "Leave Generated");
+      Fluttertoast.showToast(msg: "Leave Generated Successfully");
       Navigator.push(context,
           MaterialPageRoute(builder: (BuildContext context) => Permissions()));
       // getReportingLevelToken(
@@ -522,6 +522,7 @@ class _NewLeaveState extends State<NewLeave> {
       // List pastContinousDays =json.decode(response.data)['PAST_CONTINOUS_DAYS'];
 
       effeDates.clear();
+  
       if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
         effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
         for (String sDates in effectiveDates) {
@@ -535,6 +536,7 @@ class _NewLeaveState extends State<NewLeave> {
               .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       }
+      
       if(listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES'])<7){
 
           if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
@@ -683,7 +685,7 @@ class _NewLeaveState extends State<NewLeave> {
                 data, fromDateS, toDateS, fullname, purpose, leaveType);
           } else {
             pr.hide();
-            Fluttertoast.showToast(msg: "Leave Applied");
+            Fluttertoast.showToast(msg: "Leave Generated Successfully" );
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) => Permissions()),
@@ -692,7 +694,7 @@ class _NewLeaveState extends State<NewLeave> {
           }
         } else {
           pr.hide();
-          Fluttertoast.showToast(msg: "Leave Applied");
+          Fluttertoast.showToast(msg: "Leave Generated Successfully");
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => Permissions()),
             ModalRoute.withName('/'),
@@ -700,7 +702,7 @@ class _NewLeaveState extends State<NewLeave> {
         }
       } else {
         pr.hide();
-        Fluttertoast.showToast(msg: "Leave Applied");
+        Fluttertoast.showToast(msg: "Leave Generated Successfully");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => Permissions()),
           ModalRoute.withName('/'),
@@ -744,7 +746,7 @@ class _NewLeaveState extends State<NewLeave> {
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
     pr.hide();
-    Fluttertoast.showToast(msg: "Leave Applied");
+    Fluttertoast.showToast(msg: "Leave Generated Successfully");
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => Permissions()),
       ModalRoute.withName('/'),
