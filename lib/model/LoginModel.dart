@@ -1,12 +1,13 @@
 class LoginModel {
-  final int cnt, uId, uEmpCode,hrCnt,travelCnt,salesCnt,branchid,fixedTerm;
+  final int cnt, uId, uEmpCode,hrCnt,travelCnt,salesCnt,fixedTerm;
   final String fullName,
       profileName,
       downTeamIds,
       mobileNumber,
       emailId,
       department,
-      designation;
+      designation,
+      branchid;
 
   LoginModel(
       this.cnt,
