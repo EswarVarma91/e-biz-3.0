@@ -130,8 +130,7 @@ class _ReferedByState extends State<ReferedBy> {
         dataCheckList = (json.decode(response.data) as List)
             .map((data) => new ReferedbyModel.fromJson(data))
             .toList();
-        dataCheckList
-            .removeWhere((item) => item.uId.toString() == uidd.toString());
+        
         dataCheckList.removeWhere((item) => item.fullName.toString() == null);
         dataCheckList.removeWhere((item) => item.fullName.toString().isEmpty);
 
