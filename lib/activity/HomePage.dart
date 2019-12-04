@@ -181,11 +181,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
         //        var checkMorningTime=DateFormat("HH:mm").parse("08:00");
         //        var checkNightTime=DateFormat("HH:mm").parse("20:00");
         //        checkCurrentTime.difference(checkMorningTime).inMinutes.toString();
-        //        if(checkCurrentTime.difference(checkMorningTime).inMinutes>=-1 && checkCurrentTime.difference(checkNightTime).inMinutes<=1)
-        //        {
-        //          const oneMin = const Duration(minutes:15);
-        //          new Timer.periodic(oneMin, (Timer t) => sendUserLocation(lati,longi));
-        //        }
+      
+                // sendUserLocation(lati,longi);
+        
       }
     });
     return Scaffold(
@@ -933,39 +931,39 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  void sendUserLocation(double lati, double longi) async {
-    var now = DateTime.now();
-    var dateNow = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
-    try {
-      var response = await dio.put(ServicesApi.updateData,
-          data: {
-            "parameter1": "insertUserLocations",
-            "parameter2": userId,
-            "parameter3": lati.toString(),
-            "parameter4": longi.toString(),
-            "parameter5": dateNow
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        var res = json.decode(response.data);
-        print(res.toString());
-      } else {
-        Fluttertoast.showToast(msg: "Check your internet connection.");
-      }
-    } on DioError catch (exception) {
-      if (exception == null ||
-          exception.toString().contains('SocketException')) {
-        throw Exception("Network Error");
-      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-          exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception("Check your internet connection.");
-      } else {
-        return null;
-      }
-    }
-  }
+  // void sendUserLocation(double lati, double longi) async {
+  //   var now = DateTime.now();
+  //   var dateNow = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
+  //   try {
+  //     var response = await dio.put(ServicesApi.updateData,
+  //         data: {
+  //           "parameter1": "insertUserLocations",
+  //           "parameter2": userId,
+  //           "parameter3": lati.toString(),
+  //           "parameter4": longi.toString(),
+  //           "parameter5": dateNow
+  //         },
+  //         options: Options(
+  //           contentType: ContentType.parse('application/json'),
+  //         ));
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       var res = json.decode(response.data);
+  //       print(res.toString());
+  //     } else {
+  //       Fluttertoast.showToast(msg: "Check your internet connection.");
+  //     }
+  //   } on DioError catch (exception) {
+  //     if (exception == null ||
+  //         exception.toString().contains('SocketException')) {
+  //       throw Exception("Network Error");
+  //     } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+  //         exception.type == DioErrorType.CONNECT_TIMEOUT) {
+  //       throw Exception("Check your internet connection.");
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
 
   roundedAlertDialog(userLocation) {
     var now1 = DateTime.now();

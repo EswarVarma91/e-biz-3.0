@@ -1,13 +1,12 @@
 class LoginModel {
-  final int cnt, uId, uEmpCode,hrCnt,travelCnt,salesCnt,fixedTerm;
+  final int cnt, uId, uEmpCode, hrCnt, travelCnt, salesCnt, fixedTerm, branchid;
   final String fullName,
       profileName,
       downTeamIds,
       mobileNumber,
       emailId,
       department,
-      designation,
-      branchid;
+      designation;
 
   LoginModel(
       this.cnt,
@@ -23,7 +22,8 @@ class LoginModel {
       this.branchid,
       this.emailId,
       this.department,
-      this.designation,this.fixedTerm);
+      this.designation,
+      this.fixedTerm);
 
   LoginModel.fromJson(Map<String, dynamic> json)
       : cnt = json['cnt'],
@@ -46,9 +46,9 @@ class LoginModel {
         'cnt': cnt,
         'uId': uId,
         'uEmpCode': uEmpCode,
-        'hrCnt':hrCnt,
-        'travelCnt':travelCnt,
-        'salesCnt':salesCnt,
+        'hrCnt': hrCnt,
+        'travelCnt': travelCnt,
+        'salesCnt': salesCnt,
         'fullName': fullName,
         'profileName': profileName,
         'downTeamIds': downTeamIds,
@@ -57,6 +57,6 @@ class LoginModel {
         'emailId': emailId,
         'department': department,
         'designation': designation,
-        'fixedTerm' : fixedTerm,
+        'fixedTerm': fixedTerm,
       };
 }
