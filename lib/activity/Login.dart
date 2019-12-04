@@ -354,11 +354,11 @@ class _LoginState extends State<Login> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-        Fluttertoast.showToast(msg: "Check your internet connection.");
+        // Fluttertoast.showToast(msg: "Socket Time out.");
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        Fluttertoast.showToast(msg: "Check your internet connection.");
+        // Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Check your internet connection.");
       } else {
         return null;
