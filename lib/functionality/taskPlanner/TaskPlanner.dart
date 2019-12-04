@@ -955,7 +955,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                               ),
                               Expanded(
                                 child: Text(
-                                  list2[index]?.dp_created_date.toString() ??
+                                  displayDateFormat(list2[index]?.dp_created_date.toString()) ??
                                       '' + "NA.",
                                   style: TextStyle(
                                       color: lwtColor,
@@ -1079,5 +1079,10 @@ class _TaskPlannerState extends State<TaskPlanner> {
                 )),
               ));
         });
+  }
+
+    displayDateFormat(String elFromDate) {
+    List<String> a = elFromDate.split("-");
+    return a[2] + "-" + a[1] + "-" + a[0];
   }
 }

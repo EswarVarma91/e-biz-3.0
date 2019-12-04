@@ -820,7 +820,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            trlm[index].journeyDate,
+                            displayDateFormat(trlm[index].journeyDate),
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1044,7 +1044,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            hrlm[index]?.hotel_check_in ?? "",
+                            displayDateFormat(hrlm[index]?.hotel_check_in) ?? "",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1060,7 +1060,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            hrlm[index]?.hotel_check_out ?? "",
+                            displayDateFormat(hrlm[index]?.hotel_check_out) ?? "",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1889,4 +1889,5 @@ class _ApprovalsState extends State<Approvals> {
   
     Navigator.pop(context);
   }
+
 }
