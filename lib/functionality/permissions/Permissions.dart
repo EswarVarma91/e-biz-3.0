@@ -1493,42 +1493,42 @@ class _PermissionsState extends State<Permissions> {
         checkServices();
       }
 
-      //==========================================================
-      var latecomingEmp = await dio.post(ServicesApi.getData,
-          data: {
-            "parameter1": "getUserLateComingByMonth",
-            "parameter2": employCode.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-      if (latecomingEmp.statusCode == 200 || latecomingEmp.statusCode == 201) {
-        setState(() {
-          latecomingList = (json.decode(latecomingEmp.data) as List)
-              .map((data) => new LateEarlyComingModel.fromJson(data))
-              .toList();
-//          print(latecomingList.toString());
-        });
-        checkServices();
-      }
-      //======================================
-      var earlygoingEmp = await dio.post(ServicesApi.getData,
-          data: {
-            "parameter1": "getUserEarlyGoingByMonth",
-            "parameter2": employCode.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
-      if (earlygoingEmp.statusCode == 200 || earlygoingEmp.statusCode == 201) {
-        setState(() {
-          earlygoingList = (json.decode(earlygoingEmp.data) as List)
-              .map((data) => new LateEarlyComingModel.fromJson(data))
-              .toList();
-//          print(earlygoingList.toString());
-        });
-      }
-      checkServices();
+//       //==========================================================
+//       var latecomingEmp = await dio.post(ServicesApi.getData,
+//           data: {
+//             "parameter1": "getUserLateComingByMonth",
+//             "parameter2": employCode.toString()
+//           },
+//           options: Options(
+//             contentType: ContentType.parse('application/json'),
+//           ));
+//       if (latecomingEmp.statusCode == 200 || latecomingEmp.statusCode == 201) {
+//         setState(() {
+//           latecomingList = (json.decode(latecomingEmp.data) as List)
+//               .map((data) => new LateEarlyComingModel.fromJson(data))
+//               .toList();
+// //          print(latecomingList.toString());
+//         });
+//         checkServices();
+//       }
+//       //======================================
+//       var earlygoingEmp = await dio.post(ServicesApi.getData,
+//           data: {
+//             "parameter1": "getUserEarlyGoingByMonth",
+//             "parameter2": employCode.toString()
+//           },
+//           options: Options(
+//             contentType: ContentType.parse('application/json'),
+//           ));
+//       if (earlygoingEmp.statusCode == 200 || earlygoingEmp.statusCode == 201) {
+//         setState(() {
+//           earlygoingList = (json.decode(earlygoingEmp.data) as List)
+//               .map((data) => new LateEarlyComingModel.fromJson(data))
+//               .toList();
+// //          print(earlygoingList.toString());
+//         });
+//       }
+//       checkServices();
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -1566,7 +1566,7 @@ class _PermissionsState extends State<Permissions> {
             data: {
               "modifiedBy": profilename,
               "permissionId": leavepermissionId,
-              "remarks": "string",
+              "remarks": "",
               "statusId": 0,
             },
             options: Options(

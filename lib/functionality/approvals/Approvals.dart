@@ -1635,14 +1635,17 @@ class _ApprovalsState extends State<Approvals> {
             pushPermissionsNotification(to, date, status);
           } else {
             pr.hide();
+            getPendingApprovals();
             Navigator.pop(context);
           }
         } else {
           pr.hide();
+          getPendingApprovals();
           Navigator.pop(context);
         }
       } else {
         pr.hide();
+        getPendingApprovals();
         Navigator.pop(context);
       }
     } else if (response.statusCode == 401) {
@@ -1703,14 +1706,17 @@ class _ApprovalsState extends State<Approvals> {
             pushLeavesNotification(to, el_from_date, el_to_date, status);
           } else {
             pr.hide();
+            getPendingApprovals();
             Navigator.pop(context);
           }
         } else {
           pr.hide();
+          getPendingApprovals();
           Navigator.pop(context);
         }
       } else {
         pr.hide();
+        getPendingApprovals();
         Navigator.pop(context);
       }
     } else if (response.statusCode == 401) {
@@ -1773,14 +1779,17 @@ class _ApprovalsState extends State<Approvals> {
             pushTravelNotification(to, reqno, status);
           } else {
             pr.hide();
+            getPendingApprovals();
             Navigator.pop(context);
           }
         } else {
           pr.hide();
+          getPendingApprovals();
           Navigator.pop(context);
         }
       } else {
         pr.hide();
+        getPendingApprovals();
         Navigator.pop(context);
       }
     } else if (response.statusCode == 401) {
@@ -1834,14 +1843,17 @@ class _ApprovalsState extends State<Approvals> {
             pushHotelNotification(to, reqno, status);
           } else {
             pr.hide();
+            getPendingApprovals();
             Navigator.pop(context);
           }
         } else {
           pr.hide();
+          getPendingApprovals();
           Navigator.pop(context);
         }
       } else {
         pr.hide();
+        getPendingApprovals();
         Navigator.pop(context);
       }
     } else if (response.statusCode == 401) {

@@ -222,6 +222,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
               trailing: IconButton(
                 icon: Icon(Icons.calendar_today),
                 onPressed: () {
+                  TrequiredDateTime = "";
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(y, m, d, hh, mm),
@@ -234,6 +235,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
                 },
               ),
               onTap: () async {
+                TrequiredDateTime = "";
                 DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
                     minTime: DateTime(y, m, d, hh, mm),
@@ -353,7 +355,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
 
   updateTravelrequest(
       String trarrivalDateTime, String trequiredDateTime) async {
-        pr.show();
+    pr.show();
     var now = DateTime.now();
     var response = await dio.post(ServicesApi.updateData,
         data: {

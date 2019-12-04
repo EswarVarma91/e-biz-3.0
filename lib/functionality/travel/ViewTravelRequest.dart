@@ -352,8 +352,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
                                       Container(
                                           width: 180,
                                           child: Text(
-                                            trbtid[index]
-                                                    ?.tra_required_datetime ??
+                                            trbtid[index]?.tra_required_datetime ??
                                                 "",
                                             style: TextStyle(
                                                 color: Colors.grey,

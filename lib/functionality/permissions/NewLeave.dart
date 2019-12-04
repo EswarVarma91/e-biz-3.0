@@ -568,8 +568,7 @@ class _NewLeaveState extends State<NewLeave> {
                             "You are exceeding the maximum number of leave days.");
                   }
                 } else {
-                  if (listData(
-                          json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
+                  if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >=1) {
                     Fluttertoast.showToast(
                         msg: "You should apply before 6 days of applied date.");
                   } else {
