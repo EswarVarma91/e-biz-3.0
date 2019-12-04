@@ -158,7 +158,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         pushAttendance();
       } else {
         _localGet();
-        Fluttertoast.showToast(msg: "Check your internet connection.");
+        Fluttertoast.showToast(msg: "Data Disconnected.");
       }
     });
   }
