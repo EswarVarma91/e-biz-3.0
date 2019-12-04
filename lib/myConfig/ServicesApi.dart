@@ -6,14 +6,14 @@ class ServicesApi {
       "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";
 
   // static String basic_url = "http://192.168.2.5:8383/"; //dev
-  static String basic_url = "http://192.168.2.3:8080/"; //test
+  // static String basic_url = "http://192.168.2.3:8080/"; //test
   // static String basic_url = "http://192.168.3.51:8083/"; //production
-  // static String basic_url = "http://49.207.32.34:8083/"; //global
+  static String basic_url = "http://49.207.32.34:8083/"; //global
 
   // static String hrms_Service = "http://192.168.2.5:8383/hrms.service/"; //dev
-  static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
-  // static String hrms_Service ="http://192.168.2.5:8383/hrms.service.prod/"; //live
-  // static String hrms_Service ="http://49.207.32.34:8383/hrms.service.prod/"; //global
+  // static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
+  // static String hrms_Service ="http://192.168.2.5:8383/hrms.service.prod/"; //production
+  static String hrms_Service ="http://49.207.32.34:8383/hrms.service.prod/"; //global
 
   static String new_login_url = basic_url + "global.service/validate/user";
 
