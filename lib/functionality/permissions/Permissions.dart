@@ -42,20 +42,6 @@ class _PermissionsState extends State<Permissions> {
   List<PermissionModel> list55 = new List();
   List<PermissionModel> list66 = new List();
 
-  List<LateEarlyComingModel> latecomingList = new List();
-  List<LateEarlyComingModel> list222 = new List();
-  List<LateEarlyComingModel> list333 = new List();
-  List<LateEarlyComingModel> list444 = new List();
-  List<LateEarlyComingModel> list555 = new List();
-  List<LateEarlyComingModel> list666 = new List();
-
-  List<LateEarlyComingModel> earlygoingList = new List();
-  List<LateEarlyComingModel> list2222 = new List();
-  List<LateEarlyComingModel> list3333 = new List();
-  List<LateEarlyComingModel> list4444 = new List();
-  List<LateEarlyComingModel> list5555 = new List();
-  List<LateEarlyComingModel> list6666 = new List();
-
   String uuid, profilename, employCode;
   var _isEditButton = false;
   bool _isloading = false;
@@ -220,134 +206,6 @@ class _PermissionsState extends State<Permissions> {
           list22 = list66;
         });
       }
-    // } else if (latecoming == true) {
-    //   lateearly = true;
-    //   list333 = latecomingList.where((d) {
-    //     if (d.att_id == "-") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-    //   list444 = latecomingList.where((d) {
-    //     if (d.att_id != "-" &&
-    //         d.hr_approval != "1" &&
-    //         d.hr_approval != "2" &&
-    //         d.tl_approval != "1" &&
-    //         d.tl_approval != "2") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   list555 = latecomingList.where((d) {
-    //     if (d.hr_approval == "2") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   list666 = latecomingList.where((d) {
-    //     if (d.hr_approval == "1") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   setState(() {
-    //     pendingCount = list333?.length.toString() ?? "-";
-    //     approvedCount = list444?.length.toString() ?? "-";
-    //     cancelledCount = list555?.length.toString() ?? "-";
-    //     rejectedCount = list666?.length.toString() ?? "-";
-    //   });
-
-    //   if (_color1 == true) {
-    //     setState(() {
-    //       _isEditButton = true;
-    //       list222 = list333;
-    //     });
-    //   } else if (_color2 == true) {
-    //     setState(() {
-    //       _isEditButton = false;
-    //       list222 = list444;
-    //     });
-    //   } else if (_color3 == true) {
-    //     setState(() {
-    //       _isEditButton = false;
-    //       list222 = list555;
-    //     });
-    //   } else if (_color4 == true) {
-    //     setState(() {
-    //       _isEditButton = false;
-    //       list222 = list666;
-    //     });
-    //   }
-    // } else if (earlygoing == true) {
-    //   lateearly = true;
-    //   latecoming = false;
-    //   list3333 = earlygoingList.where((d) {
-    //     if (d.att_id == "-" &&
-    //         d.hr_approval != "1" &&
-    //         d.hr_approval != "2" &&
-    //         d.tl_approval != "1" &&
-    //         d.tl_approval != "2") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   list4444 = earlygoingList.where((d) {
-    //     if (d.att_id != "-" &&
-    //         d.hr_approval != "1" &&
-    //         d.hr_approval != "2" &&
-    //         d.tl_approval != "1" &&
-    //         d.tl_approval != "2" &&
-    //         d.att_work_status != "Absent") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   list5555 = earlygoingList.where((d) {
-    //     if (d.hr_approval == "2") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   list6666 = earlygoingList.where((d) {
-    //     if (d.hr_approval == "1") {
-    //       return true;
-    //     }
-    //     return false;
-    //   }).toList();
-
-    //   setState(() {
-    //     pendingCount = list3333?.length.toString() ?? "-";
-    //     approvedCount = list4444?.length.toString() ?? "-";
-    //     cancelledCount = list5555?.length.toString() ?? "-";
-    //     rejectedCount = list6666?.length.toString() ?? "-";
-    //   });
-    //   if (_color1 == true) {
-    //     setState(() {
-    //       _isEditButton = true;
-    //       list2222 = list3333;
-    //     });
-    //   } else if (_color2 == true) {
-    //     setState(() {
-    //       _isEditButton = false;
-    //       list2222 = list4444;
-    //     });
-    //   } else if (_color3 == true) {
-    //     setState(() {
-    //       _isEditButton = false;
-    //       list2222 = list5555;
-    //     });
-    //   } else if (_color4 == true) {
-    //     setState(() {
-    //       _isEditButton = false;
-    //       list2222 = list6666;
-    //     });
-    //   }
     }
   }
 
@@ -404,59 +262,69 @@ class _PermissionsState extends State<Permissions> {
             Container(
               color: Colors.white,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 60, right: 5, top: 6),
-              child: StaggeredGridView.count(
-                crossAxisCount: 4,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: leavesM(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: permissionsM(),
-                  ),
-                ],
-                staggeredTiles: [
-                  StaggeredTile.extent(2, 45.0),
-                  StaggeredTile.extent(2, 45.0),
-                ],
+            RefreshIndicator(
+              child: Container(
+                margin: EdgeInsets.only(left: 60, right: 5, top: 6),
+                child: StaggeredGridView.count(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 12.0,
+                  mainAxisSpacing: 12.0,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: leavesM(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: permissionsM(),
+                    ),
+                  ],
+                  staggeredTiles: [
+                    StaggeredTile.extent(2, 45.0),
+                    StaggeredTile.extent(2, 45.0),
+                  ],
+                ),
               ),
+              onRefresh: () async {
+                getDataLeaves_Permissions();
+              },
             ),
-            Container(
-              margin: EdgeInsets.only(left: 60, right: 5, top: 65),
-              child: StaggeredGridView.count(
-                crossAxisCount: 8,
-                crossAxisSpacing: 5.0,
-                mainAxisSpacing: 5.0,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard1(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard2(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard3(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard4(),
-                  ),
-                ],
-                staggeredTiles: [
-                  StaggeredTile.extent(2, 85.0),
-                  StaggeredTile.extent(2, 85.0),
-                  StaggeredTile.extent(2, 85.0),
-                  StaggeredTile.extent(2, 85.0),
-                ],
+            RefreshIndicator(
+              child: Container(
+                margin: EdgeInsets.only(left: 60, right: 5, top: 65),
+                child: StaggeredGridView.count(
+                  crossAxisCount: 8,
+                  crossAxisSpacing: 5.0,
+                  mainAxisSpacing: 5.0,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard1(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard2(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard3(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard4(),
+                    ),
+                  ],
+                  staggeredTiles: [
+                    StaggeredTile.extent(2, 85.0),
+                    StaggeredTile.extent(2, 85.0),
+                    StaggeredTile.extent(2, 85.0),
+                    StaggeredTile.extent(2, 85.0),
+                  ],
+                ),
               ),
+              onRefresh: () async {
+                getDataLeaves_Permissions();
+              },
             ),
             leaves
                 ? Container(
@@ -983,11 +851,6 @@ class _PermissionsState extends State<Permissions> {
               checkServices();
             }
           });
-          /* var navigator = Navigator.of(context);
-          navigator.push(
-            MaterialPageRoute(builder: (BuildContext context) => SalesLeadDetails()),
-//                          ModalRoute.withName('/'),
-          );*/
         },
         child: Center(
           child: Padding(
@@ -1154,9 +1017,6 @@ class _PermissionsState extends State<Permissions> {
               margin: EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
               child: InkWell(
                 child: Container(
-                    /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
-                        borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
-                        )),*/
                     child: Padding(
                   padding: const EdgeInsets.all(2.0),
                   child: Column(
@@ -1271,190 +1131,6 @@ class _PermissionsState extends State<Permissions> {
               ));
         });
   }
-//   latecomingListView() {
-//     return ListView.builder(
-//         itemCount: list222 == null ? 0 : list222.length,
-//         itemBuilder: (BuildContext context, int index) {
-//           return Card(
-//               elevation: 5.0,
-//               margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-//               child: InkWell(
-//                 child: Container(
-//                   /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
-//                         borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
-//                         )),*/
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(10.0),
-//                       child: ListTile(
-//                         subtitle: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: <Widget>[
-//                             Row(
-//                               children: <Widget>[
-//                                 Text("In Time    :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(top: 4),
-//                                 ),
-//                                 Text(list222[index]?.att_in_time.toString() ?? 'NA',
-//                                   style: TextStyle(
-//                                       color: lwtColor,
-//                                       fontSize: 10,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                               ],
-//                             ),
-//                             Padding(
-//                               padding: EdgeInsets.only(top: 4),
-//                             ),
-//                             Row(
-//                               children: <Widget>[
-//                                 Text("Status      :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(top: 4),
-//                                 ),
-//                                 Text(list222[index]?.att_work_status.toString() ?? 'NA',
-//                                   style: TextStyle(
-//                                       color: lwtColor,
-//                                       fontSize: 10,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                               ],
-//                             ),Padding(
-//                               padding: EdgeInsets.only(top: 4),
-//                             ),
-//                             Row(
-//                               children: <Widget>[
-//                                 Text("Date        :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(top: 4),
-//                                 ),
-//                                 Text(displayDateFormat(list222[index]?.att_date.toString()) ?? 'NA',
-//                                   style: TextStyle(
-//                                       color: lwtColor,
-//                                       fontSize: 10,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                               ],
-//                             ),
-//                            /* Text(_CheckApprovalStatus(list222[index])?? 'NA',
-//                               style: TextStyle(
-//                                 color: Colors.black54,
-//                                 fontSize: 10,
-//                               ),
-//                             ),*/
-//                           ],
-//                         ),
-//                         trailing: _isEditButton ? IconButton(
-//                               icon: Icon(
-//                                 Icons.check,
-//                                 color: lwtColor,
-//                               ),
-//                               onPressed: () {
-//                                   if(list222[index].att_id=="-") {
-//                                     roundedAlertBox(list222[index], 1);
-// //                                    LateComingReuestServiceCall(list222[index], 1);
-//                                     }else {
-//                                     Fluttertoast.showToast(msg: "Already Applied");
-//                                     }
-//                               },
-//                             ): IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
-//                           //
-//                         },),
-
-//                       ),
-//                     )),
-//               ));
-//         });
-//   }
-
-//   earlygoingListView() {
-//     return ListView.builder(
-//         itemCount: list2222 == null ? 0 : list2222.length,
-//         itemBuilder: (BuildContext context, int index) {
-//           return Card(
-//               elevation: 5.0,
-//               margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-//               child: InkWell(
-//                 child: Container(
-//                   /* decoration: BoxDecoration(border: Border.all(color: lwtColor,width: 1),
-//                         borderRadius: BorderRadius.only(topLeft: const Radius.circular(5.0), topRight: const Radius.circular(5.0),bottomLeft: const Radius.circular(5.0), bottomRight: const Radius.circular(5.0),
-//                         )),*/
-//                     child: Padding(
-//                       padding: const EdgeInsets.all(10.0),
-//                       child: ListTile(
-//                         subtitle: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: <Widget>[
-//                             Row(
-//                               children: <Widget>[
-//                                 Text("Out Time    :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(top: 4),
-//                                 ),
-//                                 Text(list2222[index]?.att_out_time.toString() ?? "",
-//                                   style: TextStyle(
-//                                       color: lwtColor,
-//                                       fontSize: 10,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                               ],
-//                             ),
-//                             Padding(
-//                               padding: EdgeInsets.only(top: 4),
-//                             ),
-//                             Row(
-//                               children: <Widget>[
-//                                 Text("Status         :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(top: 4),
-//                                 ),
-//                                 Text(list2222[index]?.att_work_status.toString() ?? 'NA',
-//                                   style: TextStyle(
-//                                       color: lwtColor,
-//                                       fontSize: 10,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                               ],
-//                             ),Padding(
-//                               padding: EdgeInsets.only(top: 4),
-//                             ),
-//                             Row(
-//                               children: <Widget>[
-//                                 Text("Date           :   ",style: TextStyle(color:Colors.black,fontSize: 8),),
-//                                 Padding(
-//                                   padding: EdgeInsets.only(top: 4),
-//                                 ),
-//                                 Text(displayDateFormat(list2222[index]?.att_date.toString()) ?? 'NA',
-//                                   style: TextStyle(
-//                                       color: lwtColor,
-//                                       fontSize: 10,
-//                                       fontWeight: FontWeight.bold),
-//                                 ),
-//                               ],
-//                             ),
-//                           ],
-//                         ),
-//                         trailing: _isEditButton ? IconButton(
-//                           icon: Icon(
-//                             Icons.check,
-//                             color: lwtColor,
-//                           ),
-//                           onPressed: () {
-//                             if(list2222[index].att_id=="-") {
-//                               roundedAlertBox(list2222[index], 2);
-// //                              LateComingReuestServiceCall(list222[index], 2);
-//                             }else {
-//                               Fluttertoast.showToast(msg: "Already Applied");
-//                             }
-//                           },
-//                         ):IconButton(icon:Icon(Icons.visibility_off),onPressed: (){
-//                       //
-//                     },),
-//                       ),
-//                     )),
-//               ));
-//         });
-//   }
 
   getDataLeaves_Permissions() async {
     try {
@@ -1492,43 +1168,6 @@ class _PermissionsState extends State<Permissions> {
         });
         checkServices();
       }
-
-//       //==========================================================
-//       var latecomingEmp = await dio.post(ServicesApi.getData,
-//           data: {
-//             "parameter1": "getUserLateComingByMonth",
-//             "parameter2": employCode.toString()
-//           },
-//           options: Options(
-//             contentType: ContentType.parse('application/json'),
-//           ));
-//       if (latecomingEmp.statusCode == 200 || latecomingEmp.statusCode == 201) {
-//         setState(() {
-//           latecomingList = (json.decode(latecomingEmp.data) as List)
-//               .map((data) => new LateEarlyComingModel.fromJson(data))
-//               .toList();
-// //          print(latecomingList.toString());
-//         });
-//         checkServices();
-//       }
-//       //======================================
-//       var earlygoingEmp = await dio.post(ServicesApi.getData,
-//           data: {
-//             "parameter1": "getUserEarlyGoingByMonth",
-//             "parameter2": employCode.toString()
-//           },
-//           options: Options(
-//             contentType: ContentType.parse('application/json'),
-//           ));
-//       if (earlygoingEmp.statusCode == 200 || earlygoingEmp.statusCode == 201) {
-//         setState(() {
-//           earlygoingList = (json.decode(earlygoingEmp.data) as List)
-//               .map((data) => new LateEarlyComingModel.fromJson(data))
-//               .toList();
-// //          print(earlygoingList.toString());
-//         });
-//       }
-//       checkServices();
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {

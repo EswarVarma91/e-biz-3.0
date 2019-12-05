@@ -319,64 +319,72 @@ class _TaskPlannerState extends State<TaskPlanner> {
             Container(
               color: Colors.white,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 60, right: 5, top: 6),
-              child: StaggeredGridView.count(
-                crossAxisCount: 6,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: myTasksM(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: teamTasksM(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: projectTasksM(),
-                  ),
-                ],
-                staggeredTiles: [
-                  StaggeredTile.extent(2, 45.0),
-                  StaggeredTile.extent(2, 45.0),
-                  StaggeredTile.extent(2, 45.0),
-                ],
-              ),
+            RefreshIndicator(
+                          child: Container(
+                margin: EdgeInsets.only(left: 60, right: 5, top: 6),
+                child: StaggeredGridView.count(
+                  crossAxisCount: 6,
+                  crossAxisSpacing: 12.0,
+                  mainAxisSpacing: 12.0,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: myTasksM(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: teamTasksM(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: projectTasksM(),
+                    ),
+                  ],
+                  staggeredTiles: [
+                    StaggeredTile.extent(2, 45.0),
+                    StaggeredTile.extent(2, 45.0),
+                    StaggeredTile.extent(2, 45.0),
+                  ],
+                ),
+              ), onRefresh: () async {
+                getTaskPlanner(uidd);
+              },
             ),
-            Container(
-              margin: EdgeInsets.only(left: 60, right: 5, top: 60),
-              child: StaggeredGridView.count(
-                crossAxisCount: 8,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard1(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard2(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard3(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 1, top: 1),
-                    child: dashboard4(),
-                  ),
-                ],
-                staggeredTiles: [
-                  StaggeredTile.extent(2, 70.0),
-                  StaggeredTile.extent(2, 70.0),
-                  StaggeredTile.extent(2, 70.0),
-                  StaggeredTile.extent(2, 70.0),
-                ],
-              ),
+            RefreshIndicator(
+                          child: Container(
+                margin: EdgeInsets.only(left: 60, right: 5, top: 60),
+                child: StaggeredGridView.count(
+                  crossAxisCount: 8,
+                  crossAxisSpacing: 12.0,
+                  mainAxisSpacing: 12.0,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard1(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard2(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard3(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1, top: 1),
+                      child: dashboard4(),
+                    ),
+                  ],
+                  staggeredTiles: [
+                    StaggeredTile.extent(2, 70.0),
+                    StaggeredTile.extent(2, 70.0),
+                    StaggeredTile.extent(2, 70.0),
+                    StaggeredTile.extent(2, 70.0),
+                  ],
+                ),
+              ), onRefresh: () async {
+                getTaskPlanner(uidd);
+              },
             ),
             Container(
               margin: EdgeInsets.only(left: 60, right: 2, top: 140),

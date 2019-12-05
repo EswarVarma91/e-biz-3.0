@@ -169,10 +169,8 @@ class DatabaseHelper {
   Future<int> delete(int id) async {
     String dateO = DateFormat("yyyy-MM-dd").format(now).toString();
     var dbClient = await db;
-//        var result = await dbClient.rawDelete('DELETE FROM $TABLE WHERE $DATE NOT IN (SELECT * FROM $TABLE)');
     var result =
         await dbClient.rawDelete('DELETE FROM $TABLE WHERE $DATE>$dateO');
-    //print(result);
     return result;
   }
 

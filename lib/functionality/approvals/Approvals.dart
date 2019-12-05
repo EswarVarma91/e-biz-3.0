@@ -88,7 +88,6 @@ class _ApprovalsState extends State<Approvals> {
         title: Text(
           "Approvals",
           style: TextStyle(color: Colors.white),
-          
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
@@ -97,37 +96,41 @@ class _ApprovalsState extends State<Approvals> {
           Container(
             color: Colors.white,
           ),
-          Container(
-            margin: EdgeInsets.only(left: 60, right: 5, top: 5),
-            child: StaggeredGridView.count(
-              crossAxisCount: 8,
-              crossAxisSpacing: 12.0,
-              mainAxisSpacing: 12.0,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: leaveMaterial(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: permissionMaterial(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: travelMaterial(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: hotelMaterial(),
-                ),
-              ],
-              staggeredTiles: [
-                StaggeredTile.extent(4, 75.0),
-                StaggeredTile.extent(4, 75.0),
-                StaggeredTile.extent(4, 75.0),
-                StaggeredTile.extent(4, 75.0),
-              ],
-            ),
+          RefreshIndicator(
+            child: Container(
+              margin: EdgeInsets.only(left: 60, right: 5, top: 5),
+              child: StaggeredGridView.count(
+                crossAxisCount: 8,
+                crossAxisSpacing: 12.0,
+                mainAxisSpacing: 12.0,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: leaveMaterial(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: permissionMaterial(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: travelMaterial(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: hotelMaterial(),
+                  ),
+                ],
+                staggeredTiles: [
+                  StaggeredTile.extent(4, 75.0),
+                  StaggeredTile.extent(4, 75.0),
+                  StaggeredTile.extent(4, 75.0),
+                  StaggeredTile.extent(4, 75.0),
+                ],
+              ),
+            ), onRefresh: () async{
+              getPendingApprovals();
+            },
           ),
           _leavesA
               ? Container(
@@ -647,7 +650,13 @@ class _ApprovalsState extends State<Approvals> {
                                 padding: EdgeInsets.only(top: 4),
                               ),
                               Text(
-                                permissionsList[index]?.per_type[0].toUpperCase()+permissionsList[index].per_type.substring(1)?? 'NA',
+                                permissionsList[index]
+                                            ?.per_type[0]
+                                            .toUpperCase() +
+                                        permissionsList[index]
+                                            .per_type
+                                            .substring(1) ??
+                                    'NA',
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
@@ -717,7 +726,13 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                               Expanded(
                                 child: Text(
-                                  permissionsList[index]?.per_purpose[0].toUpperCase()+permissionsList[index].per_purpose.substring(1) ?? '',
+                                  permissionsList[index]
+                                              ?.per_purpose[0]
+                                              .toUpperCase() +
+                                          permissionsList[index]
+                                              .per_purpose
+                                              .substring(1) ??
+                                      '',
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
@@ -887,7 +902,8 @@ class _ApprovalsState extends State<Approvals> {
                           Container(
                               width: 180,
                               child: Text(
-                                trlm[index].tra_purpose[0].toUpperCase()+trlm[index].tra_purpose.substring(1),
+                                trlm[index].tra_purpose[0].toUpperCase() +
+                                    trlm[index].tra_purpose.substring(1),
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontWeight: FontWeight.bold,
@@ -1044,7 +1060,8 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            displayDateFormat(hrlm[index]?.hotel_check_in) ?? "",
+                            displayDateFormat(hrlm[index]?.hotel_check_in) ??
+                                "",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1060,7 +1077,8 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            displayDateFormat(hrlm[index]?.hotel_check_out) ?? "",
+                            displayDateFormat(hrlm[index]?.hotel_check_out) ??
+                                "",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1884,10 +1902,9 @@ class _ApprovalsState extends State<Approvals> {
     // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
-          pr.hide();
+    pr.hide();
     getPendingApprovals();
-  
+
     Navigator.pop(context);
   }
-
 }

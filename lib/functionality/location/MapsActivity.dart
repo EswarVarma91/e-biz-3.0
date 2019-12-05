@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:Ebiz/functionality/location/LocationService.dart';
@@ -6,6 +8,7 @@ import 'package:Ebiz/model/LocationModel.dart';
 import 'package:Ebiz/model/UserLocationModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -46,7 +49,7 @@ class _ViewMapState extends State<ViewMap> {
   @override
   void initState() {
     super.initState();
-    //  _getuserLocations();
+    // _getuserLocations();
   }
 
   @override
@@ -102,22 +105,22 @@ class _ViewMapState extends State<ViewMap> {
     var currentTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
     if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
       return currentTime.difference(lastSeenTime).inSeconds.toString() +
-          " sec ago";
+          " sec ago ";
     } else if (currentTime.difference(lastSeenTime).inMinutes <= 60) {
       return currentTime.difference(lastSeenTime).inMinutes.toString() +
-          " min ago";
+          " min ago ";
     } else if (currentTime.difference(lastSeenTime).inHours <= 24) {
       return currentTime.difference(lastSeenTime).inHours.toString() +
-          " hours ago";
+          " hours ago ";
     } else if (currentTime.difference(lastSeenTime).inDays <= 7) {
       if (currentTime.difference(lastSeenTime).inDays == 0) {
-        return "yesterday at" + splitTime[0] + ":" + splitTime[1].toString();
+        return " yesterday at " + splitTime[0] + ":" + splitTime[1].toString();
       } else if (currentTime.difference(lastSeenTime).inDays == 1) {
         return currentTime.difference(lastSeenTime).inDays.toString() +
-            " day ago";
+            " day ago ";
       } else {
         return currentTime.difference(lastSeenTime).inDays.toString() +
-            " days ago";
+            " days ago ";
       }
     } else {
       return "at " +
@@ -129,50 +132,49 @@ class _ViewMapState extends State<ViewMap> {
     }
   }
 
-  //   _getuserLocations() async {
-  //    try {
-  //      var response = await dio.post(ServicesApi.emp_Data,
-  //          data: {
-  //            "actionMode": "getUserLocation"
-  //          },
-  //          options: Options(responseType: ResponseType.json,
-  //          ));
-  //      if (response.statusCode == 200 || response.statusCode == 201) {
-  //        setState(()  {
-  //          List responseJson = response.data;
-  //          lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
-  //        });
-  //        for (int i = 0; i < lm.length; i++) {
-  //          setState(() {
-  //            allmarkers.add(Marker(markerId: MarkerId("marker"),
-  //              position: LatLng(double.parse(lm[i].lati.substring(0,10)), double.parse(lm[i].longi.substring(0,10))),
-  //              icon: BitmapDescriptor.defaultMarker,
-  //              infoWindow: InfoWindow(title: lm[i].u_profile_name[0].toUpperCase()+lm[i].u_profile_name.substring(1),snippet: "last seen "+_lastSeenTime(lm[i].created_date)),
-  //              draggable: false,
-  //            ));
-  //          });
-
-  //        }
-  //      } else if (response.statusCode == 401) {
-  //        Fluttertoast.showToast(msg: "Incorrect Email/Password");
-  //        throw Exception("Incorrect Email/Password");
-  //      } else {
-
-  //        Fluttertoast.showToast(msg: "Incorrect Email/Password");
-  //        throw Exception('Authentication Error');
-  //      }
-  //    } on DioError catch (exception) {
-  //      if (exception == null ||
-  //          exception.toString().contains('SocketException')) {
-  //        throw Exception("Network Error");
-  //      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-  //          exception.type == DioErrorType.CONNECT_TIMEOUT) {
-  //        throw Exception(
-  //            "Could'nt connect, please ensure you have a stable network.");
-  //      } else {
-  //        return null;
-  //      }
-  //    }
-  //  }
-
+  _getuserLocations() async {
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {"actionMode": "getUserLocation"},
+          options: Options(contentType: ContentType.parse("application/json")));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          List responseJson = response.data;
+          lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
+        });
+        for (int i = 0; i < lm.length; i++) {
+          setState(() {
+            allmarkers.add(Marker(
+              markerId: MarkerId("marker"),
+              position: LatLng(double.parse(lm[i].lati.substring(0, 10)),
+                  double.parse(lm[i].longi.substring(0, 10))),
+              icon: BitmapDescriptor.defaultMarker,
+              infoWindow: InfoWindow(
+                  title: lm[i].u_profile_name[0].toUpperCase() +
+                      lm[i].u_profile_name.substring(1),
+                  snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
+              draggable: false,
+            ));
+          });
+        }
+      } else if (response.statusCode == 401) {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
+        throw Exception("Connection Failure.");
+      } else {
+        Fluttertoast.showToast(msg: "Incorrect Email/Password");
+        throw Exception('Connection Failure.');
+      }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception(
+            "Could'nt connect, please ensure you have a stable network.");
+      } else {
+        return null;
+      }
+    }
+  }
 }

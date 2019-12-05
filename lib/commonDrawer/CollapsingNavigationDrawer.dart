@@ -108,6 +108,17 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
   ];
 
+  List<NavigationModel> navigationItemslocation = [
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
+    NavigationModel(title: "Home", icon: Icons.home),
+    NavigationModel(title: "Sales Lead", icon: Icons.monetization_on),
+    NavigationModel(title: "Tasks", icon: Icons.assignment),
+    NavigationModel(title: "L & P", icon: Icons.event_busy),
+    NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
+    NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+  ];
+
   getFullName() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {

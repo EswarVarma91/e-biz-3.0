@@ -102,32 +102,36 @@ class _TravelRequestListState extends State<TravelRequestList> {
           Container(
             color: Colors.white,
           ),
-          Container(
-            margin: EdgeInsets.only(left: 60, right: 5, top: 5),
-            child: StaggeredGridView.count(
-              crossAxisCount: 9,
-              crossAxisSpacing: 5.0,
-              mainAxisSpacing: 5.0,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: pendingTravel(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: approvedTravel(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 1, top: 1),
-                  child: cancelledTravel(),
-                ),
-              ],
-              staggeredTiles: [
-                StaggeredTile.extent(3, 85.0),
-                StaggeredTile.extent(3, 85.0),
-                StaggeredTile.extent(3, 85.0),
-              ],
-            ),
+          RefreshIndicator(
+                      child: Container(
+              margin: EdgeInsets.only(left: 60, right: 5, top: 5),
+              child: StaggeredGridView.count(
+                crossAxisCount: 9,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 5.0,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: pendingTravel(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: approvedTravel(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 1, top: 1),
+                    child: cancelledTravel(),
+                  ),
+                ],
+                staggeredTiles: [
+                  StaggeredTile.extent(3, 85.0),
+                  StaggeredTile.extent(3, 85.0),
+                  StaggeredTile.extent(3, 85.0),
+                ],
+              ),
+            ), onRefresh: () async{
+              getTravelData(uidd);
+            },
           ),
           Container(
             margin: EdgeInsets.only(left: 0, right: 5, top: 90),

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:Ebiz/main.dart' as prefix0;
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/ProfileScreen.dart';
@@ -90,6 +89,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   static double lati = 0.0, longi = 0.0;
   StreamSubscription<ConnectivityResult> streamSubscription;
   StreamProvider<UserLocationModel> userlocationstrem;
+
   List<TaskListModel> tasklistModel = [];
   var userlocation;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -171,6 +171,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   @override
   Widget build(BuildContext context) {
+    // Timer.periodic(Duration(minutes: 5), (Timer t) => getAttendance());
     userlocation = Provider.of<UserLocationModel>(context);
     setState(() {
       if (userlocation != null) {
@@ -181,34 +182,39 @@ class _HomePageLocationState extends State<HomePageLocation> {
         //        var checkMorningTime=DateFormat("HH:mm").parse("08:00");
         //        var checkNightTime=DateFormat("HH:mm").parse("20:00");
         //        checkCurrentTime.difference(checkMorningTime).inMinutes.toString();
-      
-                // sendUserLocation(lati,longi);
-        
+
+        // sendUserLocation(lati,longi);
+        // getAttendance();
       }
     });
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          fullname,
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          title: Text(
+            fullname,
+            style: TextStyle(color: Colors.white),
+          ),
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 0),
+              child: IconButton(
+                icon: Icon(Icons.account_circle, color: Colors.white, size: 35),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ProfileScreen()));
+                },
+              ),
+            )
+          ],
         ),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 0),
-            child: IconButton(
-              icon: Icon(Icons.account_circle, color: Colors.white, size: 35),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => ProfileScreen()));
-              },
-            ),
-          )
-        ],
-      ),
-      body: Stack(
+        body: stackWidget(context));
+  }
+
+  stackWidget(BuildContext context) {
+    return Scrollbar(
+      child: Stack(
         children: <Widget>[
           Container(
             color: Colors.white,
@@ -223,56 +229,50 @@ class _HomePageLocationState extends State<HomePageLocation> {
               width: 80,
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(left: 65, right: 5, top: 0),
-            child: StaggeredGridView.count(
-              crossAxisCount: 4,
-              crossAxisSpacing: 12.0,
-              mainAxisSpacing: 12.0,
-              children: <Widget>[
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 5, top: 10),
-                //   child: dashboard(),
-                // ),
-                // Padding(
-                //   padding: const EdgeInsets.only(right: 5, top: 10),
-                //   child: dashboardold(),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: 5,
-                    top: 10,
+          RefreshIndicator(
+            child: Container(
+              margin: EdgeInsets.only(left: 65, right: 5, top: 0),
+              child: StaggeredGridView.count(
+                crossAxisCount: 4,
+                crossAxisSpacing: 12.0,
+                mainAxisSpacing: 12.0,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      right: 5,
+                      top: 10,
+                    ),
+                    child: dashboard1(),
                   ),
-                  child: dashboard1(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: dashboard2(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: dashboard3(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: dashboard5(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: dashboard6(),
-                ),
-              ],
-              staggeredTiles: [
-                // StaggeredTile.extent(1, 120.0),
-                // StaggeredTile.extent(1, 120.0),
-                // StaggeredTile.extent(3, 120.0),
-                StaggeredTile.extent(4, 120.0),
-                StaggeredTile.extent(2, 100.0),
-                StaggeredTile.extent(2, 100.0),
-                StaggeredTile.extent(2, 100.0),
-                StaggeredTile.extent(2, 100.0),
-              ],
-            ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: dashboard2(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: dashboard3(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: dashboard5(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: dashboard6(),
+                  ),
+                ],
+                staggeredTiles: [
+                  StaggeredTile.extent(4, 120.0),
+                  StaggeredTile.extent(2, 100.0),
+                  StaggeredTile.extent(2, 100.0),
+                  StaggeredTile.extent(2, 100.0),
+                  StaggeredTile.extent(2, 100.0),
+                ],
+              ),
+            ), onRefresh: () async {
+              getAttendance();
+              getPendingCount(userId);
+            },
           ),
           CollapsingNavigationDrawer("1"),
         ],
@@ -385,101 +385,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       ),
     );
   }
-
-  // Material dashboard() {
-  //   return Material(
-  //     color: Colors.white,
-  //     elevation: 14.0,
-  //     borderRadius: BorderRadius.circular(24.0),
-  //     shadowColor: lwtColor,
-  //     child: Center(
-  //       child: Padding(
-  //         padding: EdgeInsets.all(8.0),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //             Column(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: <Widget>[
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2.0),
-  //                   child: Text(
-  //                     dateA?.toString()??0,
-  //                     style: TextStyle(
-  //                       fontSize: 22.0,
-  //                       color: Color(0xFF272D34),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2.0),
-  //                   child: Text(monthA?.substring(0,3)??"",
-  //                     style: TextStyle(fontSize: 10.0, color: lwtColor),
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.all(0.0),
-  //                   child: Text(
-  //                     yearA?.toString()??0,
-  //                     style: TextStyle(fontSize: 12.0, color: lwtColor),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Material dashboardold() {
-  //   return Material(
-  //     color: Colors.white,
-  //     elevation: 14.0,
-  //     borderRadius: BorderRadius.circular(24.0),
-  //     shadowColor: lwtColor,
-  //     child: Center(
-  //       child: Padding(
-  //         padding: EdgeInsets.all(8.0),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: <Widget>[
-  //             Column(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: <Widget>[
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2.0),
-  //                   child: Text(
-  //                     "Attendance".toUpperCase(),
-  //                     style: TextStyle(
-  //                       fontSize: 12.0,
-  //                       color: Color(0xFF272D34),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.all(2.0),
-  //                   child: Text(
-  //                     paidCount != null ? paidCount : "".toString(),
-  //                     style: TextStyle(fontSize: 25.0, color: lwtColor),
-  //                   ),
-  //                 ),
-  //                 Padding(
-  //                   padding: EdgeInsets.all(0.0),
-  //                   child: Text(
-  //                     "Days",
-  //                     style: TextStyle(fontSize: 12.0, color: lwtColor),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Material dashboard2() {
     return Material(
@@ -808,7 +713,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           }
         });
       } else {
-        Fluttertoast.showToast(msg: "Check your internet connection.");
+        // Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||

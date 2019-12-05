@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/model/WorkStatusModel.dart';
@@ -25,6 +26,8 @@ class _WorkStatusState extends State<WorkStatus> {
   List<AttendanceModel> atteModel;
   Future<List<AttendanceModel>> attList;
   String workStatus;
+
+
 
   getEmpCode() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -68,6 +71,7 @@ class _WorkStatusState extends State<WorkStatus> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(
