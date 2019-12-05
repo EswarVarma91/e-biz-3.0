@@ -262,7 +262,7 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             SizedBox(
-                              height: 190,
+                              height: 150,
                             ),
                             Container(
                               padding: EdgeInsets.all(5),

@@ -102,7 +102,7 @@ PODS:
   - nanopb/encode (0.3.9011)
   - path_provider (0.0.1):
     - Flutter
-  - Protobuf (3.10.0)
+  - Protobuf (3.11.1)
   - Reachability (3.2)
   - shared_preferences (0.0.1):
     - Flutter
@@ -188,11 +188,11 @@ SPEC CHECKSUMS:
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
-  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  Protobuf: 20d79da7f20b5928b80043b05080b816e802659e
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
 
-PODFILE CHECKSUM: b2afcfa844870f08905e682c37ca063969e7aaa4
+PODFILE CHECKSUM: e350905825a7a8c302dde4bae8baa6aa592e544c
 
 COCOAPODS: 1.8.4
