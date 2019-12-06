@@ -40,7 +40,7 @@ class StateSplash extends State<SplashScreen> {
   }
 
   startTime() async {
-    return Timer(Duration(seconds: 5), checkUser);
+    return Timer(Duration(seconds: 3), checkUser);
   }
 
   @override
@@ -80,12 +80,9 @@ class StateSplash extends State<SplashScreen> {
         ));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      restrictpermissionModel = (json.decode(response.data) as List)
-          .map((data) => RestrictPermissionsModel.fromJson(data))
-          .toList();
-      var data = restrictpermissionModel[0].status.toString();
+      String data = json.decode(response.data)[0]["status"];
 
-      if (data == "0.1") {
+      if (data == ServicesApi.versionNew) {
         startTime();
       } else {
         roundedAlertDialog();
@@ -106,23 +103,26 @@ class StateSplash extends State<SplashScreen> {
               children: <Widget>[
                 Text(
                   'EBiz',
+                  textAlign: TextAlign.justify,
                   style: TextStyle(
-                    fontSize: 25,
-                    color: lwtColor,
-                  ),
+                      fontSize: 25,
+                      color: lwtColor,
+                      decoration: TextDecoration.underline),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 Text(
-                  'Update size : 9.8 MB to 10.66MB',
+                  'Update size : approx. 12MB ',
+                  textAlign: TextAlign.justify,
                   style: TextStyle(fontSize: 14),
                 ),
                 SizedBox(
                   height: 15,
                 ),
                 Text(
-                  'Ebiz recommends that you update to the latest version.',
+                  'EBiz recommends you for update to the latest version for a better experience.',
+                  textAlign: TextAlign.justify,
                   style: TextStyle(fontSize: 11),
                 ),
               ],
@@ -132,14 +132,18 @@ class StateSplash extends State<SplashScreen> {
                 onPressed: () {
                   SystemChannels.platform.invokeMethod('SystemNavigator.pop');
                 },
-                child: Text('NOT NOW',style: TextStyle(color: Colors.black),),
+                child: Text(
+                  'NOT NOW',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               Material(
                 color: lwtColor,
                 shadowColor: lwtColor,
                 child: CupertinoButton(
                   onPressed: () async {
-                    OpenAppstore.launch(androidAppId: "ebiz.lotus.administrator.eaglebiz");
+                    OpenAppstore.launch(
+                        androidAppId: "ebiz.lotus.administrator.eaglebiz");
                   },
                   child: Text(
                     'UPDATE',

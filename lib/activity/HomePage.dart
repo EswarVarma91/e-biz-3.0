@@ -150,6 +150,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
     getEmpCode();
     _localGet();
+    pushAttendance();
     connectivity = Connectivity();
     streamSubscription =
         connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
@@ -269,8 +270,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   StaggeredTile.extent(2, 100.0),
                 ],
               ),
-            ), onRefresh: () async {
-              getAttendance();
+            ),
+            onRefresh: () async {
+              pushAttendance();
+              // getAttendance();
               getPendingCount(userId);
             },
           ),
@@ -707,6 +710,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           timeStart = attData.in_time.toString();
           timeEnd = attData.out_time.toString();
           if (attData.in_time != null && attData != null) {
+            workStatus = "At-Office";
             AttendanceGettingModel attendanceModel =
                 AttendanceGettingModel(userId, timeStart, timeEnd);
             dbHelper.updateStartandEnd(attendanceModel);

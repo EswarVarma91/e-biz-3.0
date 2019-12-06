@@ -1,5 +1,5 @@
 class ServicesApi {
-  //========= New DataBase ebizdb=========//
+  static String versionNew = "1.3";
 
   static String fcm_Send = "https://fcm.googleapis.com/fcm/send";
   static String FCM_KEY =
@@ -13,7 +13,8 @@ class ServicesApi {
   // static String hrms_Service = "http://192.168.2.5:8383/hrms.service/"; //dev
   // static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
   // static String hrms_Service ="http://192.168.2.5:8383/hrms.service.prod/"; //production
-  static String hrms_Service ="http://49.207.32.34:8383/hrms.service.prod/"; //global
+  static String hrms_Service =
+      "http://49.207.32.34:8383/hrms.service.prod/"; //global
 
   static String new_login_url = basic_url + "global.service/validate/user";
 

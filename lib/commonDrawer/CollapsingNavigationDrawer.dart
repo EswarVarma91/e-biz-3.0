@@ -275,6 +275,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                 itemCount: listMain.length,
               ),
             ),
+            Text("Version No.",style: TextStyle(color: Colors.white,fontSize: 8)),
+            Text("1.3",style: TextStyle(color: Colors.white,fontSize: 16)),
             IconButton(
               icon: Icon(Icons.exit_to_app),
               color: lwtColor,
