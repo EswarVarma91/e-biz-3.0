@@ -1,5 +1,5 @@
 name: Ebiz
-description: Ebiz.
+description: EBiz.
 version: 1.3+13
 environment:
   sdk: ">=2.2.0 <3.0.0"
