@@ -2,6 +2,7 @@
 platform :ios, '8.4'
 
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+ENV['SWIFT_VERSION'] = '5'
 
 project 'Runner', {
   'Debug' => :debug,
@@ -83,4 +84,6 @@ post_install do |installer|
       config.build_settings['ENABLE_BITCODE'] = 'NO'
     end
   end
+
+pod 'Firebase/Analytics'
 end
