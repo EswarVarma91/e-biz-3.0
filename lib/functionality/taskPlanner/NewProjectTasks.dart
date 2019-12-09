@@ -9,6 +9,7 @@ import 'package:Ebiz/functionality/taskPlanner/Resources.dart';
 import 'package:Ebiz/functionality/taskPlanner/TaskPlanner.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
@@ -30,7 +31,9 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   var chooseResource = "Select Resource";
   var projectId;
   var resourceId;
-  String profileName, fullName;
+  int y, m, d,hh,mm;
+  String toA, toB, toC;
+  String profileName, fullName, startDate, startDates, endDate, endDates;
   ProgressDialog pr;
   List<FirebaseUserModel> fum;
   var now = DateTime.now();
@@ -38,6 +41,12 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   @override
   void initState() {
     super.initState();
+    var now = new DateTime.now();
+    y = now.year;
+    m = now.month;
+    d = now.day;
+    hh = now.hour;
+    mm = now.minute;
     getProfileName();
   }
 
@@ -212,6 +221,128 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
                       },
                     ),
                   ),
+                  ListTile(
+                    onTap: () {
+                      setState(() {
+                        endDate = "";
+                        endDates = "";
+                      });
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime(y, m, d, hh, mm),
+                            maxTime: DateTime(y, m + 5, d, hh, mm),
+                          theme: DatePickerTheme(
+                              backgroundColor: Colors.white,
+                              itemStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 20,
+                              ),
+                              doneStyle:
+                                  TextStyle(color: Colors.blue, fontSize: 12)),
+                          onChanged: (date) {
+                        changeDateF(date);
+                      }, onConfirm: (date) {
+                        changeDateF(date);
+                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                    },
+                    title: TextFormField(
+                      enabled: false,
+                      controller: TextEditingController(text: startDates),
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.chrome_reader_mode),
+                        labelText: "Start Date",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: () {
+                        setState(() {
+                          endDate = "";
+                          endDates = "";
+                        });
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(y, m, d, hh, mm),
+                            maxTime: DateTime(y, m + 5, d, hh, mm),
+                            theme: DatePickerTheme(
+                                backgroundColor: Colors.white,
+                                itemStyle: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 20,
+                                ),
+                                doneStyle: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 12)), onChanged: (date) {
+                          changeDateF(date);
+                        }, onConfirm: (date) {
+                          changeDateF(date);
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () {
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime(
+                              int.parse(toA), int.parse(toB), int.parse(toC), hh, mm),
+                          maxTime: DateTime(int.parse(toA), int.parse(toB) + 5,
+                              int.parse(toC), hh, mm),
+                          theme: DatePickerTheme(
+                              backgroundColor: Colors.white,
+                              itemStyle: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 20,
+                              ),
+                              doneStyle:
+                                  TextStyle(color: Colors.blue, fontSize: 12)),
+                          onChanged: (date) {
+                        changeDateT(date);
+                      }, onConfirm: (date) {
+                        changeDateT(date);
+                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                    },
+                    title: TextFormField(
+                      enabled: false,
+                      controller: TextEditingController(text: endDates),
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.chrome_reader_mode),
+                        labelText: "End Date",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: () {
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            minTime: DateTime(
+                              int.parse(toA), int.parse(toB), int.parse(toC), hh, mm),
+                          maxTime: DateTime(int.parse(toA), int.parse(toB) + 5,
+                              int.parse(toC), hh, mm),
+                            theme: DatePickerTheme(
+                                backgroundColor: Colors.white,
+                                itemStyle: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 20,
+                                ),
+                                doneStyle: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 12)), onChanged: (date) {
+                          changeDateT(date);
+                        }, onConfirm: (date) {
+                          changeDateT(date);
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      },
+                    ),
+                  ),
                 ],
               ),
             )
@@ -219,6 +350,37 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         ),
       ),
     );
+  }
+
+  void changeDateF(DateTime date) {
+    String newDate = date.toString();
+    List<String> d = [];
+    d = newDate.split(" ");
+    // print(d[0]);
+    setState(() {
+      List<String> aa = [];
+      aa = d[0].split("-");
+      toA = aa[0].toString();
+      toB = aa[1].toString();
+      toC = aa[2].toString();
+      startDate = d[0].toString();
+      startDates = toC + "-" + toB + "-" + toA;
+    });
+  }
+
+  void changeDateT(DateTime date) {
+    String newDate = date.toString();
+    List<String> d = [];
+    d = newDate.split(" ");
+
+    var display = d[0].toString();
+    List<String> a = display.split("-");
+
+    // print(d[0]);
+    setState(() {
+      endDate = d[0].toString();
+      endDates = a[2] + "-" + a[1] + "-" + a[0];
+    });
   }
 
   void _navigatereferMethod(BuildContext context) async {
