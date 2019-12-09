@@ -12,17 +12,18 @@ import '../../main.dart';
 import 'package:http/http.dart' as http;
 
 class TaskPlannerEdit extends StatefulWidget {
-  String dp_task, profilename, dp_id;
-  TaskPlannerEdit(this.dp_task, this.dp_id);
+  String dp_task, profilename, dp_id, dp_task_desc;
+  TaskPlannerEdit(this.dp_task, this.dp_task_desc, this.dp_id);
 
   @override
-  _TaskPlannerEditState createState() => _TaskPlannerEditState(dp_task, dp_id);
+  _TaskPlannerEditState createState() =>
+      _TaskPlannerEditState(dp_task, dp_task_desc, dp_id);
 }
 
 class _TaskPlannerEditState extends State<TaskPlannerEdit> {
-  String dp_id, mainStatus, profilename, fullname, dp_task;
+  String dp_id, mainStatus, profilename, fullname, dp_task, dp_task_desc;
   ProgressDialog pr;
-  _TaskPlannerEditState(this.dp_task, this.dp_id);
+  _TaskPlannerEditState(this.dp_task, this.dp_task_desc, this.dp_id);
   TextEditingController _controllerReason = TextEditingController();
 
   static Dio dio = Dio(Config.options);
@@ -45,46 +46,88 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            dp_task.toString(),
-            style: TextStyle(color: Colors.white),
-          ),
-          iconTheme: IconThemeData(color: Colors.white)),
-      body: ListView.builder(
-        itemCount: listTaskStatus.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.only(
-                left: 10.0, right: 10.0, top: 10.0, bottom: 10.0),
-            child: Card(
-              elevation: 0.5,
-              child: Material(
-                shadowColor: lwtColor,
-                child: ListTile(
-                  title: Text(listTaskStatus[index]),
-                  onTap: () {
-                    if (listTaskStatus[index] == "Open") {
-                      setState(() {
-                        roundedAlertBox(1);
-                      });
-                    } else if (listTaskStatus[index] == "Progress") {
-                      setState(() {
-                        roundedAlertBox(2);
-                      });
-                    } else if (listTaskStatus[index] == "Closed") {
-                      setState(() {
-                        roundedAlertBox(3);
-                      });
-                    }
-                  },
-                ),
+        appBar: AppBar(
+            title: Text(
+              "EDP_" + dp_id.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 15),
+            ),
+            iconTheme: IconThemeData(color: Colors.white)),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Column(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Task Name",
+                        style: TextStyle(fontSize: 12, color: Colors.black,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        dp_task[0].toUpperCase()+dp_task.substring(1),
+                        style: TextStyle(
+                            color: lwtColor,
+                            fontSize:11),
+                      ),
+                      SizedBox(height: 10,),
+                      Text(
+                        "Task Description",
+                        style: TextStyle(fontSize: 12, color: Colors.black,fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        dp_task_desc[0].toUpperCase()+dp_task_desc.substring(1),
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 11),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        },
-      ),
-    );
+            Container(
+                padding: EdgeInsets.only(top: 120),
+                child: ListView.builder(
+                  itemCount: listTaskStatus.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: <Widget>[
+                        Container(
+                          child: Card(
+                            elevation: 0.5,
+                            child: Material(
+                              shadowColor: lwtColor,
+                              child: ListTile(
+                                title: Text(listTaskStatus[index]),
+                                onTap: () {
+                                  if (listTaskStatus[index] == "Open") {
+                                    setState(() {
+                                      roundedAlertBox(1);
+                                    });
+                                  } else if (listTaskStatus[index] ==
+                                      "Progress") {
+                                    setState(() {
+                                      roundedAlertBox(2);
+                                    });
+                                  } else if (listTaskStatus[index] ==
+                                      "Closed") {
+                                    setState(() {
+                                      roundedAlertBox(3);
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                )),
+          ],
+        ));
   }
 
   roundedAlertBox(int _idstatus) {

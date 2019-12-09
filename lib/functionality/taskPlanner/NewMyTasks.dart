@@ -33,8 +33,8 @@ class _NewTaskState extends State<NewMyTasks> {
   String profileName, fullname, startDate, startDates, endDate, endDates;
   ProgressDialog pr;
   String uidd;
-  int y, m, d,hh,mm;
-  String toA, toB, toC;
+  int y, m, d, hh, mm;
+  int year, month, day, hour, minute;
   static Dio dio = Dio(Config.options);
 
   Future<String> getUserID() async {
@@ -120,6 +120,10 @@ class _NewTaskState extends State<NewMyTasks> {
                     Fluttertoast.showToast(msg: "Enter 'Task Name'");
                   } else if (_controller2.text.isEmpty) {
                     Fluttertoast.showToast(msg: "Enter 'Task Details'");
+                  } else if (startDate.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select Start Date");
+                  } else if (endDate.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select End Date");
                   } else {
                     myTaskService("1");
                   }
@@ -133,6 +137,10 @@ class _NewTaskState extends State<NewMyTasks> {
                     Fluttertoast.showToast(msg: "Enter 'Location'");
                   } else if (_controller4.text.isEmpty) {
                     Fluttertoast.showToast(msg: "Enter 'Contact Person'");
+                  } else if (startDate.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select Start Date");
+                  } else if (endDate.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select End Date");
                   } else if (reasonType == "Reason" || reasonType == "null") {
                     Fluttertoast.showToast(msg: "Enter 'Reason'");
                   } else {
@@ -213,20 +221,12 @@ class _NewTaskState extends State<NewMyTasks> {
                       DatePicker.showDateTimePicker(context,
                           showTitleActions: true,
                           minTime: DateTime(y, m, d, hh, mm),
-                          maxTime: DateTime(y, m + 5, d, hh, mm),
-                          theme: DatePickerTheme(
-                              backgroundColor: Colors.white,
-                              itemStyle: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 20,
-                              ),
-                              doneStyle:
-                                  TextStyle(color: Colors.blue, fontSize: 12)),
+                          maxTime: DateTime(y + 1, m, d, hh, mm),
                           onChanged: (date) {
                         changeDateF(date);
                       }, onConfirm: (date) {
                         changeDateF(date);
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      }, locale: LocaleType.en);
                     },
                     title: TextFormField(
                       enabled: false,
@@ -250,20 +250,12 @@ class _NewTaskState extends State<NewMyTasks> {
                         DatePicker.showDateTimePicker(context,
                             showTitleActions: true,
                             minTime: DateTime(y, m, d, hh, mm),
-                            maxTime: DateTime(y, m + 5, d, hh, mm),
-                            theme: DatePickerTheme(
-                                backgroundColor: Colors.white,
-                                itemStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 20,
-                                ),
-                                doneStyle: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12)), onChanged: (date) {
+                            maxTime: DateTime(y + 1, m, d, hh, mm),
+                            onChanged: (date) {
                           changeDateF(date);
                         }, onConfirm: (date) {
                           changeDateF(date);
-                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                        }, locale: LocaleType.en);
                       },
                     ),
                   ),
@@ -271,23 +263,13 @@ class _NewTaskState extends State<NewMyTasks> {
                     onTap: () {
                       DatePicker.showDateTimePicker(context,
                           showTitleActions: true,
-                          minTime: DateTime(
-                              int.parse(toA), int.parse(toB), int.parse(toC), hh, mm),
-                          maxTime: DateTime(int.parse(toA), int.parse(toB) + 5,
-                              int.parse(toC), hh, mm),
-                          theme: DatePickerTheme(
-                              backgroundColor: Colors.white,
-                              itemStyle: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 20,
-                              ),
-                              doneStyle:
-                                  TextStyle(color: Colors.blue, fontSize: 12)),
+                          minTime: DateTime(year, month, day, hour, minute + 1),
+                          maxTime: DateTime(y + 1, m, d, hh, mm),
                           onChanged: (date) {
                         changeDateT(date);
                       }, onConfirm: (date) {
                         changeDateT(date);
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      }, locale: LocaleType.en);
                     },
                     title: TextFormField(
                       enabled: false,
@@ -306,23 +288,14 @@ class _NewTaskState extends State<NewMyTasks> {
                       onPressed: () {
                         DatePicker.showDateTimePicker(context,
                             showTitleActions: true,
-                            minTime: DateTime(
-                                int.parse(toA), int.parse(toB), int.parse(toC),hh,mm),
-                            maxTime: DateTime(int.parse(toA),
-                                int.parse(toB) + 5, int.parse(toC),hh,mm),
-                            theme: DatePickerTheme(
-                                backgroundColor: Colors.white,
-                                itemStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 20,
-                                ),
-                                doneStyle: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12)), onChanged: (date) {
+                            minTime:
+                                DateTime(year, month, day, hour, minute + 1),
+                            maxTime: DateTime(y + 1, m, d, hh, mm),
+                            onChanged: (date) {
                           changeDateT(date);
                         }, onConfirm: (date) {
                           changeDateT(date);
-                        }, currentTime: DateTime.now(), locale: LocaleType.en);
+                        }, locale: LocaleType.en);
                       },
                     ),
                   ),
@@ -513,7 +486,9 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpType": "Office",
             "dayTaskType": "Self",
             "dpModifiedBy": profileName,
-            "uId": uidd
+            "uId": uidd,
+            "dpTaskStartDateTime": startDate,
+            "dpTaskEndDateTime": endDate
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -545,7 +520,9 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpType": "Instation",
             "dayTaskType": "Self",
             "dpModifiedBy": profileName,
-            "uId": uidd
+            "uId": uidd,
+            "dpTaskStartDateTime": startDate,
+            "dpTaskEndDateTime":endDate
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -577,31 +554,55 @@ class _NewTaskState extends State<NewMyTasks> {
   void changeDateF(DateTime date) {
     String newDate = date.toString();
     List<String> d = [];
-    d = newDate.split(" ");
+    d = newDate.split(".");
+
     // print(d[0]);
     setState(() {
       List<String> aa = [];
-      aa = d[0].split("-");
-      toA = aa[0].toString();
-      toB = aa[1].toString();
-      toC = aa[2].toString();
+      aa = d[0].split(" ");
+      String date = aa[0].toString();
+      String time = aa[1].toString();
+      List<String> bb = [];
+      bb = date.split("-");
+      year = int.parse(bb[0].toString());
+      month = int.parse(bb[1].toString());
+      day = int.parse(bb[2].toString());
+      List<String> cc = [];
+      cc = time.split(":");
+      hour = int.parse(cc[0].toString());
+      minute = int.parse(cc[1].toString());
+
       startDate = d[0].toString();
-      startDates = toC + "-" + toB + "-" + toA;
+      startDates = day.toString() +
+          "-" +
+          month.toString() +
+          "-" +
+          year.toString() +
+          " " +
+          time;
     });
   }
 
   void changeDateT(DateTime date) {
     String newDate = date.toString();
     List<String> d = [];
-    d = newDate.split(" ");
-
-    var display = d[0].toString();
-    List<String> a = display.split("-");
-
+    var day, month, year;
+    d = newDate.split(".");
     // print(d[0]);
     setState(() {
       endDate = d[0].toString();
-      endDates = a[2] + "-" + a[1] + "-" + a[0];
+      endDates = d[0]
+              .toString()
+              .split(" ")[0]
+              .toString()
+              .split("-")[2]
+              .toString() +
+          "-" +
+          d[0].toString().split(" ")[0].toString().split("-")[1].toString() +
+          "-" +
+          d[0].toString().split(" ")[0].toString().split("-")[0].toString() +
+          " " +
+          d[0].toString().split(" ")[1].toString();
     });
   }
 }

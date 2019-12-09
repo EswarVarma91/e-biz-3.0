@@ -56,7 +56,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
     setState(() {
       profilename = preferences.getString("profileName");
       fullname = preferences.getString("fullname");
-      uidd= preferences.getString("userId");
+      uidd = preferences.getString("userId");
       getTaskPlanner(uidd);
     });
   }
@@ -91,8 +91,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
           if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-              d.dpTaskType == "Self" &&
-              d.createdUid.toString() == uidd) {
+              d.dpTaskType == "Self") {
             return true;
           }
           return false;
@@ -100,27 +99,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
       ).toList();
       //open filter
       list4 = list1.where((d) {
-        if (d.dp_status.toString() == "1" &&
-            d.dpTaskType == "Self" &&
-            d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "1" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
       //progress filter
       list5 = list1.where((d) {
-        if (d.dp_status.toString() == "2" &&
-            d.dpTaskType == "Self" &&
-            d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "2" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
       //closed filter
       list6 = list1.where((d) {
-        if (d.dp_status.toString() == "3" &&
-            d.dpTaskType == "Self" &&
-            d.createdUid.toString() == uidd) {
+        if (d.dp_status.toString() == "3" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
@@ -207,28 +200,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today
       list3 = list22.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck ) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list22.where((d) {
-        if (d.dp_status.toString() == "1" ) {
+        if (d.dp_status.toString() == "1") {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list22.where((d) {
-        if (d.dp_status.toString() == "2" ) {
+        if (d.dp_status.toString() == "2") {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list22.where((d) {
-        if (d.dp_status.toString() == "3" ) {
+        if (d.dp_status.toString() == "3") {
           return true;
         }
         return false;
@@ -320,7 +313,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
               color: Colors.white,
             ),
             RefreshIndicator(
-                          child: Container(
+              child: Container(
                 margin: EdgeInsets.only(left: 60, right: 5, top: 6),
                 child: StaggeredGridView.count(
                   crossAxisCount: 6,
@@ -346,12 +339,13 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     StaggeredTile.extent(2, 45.0),
                   ],
                 ),
-              ), onRefresh: () async {
+              ),
+              onRefresh: () async {
                 getTaskPlanner(uidd);
               },
             ),
             RefreshIndicator(
-                          child: Container(
+              child: Container(
                 margin: EdgeInsets.only(left: 60, right: 5, top: 60),
                 child: StaggeredGridView.count(
                   crossAxisCount: 8,
@@ -382,7 +376,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     StaggeredTile.extent(2, 70.0),
                   ],
                 ),
-              ), onRefresh: () async {
+              ),
+              onRefresh: () async {
                 getTaskPlanner(uidd);
               },
             ),
@@ -847,7 +842,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
           data: {
             "parameter1": "GetAllProjectsTasks",
             "parameter2": uiddd.toString(),
-            "parameter3":profilename
+            "parameter3": profilename
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -878,219 +873,285 @@ class _TaskPlannerState extends State<TaskPlanner> {
   }
 
   taskListView() {
-    return ListView.builder(
-        itemCount: list2 == null ? 0 : list2.length,
+    return Container(
+      margin: EdgeInsets.only(left: 0, right: 0, top: 0),
+      child: ListView.builder(
+        itemCount: list2?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-              elevation: 5.0,
-              margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-              child: InkWell(
+          return Container(
+              margin: EdgeInsets.only(left: 0, right: 0, top: 6),
+              child: Card(
                 child: Container(
-                    child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ListTile(
-                      title: Text(
-                        "EDP_" + list2[index]?.dp_id.toString() ?? 'NA',
-                        style: TextStyle(
-                          color: lwtColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: 6),
-                          ),
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Task Name      :   ",
+                                "Task Reference No.",
                                 style:
-                                    TextStyle(fontSize: 8, color: Colors.black),
+                                    TextStyle(fontSize: 7, color: Colors.black),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 4),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  list2[index]?.dp_task ?? 'NA',
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 4),
-                          ),
-                          Row(
-                            children: <Widget>[
                               Text(
-                                "Task Details    :   ",
-                                style:
-                                    TextStyle(fontSize: 8, color: Colors.black),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 2),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  list2[index]?.dp_task_desc ?? '' + "NA.",
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 4),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "Task Created  :   ",
-                                style:
-                                    TextStyle(fontSize: 8, color: Colors.black),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 2),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  displayDateFormat(list2[index]?.dp_created_date.toString()) ??
-                                      '' + "NA.",
-                                  style: TextStyle(
-                                      color: lwtColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 2),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                "Assigned To    :  ",
-                                style:
-                                    TextStyle(fontSize: 8, color: Colors.black),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 2),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  list2[index]?.fullName ?? '' + "NA.",
-                                  style: TextStyle(
+                                "EDP_" + list2[index]?.dp_id.toString() ?? "",
+                                style: TextStyle(
                                     color: lwtColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 10,
-                                  ),
-                                ),
+                                    fontSize: 10),
                               ),
                             ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 2),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                "Task Name",
+                                style:
+                                    TextStyle(fontSize: 7, color: Colors.black),
+                              ),
+                              Text(
+                                list2[index]?.dp_task.toString() ?? "",
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      trailing: _color4
-                          ? IconButton(
-                              icon: Icon(Icons.visibility_off),
-                              onPressed: () {},
-                            )
-                          : IconButton(
-                              icon: Icon(
-                                Icons.edit,
-                                color: lwtColor,
-                                size: 25,
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Task Created By",
+                                style:
+                                    TextStyle(fontSize: 7, color: Colors.black),
                               ),
-                              onPressed: () {
-                                if (myTasks == true) {
-                                  if (_color1 == true || _color2 == true) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TaskPlannerEdit(
-                                                    list2[index]
-                                                        .dp_task
-                                                        .toString(),
-                                                        list2[index].dp_id.toString(),)));
-                                  } else if (_color3 == true) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TaskPlannerEdit(
-                                                    list2[index]
-                                                        .dp_task
-                                                        .toString(),
-                                                        list2[index].dp_id.toString(),)));
-                                  }
-                                } else if (teamTasks == true) {
-                                  if (_color1 == true || _color2 == true) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TaskPlannerEdit(
-                                                    list2[index]
-                                                        .dp_task
-                                                        .toString(),
-                                                        list2[index].dp_id.toString(),)));
-                                  } else if (_color3 == true) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TaskPlannerEdit(
-                                                    list2[index]
-                                                        .dp_task
-                                                        .toString(),
-                                                        list2[index].dp_id.toString(),)));
-                                  }
-                                } else if (projectTasks == true) {
-                                  if (_color1 == true || _color2 == true) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TaskPlannerEdit(
-                                                    list2[index]
-                                                        .dp_task
-                                                        .toString(),
-                                                        list2[index].dp_id.toString(),)));
-                                  } else if (_color3 == true) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                TaskPlannerEdit(
-                                                    list2[index]
-                                                        .dp_task
-                                                        .toString(),
-                                                        list2[index].dp_id.toString(),)));
-                                  }
-                                }
-                              },
-                            )),
-                )),
+                              Text(
+                                list2[index]?.dp_created_by[0].toUpperCase() +
+                                        list2[index]
+                                            .dp_created_by
+                                            .substring(1) ??
+                                    "",
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                "Task Created Date",
+                                style:
+                                    TextStyle(fontSize: 7, color: Colors.black),
+                              ),
+                              Text(
+                                displayDateFormat(list2[index]?.dp_created_date)
+                                        .toString() ??
+                                    "",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Actual Start Date & Time",
+                                style:
+                                    TextStyle(fontSize: 7, color: Colors.black),
+                              ),
+                              Text(
+                                displayDateTimeFormat(
+                                        list2[index]?.TstartTime) ??
+                                    "",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                "Actual End Date & Time",
+                                style:
+                                    TextStyle(fontSize: 7, color: Colors.black),
+                              ),
+                              Text(
+                                displayDateTimeFormat(list2[index]?.TendTime) ??
+                                    "",
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _color4
+                              ? Container()
+                              : SizedBox(
+                                  height: 30,
+                                  width: 70,
+                                  child: Material(
+                                    elevation: 2.0,
+                                    shadowColor: Colors.grey,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    color: lwtColor,
+                                    child: MaterialButton(
+                                      height: 22.0,
+                                      padding: EdgeInsets.all(3),
+                                      child: Text(
+                                        "View",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        onClickForStatus(list2[index]);
+                                      },
+                                    ),
+                                  ),
+                                )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                color: Colors.white,
               ));
-        });
+        },
+      ),
+    );
   }
 
-    displayDateFormat(String elFromDate) {
+  displayDateFormat(String elFromDate) {
     List<String> a = elFromDate.split("-");
     return a[2] + "-" + a[1] + "-" + a[0];
+  }
+
+  displayDateTimeFormat(String date) {
+    if (date != null) {
+      String newDate = date.toString();
+      List<String> d = [];
+      d = newDate.split(".");
+      // print(d[0]);
+
+      return d[0].toString().split(" ")[0].toString().split("-")[2].toString() +
+          "-" +
+          d[0].toString().split(" ")[0].toString().split("-")[1].toString() +
+          "-" +
+          d[0].toString().split(" ")[0].toString().split("-")[0].toString() +
+          " " +
+          d[0].toString().split(" ")[1].toString();
+    }else{
+      return "";
+    }
+    return "";
+  }
+
+  onClickForStatus(TaskListModel list2) {
+    if (myTasks == true) {
+      if (_color1 == true || _color2 == true) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => TaskPlannerEdit(
+                      list2.dp_task.toString(),
+                      list2.dp_task_desc.toString(),
+                      list2.dp_id.toString(),
+                    )));
+      } else if (_color3 == true) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => TaskPlannerEdit(
+                      list2.dp_task.toString(),
+                      list2.dp_task_desc.toString(),
+                      list2.dp_id.toString(),
+                    )));
+      }
+    } else if (teamTasks == true) {
+      if (_color1 == true || _color2 == true) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => TaskPlannerEdit(
+                      list2.dp_task.toString(),
+                      list2.dp_task_desc.toString(),
+                      list2.dp_id.toString(),
+                    )));
+      } else if (_color3 == true) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => TaskPlannerEdit(
+                      list2.dp_task.toString(),
+                      list2.dp_task_desc.toString(),
+                      list2.dp_id.toString(),
+                    )));
+      }
+    } else if (projectTasks == true) {
+      if (_color1 == true || _color2 == true) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => TaskPlannerEdit(
+                      list2.dp_task.toString(),
+                      list2.dp_task_desc.toString(),
+                      list2.dp_id.toString(),
+                    )));
+      } else if (_color3 == true) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => TaskPlannerEdit(
+                      list2.dp_task.toString(),
+                      list2.dp_task_desc.toString(),
+                      list2.dp_id.toString(),
+                    )));
+      }
+    }
   }
 }

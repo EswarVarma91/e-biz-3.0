@@ -30,7 +30,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   ProgressDialog pr;
   List<FirebaseUserModel> fum;
   int y, m, d, hh, mm;
-  String toA, toB, toC;
+  int year, month, day, hour, minute;
   static Dio dio = Dio(Config.options);
   @override
   void initState() {
@@ -101,13 +101,17 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               onPressed: () {
                 //Service Call
                 //Service Call
-                if (choosePerson == "Select 'Member'" ||
+                if (choosePerson == "Select Member" ||
                     choosePerson == "null") {
                   Fluttertoast.showToast(msg: "Select 'Member'");
                 } else if (_controller1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter 'Task Name'");
                 } else if (_controller2.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter 'Task Descrption'");
+                } else if (startDate.isEmpty) {
+                  Fluttertoast.showToast(msg: "Select Start Date");
+                } else if (endDate.isEmpty) {
+                  Fluttertoast.showToast(msg: "Select End Date");
                 } else {
 //                  print("One : "+profileName+","+_controller1.text+","+_controller2.text+","+resourceId.toString());
                   CallTeamTaskApi();
@@ -180,22 +184,14 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
                   endDate = "";
                   endDates = "";
                 });
-                DatePicker.showDatePicker(context,
+                DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
                     minTime: DateTime(y, m, d, hh, mm),
-                    maxTime: DateTime(y, m + 5, d, hh, mm),
-                    theme: DatePickerTheme(
-                        backgroundColor: Colors.white,
-                        itemStyle: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                        ),
-                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
-                    onChanged: (date) {
+                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
                   changeDateF(date);
                 }, onConfirm: (date) {
                   changeDateF(date);
-                }, currentTime: DateTime.now(), locale: LocaleType.en);
+                }, locale: LocaleType.en);
               },
               title: TextFormField(
                 enabled: false,
@@ -216,46 +212,28 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
                     endDate = "";
                     endDates = "";
                   });
-                  DatePicker.showDatePicker(context,
+                  DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(y, m, d, hh, mm),
-                      maxTime: DateTime(y, m + 5, d, hh, mm),
-                      theme: DatePickerTheme(
-                          backgroundColor: Colors.white,
-                          itemStyle: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 20,
-                          ),
-                          doneStyle:
-                              TextStyle(color: Colors.blue, fontSize: 12)),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
                       onChanged: (date) {
                     changeDateF(date);
                   }, onConfirm: (date) {
                     changeDateF(date);
-                  }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  }, locale: LocaleType.en);
                 },
               ),
             ),
             ListTile(
               onTap: () {
-                DatePicker.showDatePicker(context,
+                DatePicker.showDateTimePicker(context,
                     showTitleActions: true,
-                    minTime: DateTime(
-                        int.parse(toA), int.parse(toB), int.parse(toC), hh, mm),
-                    maxTime: DateTime(int.parse(toA), int.parse(toB) + 5,
-                        int.parse(toC), hh, mm),
-                    theme: DatePickerTheme(
-                        backgroundColor: Colors.white,
-                        itemStyle: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                        ),
-                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
-                    onChanged: (date) {
+                    minTime: DateTime(year, month, day, hour, minute + 1),
+                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
                   changeDateT(date);
                 }, onConfirm: (date) {
                   changeDateT(date);
-                }, currentTime: DateTime.now(), locale: LocaleType.en);
+                }, locale: LocaleType.en);
               },
               title: TextFormField(
                 enabled: false,
@@ -272,25 +250,15 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               trailing: IconButton(
                 icon: Icon(Icons.calendar_today),
                 onPressed: () {
-                  DatePicker.showDatePicker(context,
+                  DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(int.parse(toA), int.parse(toB),
-                          int.parse(toC), hh, mm),
-                      maxTime: DateTime(int.parse(toA), int.parse(toB) + 5,
-                          int.parse(toC), hh, mm),
-                      theme: DatePickerTheme(
-                          backgroundColor: Colors.white,
-                          itemStyle: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 20,
-                          ),
-                          doneStyle:
-                              TextStyle(color: Colors.blue, fontSize: 12)),
+                      minTime: DateTime(year, month, day, hour, minute + 1),
+                      maxTime: DateTime(y + 1, m, d, hh, mm),
                       onChanged: (date) {
                     changeDateT(date);
                   }, onConfirm: (date) {
                     changeDateT(date);
-                  }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  }, locale: LocaleType.en);
                 },
               ),
             ),
@@ -303,31 +271,55 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   void changeDateF(DateTime date) {
     String newDate = date.toString();
     List<String> d = [];
-    d = newDate.split(" ");
+    d = newDate.split(".");
+
     // print(d[0]);
     setState(() {
       List<String> aa = [];
-      aa = d[0].split("-");
-      toA = aa[0].toString();
-      toB = aa[1].toString();
-      toC = aa[2].toString();
+      aa = d[0].split(" ");
+      String date = aa[0].toString();
+      String time = aa[1].toString();
+      List<String> bb = [];
+      bb = date.split("-");
+      year = int.parse(bb[0].toString());
+      month = int.parse(bb[1].toString());
+      day = int.parse(bb[2].toString());
+      List<String> cc = [];
+      cc = time.split(":");
+      hour = int.parse(cc[0].toString());
+      minute = int.parse(cc[1].toString());
+
       startDate = d[0].toString();
-      startDates = toC + "-" + toB + "-" + toA;
+      startDates = day.toString() +
+          "-" +
+          month.toString() +
+          "-" +
+          year.toString() +
+          " " +
+          time;
     });
   }
 
   void changeDateT(DateTime date) {
     String newDate = date.toString();
     List<String> d = [];
-    d = newDate.split(" ");
-
-    var display = d[0].toString();
-    List<String> a = display.split("-");
-
+    var day, month, year;
+    d = newDate.split(".");
     // print(d[0]);
     setState(() {
       endDate = d[0].toString();
-      endDates = a[2] + "-" + a[1] + "-" + a[0];
+      endDates = d[0]
+              .toString()
+              .split(" ")[0]
+              .toString()
+              .split("-")[2]
+              .toString() +
+          "-" +
+          d[0].toString().split(" ")[0].toString().split("-")[1].toString() +
+          "-" +
+          d[0].toString().split(" ")[0].toString().split("-")[0].toString() +
+          " " +
+          d[0].toString().split(" ")[1].toString();
     });
   }
 
@@ -364,7 +356,9 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           "dpType": "Office",
           "dayTaskType": "Team",
           "dpModifiedBy": profileName,
-          "uId": resourceId
+          "uId": resourceId,
+          "dpTaskStartDateTime": startDate,
+          "dpTaskEndDateTime": endDate
         },
         options: Options(
           contentType: ContentType.parse('application/json'),
