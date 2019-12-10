@@ -37,7 +37,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  static const methodChannel = const MethodChannel('eb');
+  static const methodChannel = const MethodChannel('com.eb');
 
   _MyHomePageState() {
     methodChannel.setMethodCallHandler((call) {
@@ -710,10 +710,14 @@ class _HomePageLocationState extends State<HomePageLocation> {
           timeStart = attData.in_time.toString();
           timeEnd = attData.out_time.toString();
           if (attData.in_time != null && attData != null) {
-            if(timeStart!="" && timeStart!=null && timeStart!="null" && timeStart!="-" && timeStart!=" "){
-            workStatus = "At-Office";
-            }else{
-              workStatus ="-";
+            if (timeStart != "" &&
+                timeStart != null &&
+                timeStart != "null" &&
+                timeStart != "-" &&
+                timeStart != " ") {
+              workStatus = "At-Office";
+            } else {
+              workStatus = "-";
             }
             AttendanceGettingModel attendanceModel =
                 AttendanceGettingModel(userId, timeStart, timeEnd);
@@ -772,204 +776,202 @@ class _HomePageLocationState extends State<HomePageLocation> {
         }
       }
     }
-    
-        getAttendance();
+
+    getAttendance();
+  }
+
+  _insertStartTimeService(
+      String timeStarta, String lat, String long, String datest) async {
+    try {
+      var response = await dio.post(ServicesApi.updateData,
+          data: {
+            "parameter1": "UpdtEmpDayStartByCodeDate",
+            "parameter2": empCode.toString(),
+            "parameter3": lat.toString(),
+            "parameter4": long.toString(),
+            "parameter5": timeStarta.toString(),
+            "parameter6": datest,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var res = json.decode(response.data);
+        print(res.toString());
+        Fluttertoast.showToast(msg: "Day Start marked sucessfully.");
+      } else {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
-    
-      _insertStartTimeService(
-          String timeStarta, String lat, String long, String datest) async {
-        try {
-          var response = await dio.post(ServicesApi.updateData,
-              data: {
-                "parameter1": "UpdtEmpDayStartByCodeDate",
-                "parameter2": empCode.toString(),
-                "parameter3": lat.toString(),
-                "parameter4": long.toString(),
-                "parameter5": timeStarta.toString(),
-                "parameter6": datest,
-              },
-              options: Options(
-                contentType: ContentType.parse('application/json'),
-              ));
-          if (response.statusCode == 200 || response.statusCode == 201) {
-            var res = json.decode(response.data);
-            print(res.toString());
-            Fluttertoast.showToast(msg: "Day Start marked sucessfully.");
-          } else {
-            Fluttertoast.showToast(msg: "Check your internet connection.");
-          }
-        } on DioError catch (exception) {
-          if (exception == null ||
-              exception.toString().contains('SocketException')) {
-            throw Exception("Network Error");
-          } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-              exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            throw Exception("Check your internet connection.");
-          } else {
-            return null;
-          }
-        }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
+      } else {
+        return null;
       }
-    
-      void _insertEndTimeService(
-          String timeEnda, String lat, String long, String dateen) async {
-        try {
-          var response = await dio.post(ServicesApi.updateData,
-              data: {
-                "parameter1": "UpdtEmpDayEndByCodeDate",
-                "parameter2": empCode.toString(),
-                "parameter3": lat.toString(),
-                "parameter4": long.toString(),
-                "parameter5": timeEnda.toString(),
-                "parameter6": dateen,
-              },
-              options: Options(
-                contentType: ContentType.parse('application/json'),
-              ));
-          if (response.statusCode == 200 || response.statusCode == 201) {
-            var res = json.decode(response.data);
-            print(res.toString());
-          } else {
-            Fluttertoast.showToast(msg: "Check your internet connection.");
-          }
-        } on DioError catch (exception) {
-          if (exception == null ||
-              exception.toString().contains('SocketException')) {
-            throw Exception("Network Error");
-          } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-              exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            throw Exception("Check your internet connection.");
-          } else {
-            return null;
-          }
-        }
+    }
+  }
+
+  void _insertEndTimeService(
+      String timeEnda, String lat, String long, String dateen) async {
+    try {
+      var response = await dio.post(ServicesApi.updateData,
+          data: {
+            "parameter1": "UpdtEmpDayEndByCodeDate",
+            "parameter2": empCode.toString(),
+            "parameter3": lat.toString(),
+            "parameter4": long.toString(),
+            "parameter5": timeEnda.toString(),
+            "parameter6": dateen,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var res = json.decode(response.data);
+        print(res.toString());
+      } else {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
-    
-      // void sendUserLocation(double lati, double longi) async {
-      //   var now = DateTime.now();
-      //   var dateNow = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
-      //   try {
-      //     var response = await dio.put(ServicesApi.updateData,
-      //         data: {
-      //           "parameter1": "insertUserLocations",
-      //           "parameter2": userId,
-      //           "parameter3": lati.toString(),
-      //           "parameter4": longi.toString(),
-      //           "parameter5": dateNow
-      //         },
-      //         options: Options(
-      //           contentType: ContentType.parse('application/json'),
-      //         ));
-      //     if (response.statusCode == 200 || response.statusCode == 201) {
-      //       var res = json.decode(response.data);
-      //       print(res.toString());
-      //     } else {
-      //       Fluttertoast.showToast(msg: "Check your internet connection.");
-      //     }
-      //   } on DioError catch (exception) {
-      //     if (exception == null ||
-      //         exception.toString().contains('SocketException')) {
-      //       throw Exception("Network Error");
-      //     } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-      //         exception.type == DioErrorType.CONNECT_TIMEOUT) {
-      //       throw Exception("Check your internet connection.");
-      //     } else {
-      //       return null;
-      //     }
-      //   }
-      // }
-    
-      roundedAlertDialog(userLocation) {
-        var now1 = DateTime.now();
-        showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return CupertinoAlertDialog(
-                title: new Text(
-                  'Do you want to end the day.!',
-                  style: TextStyle(fontSize: 16),
-                ),
-                actions: <Widget>[
-                  new CupertinoButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: new Text('No'),
-                  ),
-                  new CupertinoButton(
-                    onPressed: () async {
-                      timeEnd = DateFormat("HH:mm:ss").format(now1).toString();
-                      EndAttendanceModel am = EndAttendanceModel(
-                          userId,
-                          timeEnd,
-                          userlocation.latitude.toString(),
-                          userlocation.longitude.toString());
-                      dbHelper.updateEnd(am);
-    
-                      ///LocationService
-                      _insertEndTimeService(
-                          timeEnd,
-                          userlocation.latitude.toString(),
-                          userlocation.longitude.toString(),
-                          DateFormat("yyyy-MM-dd").format(now1).toString());
-                      Navigator.of(context).pop();
-                    },
-                    child: new Text('Yes'),
-                  ),
-                ],
-              );
-            });
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
+      } else {
+        return null;
       }
-    
-      void getPendingCount(String userIdd) async {
-        try {
-          var response = await dio.post(ServicesApi.getData,
-              data: {
-                "parameter1": "getPendingCount",
-                "parameter2": userIdd.toString(),
-              },
-              options: Options(
-                contentType: ContentType.parse('application/json'),
-              ));
-          if (response.statusCode == 200 || response.statusCode == 201) {
-            var res = json.decode(response.data);
-            PendingCountModel data = PendingCountModel.fromJson(res[0]);
-            setState(() {
-              taskPending = data.pendingCount.toString();
-            });
-          } else {
-            Fluttertoast.showToast(msg: "Check your internet connection.");
-          }
-        } on DioError catch (exception) {
-          if (exception == null ||
-              exception.toString().contains('SocketException')) {
-            throw Exception("Network Error");
-          } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-              exception.type == DioErrorType.CONNECT_TIMEOUT) {
-            throw Exception("Check your internet connection.");
-          } else {
-            return null;
-          }
-        }
+    }
+  }
+
+  // void sendUserLocation(double lati, double longi) async {
+  //   var now = DateTime.now();
+  //   var dateNow = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
+  //   try {
+  //     var response = await dio.put(ServicesApi.updateData,
+  //         data: {
+  //           "parameter1": "insertUserLocations",
+  //           "parameter2": userId,
+  //           "parameter3": lati.toString(),
+  //           "parameter4": longi.toString(),
+  //           "parameter5": dateNow
+  //         },
+  //         options: Options(
+  //           contentType: ContentType.parse('application/json'),
+  //         ));
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       var res = json.decode(response.data);
+  //       print(res.toString());
+  //     } else {
+  //       Fluttertoast.showToast(msg: "Check your internet connection.");
+  //     }
+  //   } on DioError catch (exception) {
+  //     if (exception == null ||
+  //         exception.toString().contains('SocketException')) {
+  //       throw Exception("Network Error");
+  //     } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+  //         exception.type == DioErrorType.CONNECT_TIMEOUT) {
+  //       throw Exception("Check your internet connection.");
+  //     } else {
+  //       return null;
+  //     }
+  //   }
+  // }
+
+  roundedAlertDialog(userLocation) {
+    var now1 = DateTime.now();
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text(
+              'Do you want to end the day.!',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: new Text('No'),
+              ),
+              new CupertinoButton(
+                onPressed: () async {
+                  timeEnd = DateFormat("HH:mm:ss").format(now1).toString();
+                  EndAttendanceModel am = EndAttendanceModel(
+                      userId,
+                      timeEnd,
+                      userlocation.latitude.toString(),
+                      userlocation.longitude.toString());
+                  dbHelper.updateEnd(am);
+
+                  ///LocationService
+                  _insertEndTimeService(
+                      timeEnd,
+                      userlocation.latitude.toString(),
+                      userlocation.longitude.toString(),
+                      DateFormat("yyyy-MM-dd").format(now1).toString());
+                  Navigator.of(context).pop();
+                },
+                child: new Text('Yes'),
+              ),
+            ],
+          );
+        });
+  }
+
+  void getPendingCount(String userIdd) async {
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "parameter1": "getPendingCount",
+            "parameter2": userIdd.toString(),
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var res = json.decode(response.data);
+        PendingCountModel data = PendingCountModel.fromJson(res[0]);
+        setState(() {
+          taskPending = data.pendingCount.toString();
+        });
+      } else {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
       }
-    
-      insertToken(String uid, String token) async {
-        var response = await dio.post(ServicesApi.updateData,
-            data: {
-              "parameter1": "insertToken",
-              "parameter2": uid,
-              "parameter3": token
-            },
-            options: Options(contentType: ContentType.parse('application/json')));
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          print(token);
-        } else if (response.statusCode == 401) {
-          throw (Exception);
-        }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
+      } else {
+        return null;
       }
-    
-    
+    }
+  }
+
+  insertToken(String uid, String token) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "insertToken",
+          "parameter2": uid,
+          "parameter3": token
+        },
+        options: Options(contentType: ContentType.parse('application/json')));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
 
   // void getCurrentDate() async {
   //   var response = await dio.post(ServicesApi.getData,
