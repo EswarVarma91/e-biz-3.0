@@ -24,7 +24,7 @@ public class MainActivity extends FlutterActivity {
     Intent intent = new Intent(this, MyBroadcastReceiver.class);
     PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234, intent, 0);
     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),1*60*1000, pendingIntent);
+    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),15*60*1000, pendingIntent);
 
   }
 
