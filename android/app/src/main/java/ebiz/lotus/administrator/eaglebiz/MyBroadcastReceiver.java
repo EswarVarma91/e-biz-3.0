@@ -14,7 +14,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 //        mp.start();
 //        Toast.makeText(context, "Alarm", Toast.LENGTH_LONG).show();
         Log.d("check : ","bg service ");
-        MethodChannel methodChannel = new MethodChannel(getFlutterView(),"com.eb");
+        // MethodChannel methodChannel = new MethodChannel(getFlutterView(),"com.eb");
         
 
     }

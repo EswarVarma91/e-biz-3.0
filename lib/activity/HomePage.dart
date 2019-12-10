@@ -618,7 +618,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             }
           } else {
             Fluttertoast.showToast(
-                msg: "Attendace accept through Bio-Metric only.");
+                msg: "Attendance accept through Bio-Metric only.");
           }
         },
         child: Center(

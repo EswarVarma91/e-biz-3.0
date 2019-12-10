@@ -49,6 +49,7 @@ class _NewLeaveState extends State<NewLeave> {
   List<LeavesCheckingModel> lcm;
   static Dio dio = Dio(Config.options);
   bool leave_is_Sl = false;
+  bool leave_is_Cl = false;
   ProgressDialog pr;
   List li1;
   List<FirebaseReportingLevelModel> fm;
@@ -163,25 +164,49 @@ class _NewLeaveState extends State<NewLeave> {
                   ),
                   ListTile(
                     onTap: () {
-                      DatePicker.showDatePicker(context,
-                          showTitleActions: true,
-                          minTime: leave_is_Sl
-                              ? DateTime(y, m, d - 6)
-                              : DateTime(y, m, d),
-                          maxTime: leave_is_Sl ? DateTime(y, m, d - 1) : DateTime(y,m+2,d),
-                          theme: DatePickerTheme(
-                              backgroundColor: Colors.white,
-                              itemStyle: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 20,
-                              ),
-                              doneStyle:
-                                  TextStyle(color: Colors.blue, fontSize: 12)),
-                          onChanged: (date) {
-                        changeDateF(date);
-                      }, onConfirm: (date) {
-                        changeDateF(date);
-                      }, currentTime: DateTime.now(), locale: LocaleType.en);
+                      leave_is_Cl
+                          ? DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime(y, m, d),
+                              maxTime: DateTime(y, 12, 31),
+                              theme: DatePickerTheme(
+                                  backgroundColor: Colors.white,
+                                  itemStyle: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 20,
+                                  ),
+                                  doneStyle: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12)), onChanged: (date) {
+                              changeDateF(date);
+                            }, onConfirm: (date) {
+                              changeDateF(date);
+                            },
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.en)
+                          : DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: leave_is_Sl
+                                  ? DateTime(y, m, d - 6)
+                                  : DateTime(y, m, d),
+                              maxTime: leave_is_Sl
+                                  ? DateTime(y, m, d - 1)
+                                  : DateTime(y, m + 2, d),
+                              theme: DatePickerTheme(
+                                  backgroundColor: Colors.white,
+                                  itemStyle: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 20,
+                                  ),
+                                  doneStyle: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12)), onChanged: (date) {
+                              changeDateF(date);
+                            }, onConfirm: (date) {
+                              changeDateF(date);
+                            },
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.en);
                     },
                     title: TextFormField(
                       enabled: false,
@@ -204,41 +229,33 @@ class _NewLeaveState extends State<NewLeave> {
                       onPressed: () {
                         toDateS = "";
                         toDate = "";
-                        DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: leave_is_Sl
-                                ? DateTime(y, m, d - 6)
-                                : DateTime(y, m, d),
-                            maxTime: leave_is_Sl ? DateTime(y, m, d - 1) : DateTime(y,m+2,d),
-                            theme: DatePickerTheme(
-                                backgroundColor: Colors.white,
-                                itemStyle: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 20,
-                                ),
-                                doneStyle: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 12)), onChanged: (date) {
-                          changeDateF(date);
-                        }, onConfirm: (date) {
-                          changeDateF(date);
-                        }, currentTime: DateTime.now(), locale: LocaleType.en);
-                      },
-                    ),
-                  ),
-                  _color1
-                      ? Container()
-                      : ListTile(
-                          onTap: () {
-                            toDateS = "";
-                            toDate = "";
-                            DatePicker.showDatePicker(context,
+                        leave_is_Cl
+                            ? DatePicker.showDatePicker(context,
                                 showTitleActions: true,
-                                //                            minTime: DateTime(2019, 3, 5),
-                                minTime: DateTime(int.parse(toA),
-                                    int.parse(toB), int.parse(toC)),
+                                minTime: DateTime(y, m, d),
+                                maxTime: DateTime(y, 12, 31),
+                                theme: DatePickerTheme(
+                                    backgroundColor: Colors.white,
+                                    itemStyle: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 20,
+                                    ),
+                                    doneStyle: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 12)), onChanged: (date) {
+                                changeDateF(date);
+                              }, onConfirm: (date) {
+                                changeDateF(date);
+                              },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en)
+                            : DatePicker.showDatePicker(context,
+                                showTitleActions: true,
+                                minTime: leave_is_Sl
+                                    ? DateTime(y, m, d - 6)
+                                    : DateTime(y, m, d),
                                 maxTime: leave_is_Sl
-                                    ? DateTime(y, m, d-1)
+                                    ? DateTime(y, m, d - 1)
                                     : DateTime(y, m + 2, d),
                                 theme: DatePickerTheme(
                                     backgroundColor: Colors.white,
@@ -249,12 +266,65 @@ class _NewLeaveState extends State<NewLeave> {
                                     doneStyle: TextStyle(
                                         color: Colors.blue,
                                         fontSize: 12)), onChanged: (date) {
-                              changeDateT(date);
-                            }, onConfirm: (date) {
-                              changeDateT(date);
-                            },
+                                changeDateF(date);
+                              }, onConfirm: (date) {
+                                changeDateF(date);
+                              },
                                 currentTime: DateTime.now(),
                                 locale: LocaleType.en);
+                      },
+                    ),
+                  ),
+                  _color1
+                      ? Container()
+                      : ListTile(
+                          onTap: () {
+                            toDateS = "";
+                            toDate = "";
+                            leave_is_Cl
+                                ? DatePicker.showDatePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime(int.parse(toA),
+                                        int.parse(toB), int.parse(toC)),
+                                    maxTime: DateTime(y, 12, 31),
+                                    theme: DatePickerTheme(
+                                        backgroundColor: Colors.white,
+                                        itemStyle: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 20,
+                                        ),
+                                        doneStyle: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 12)), onChanged: (date) {
+                                    changeDateT(date);
+                                  }, onConfirm: (date) {
+                                    changeDateT(date);
+                                  },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.en)
+                                : DatePicker.showDatePicker(context,
+                                    showTitleActions: true,
+                                    //                            minTime: DateTime(2019, 3, 5),
+                                    minTime: DateTime(int.parse(toA),
+                                        int.parse(toB), int.parse(toC)),
+                                    maxTime: leave_is_Sl
+                                        ? DateTime(y, m, d - 1)
+                                        : DateTime(y, m + 2, d),
+                                    theme: DatePickerTheme(
+                                        backgroundColor: Colors.white,
+                                        itemStyle: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 20,
+                                        ),
+                                        doneStyle: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 12)), onChanged: (date) {
+                                    changeDateT(date);
+                                  }, onConfirm: (date) {
+                                    changeDateT(date);
+                                  },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.en);
                           },
                           title: TextFormField(
                             enabled: false,
@@ -275,29 +345,52 @@ class _NewLeaveState extends State<NewLeave> {
                               color: lwtColor,
                             ),
                             onPressed: () {
-                              DatePicker.showDatePicker(context,
-                                  showTitleActions: true,
-                                  //                            minTime: DateTime(2019, 3, 5),
-                                  minTime: DateTime(int.parse(toA),
-                                      int.parse(toB), int.parse(toC)),
-                                  maxTime: leave_is_Sl
-                                    ? DateTime(y, m, d-1)
-                                    : DateTime(y, m + 2, d),
-                                  theme: DatePickerTheme(
-                                      backgroundColor: Colors.white,
-                                      itemStyle: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 20,
-                                      ),
-                                      doneStyle: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 12)), onChanged: (date) {
-                                changeDateT(date);
-                              }, onConfirm: (date) {
-                                changeDateT(date);
-                              },
-                                  currentTime: DateTime.now(),
-                                  locale: LocaleType.en);
+                              leave_is_Cl
+                                  ? DatePicker.showDatePicker(context,
+                                      showTitleActions: true,
+                                      minTime: DateTime(int.parse(toA),
+                                          int.parse(toB), int.parse(toC)),
+                                      maxTime: DateTime(y, 12, 31),
+                                      theme: DatePickerTheme(
+                                          backgroundColor: Colors.white,
+                                          itemStyle: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 20,
+                                          ),
+                                          doneStyle: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 12)),
+                                      onChanged: (date) {
+                                      changeDateT(date);
+                                    }, onConfirm: (date) {
+                                      changeDateT(date);
+                                    },
+                                      currentTime: DateTime.now(),
+                                      locale: LocaleType.en)
+                                  : DatePicker.showDatePicker(context,
+                                      showTitleActions: true,
+                                      //                            minTime: DateTime(2019, 3, 5),
+                                      minTime: DateTime(int.parse(toA),
+                                          int.parse(toB), int.parse(toC)),
+                                      maxTime: leave_is_Sl
+                                          ? DateTime(y, m, d - 1)
+                                          : DateTime(y, m + 2, d),
+                                      theme: DatePickerTheme(
+                                          backgroundColor: Colors.white,
+                                          itemStyle: TextStyle(
+                                            color: Colors.blue,
+                                            fontSize: 20,
+                                          ),
+                                          doneStyle: TextStyle(
+                                              color: Colors.blue,
+                                              fontSize: 12)),
+                                      onChanged: (date) {
+                                      changeDateT(date);
+                                    }, onConfirm: (date) {
+                                      changeDateT(date);
+                                    },
+                                      currentTime: DateTime.now(),
+                                      locale: LocaleType.en);
                             },
                           ),
                         ),
@@ -416,8 +509,23 @@ class _NewLeaveState extends State<NewLeave> {
     List res = data.split(" ");
     leaveType = res[0].toString();
     if (leaveType == "SL") {
+
+      leave_is_Cl = false;
       leave_is_Sl = true;
+
+    } else if (leaveType == "CL") {
+
+      
+      if (leaveType == "CL") {
+        leave_is_Sl = false;
+        leave_is_Cl = true;
+      } else {
+        leave_is_Sl = false;
+        leave_is_Cl = false;
+      }
+
     } else {
+      leave_is_Cl = false;
       leave_is_Sl = false;
     }
   }
@@ -513,9 +621,18 @@ class _NewLeaveState extends State<NewLeave> {
           "fromDate": fromDate,
           "toDate": toDate,
           "leaveType": leaveType,
-          "userId": uuid
+          "userId": uuid,
+          "haldayCount": _color1 ? 1: 0
         },
         options: Options(contentType: ContentType.parse("application/json")));
+        print({
+          "branchId": branchId,
+          "fromDate": fromDate,
+          "toDate": toDate,
+          "leaveType": leaveType,
+          "userId": uuid,
+          "haldayCount": _color1 ? 1: 0
+        });
     if (response.statusCode == 200 || response.statusCode == 201) {
       // int noofBeforeDays = json.decode(response.data)['NO_OF_BEFORE_DAYS'];
       // int totaleffectiveDays =json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
@@ -523,28 +640,27 @@ class _NewLeaveState extends State<NewLeave> {
 
       effeDates.clear();
 
-      if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] > 0) {
-        effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES'];
+      if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS']?? 0 > 0) {
+        effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES']??[];
         for (String sDates in effectiveDates) {
           effeDates
               .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       } else {
-        effectiveDates = json.decode(response.data)['LEAVES'];
+        effectiveDates = json.decode(response.data)['LEAVES'] ?? [];
         for (String sDates in effectiveDates) {
           effeDates
               .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       }
+// ({"ALREADY_ON_LEAVE":true,"EMERGENCY_LEAVE":false,"STATUS":"0","SUFFICIENT_LEAVES":false,"SICK_LEAVE":false,"LEAVES":["2019-12-19","2019-12-20","2019-12-21"],"IF_IT_IS_HOLIDAY":false})
 
-  
-        if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
-          if (json.decode(response.data)['ALREADY_ON_LEAVE'] == false) {
-            if (json.decode(response.data)['SUFFICIENT_LEAVES'] == true) {
-             if(json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] <7) {
-                if (leaveType == "SL") {
-                if (json.decode(response.data)['SICK_LEAVE'] == true &&
-                    json.decode(response.data)['STATUS'] == "1") {
+      if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
+        if (json.decode(response.data)['ALREADY_ON_LEAVE'] == false) {
+          if (json.decode(response.data)['SUFFICIENT_LEAVES'] == true) {
+            if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] ?? 0 < 7) {
+              if (leaveType == "SL") {
+                if (json.decode(response.data)['SICK_LEAVE'] == true) {
                   //insert data
                   callServiceInsert();
                 } else {
@@ -553,7 +669,7 @@ class _NewLeaveState extends State<NewLeave> {
                           "Sick leave should apply previous dates only on joined date.");
                 }
               } else if (leaveType == "CAL") {
-                if (json.decode(response.data)['EMERGENCY_LEAVES'] == true &&
+                if (json.decode(response.data)['EMERGENCY_LEAVE'] == true &&
                     json.decode(response.data)['STATUS'] == "1") {
                   //insert data
                   callServiceInsert();
@@ -568,22 +684,19 @@ class _NewLeaveState extends State<NewLeave> {
                               "You are exceeding the maximum number of leave days.");
                     }
                   } else {
-                    if (listData(json
-                            .decode(response.data)['EFFECTIVE_LEAVE_DATES']) >=
-                        1) {
+                    if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >=1) {
                       Fluttertoast.showToast(
                           msg:
                               "You should apply before 6 days of applied date.");
                     } else {
                       Fluttertoast.showToast(
-                          msg:
-                              "You should apply emergency leave before start time of branch timings.");
+                          msg:"You should apply emergency leave before start time of branch timings.");
                     }
                   }
                 }
               } else if (leaveType == "CL") {
                 if (fixedTerm == "1") {
-                  if (json.decode(response.data)['EMERGENCY_LEAVES'] &&
+                  if (json.decode(response.data)['EMERGENCY_LEAVE'] &&
                       json.decode(response.data)['STATUS'] == "1") {
                     //insert data
                     callServiceInsert();
@@ -598,8 +711,7 @@ class _NewLeaveState extends State<NewLeave> {
                                 "You are exceeding the maximum number of leave days.");
                       }
                     } else {
-                      if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >
-                          1) {
+                      if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
                         Fluttertoast.showToast(
                             msg:
                                 "You should apply before 6 days of from date.");
@@ -610,8 +722,9 @@ class _NewLeaveState extends State<NewLeave> {
                       }
                     }
                   }
-                } else {
-                  if (json.decode(response.data)['EMERGENCY_LEAVES'] == true &&
+                } 
+                else {
+                  if (json.decode(response.data)['EMERGENCY_LEAVE'] == true &&
                       json.decode(response.data)['STATUS'] == "1") {
                     //insert data
                     callServiceInsert();
@@ -622,8 +735,7 @@ class _NewLeaveState extends State<NewLeave> {
                       callServiceInsert();
                     } else {
                       Fluttertoast.showToast(
-                          msg:
-                              "You should apply before 6 days of from data.");
+                          msg: "You should apply before 6 days of from data.");
                     }
                   }
                 }
@@ -642,30 +754,55 @@ class _NewLeaveState extends State<NewLeave> {
                       msg: "You should apply before 6 days of current date.");
                 }
               }
-               //
-             }else{
-              if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) > 0 && listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) == 0) {
-                  Fluttertoast.showToast(msg:"Sorry! You are exceeding the maximum number of leave days");
-            } else if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) == 0 && listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) > 0) {
-                  Fluttertoast.showToast(msg: "Sorry! You are exceeding the maximum number of leave days");
-             } else if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) > 0 && listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) > 0) {
-                  Fluttertoast.showToast(msg: "Sorry! You are exceeding the maximum number of leave days");
-             } else if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) == 0 && listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) == 0) {
-                  Fluttertoast.showToast(msg: "Sorry! You are exceeding the maximum number of leave days");
-              }
-             }
-              
+              //
             } else {
-              Fluttertoast.showToast(msg: "You have insufficient leaves.");
+              if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) >
+                      0 &&
+                  listData(json
+                          .decode(response.data)['FUTURE_CONTINOUS_DAYS']) ==
+                      0) {
+                Fluttertoast.showToast(
+                    msg:
+                        "Sorry! You are exceeding the maximum number of leave days");
+              } else if (listData(
+                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) ==
+                      0 &&
+                  listData(
+                          json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) >
+                      0) {
+                Fluttertoast.showToast(
+                    msg:
+                        "Sorry! You are exceeding the maximum number of leave days");
+              } else if (listData(
+                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) >
+                      0 &&
+                  listData(
+                          json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) >
+                      0) {
+                Fluttertoast.showToast(
+                    msg:
+                        "Sorry! You are exceeding the maximum number of leave days");
+              } else if (listData(
+                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) ==
+                      0 &&
+                  listData(json
+                          .decode(response.data)['FUTURE_CONTINOUS_DAYS']) ==
+                      0) {
+                Fluttertoast.showToast(
+                    msg:
+                        "Sorry! You are exceeding the maximum number of leave days");
+              }
             }
           } else {
-            Fluttertoast.showToast(
-                msg: "You have already applied leave on these dates.");
+            Fluttertoast.showToast(msg: "You have insufficient leaves.");
           }
         } else {
-          Fluttertoast.showToast(msg: "You are applying on leave on holiday.");
+          Fluttertoast.showToast(
+              msg: "You have already applied leave on these dates.");
         }
-    
+      } else {
+        Fluttertoast.showToast(msg: "You are applying on leave on holiday.");
+      }
     } else if (response.statusCode == 401) {
       throw (Exception);
     }
