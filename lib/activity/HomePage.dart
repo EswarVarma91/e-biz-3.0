@@ -710,7 +710,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           timeStart = attData.in_time.toString();
           timeEnd = attData.out_time.toString();
           if (attData.in_time != null && attData != null) {
-            if(timeStart!="" && timeStart!=null && timeStart!="null" && timeStart!="-"){
+            if(timeStart!="" && timeStart!=null && timeStart!="null" && timeStart!="-" && timeStart!=" "){
             workStatus = "At-Office";
             }else{
               workStatus ="-";

@@ -9,6 +9,7 @@ import 'package:Ebiz/functionality/salesLead/SalesLead.dart';
 import 'package:Ebiz/functionality/taskPlanner/TaskPlanner.dart';
 import 'package:Ebiz/functionality/travel/TravelRequestList.dart';
 import 'package:Ebiz/model/NavigationModel.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -276,7 +277,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
               ),
             ),
             Text("Version No.",style: TextStyle(color: Colors.white,fontSize: 8)),
-            Text("1.3",style: TextStyle(color: Colors.white,fontSize: 16)),
+            Text(ServicesApi.versionNew,style: TextStyle(color: Colors.white,fontSize: 16)),
             IconButton(
               icon: Icon(Icons.exit_to_app),
               color: lwtColor,
