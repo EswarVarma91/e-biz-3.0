@@ -92,22 +92,51 @@ class _PackageSelectionState extends State<PackageSelection> {
             )
           ],
         ),
-        body: ListView.builder(
-          itemCount: listReferals?.length ?? 0,
-          itemBuilder: (BuildContext context, int index) {
-            return CheckboxListTile(
-              value: selectedList.contains(listReferals[index].u_id),
-              onChanged: (bool selected) {
-                _onCSelected(selected, listReferals[index].u_id,
-                    listReferals[index].FullName);
-              },
-              title: Text(
-                listReferals[index].FullName,
-                style: TextStyle(fontSize: 18),
+        body: Column(
+          children: <Widget>[
+            Padding(
+            padding: EdgeInsets.all(10.0),
+            child: TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(15.0),
+                hintText: 'Search',
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.search),
               ),
-            );
-          },
-        ));
+              onChanged: (string) {
+                _debouncer.run(() {
+                  setState(() {
+                    fliterReferals = listReferals
+                        .where((u) => (u.FullName
+                            .toLowerCase()
+                            .contains(string.toLowerCase())) )
+                        .toList();
+                  });
+                });
+              },
+            ),
+          ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: fliterReferals?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  return CheckboxListTile(
+                    value: selectedList.contains(fliterReferals[index].u_id),
+                    onChanged: (bool selected) {
+                      _onCSelected(selected, fliterReferals[index].u_id,
+                          fliterReferals[index].FullName);
+                    },
+                    title: Text(
+                      fliterReferals[index].FullName,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        )
+        );
   }
 
   getDownTeamMembers(String uidds) async {

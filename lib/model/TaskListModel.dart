@@ -6,10 +6,10 @@ class TaskListModel {
   String dp_task;
   String dp_task_desc;
   String dp_given_by;
-  String dp_created_by;
+  String assignedBy;
   String dp_created_date;
   String dpTaskType;
-  String fullName;
+  String assignedTo;
   String TstartTime;
   String TendTime;
 
@@ -20,10 +20,10 @@ class TaskListModel {
       this.dp_task,
       this.dp_task_desc,
       this.dp_given_by,
-      this.dp_created_by,
+      this.assignedBy,
       this.dp_created_date,
       this.dpTaskType,
-      this.fullName,
+      this.assignedTo,
       this.u_id,
       this.TstartTime,
       this.TendTime);
@@ -35,10 +35,10 @@ class TaskListModel {
         dp_task_desc = json['dp_task_desc'],
         dp_given_by = json['dp_given_by'],
         dp_created_date = json['dp_created_date'],
-        dp_created_by = json['dp_created_by'],
+        assignedBy = json['assignedBy'],
         dp_task = json['dp_task'],
         dpTaskType = json['dp_task_type'],
-        fullName = json['fullName'],
+        assignedTo = json['assignedTo'],
         u_id = json["u_id"],
         TstartTime = json["TstartTime"],
         TendTime = json["TendTime"];
@@ -51,9 +51,9 @@ class TaskListModel {
         'dp_task': dp_task,
         'dp_given_by': dp_given_by,
         'dp_created_date': dp_created_date,
-        'dp_created_by': dp_created_by,
+        'assignedBy': assignedBy,
         'dp_task_type': dpTaskType,
-        'fullName': fullName,
+        'assignedTo': assignedTo,
         'u_id': u_id,
         "TstartTime":TstartTime,
         "TendTime": TendTime

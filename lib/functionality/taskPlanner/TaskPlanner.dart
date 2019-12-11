@@ -32,6 +32,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
   List<TaskListModel> list1 = [];
   List<TaskListModel> list11 = [];
   List<TaskListModel> list22 = [];
+  List<TaskListModel> list33 = [];
   List<TaskListModel> list2 = [];
   List<TaskListModel> list3 = [];
   List<TaskListModel> list4 = [];
@@ -86,7 +87,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
     list2.clear();
     if (myTasks == true) {
       //today filter
-      list3 = list1.where(
+      list3 = list11.where(
         (d) {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
@@ -97,21 +98,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
         },
       ).toList();
       //open filter
-      list4 = list1.where((d) {
+      list4 = list11.where((d) {
         if (d.dp_status.toString() == "1" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
       //progress filter
-      list5 = list1.where((d) {
+      list5 = list11.where((d) {
         if (d.dp_status.toString() == "2" && d.dpTaskType == "Self") {
           return true;
         }
         return false;
       }).toList();
       //closed filter
-      list6 = list1.where((d) {
+      list6 = list11.where((d) {
         if (d.dp_status.toString() == "3" && d.dpTaskType == "Self") {
           return true;
         }
@@ -142,7 +143,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       }
     } else if (teamTasks == true) {
       //today filter
-      list3 = list1.where((d) {
+      list3 = list33.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
         if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Team") {
           return true;
@@ -150,21 +151,21 @@ class _TaskPlannerState extends State<TaskPlanner> {
         return false;
       }).toList();
       //open
-      list4 = list1.where((d) {
+      list4 = list33.where((d) {
         if (d.dp_status.toString() == "1" && d.dpTaskType == "Team") {
           return true;
         }
         return false;
       }).toList();
       //progress
-      list5 = list1.where((d) {
+      list5 = list33.where((d) {
         if (d.dp_status.toString() == "2" && d.dpTaskType == "Team") {
           return true;
         }
         return false;
       }).toList();
       //closed
-      list6 = list1.where((d) {
+      list6 = list33.where((d) {
         if (d.dp_status.toString() == "3" && d.dpTaskType == "Team") {
           return true;
         }
@@ -819,8 +820,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
     try {
       response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["fullName"],
-            "parameter1": "GetAllTasksIncludingDownTeamById",
+            "encryptedFields": ["assignedTo"],
+            "parameter1": "GetAllSelfTasks",
             "parameter2": uiddd.toString()
           },
           options: Options(
@@ -828,7 +829,27 @@ class _TaskPlannerState extends State<TaskPlanner> {
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          list1 = (json.decode(response.data) as List)
+          list11 = (json.decode(response.data) as List)
+              .map((data) => new TaskListModel.fromJson(data))
+              .toList();
+          _isloading = false;
+        });
+      } else if (response.statusCode == 401) {
+        throw Exception("Incorrect data");
+      }
+
+      response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["assignedTo"],
+            "parameter1": "GetAllTeamTasks",
+            "parameter2": uiddd.toString()
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          list33 = (json.decode(response.data) as List)
               .map((data) => new TaskListModel.fromJson(data))
               .toList();
           _isloading = false;
@@ -939,9 +960,9 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                     TextStyle(fontSize: 7, color: Colors.black),
                               ),
                               Text(
-                                list2[index]?.dp_created_by[0].toUpperCase() +
+                                list2[index]?.assignedBy[0].toUpperCase() +
                                         list2[index]
-                                            .dp_created_by
+                                            .assignedBy
                                             .substring(1) ??
                                     "",
                                 style: TextStyle(

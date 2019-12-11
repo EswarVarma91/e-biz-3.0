@@ -393,7 +393,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
           pushNotification(req_no, token);
         } else {
           pr.hide();
-          Fluttertoast.showToast(msg: "Travel Uodate Request Generated.");
+          Fluttertoast.showToast(msg: "Travel Update Request Generated.");
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(
@@ -403,7 +403,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
         }
       } else {
         pr.hide();
-        Fluttertoast.showToast(msg: "Travel Uodate Request Generated.");
+        Fluttertoast.showToast(msg: "Travel Update Request Generated.");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
           MaterialPageRoute(
@@ -443,7 +443,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
     pr.hide();
-    Fluttertoast.showToast(msg: "Travel Uodate Request Generated.");
+    Fluttertoast.showToast(msg: "Travel Update Request Generated.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(
       MaterialPageRoute(builder: (BuildContext context) => TravelRequestList()),

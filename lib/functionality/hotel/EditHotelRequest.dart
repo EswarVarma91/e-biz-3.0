@@ -357,7 +357,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['hotel_req_no'];
         var token = json.decode(response.data)[0]['token'];
-        if (token != null || token != "null") {
+        if (token != null ) {
           pushNotification(req_no, token);
         } else {
           pr.hide();
