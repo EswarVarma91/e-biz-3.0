@@ -10,8 +10,8 @@ class TaskListModel {
   String dp_created_date;
   String dpTaskType;
   String assignedTo;
-  String TstartTime;
-  String TendTime;
+  String startDate;
+  String endDate;
 
   TaskListModel(
       this.dp_id,
@@ -25,8 +25,8 @@ class TaskListModel {
       this.dpTaskType,
       this.assignedTo,
       this.u_id,
-      this.TstartTime,
-      this.TendTime);
+      this.startDate,
+      this.endDate);
 
   TaskListModel.fromJson(Map<String, dynamic> json)
       : dp_id = json['dp_id'],
@@ -40,8 +40,8 @@ class TaskListModel {
         dpTaskType = json['dp_task_type'],
         assignedTo = json['assignedTo'],
         u_id = json["u_id"],
-        TstartTime = json["TstartTime"],
-        TendTime = json["TendTime"];
+        startDate = json["startDate"],
+        endDate = json["endDate"];
 
   Map<String, dynamic> toJson() => {
         'dp_id': dp_id,
@@ -55,7 +55,7 @@ class TaskListModel {
         'dp_task_type': dpTaskType,
         'assignedTo': assignedTo,
         'u_id': u_id,
-        "TstartTime":TstartTime,
-        "TendTime": TendTime
+        "startDate":startDate,
+        "endDate": endDate
       };
 }
