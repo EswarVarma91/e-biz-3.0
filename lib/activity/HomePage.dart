@@ -716,9 +716,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 timeStart != "-" &&
                 timeStart != " ") {
               workStatus = "At-Office";
-            } else {
-              workStatus = "-";
-            }
+            } 
             AttendanceGettingModel attendanceModel =
                 AttendanceGettingModel(userId, timeStart, timeEnd);
             dbHelper.updateStartandEnd(attendanceModel);
