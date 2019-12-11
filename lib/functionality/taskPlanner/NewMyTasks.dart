@@ -133,7 +133,7 @@ class _NewTaskState extends State<NewMyTasks> {
                     Fluttertoast.showToast(msg: "Enter 'Location'");
                   } else if (_controller4.text.isEmpty) {
                     Fluttertoast.showToast(msg: "Enter 'Contact Person'");
-                  }  else if (reasonType == "Reason" || reasonType == "null") {
+                  } else if (reasonType == "Reason" || reasonType == "null") {
                     Fluttertoast.showToast(msg: "Enter 'Reason'");
                   } else {
                     myTaskService("2");
@@ -478,7 +478,9 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpType": "Office",
             "dayTaskType": "Self",
             "dpModifiedBy": profileName,
-            "uId": uidd
+            "uId": uidd,
+            "dpTaskStartDateTime": "",
+            "dpTaskEndDateTime": ""
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -512,7 +514,7 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpModifiedBy": profileName,
             "uId": uidd,
             "dpTaskStartDateTime": startDate,
-            "dpTaskEndDateTime":endDate
+            "dpTaskEndDateTime": endDate
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

@@ -1,6 +1,6 @@
 class TeamMembersModel {
   int u_id;
-  int u_emp_code;
+  String u_emp_code;
   String FullName;
   String u_email;
   int WorkStatus;
@@ -13,13 +13,13 @@ class TeamMembersModel {
         u_emp_code = json['u_emp_code'],
         u_email = json['u_email'],
         WorkStatus = json['WorkStatus'],
-        FullName = json['FullName'];
+        FullName = json['u_first_name'];
 
   Map<String, dynamic> toJson() => {
         'u_id': u_id,
         'u_emp_code': u_emp_code,
         'u_email': u_email,
-        'FullName': FullName,
+        'u_first_name': FullName,
         'WorkStatus': WorkStatus,
       };
 }

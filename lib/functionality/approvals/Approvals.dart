@@ -1333,7 +1333,7 @@ class _ApprovalsState extends State<Approvals> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["string"],
+            "encryptedFields": ["fullname"],
             "parameter1": "GetDownTeamPendLeavesByRLId",
             "parameter2": uidd.toString()
           },
