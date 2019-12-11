@@ -1506,7 +1506,8 @@ class _ApprovalsState extends State<Approvals> {
             "permissionId": permissionModel.per_id,
             "remarks": "string",
             "statusId": 2,
-            "tlApprovedBy": profilename
+            "tlApprovedBy": profilename,
+            "userId":uidd
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

@@ -12,8 +12,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../main.dart';
-
 class NewSalesLead extends StatefulWidget {
   @override
   _NewSalesLeadState createState() => _NewSalesLeadState();

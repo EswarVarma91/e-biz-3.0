@@ -90,8 +90,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         (d) {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-              d.dpTaskType == "Self") {
+          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self") {
             return true;
           }
           return false;
@@ -145,8 +144,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today filter
       list3 = list1.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-            d.dpTaskType == "Team") {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Team") {
           return true;
         }
         return false;
@@ -833,7 +831,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
           list1 = (json.decode(response.data) as List)
               .map((data) => new TaskListModel.fromJson(data))
               .toList();
-          list11 = list1;
           _isloading = false;
         });
       } else if (response.statusCode == 401) {
