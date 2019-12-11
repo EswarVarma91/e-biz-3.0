@@ -91,7 +91,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
         (d) {
           DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Self") {
+          if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+              d.dpTaskType == "Self") {
             return true;
           }
           return false;
@@ -145,28 +146,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
       //today filter
       list3 = list33.where((d) {
         DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck ) {
+        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
           return true;
         }
         return false;
       }).toList();
       //open
       list4 = list33.where((d) {
-        if (d.dp_status.toString() == "1" ) {
+        if (d.dp_status.toString() == "1") {
           return true;
         }
         return false;
       }).toList();
       //progress
       list5 = list33.where((d) {
-        if (d.dp_status.toString() == "2" ) {
+        if (d.dp_status.toString() == "2") {
           return true;
         }
         return false;
       }).toList();
       //closed
       list6 = list33.where((d) {
-        if (d.dp_status.toString() == "3" ) {
+        if (d.dp_status.toString() == "3") {
           return true;
         }
         return false;
@@ -913,14 +914,14 @@ class _TaskPlannerState extends State<TaskPlanner> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Task Reference No.",
+                                "Reference No.",
                                 style:
                                     TextStyle(fontSize: 7, color: Colors.black),
                               ),
                               Text(
                                 "EDP_" + list2[index]?.dp_id.toString() ?? "",
                                 style: TextStyle(
-                                    color: lwtColor,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10),
                               ),
@@ -937,7 +938,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                               Text(
                                 list2[index]?.dp_task.toString() ?? "",
                                 style: TextStyle(
-                                    color: lwtColor,
+                                    color: Colors.grey,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10),
                               ),
@@ -955,12 +956,13 @@ class _TaskPlannerState extends State<TaskPlanner> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Task Created By",
+                                "Assigned By",
                                 style:
                                     TextStyle(fontSize: 7, color: Colors.black),
                               ),
                               Text(
-                                list2[index]?.assignedBy[0].toUpperCase() +list2[index].assignedBy.substring(1) ??
+                                list2[index]?.assignedBy[0].toUpperCase() +
+                                        list2[index].assignedBy.substring(1) ??
                                     "",
                                 style: TextStyle(
                                     color: lwtColor,
@@ -973,18 +975,18 @@ class _TaskPlannerState extends State<TaskPlanner> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                "Task Created Date",
+                                "Assigned To",
                                 style:
                                     TextStyle(fontSize: 7, color: Colors.black),
                               ),
                               Text(
-                                displayDateFormat(list2[index]?.dp_created_date)
-                                        .toString() ??
-                                    "",
+                                // displayDateFormat(list2[index]?.dp_created_date)
+                                //         .toString() ??
+                                list2[index]?.assignedTo ?? "",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: lwtColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 10),
+                                    fontSize: 15),
                               ),
                             ],
                           )
@@ -1041,7 +1043,25 @@ class _TaskPlannerState extends State<TaskPlanner> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Created Date",
+                                style:
+                                    TextStyle(fontSize: 7, color: Colors.black),
+                              ),
+                              Text(
+                                displayDateFormat(list2[index]?.dp_created_date)
+                                        .toString() ??
+                                    "",
+                                style: TextStyle(
+                                    color: lwtColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: 10,
                           ),
@@ -1102,7 +1122,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
           d[0].toString().split(" ")[0].toString().split("-")[0].toString() +
           " " +
           d[0].toString().split(" ")[1].toString();
-    }else{
+    } else {
       return "";
     }
     return "";
