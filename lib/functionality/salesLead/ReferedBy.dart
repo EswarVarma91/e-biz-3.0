@@ -120,7 +120,7 @@ class _ReferedByState extends State<ReferedBy> {
     _isloading = false;
 //    var response=await dio.get(url);
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "GetAllEmps"},
+        data: {"encryptedFields": ["u_first_name"],"parameter1": "GetAllEmps"},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

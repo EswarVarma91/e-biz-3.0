@@ -1136,7 +1136,7 @@ class _PermissionsState extends State<Permissions> {
     try {
       var leavesEmp = await dio.post(ServicesApi.getData,
 //          queryParameters: {"id": uuid},
-          data: {"parameter1": "GetEmpLeaves", "parameter2": uuid.toString()},
+          data: {"encryptedFields": ["string"],"parameter1": "GetEmpLeaves", "parameter2": uuid.toString()},
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
@@ -1153,6 +1153,7 @@ class _PermissionsState extends State<Permissions> {
 
       var permissionsEmp = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["string"],
             "parameter1": "GetAllPermissionByUId",
             "parameter2": uuid.toString()
           },

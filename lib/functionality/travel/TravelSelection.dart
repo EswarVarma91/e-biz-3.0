@@ -139,6 +139,7 @@ class _TravelSelectionState extends State<TravelSelection> {
   getAirportCodes() async {
     Response response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "getAirportCodes",
           "parameter2": _controllerCodes.text + "%"
         },

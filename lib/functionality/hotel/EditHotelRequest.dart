@@ -351,7 +351,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
 
   void getUseridByhotelId(String hotel_id) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
+        data: {"encryptedFields": ["string"],"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {

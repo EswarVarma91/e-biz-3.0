@@ -489,6 +489,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
   void getUserRequestNo(String travelNameId) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "GetTokenHotelRequest",
           "parameter2": travelNameId
         },

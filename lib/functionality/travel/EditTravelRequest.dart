@@ -387,7 +387,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
 
   void getUseridBytraId(String tra_id) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getTokenbytraId", "parameter2": tra_id},
+        data: {"encryptedFields": ["string"],"parameter1": "getTokenbytraId", "parameter2": tra_id},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {

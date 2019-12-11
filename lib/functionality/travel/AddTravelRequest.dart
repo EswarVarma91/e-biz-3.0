@@ -695,6 +695,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
   void getUserRequestNo(String travelNameId) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "GetTokenTravelRequest",
           "parameter2": travelNameId
         },

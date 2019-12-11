@@ -120,6 +120,7 @@ class _ProjectsState extends State<Projects> {
     print(uidd);
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "GetDRProjectNoByUId",
           "parameter2": uidd,
         },

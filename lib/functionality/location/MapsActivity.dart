@@ -135,7 +135,7 @@ class _ViewMapState extends State<ViewMap> {
   _getuserLocations() async {
     try {
       var response = await dio.post(ServicesApi.getData,
-          data: {"actionMode": "getUserLocation"},
+          data: {"encryptedFields": ["string"],"actionMode": "getUserLocation"},
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {

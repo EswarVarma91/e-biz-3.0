@@ -113,6 +113,7 @@ class _PackageSelectionState extends State<PackageSelection> {
   getDownTeamMembers(String uidds) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["fullname"],
           "parameter1": "getDownTeamRequestPackage"
         },
         options: Options(
@@ -134,6 +135,7 @@ class _PackageSelectionState extends State<PackageSelection> {
   void getUserDetailsNameId(String result) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "getHotelUserId_Name",
           "parameter2": result,
         },

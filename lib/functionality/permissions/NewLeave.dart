@@ -816,7 +816,8 @@ class _NewLeaveState extends State<NewLeave> {
   void getReportingLevelToken(String fromDateS, String toDateS, String fullname,
       String purpose, String leaveType, String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getReportingLevelToken", "parameter2": uidd},
+        data: {"encryptedFields": ["string"],
+          "parameter1": "getReportingLevelToken", "parameter2": uidd},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

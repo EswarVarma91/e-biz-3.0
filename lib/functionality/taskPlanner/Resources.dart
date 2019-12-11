@@ -116,7 +116,7 @@ class _ResourcesState extends State<Resources> {
     _isloading = false;
 
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "GetProjectTeamByProjId", "parameter2": rId},
+        data: {"encryptedFields": ["fullname"],"parameter1": "GetProjectTeamByProjId", "parameter2": rId},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

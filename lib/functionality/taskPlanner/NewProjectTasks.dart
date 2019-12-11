@@ -439,6 +439,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   checkProjectIncharge(String uidd, projectId) async {
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "CheckProjectIncharge",
           "parameter2": uidd,
           "parameter3": projectId.toString()
@@ -462,7 +463,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   void getFirebaseToken(String fullName, String taskName,
       String taskDescription, resourceId) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getUserToken", "parameter2": resourceId},
+        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": resourceId},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

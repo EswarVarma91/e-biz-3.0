@@ -337,6 +337,7 @@ class _LoginState extends State<Login> {
   _makePostRequest(String email, String password) async {
     try {
       var response = await dio.post(ServicesApi.getData, data: {
+        "encryptedFields": ["string"],
         "parameter1": "checkUserLogin",
         "parameter2": email,
         "parameter3": password

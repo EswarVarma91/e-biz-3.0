@@ -121,6 +121,7 @@ class _MembersState extends State<Members> {
     print(uidd);
     var response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["u_first_name","u_email"],
           "parameter1": "GetDownTeamByUId",
           "parameter2": uidd.toString(),
         },

@@ -563,7 +563,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
 
   getTravelData(String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "GetAllTravelRequests", "parameter2": uidd},
+        data: {"encryptedFields": ["string"],"parameter1": "GetAllTravelRequests", "parameter2": uidd},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

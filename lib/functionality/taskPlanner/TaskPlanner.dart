@@ -821,6 +821,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
     try {
       response = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["fullName"],
             "parameter1": "GetAllTasksIncludingDownTeamById",
             "parameter2": uiddd.toString()
           },
@@ -840,6 +841,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
       }
       response = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["string"],
             "parameter1": "GetAllProjectsTasks",
             "parameter2": uiddd.toString(),
             "parameter3": profilename

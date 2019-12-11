@@ -248,7 +248,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
 
   void getdayPlanbyId(String mainStatus, String dp_id) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getdayPlanbyId", "parameter2": dp_id},
+        data: {"encryptedFields": ["string"],"parameter1": "getdayPlanbyId", "parameter2": dp_id},
         options: Options(contentType: ContentType.parse("application/json")));
 
     if (response.statusCode == 200 || response.statusCode == 201) {

@@ -661,6 +661,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["string"],
             "parameter1": "getPaidCount",
             "parameter2": empCodee.toString(),
           },
@@ -695,6 +696,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["string"],
             "parameter1": "GetEmpDayStatus",
             "parameter2": userId,
             "parameter3": DateFormat("yyyy-MM-dd").format(now).toString(),
@@ -928,6 +930,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["string"],
             "parameter1": "getPendingCount",
             "parameter2": userIdd.toString(),
           },

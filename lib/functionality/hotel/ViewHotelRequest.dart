@@ -919,7 +919,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
 
   getDataHotelrequestbytId(int hotel_id) async {
     Response response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getHotelRequestsbyId", "parameter2": hotel_id},
+        data: {"encryptedFields": ["string"],"parameter1": "getHotelRequestsbyId", "parameter2": hotel_id},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

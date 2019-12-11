@@ -74,7 +74,7 @@ class StateSplash extends State<SplashScreen> {
 
   checkMobileVersion() async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getMobileVersion"},
+        data: {"encryptedFields": ["string"],"parameter1": "getMobileVersion"},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

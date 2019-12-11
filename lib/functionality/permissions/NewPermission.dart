@@ -554,6 +554,7 @@ class _NewPermissionState extends State<NewPermissions> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
+            "encryptedFields": ["string"],
             "parameter1": "getUserPermissionCount",
             "parameter2": uiddd,
             "parameter3": selectedDate,
@@ -593,7 +594,7 @@ class _NewPermissionState extends State<NewPermissions> {
   void getReportingLevelToken(String date, String fromTime, String toTime,
       fullname, String purpose, String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getReportingLevelToken", "parameter2": uidd},
+        data: {"encryptedFields": ["string"],"parameter1": "getReportingLevelToken", "parameter2": uidd},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

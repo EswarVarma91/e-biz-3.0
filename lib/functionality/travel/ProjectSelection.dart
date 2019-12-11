@@ -103,7 +103,7 @@ class _ProjectSelectionState extends State<ProjectSelection> {
 
   getProjectList() async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getProjectList"},
+        data: {"encryptedFields": ["string"],"parameter1": "getProjectList"},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

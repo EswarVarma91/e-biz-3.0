@@ -1141,7 +1141,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 
   void getDataTravelrequestbytId(int tra_id) async {
     Response response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "GetTravelRequestById", "parameter2": tra_id},
+        data: {"encryptedFields": ["string"],"parameter1": "GetTravelRequestById", "parameter2": tra_id},
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
@@ -1165,6 +1165,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
   void getDataTravelrequestHistorybytId(int tra_id) async {
     Response response = await dio.post(ServicesApi.getData,
         data: {
+          "encryptedFields": ["string"],
           "parameter1": "GetTicketHistoryByRequestId",
           "parameter2": tra_id
         },
@@ -1206,7 +1207,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 
   void getUseridBytraId(int tra_id) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getTokenbytraId", "parameter2": tra_id},
+        data: {"encryptedFields": ["string"],"parameter1": "getTokenbytraId", "parameter2": tra_id},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {

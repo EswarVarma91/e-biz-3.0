@@ -376,7 +376,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   void getFirebaseToken(String resourceId, String taskName,
       String taskDescription, String profileName) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"parameter1": "getUserToken", "parameter2": resourceId},
+        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": resourceId},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

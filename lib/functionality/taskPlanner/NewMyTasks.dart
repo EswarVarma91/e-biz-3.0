@@ -120,10 +120,6 @@ class _NewTaskState extends State<NewMyTasks> {
                     Fluttertoast.showToast(msg: "Enter 'Task Name'");
                   } else if (_controller2.text.isEmpty) {
                     Fluttertoast.showToast(msg: "Enter 'Task Details'");
-                  } else if (startDate.isEmpty) {
-                    Fluttertoast.showToast(msg: "Select Start Date");
-                  } else if (endDate.isEmpty) {
-                    Fluttertoast.showToast(msg: "Select End Date");
                   } else {
                     myTaskService("1");
                   }
@@ -137,11 +133,7 @@ class _NewTaskState extends State<NewMyTasks> {
                     Fluttertoast.showToast(msg: "Enter 'Location'");
                   } else if (_controller4.text.isEmpty) {
                     Fluttertoast.showToast(msg: "Enter 'Contact Person'");
-                  } else if (startDate.isEmpty) {
-                    Fluttertoast.showToast(msg: "Select Start Date");
-                  } else if (endDate.isEmpty) {
-                    Fluttertoast.showToast(msg: "Select End Date");
-                  } else if (reasonType == "Reason" || reasonType == "null") {
+                  }  else if (reasonType == "Reason" || reasonType == "null") {
                     Fluttertoast.showToast(msg: "Enter 'Reason'");
                   } else {
                     myTaskService("2");
@@ -212,93 +204,93 @@ class _NewTaskState extends State<NewMyTasks> {
                       ),
                     ),
                   ),
-                  ListTile(
-                    onTap: () {
-                      setState(() {
-                        endDate = "";
-                        endDates = "";
-                      });
-                      DatePicker.showDateTimePicker(context,
-                          showTitleActions: true,
-                          minTime: DateTime(y, m, d, hh, mm),
-                          maxTime: DateTime(y + 1, m, d, hh, mm),
-                          onChanged: (date) {
-                        changeDateF(date);
-                      }, onConfirm: (date) {
-                        changeDateF(date);
-                      }, locale: LocaleType.en);
-                    },
-                    title: TextFormField(
-                      enabled: false,
-                      controller: TextEditingController(text: startDates),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "Start Date",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      onPressed: () {
-                        setState(() {
-                          endDate = "";
-                          endDates = "";
-                        });
-                        DatePicker.showDateTimePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(y, m, d, hh, mm),
-                            maxTime: DateTime(y + 1, m, d, hh, mm),
-                            onChanged: (date) {
-                          changeDateF(date);
-                        }, onConfirm: (date) {
-                          changeDateF(date);
-                        }, locale: LocaleType.en);
-                      },
-                    ),
-                  ),
-                  ListTile(
-                    onTap: () {
-                      DatePicker.showDateTimePicker(context,
-                          showTitleActions: true,
-                          minTime: DateTime(year, month, day, hour, minute + 1),
-                          maxTime: DateTime(y + 1, m, d, hh, mm),
-                          onChanged: (date) {
-                        changeDateT(date);
-                      }, onConfirm: (date) {
-                        changeDateT(date);
-                      }, locale: LocaleType.en);
-                    },
-                    title: TextFormField(
-                      enabled: false,
-                      controller: TextEditingController(text: endDates),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "End Date",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      onPressed: () {
-                        DatePicker.showDateTimePicker(context,
-                            showTitleActions: true,
-                            minTime:
-                                DateTime(year, month, day, hour, minute + 1),
-                            maxTime: DateTime(y + 1, m, d, hh, mm),
-                            onChanged: (date) {
-                          changeDateT(date);
-                        }, onConfirm: (date) {
-                          changeDateT(date);
-                        }, locale: LocaleType.en);
-                      },
-                    ),
-                  ),
+                  // ListTile(
+                  //   onTap: () {
+                  //     setState(() {
+                  //       endDate = "";
+                  //       endDates = "";
+                  //     });
+                  //     DatePicker.showDateTimePicker(context,
+                  //         showTitleActions: true,
+                  //         minTime: DateTime(y, m, d, hh, mm),
+                  //         maxTime: DateTime(y + 1, m, d, hh, mm),
+                  //         onChanged: (date) {
+                  //       changeDateF(date);
+                  //     }, onConfirm: (date) {
+                  //       changeDateF(date);
+                  //     }, locale: LocaleType.en);
+                  //   },
+                  //   title: TextFormField(
+                  //     enabled: false,
+                  //     controller: TextEditingController(text: startDates),
+                  //     keyboardType: TextInputType.text,
+                  //     decoration: InputDecoration(
+                  //       prefixIcon: Icon(Icons.chrome_reader_mode),
+                  //       labelText: "Start Date",
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10.0),
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.calendar_today),
+                  //     onPressed: () {
+                  //       setState(() {
+                  //         endDate = "";
+                  //         endDates = "";
+                  //       });
+                  //       DatePicker.showDateTimePicker(context,
+                  //           showTitleActions: true,
+                  //           minTime: DateTime(y, m, d, hh, mm),
+                  //           maxTime: DateTime(y + 1, m, d, hh, mm),
+                  //           onChanged: (date) {
+                  //         changeDateF(date);
+                  //       }, onConfirm: (date) {
+                  //         changeDateF(date);
+                  //       }, locale: LocaleType.en);
+                  //     },
+                  //   ),
+                  // ),
+                  // ListTile(
+                  //   onTap: () {
+                  //     DatePicker.showDateTimePicker(context,
+                  //         showTitleActions: true,
+                  //         minTime: DateTime(year, month, day, hour, minute + 1),
+                  //         maxTime: DateTime(y + 1, m, d, hh, mm),
+                  //         onChanged: (date) {
+                  //       changeDateT(date);
+                  //     }, onConfirm: (date) {
+                  //       changeDateT(date);
+                  //     }, locale: LocaleType.en);
+                  //   },
+                  //   title: TextFormField(
+                  //     enabled: false,
+                  //     controller: TextEditingController(text: endDates),
+                  //     keyboardType: TextInputType.text,
+                  //     decoration: InputDecoration(
+                  //       prefixIcon: Icon(Icons.chrome_reader_mode),
+                  //       labelText: "End Date",
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10.0),
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   trailing: IconButton(
+                  //     icon: Icon(Icons.calendar_today),
+                  //     onPressed: () {
+                  //       DatePicker.showDateTimePicker(context,
+                  //           showTitleActions: true,
+                  //           minTime:
+                  //               DateTime(year, month, day, hour, minute + 1),
+                  //           maxTime: DateTime(y + 1, m, d, hh, mm),
+                  //           onChanged: (date) {
+                  //         changeDateT(date);
+                  //       }, onConfirm: (date) {
+                  //         changeDateT(date);
+                  //       }, locale: LocaleType.en);
+                  //     },
+                  //   ),
+                  // ),
                   onsite
                       ? ListTile(
                           title: TextFormField(
@@ -486,9 +478,7 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpType": "Office",
             "dayTaskType": "Self",
             "dpModifiedBy": profileName,
-            "uId": uidd,
-            "dpTaskStartDateTime": startDate,
-            "dpTaskEndDateTime": endDate
+            "uId": uidd
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
