@@ -718,7 +718,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 timeStart != "-" &&
                 timeStart != " ") {
               workStatus = "At-Office";
-            } 
+            }
             AttendanceGettingModel attendanceModel =
                 AttendanceGettingModel(userId, timeStart, timeEnd);
             dbHelper.updateStartandEnd(attendanceModel);
@@ -798,7 +798,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         print(res.toString());
-        Fluttertoast.showToast(msg: "Day Start marked sucessfully.");
       } else {
         Fluttertoast.showToast(msg: "Check your internet connection.");
       }

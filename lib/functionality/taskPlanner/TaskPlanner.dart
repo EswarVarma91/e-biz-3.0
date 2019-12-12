@@ -907,6 +907,28 @@ class _TaskPlannerState extends State<TaskPlanner> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Task Name",
+                              style:
+                                  TextStyle(fontSize: 7, color: Colors.black),
+                            ),
+                            Text(
+                              list2[index]?.dp_task.toString() ?? "",
+                              style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -928,17 +950,19 @@ class _TaskPlannerState extends State<TaskPlanner> {
                             ],
                           ),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "Task Name",
+                                "Created Date",
                                 style:
                                     TextStyle(fontSize: 7, color: Colors.black),
                               ),
                               Text(
-                                list2[index]?.dp_task.toString() ?? "",
+                                displayDateFormat(list2[index]?.dp_created_date)
+                                        .toString() ??
+                                    "",
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: lwtColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 10),
                               ),
@@ -1043,25 +1067,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Created Date",
-                                style:
-                                    TextStyle(fontSize: 7, color: Colors.black),
-                              ),
-                              Text(
-                                displayDateFormat(list2[index]?.dp_created_date)
-                                        .toString() ??
-                                    "",
-                                style: TextStyle(
-                                    color: lwtColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10),
-                              ),
-                            ],
-                          ),
                           SizedBox(
                             height: 10,
                           ),

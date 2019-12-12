@@ -10,6 +10,8 @@ import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../main.dart';
+
 class Projects extends StatefulWidget {
   var data;
   Projects(this.data);
@@ -95,16 +97,48 @@ class _ProjectsState extends State<Projects> {
                                 fliterReferals[index].project_id.toString());
                       },
                       title: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          fliterReferals[index].proj_name[0].toUpperCase() +
-                              fliterReferals[index].proj_name.substring(1),
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
+                          padding: EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              // Column(
+                              //   crossAxisAlignment: CrossAxisAlignment.start,
+                              //   children: <Widget>[
+                              //     Text(
+                              //       "Project Name",
+                              //       style: TextStyle(
+                              //           fontSize: 7, color: Colors.black),
+                              //     ),
+                              //     Text(
+                              //       "",
+                              //       style: TextStyle(
+                              //           color: lwtColor,
+                              //           fontWeight: FontWeight.bold,
+                              //           fontSize: 10),
+                              //     ),
+                              //   ],
+                              // ),
+                              Text(
+                                fliterReferals[index]
+                                        .proj_name[0]
+                                        .toUpperCase() +
+                                    fliterReferals[index]
+                                        .proj_name
+                                        .substring(1),
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                fliterReferals[index]?.proj_oano ?? 0,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: lwtColor,
+                                ),
+                              ),
+                            ],
+                          )),
 //                  trailing:Padding(padding:EdgeInsets.all(10),child: Text(fliterReferals[index].uId)),
                     ),
                   );

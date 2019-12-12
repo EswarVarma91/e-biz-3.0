@@ -85,7 +85,7 @@ class _NewTaskState extends State<NewMyTasks> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Self Activity',
+            'Self Activity ',
             style: TextStyle(color: Colors.white),
           ),
           iconTheme: IconThemeData(color: Colors.white),
@@ -173,29 +173,35 @@ class _NewTaskState extends State<NewMyTasks> {
               child: ListView(
                 children: <Widget>[
                   ListTile(
-                    title: TextFormField(
-                      controller: _controller1,
-                      maxLength: 20,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "Task Name",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                    title: SafeArea(
+                      child: TextFormField(
+                        controller: _controller1,
+                        maxLength: 100,
+                        maxLines: 2,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "Task Name",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),
                   ),
                   ListTile(
-                    title: TextFormField(
-                      controller: _controller2,
-                      maxLength: 50,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "Task Details",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                    title: SafeArea(
+                      child: TextFormField(
+                        controller: _controller2,
+                        maxLength: 500,
+                        maxLines: 4,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "Task Details",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),

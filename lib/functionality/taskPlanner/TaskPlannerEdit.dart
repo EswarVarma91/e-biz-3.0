@@ -88,7 +88,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
               ),
             ),
             Container(
-                padding: EdgeInsets.only(top: 120),
+                padding: EdgeInsets.only(top: 220),
                 child: ListView.builder(
                   itemCount: listTaskStatus.length,
                   itemBuilder: (context, index) {

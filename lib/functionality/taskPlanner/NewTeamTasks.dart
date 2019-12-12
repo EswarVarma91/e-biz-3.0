@@ -153,7 +153,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
             ListTile(
               title: TextFormField(
                 controller: _controller1,
-                maxLength: 20,
+                maxLength: 100,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -167,7 +167,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
             ListTile(
               title: TextFormField(
                 controller: _controller2,
-                maxLength: 50,
+                maxLength: 500,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),

@@ -640,7 +640,7 @@ class _NewLeaveState extends State<NewLeave> {
 
       effeDates.clear();
 
-      if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS']?? 0 > 0) {
+      if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS']   > 0) {
         effectiveDates = json.decode(response.data)['EFFECTIVE_LEAVE_DATES']??[];
         for (String sDates in effectiveDates) {
           effeDates
@@ -653,12 +653,10 @@ class _NewLeaveState extends State<NewLeave> {
               .add(DateFormat("yyyy-MM-dd").format(DateTime.parse(sDates)));
         }
       }
-// ({"ALREADY_ON_LEAVE":true,"EMERGENCY_LEAVE":false,"STATUS":"0","SUFFICIENT_LEAVES":false,"SICK_LEAVE":false,"LEAVES":["2019-12-19","2019-12-20","2019-12-21"],"IF_IT_IS_HOLIDAY":false})
-
       if (json.decode(response.data)['IF_IT_IS_HOLIDAY'] == false) {
         if (json.decode(response.data)['ALREADY_ON_LEAVE'] == false) {
           if (json.decode(response.data)['SUFFICIENT_LEAVES'] == true) {
-            if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] ?? 0 < 7) {
+            if (json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'] < 7) {
               if (leaveType == "SL") {
                 if (json.decode(response.data)['SICK_LEAVE'] == true) {
                   //insert data
@@ -756,38 +754,22 @@ class _NewLeaveState extends State<NewLeave> {
               }
               //
             } else {
-              if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) >
-                      0 &&
-                  listData(json
-                          .decode(response.data)['FUTURE_CONTINOUS_DAYS']) ==
-                      0) {
+              if (listData(json.decode(response.data)['PAST_CONTINOUS_DAYS']) >0 && listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) ==0) {
                 Fluttertoast.showToast(
                     msg:
                         "Sorry! You are exceeding the maximum number of leave days");
               } else if (listData(
-                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) ==
-                      0 &&
-                  listData(
-                          json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) >
-                      0) {
+                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) ==0 &&listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) >0) {
                 Fluttertoast.showToast(
                     msg:
                         "Sorry! You are exceeding the maximum number of leave days");
               } else if (listData(
-                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) >
-                      0 &&
-                  listData(
-                          json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) >
-                      0) {
+                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) >0 &&listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) >0) {
                 Fluttertoast.showToast(
                     msg:
                         "Sorry! You are exceeding the maximum number of leave days");
               } else if (listData(
-                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) ==
-                      0 &&
-                  listData(json
-                          .decode(response.data)['FUTURE_CONTINOUS_DAYS']) ==
-                      0) {
+                          json.decode(response.data)['PAST_CONTINOUS_DAYS']) ==0 && listData(json.decode(response.data)['FUTURE_CONTINOUS_DAYS']) ==0) {
                 Fluttertoast.showToast(
                     msg:
                         "Sorry! You are exceeding the maximum number of leave days");
