@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/HomePage.dart';
@@ -292,59 +293,44 @@ class _LoginState extends State<Login> {
     } else if (password.isEmpty) {
       Fluttertoast.showToast(msg: "Enter Password");
     } else {
-      var response = await _makePostRequest(email, password);
-      loginList = (json.decode(response) as List)
-          .map((data) => new LoginModel.fromJson(data))
-          .toList();
-
-      if (loginList[0].cnt == 1) {
-        String email = _controller1.text;
-//        print(email + "," + loginData.userId.toString() + "," +
-//            loginData.fullName.toString() + "," +
-//            loginData.empCode.toString() + "," +
-//            loginData.profileName.toString() + "," +
-//            loginData.downTeamId.toString() + "," +
-//            loginData.departmentName.toString());
-        _writeData(
-            email,
-            loginList[0].uId,
-            loginList[0].fullName,
-            loginList[0].uEmpCode.toString(),
-            loginList[0].hrCnt.toString(),
-            loginList[0].travelCnt.toString(),
-            loginList[0].salesCnt.toString(),
-            loginList[0].profileName,
-            loginList[0].downTeamIds,
-            loginList[0].mobileNumber,
-            loginList[0].branchid.toString(),
-            loginList[0].emailId,
-            loginList[0].department,
-            loginList[0].designation,
-            loginList[0].fixedTerm.toString());
-
-        var navigator = Navigator.of(context);
-
-        navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => HomePage()),
-          ModalRoute.withName('/'),
-        );
-      } else if (loginList[0].cnt == 0) {
-        Fluttertoast.showToast(msg: "Invalid credentials.");
-      }
+      _makePostRequest(email, password);
     }
   }
 
   _makePostRequest(String email, String password) async {
     try {
-      var response = await dio.post(ServicesApi.getData, data: {
-        "encryptedFields": ["string"],
-        "parameter1": "checkUserLogin",
-        "parameter2": email,
-        "parameter3": password
-      });
+      var response = await dio.post(ServicesApi.new_login_url,
+          data: {"empCode": email, "password": password},
+          options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print(response.data);
-        return response.data;
+        if ((json.decode(response.data)['cnt'] == 1)) {
+          _writeData(
+              json.decode(response.data)['empEmail'],
+              json.decode(response.data)['userId'],
+              json.decode(response.data)['empFullName'],
+              json.decode(response.data)['empCode'],
+              json.decode(response.data)['hrCnt'],
+              json.decode(response.data)['travelCnt'],
+              json.decode(response.data)['salesCnt'],
+              json.decode(response.data)['empProfileName'],
+              json.decode(response.data)['empDownTeamIds'],
+              "",
+              json.decode(response.data)['brnachId'],
+              json.decode(response.data)['empEmail'],
+              json.decode(response.data)['empDepartment'],
+              json.decode(response.data)['empDesignation'],
+              json.decode(response.data)['fixedTerm']);
+
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+              ModalRoute.withName('/'));
+        } else if (json.decode(response.data)['cnt'] == 0) {
+          Fluttertoast.showToast(msg: "Failed");
+        }
+
+        // print(response.data);
+        // return response.data;
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Invalid credentials.");
         throw Exception("Invalid Credentials");
@@ -372,25 +358,25 @@ class _LoginState extends State<Login> {
       int uId,
       String fullName,
       String uEmpCode,
-      String hrCnt,
-      String travelCnt,
-      String salesCnt,
+      int hrCnt,
+      int travelCnt,
+      int salesCnt,
       String profileName,
       String downTeamId,
       String mobilenumber,
-      String branchid,
+      int branchid,
       String emailId,
       String department,
       String designation,
-      String fixedTerm) async {
+      int fixedTerm) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.setString("data", userEmail);
+    preferences.setString("data", userEmail.toString());
     preferences.setString("userId", uId.toString());
-    preferences.setString("fullname", fullName);
-    preferences.setString("uEmpCode", uEmpCode);
-    preferences.setString("hrCnt", hrCnt);
-    preferences.setString("travelCnt", travelCnt);
-    preferences.setString("salesCnt", salesCnt);
+    preferences.setString("fullname", fullName.toString());
+    preferences.setString("uEmpCode", uEmpCode.toString());
+    preferences.setString("hrCnt", hrCnt.toString());
+    preferences.setString("travelCnt", travelCnt.toString());
+    preferences.setString("salesCnt", salesCnt.toString());
     preferences.setString("profileName", profileName.toString());
     preferences.setString("downTeamId", downTeamId.toString());
     preferences.setString("mobilenumber", mobilenumber.toString());

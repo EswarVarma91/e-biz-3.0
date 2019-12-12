@@ -25,7 +25,10 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
           primaryColor: lwtColor,
           fontFamily: 'Roboto'),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: lwtColor,
+        fontFamily: 'Roboto'),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );

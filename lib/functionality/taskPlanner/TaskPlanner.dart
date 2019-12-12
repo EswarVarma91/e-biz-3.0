@@ -1019,7 +1019,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                       SizedBox(
                         height: 6,
                       ),
-                      Row(
+                    myTasks ? Container():  Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Column(

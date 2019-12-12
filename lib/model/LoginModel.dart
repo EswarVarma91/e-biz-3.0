@@ -1,6 +1,6 @@
 class LoginModel {
-  final int cnt, uId, uEmpCode, hrCnt, travelCnt, salesCnt, fixedTerm, branchid;
-  final String fullName,
+  final int cnt, uId, hrCnt, travelCnt, salesCnt, fixedTerm, branchid;
+  final String fullName,uEmpCode,
       profileName,
       downTeamIds,
       mobileNumber,
@@ -27,19 +27,19 @@ class LoginModel {
 
   LoginModel.fromJson(Map<String, dynamic> json)
       : cnt = json['cnt'],
-        uId = json['uId'],
-        uEmpCode = json['uEmpCode'],
+        uId = json['userId'],
+        uEmpCode = json['empCode'],
         hrCnt = json['hrCnt'],
         travelCnt = json['travelCnt'],
         salesCnt = json['salesCnt'],
-        fullName = json['fullName'],
-        profileName = json['profileName'],
-        downTeamIds = json['downTeamIds'],
+        fullName = json['empFullName'],
+        profileName = json['empProfileName'],
+        downTeamIds = json['empDepartment'],
         mobileNumber = json['mobileNumber'],
-        branchid = json['branchid'],
-        emailId = json['emailId'],
-        department = json['department'],
-        designation = json['designation'],
+        branchid = json['brnachId'],
+        emailId = json['empEmail'],
+        department = json['empDepartment'],
+        designation = json['empDepartment'],
         fixedTerm = json['fixedTerm'];
 
   Map<String, dynamic> toJson() => {

@@ -660,11 +660,10 @@ class _NewLeaveState extends State<NewLeave> {
                   } else {
                     Fluttertoast.showToast(
                         msg:
-                            "Sick leave should apply previous dates only on joined date.");
+                            "Sick leave should apply previous dates only & on joined date.");
                   }
                 } else if (leaveType == "CAL") {
-                  if (json.decode(response.data)['EMERGENCY_LEAVE'] == true &&
-                      json.decode(response.data)['STATUS'] == "1") {
+                  if (json.decode(response.data)['EMERGENCY_LEAVE'] == true && json.decode(response.data)['STATUS'] == "1") {
                     //insert data
                     callServiceInsert();
                   } else {
@@ -678,9 +677,7 @@ class _NewLeaveState extends State<NewLeave> {
                                 "You are exceeding the maximum number of leave days.");
                       }
                     } else {
-                      if (listData(json.decode(
-                              response.data)['EFFECTIVE_LEAVE_DATES']) >=
-                          1) {
+                      if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
                         Fluttertoast.showToast(
                             msg:
                                 "You should apply before 6 days of applied date.");
@@ -708,9 +705,7 @@ class _NewLeaveState extends State<NewLeave> {
                                   "You are exceeding the maximum number of leave days.");
                         }
                       } else {
-                        if (listData(json.decode(
-                                response.data)['EFFECTIVE_LEAVE_DATES']) >
-                            1) {
+                        if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
                           Fluttertoast.showToast(
                               msg:
                                   "You should apply before 6 days of from date.");

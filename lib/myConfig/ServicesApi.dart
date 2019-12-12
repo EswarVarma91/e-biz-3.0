@@ -16,7 +16,7 @@ class ServicesApi {
   // static String hrms_Service = "http://49.207.32.34:8383/hrms.service.prod/"; //global
   
 
-  // static String new_login_url = basic_url + "global.service/validate/user";
+  static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";
 
   static String global_Service = "global.service/global/";
 

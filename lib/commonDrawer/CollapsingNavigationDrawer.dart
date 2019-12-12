@@ -278,6 +278,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
             ),
             Text("Version No.",style: TextStyle(color: Colors.white,fontSize: 8)),
             Text(ServicesApi.versionNew,style: TextStyle(color: Colors.white,fontSize: 16)),
+            Text("Test",style: TextStyle(color: Colors.white,fontSize: 8)),
             IconButton(
               icon: Icon(Icons.exit_to_app),
               color: lwtColor,
