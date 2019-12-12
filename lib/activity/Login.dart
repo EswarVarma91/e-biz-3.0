@@ -326,16 +326,16 @@ class _LoginState extends State<Login> {
               MaterialPageRoute(builder: (BuildContext context) => HomePage()),
               ModalRoute.withName('/'));
         } else if (json.decode(response.data)['cnt'] == 0) {
-          Fluttertoast.showToast(msg: "Failed");
+          Fluttertoast.showToast(msg: "Invalid Credentials");
         }
 
         // print(response.data);
         // return response.data;
       } else if (response.statusCode == 401) {
-        Fluttertoast.showToast(msg: "Invalid credentials.");
-        throw Exception("Invalid Credentials");
+        Fluttertoast.showToast(msg: "Please check you internet connection.");
+        throw Exception("Please check you internet connection.");
       } else {
-        Fluttertoast.showToast(msg: "Invalid credentials.");
+        Fluttertoast.showToast(msg: "Please check you internet connection.");
         throw Exception('Authentication Error');
       }
     } on DioError catch (exception) {
