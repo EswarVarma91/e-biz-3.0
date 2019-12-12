@@ -17,16 +17,16 @@ public class MainActivity extends FlutterActivity {
     super.onCreate(savedInstanceState);
     GeneratedPluginRegistrant.registerWith(this);
     AppCenter.start(getApplication(), "f56ca720-90e4-4964-92a4-10c291e68a86", Analytics.class, Crashes.class);
-    startAlert();
+    // startAlert();
   }
 
-  public void startAlert() {
-    Intent intent = new Intent(this, MyBroadcastReceiver.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234, intent, 0);
-    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+  // public void startAlert() {
+  //   Intent intent = new Intent(this, MyBroadcastReceiver.class);
+  //   PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234, intent, 0);
+  //   AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     
-    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),1*60*1000, pendingIntent);
+  //   alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),1*60*1000, pendingIntent);
 
-  }
+  // }
 
 }

@@ -13,15 +13,21 @@ class LocationService {
   LocationService() {
     location.requestPermission().then((granted) {
       if (granted) {
-        location.onLocationChanged().listen((locationData) {
-          if (locationData != null) {
-            _locationController.add(UserLocationModel(
-              latitude: locationData?.latitude ?? 0.0,
-              longitude: locationData?.longitude ?? 0.0,
-              timeGps: locationData.time,
-            ));
+        // location.onLocationChanged().listen((locationData) {
+        //   if (locationData != null) {
+        //     _locationController.add(UserLocationModel(
+        //       latitude: locationData?.latitude ?? 0.0,
+        //       longitude: locationData?.longitude ?? 0.0,
+        //       timeGps: locationData.time,
+        //     ));
+        //   }
+        // });
+        location.getLocation().then((locationData){
+          if(locationData!=null){
+            _locationController.add(UserLocationModel(latitude: locationData?.latitude ??0.0,longitude: locationData?.longitude ??0.0));
           }
         });
+        
       }
     });
   }

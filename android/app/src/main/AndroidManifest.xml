@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <receiver android:name="MyBroadcastReceiver" >
-        </receiver>
+        <!-- <receiver android:name="MyBroadcastReceiver" >
+        </receiver> -->
     </application>
 </manifest>

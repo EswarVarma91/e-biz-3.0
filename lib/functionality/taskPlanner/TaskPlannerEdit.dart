@@ -63,24 +63,29 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
                     children: <Widget>[
                       Text(
                         "Task Name",
-                        style: TextStyle(fontSize: 12, color: Colors.black,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        dp_task[0].toUpperCase()+dp_task.substring(1),
-                        style: TextStyle(
-                            color: lwtColor,
-                            fontSize:11),
+                        dp_task[0].toUpperCase() + dp_task.substring(1),
+                        style: TextStyle(color: lwtColor, fontSize: 11),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Text(
                         "Task Description",
-                        style: TextStyle(fontSize: 12, color: Colors.black,fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        dp_task_desc[0].toUpperCase()+dp_task_desc.substring(1),
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 11),
+                        dp_task_desc[0].toUpperCase() +
+                            dp_task_desc.substring(1),
+                        style: TextStyle(color: Colors.grey, fontSize: 11),
                       ),
                     ],
                   ),
@@ -248,14 +253,28 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
 
   void getdayPlanbyId(String mainStatus, String dp_id) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getdayPlanbyId", "parameter2": dp_id},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getdayPlanbyId",
+          "parameter2": dp_id
+        },
         options: Options(contentType: ContentType.parse("application/json")));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var dp_task = json.decode(response.data)[0]['dp_task'];
-      var token = json.decode(response.data)[0]['token'];
-      if (token != null || token != "null") {
-        pushNotification(dp_task.toString(), token, mainStatus);
+      if (response.data == null) {
+        var dp_task = json.decode(response.data)[0]['dp_task'];
+        var token = json.decode(response.data)[0]['token'];
+        if (token != null || token != "null") {
+          pushNotification(dp_task.toString(), token, mainStatus);
+        } else {
+          Navigator.pop(context);
+          pr.hide();
+          Fluttertoast.showToast(msg: "Status Updated.!");
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+            ModalRoute.withName('/'),
+          );
+        }
       } else {
         Navigator.pop(context);
         pr.hide();

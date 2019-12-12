@@ -37,14 +37,14 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  static const methodChannel = const MethodChannel('com.eb');
+  // static const methodChannel = const MethodChannel('com.eb');
 
-  _MyHomePageState() {
-    methodChannel.setMethodCallHandler((call) {
-      Fluttertoast.showToast(msg: " ");
-      print(" " + call.method);
-    });
-  }
+  // _MyHomePageState() {
+  //   methodChannel.setMethodCallHandler((call) {
+  //     Fluttertoast.showToast(msg: " ");
+  //     print(" " + call.method);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
