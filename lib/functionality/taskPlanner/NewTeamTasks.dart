@@ -154,6 +154,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               title: TextFormField(
                 controller: _controller1,
                 maxLength: 100,
+                maxLines: 2,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -168,6 +169,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               title: TextFormField(
                 controller: _controller2,
                 maxLength: 500,
+                maxLines: 3,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.chrome_reader_mode),

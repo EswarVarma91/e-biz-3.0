@@ -409,10 +409,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
               setState(() {
                 workStatus = "Tour";
               });
-            } else if (data == "2") {
-              setState(() {
-                workStatus = "At-Office";
-              });
             } else {
               setState(() {
                 workStatus = "-";
@@ -709,19 +705,19 @@ class _HomePageLocationState extends State<HomePageLocation> {
         AttendanceServiceModel attData =
             AttendanceServiceModel.fromJson(res[0]);
         setState(() {
-          timeStart = attData.in_time.toString();
-          timeEnd = attData.out_time.toString();
           if (attData.in_time != null && attData != null) {
-            if (timeStart != "" &&
-                timeStart != null &&
-                timeStart != "null" &&
-                timeStart != "-" &&
-                timeStart != " ") {
+            if (timeStart != "" &&timeStart != null &&timeStart != "null" &&timeStart != "-" && timeStart != " ") {
               workStatus = "At-Office";
+              timeStart = attData.in_time.toString();
+              timeEnd = attData.out_time.toString();
+            } else {
+              
             }
             AttendanceGettingModel attendanceModel =
                 AttendanceGettingModel(userId, timeStart, timeEnd);
             dbHelper.updateStartandEnd(attendanceModel);
+          }else{
+            
           }
         });
       } else {
