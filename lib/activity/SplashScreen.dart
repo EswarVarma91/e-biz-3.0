@@ -7,7 +7,6 @@ import 'package:Ebiz/main.dart';
 import 'package:Ebiz/model/RestrictPermissionsModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,23 +19,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class StateSplash extends State<SplashScreen> {
-  Connectivity connectivity;
   List<RestrictPermissionsModel> restrictpermissionModel;
-  StreamSubscription<ConnectivityResult> streamSubscription;
   static Dio dio = Dio(Config.options);
 
   @override
   void initState() {
     super.initState();
-    connectivity = Connectivity();
-    streamSubscription =
-        connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result != ConnectivityResult.none) {
-        checkMobileVersion();
-      } else {
-        startTime();
-      }
-    });
+    checkMobileVersion();
   }
 
   startTime() async {
@@ -74,7 +63,10 @@ class StateSplash extends State<SplashScreen> {
 
   checkMobileVersion() async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getMobileVersion"},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getMobileVersion"
+        },
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));

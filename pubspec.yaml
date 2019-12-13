@@ -18,7 +18,6 @@ dependencies:
   dio: ^2.2.2
   draggable_scrollbar: ^0.0.4
   intl: ^0.16.0
-  connectivity: ^0.4.4
   provider: ^3.1.0+1
   location: ^2.3.5
   progress_dialog: ^1.2.0
@@ -28,6 +27,7 @@ dependencies:
   flutter_local_notifications: ^0.8.4+3
   http: ^0.12.0+2
   open_appstore: ^1.0.2
+  connectivity: ^0.4.4
 
 dev_dependencies:
   flutter_test:

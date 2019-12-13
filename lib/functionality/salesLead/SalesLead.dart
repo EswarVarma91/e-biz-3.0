@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:Ebiz/functionality/salesLead/SearchDownTeam.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/HomePage.dart';
 import 'package:Ebiz/myConfig/Config.dart';
@@ -33,8 +32,6 @@ class StateSalesLead extends State<SalesLead> {
   List<SalesPendingModel> listpending, listcompleted = [];
   String pendingCount = '-', completedCount = '-';
   static Dio dio = Dio(Config.options);
-  Connectivity connectivity;
-  StreamSubscription<ConnectivityResult> streamSubscription;
 
   Future<String> getUserID() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -51,15 +48,6 @@ class StateSalesLead extends State<SalesLead> {
           uidd = val;
           print(uidd);
           pendingListM();
-          connectivity = Connectivity();
-          streamSubscription = connectivity.onConnectivityChanged
-              .listen((ConnectivityResult result) {
-            if (result != ConnectivityResult.none) {
-              pendingListM();
-            } else {
-              Fluttertoast.showToast(msg: "Check your internet connection.");
-            }
-          });
         }));
   }
 
@@ -332,8 +320,7 @@ class StateSalesLead extends State<SalesLead> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }
@@ -368,8 +355,7 @@ class StateSalesLead extends State<SalesLead> {
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
-        throw Exception(
-            "Check your internet connection.");
+        throw Exception("Check your internet connection.");
       } else {
         return null;
       }

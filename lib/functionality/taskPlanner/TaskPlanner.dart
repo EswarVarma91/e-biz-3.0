@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/HomePage.dart';
 import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
@@ -43,8 +42,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
   var timeCheck;
   bool _listDisplay = true;
   String profilename, fullname;
-  Connectivity connectivity;
-  StreamSubscription<ConnectivityResult> streamSubscription;
 
   Future<String> getUserID() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -74,13 +71,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
     projectTasks = false;
     getProfileName();
     timeCheck = DateFormat("yyyy-MM-dd").format(now);
-    connectivity = Connectivity();
-    streamSubscription =
-        connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result != ConnectivityResult.none) {
-        getTaskPlanner(uidd);
-      }
-    });
+    getTaskPlanner(uidd);
   }
 
   void checkServices() {

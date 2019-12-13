@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/HomePage.dart';
 import 'package:Ebiz/myConfig/Config.dart';
@@ -22,7 +21,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  Connectivity connectivity;
   bool _obscureText = true;
   bool _isLoading = false;
   List<LoginModel> loginList = [];
@@ -36,7 +34,7 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    connectivity = Connectivity();
+
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('@mipmap/ic_launcher');
 

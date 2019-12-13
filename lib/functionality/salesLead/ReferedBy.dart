@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -27,8 +25,6 @@ class _ReferedByState extends State<ReferedBy> {
   var data;
   String uidd;
   _ReferedByState(this.data);
-  Connectivity connectivity;
-  StreamSubscription<ConnectivityResult> streamSubscription;
 
   static Dio dio = Dio(Config.options);
   List<ReferedbyModel> listReferals = new List();
@@ -39,7 +35,6 @@ class _ReferedByState extends State<ReferedBy> {
   @override
   void initState() {
     super.initState();
-    connectivity = Connectivity();
     getUserID().then((val) => setState(() {
           uidd = val;
           getReferals();
