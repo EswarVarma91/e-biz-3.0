@@ -128,7 +128,8 @@ class _ApprovalsState extends State<Approvals> {
                   StaggeredTile.extent(4, 75.0),
                 ],
               ),
-            ), onRefresh: () async{
+            ),
+            onRefresh: () async {
               getPendingApprovals();
             },
           ),
@@ -522,12 +523,13 @@ class _ApprovalsState extends State<Approvals> {
                                 padding: EdgeInsets.only(top: 4),
                               ),
                               Text(
-                                leaveList[index]
-                                            ?.el_noofdays
-                                            .toString()
-                                            .split(".")[0] +
+                                checkNoDays(leaveList[index]
+                                                ?.el_noofdays
+                                                .toString())
+                                            .toString() +
+                                        // leaveList[index]?.el_noofdays.toString().split(".")[0] +
                                         " Days" ??
-                                    '' + "NA.",
+                                    "NA.",
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontSize: 10,
@@ -1393,7 +1395,11 @@ class _ApprovalsState extends State<Approvals> {
       }
       //      //=======================================================
       var response3 = await dio.post(ServicesApi.getData,
-          data: {"encryptedFields": ["string"],"parameter1": "getHotelRequestByDownTeam", "parameter2": uidd},
+          data: {
+            "encryptedFields": ["string"],
+            "parameter1": "getHotelRequestByDownTeam",
+            "parameter2": uidd
+          },
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
@@ -1507,7 +1513,7 @@ class _ApprovalsState extends State<Approvals> {
             "remarks": "string",
             "statusId": 2,
             "tlApprovedBy": profilename,
-            "userId":uidd
+            "userId": uidd
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -1641,7 +1647,11 @@ class _ApprovalsState extends State<Approvals> {
 
   void getUserPermissionToken(String date, String status, String puidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": puidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getUserToken",
+          "parameter2": puidd
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
@@ -1712,7 +1722,11 @@ class _ApprovalsState extends State<Approvals> {
   void getUserLeavesToken(String el_from_date, String el_to_date, String status,
       String puidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": puidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getUserToken",
+          "parameter2": puidd
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
@@ -1785,7 +1799,11 @@ class _ApprovalsState extends State<Approvals> {
 
   void getUserTravelToken(String reqno, String status, String puidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": puidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getUserToken",
+          "parameter2": puidd
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
@@ -1849,7 +1867,11 @@ class _ApprovalsState extends State<Approvals> {
 
   void getUserHotelToken(String reqno, String status, String puidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": puidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getUserToken",
+          "parameter2": puidd
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
@@ -1910,5 +1932,14 @@ class _ApprovalsState extends State<Approvals> {
     getPendingApprovals();
 
     Navigator.pop(context);
+  }
+
+  checkNoDays(String noodDays) {
+    if (noodDays == "0.5") {
+      return noodDays.toString();
+    } else {
+      List data = noodDays.split(".");
+      return data[0].toString();
+    }
   }
 }

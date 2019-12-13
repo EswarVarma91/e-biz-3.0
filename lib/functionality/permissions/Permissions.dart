@@ -917,10 +917,7 @@ class _PermissionsState extends State<Permissions> {
                                       color: Colors.black, fontSize: 8),
                                 ),
                                 Text(
-                                  checkNoDays(list2[index]
-                                              ?.el_noofdays
-                                              .toString())
-                                          .toString() ??
+                                  checkNoDays(list2[index]?.el_noofdays.toString()).toString() ??
                                       'NA',
                                   style: TextStyle(
                                     color: lwtColor,
