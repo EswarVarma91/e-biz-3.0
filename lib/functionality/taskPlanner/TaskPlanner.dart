@@ -1019,54 +1019,76 @@ class _TaskPlannerState extends State<TaskPlanner> {
                       SizedBox(
                         height: 6,
                       ),
-                    myTasks ? Container():  Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Actual Start Date & Time",
-                                style:
-                                    TextStyle(fontSize: 7, color: Colors.black),
-                              ),
-                              Text(
-                                displayDateTimeFormat(
-                                        list2[index]?.startDate) ??
-                                    "",
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                "Actual End Date & Time",
-                                style:
-                                    TextStyle(fontSize: 7, color: Colors.black),
-                              ),
-                              Text(
-                                displayDateTimeFormat(list2[index]?.endDate) ??
-                                    "",
-                                style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 10),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
+                      myTasks
+                          ? Container()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Actual Start Date & Time",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    ),
+                                    Text(
+                                      displayDateTimeFormat(
+                                              list2[index]?.startDate) ??
+                                          "",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                      "Actual End Date & Time",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    ),
+                                    Text(
+                                      displayDateTimeFormat(
+                                              list2[index]?.endDate) ??
+                                          "",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                       SizedBox(
                         height: 6,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
+                          teamTasks
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Task Type",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    ),
+                                    Text(
+                                      list2[index]?.dpTaskType ?? "",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10),
+                                    ),
+                                  ],
+                                )
+                              : Container(),
                           SizedBox(
                             height: 10,
                           ),
