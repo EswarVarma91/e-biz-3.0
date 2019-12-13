@@ -26,6 +26,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
   bool _color1, _color2, _color3, _color4;
   var todayT = '-', openT = '-', progressT = '-', closedT = '-';
   bool myTasks, teamTasks, projectTasks;
+  bool forTeam, rlTeam, byTeam;
   String uidd;
   bool _isloading = false;
   List<TaskListModel> list1 = [];
@@ -37,6 +38,12 @@ class _TaskPlannerState extends State<TaskPlanner> {
   List<TaskListModel> list4 = [];
   List<TaskListModel> list5 = [];
   List<TaskListModel> list6 = [];
+
+  List<TaskListModel> teamFilter1 = [];
+  List<TaskListModel> teamFilter2 = [];
+  List<TaskListModel> teamFilter3 = [];
+  List<TaskListModel> teamFilter4 = [];
+
   static Dio dio = Dio(Config.options);
   var now = DateTime.now();
   var timeCheck;
@@ -69,12 +76,19 @@ class _TaskPlannerState extends State<TaskPlanner> {
     myTasks = true;
     teamTasks = false;
     projectTasks = false;
+    forTeam = false;
+    byTeam = true;
+    rlTeam = false;
     getProfileName();
     timeCheck = DateFormat("yyyy-MM-dd").format(now);
     getTaskPlanner(uidd);
   }
 
   void checkServices() {
+    todayT = "0";
+    openT = "0";
+    progressT = "0";
+    closedT = "0";
     list2.clear();
     if (myTasks == true) {
       //today filter
@@ -134,58 +148,194 @@ class _TaskPlannerState extends State<TaskPlanner> {
         });
       }
     } else if (teamTasks == true) {
-      //today filter
-      list3 = list33.where((d) {
-        DateTime dt = DateTime.parse(d.dp_created_date.toString());
-        if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck) {
-          return true;
-        }
-        return false;
-      }).toList();
-      //open
-      list4 = list33.where((d) {
-        if (d.dp_status.toString() == "1") {
-          return true;
-        }
-        return false;
-      }).toList();
-      //progress
-      list5 = list33.where((d) {
-        if (d.dp_status.toString() == "2") {
-          return true;
-        }
-        return false;
-      }).toList();
-      //closed
-      list6 = list33.where((d) {
-        if (d.dp_status.toString() == "3") {
-          return true;
-        }
-        return false;
-      }).toList();
+      if (forTeam == true) {
+        //for team
+        list2.clear();
+        teamFilter1 = list33.where(
+          (d) {
+            DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-      //
-      todayT = list3.length.toString();
-      openT = list4.length.toString();
-      progressT = list5.length.toString();
-      closedT = list6.length.toString();
+            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+                d.dpTaskType == "Team" &&
+                d.dp_given_by == profilename) {
+              return true;
+            }
+            return false;
+          },
+        ).toList();
+        //open filter
+        teamFilter2 = list33.where((d) {
+          if (d.dp_status.toString() == "1" &&
+              d.dpTaskType == "Team" &&
+              d.dp_given_by == profilename) {
+            return true;
+          }
+          return false;
+        }).toList();
+        //progress filter
+        teamFilter3 = list33.where((d) {
+          if (d.dp_status.toString() == "2" &&
+              d.dpTaskType == "Team" &&
+              d.dp_given_by == profilename) {
+            return true;
+          }
+          return false;
+        }).toList();
+        //closed filter
+        teamFilter4 = list33.where((d) {
+          if (d.dp_status.toString() == "3" &&
+              d.dpTaskType == "Team" &&
+              d.dp_given_by == profilename) {
+            return true;
+          }
+          return false;
+        }).toList();
 
-      if (_color1 == true) {
-        setState(() {
-          list2 = list3;
-        });
-      } else if (_color2 == true) {
-        setState(() {
-          list2 = list4;
-        });
-      } else if (_color3 == true) {
-        setState(() {
-          list2 = list5;
-        });
-      } else if (_color4 == true) {
-        setState(() {
-          list2 = list6;
-        });
+        todayT = teamFilter1.length.toString();
+        openT = teamFilter2.length.toString();
+        progressT = teamFilter3.length.toString();
+        closedT = teamFilter4.length.toString();
+
+        if (_color1 == true) {
+          setState(() {
+            list2 = teamFilter1;
+          });
+        } else if (_color2 == true) {
+          setState(() {
+            list2 = teamFilter2;
+          });
+        } else if (_color3 == true) {
+          setState(() {
+            list2 = teamFilter3;
+          });
+        } else if (_color4 == true) {
+          setState(() {
+            list2 = teamFilter4;
+          });
+        }
+      } else if (byTeam == true) {
+        //by team
+        list2.clear();
+        teamFilter1 = list33.where(
+          (d) {
+            DateTime dt = DateTime.parse(d.dp_created_date.toString());
+
+            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+                d.dpTaskType == "Self") {
+              return true;
+            }
+            return false;
+          },
+        ).toList();
+        //open filter
+        teamFilter2 = list33.where((d) {
+          if (d.dp_status.toString() == "1" && d.dpTaskType == "Self") {
+            return true;
+          }
+          return false;
+        }).toList();
+        //progress filter
+        teamFilter3 = list33.where((d) {
+          if (d.dp_status.toString() == "2" && d.dpTaskType == "Self") {
+            return true;
+          }
+          return false;
+        }).toList();
+        //closed filter
+        teamFilter4 = list33.where((d) {
+          if (d.dp_status.toString() == "3" && d.dpTaskType == "Self") {
+            return true;
+          }
+          return false;
+        }).toList();
+
+        todayT = teamFilter1.length.toString();
+        openT = teamFilter2.length.toString();
+        progressT = teamFilter3.length.toString();
+        closedT = teamFilter4.length.toString();
+
+        if (_color1 == true) {
+          setState(() {
+            list2 = teamFilter1;
+          });
+        } else if (_color2 == true) {
+          setState(() {
+            list2 = teamFilter2;
+          });
+        } else if (_color3 == true) {
+          setState(() {
+            list2 = teamFilter3;
+          });
+        } else if (_color4 == true) {
+          setState(() {
+            list2 = teamFilter4;
+          });
+        }
+      } else {
+        //rl
+        // list2.clear();
+        // teamFilter1 = list33.where(
+        //   (d) {
+        //     DateTime dt = DateTime.parse(d.dp_created_date.toString());
+
+        //     if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+        //         d.dpTaskType == "Team" &&
+        //         d.dp_given_by != profilename ) {
+        //       return true;
+        //     }
+        //     return false;
+        //   },
+        // ).toList();
+        // //open filter
+        // teamFilter2 = list33.where((d) {
+        //   if (d.dp_status.toString() == "1" &&
+        //       d.dpTaskType == "Team" &&
+        //       d.dp_given_by != profilename ) {
+        //     return true;
+        //   }
+        //   return false;
+        // }).toList();
+        // //progress filter
+        // teamFilter3 = list33.where((d) {
+        //   if (d.dp_status.toString() == "2" &&
+        //       d.dpTaskType == "Team" &&
+        //       d.dp_given_by != profilename) {
+        //     return true;
+        //   }
+        //   return false;
+        // }).toList();
+        // //closed filter
+        // teamFilter4 = list33.where((d) {
+        //   if (d.dp_status.toString() == "3" &&
+        //       d.dpTaskType == "Team" &&
+        //       d.dp_given_by != profilename ) {
+        //     return true;
+        //   }
+        //   return false;
+        // }).toList();
+
+        // todayT = teamFilter1.length.toString();
+        // openT = teamFilter2.length.toString();
+        // progressT = teamFilter3.length.toString();
+        // closedT = teamFilter4.length.toString();
+
+        // if (_color1 == true) {
+        //   setState(() {
+        //     list2 = teamFilter1;
+        //   });
+        // } else if (_color2 == true) {
+        //   setState(() {
+        //     list2 = teamFilter2;
+        //   });
+        // } else if (_color3 == true) {
+        //   setState(() {
+        //     list2 = teamFilter3;
+        //   });
+        // } else if (_color4 == true) {
+        //   setState(() {
+        //     list2 = teamFilter4;
+        //   });
+        // }
       }
     } else if (projectTasks == true) {
       //today
@@ -335,9 +485,44 @@ class _TaskPlannerState extends State<TaskPlanner> {
                 getTaskPlanner(uidd);
               },
             ),
+            teamTasks
+                ? RefreshIndicator(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 60, right: 5, top: 60),
+                      child: StaggeredGridView.count(
+                        crossAxisCount: 6,
+                        crossAxisSpacing: 12.0,
+                        mainAxisSpacing: 12.0,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 1, top: 1),
+                            child: assignbyTeam(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 1, top: 1),
+                            child: assignforTeam(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 1, top: 1),
+                            child: assingbyRL(),
+                          ),
+                        ],
+                        staggeredTiles: [
+                          StaggeredTile.extent(2, 45.0),
+                          StaggeredTile.extent(2, 45.0),
+                          StaggeredTile.extent(2, 45.0),
+                        ],
+                      ),
+                    ),
+                    onRefresh: () async {
+                      getTaskPlanner(uidd);
+                    },
+                  )
+                : Container(),
             RefreshIndicator(
               child: Container(
-                margin: EdgeInsets.only(left: 60, right: 5, top: 60),
+                margin: EdgeInsets.only(
+                    left: 60, right: 5, top: teamTasks ? 110 : 60),
                 child: StaggeredGridView.count(
                   crossAxisCount: 8,
                   crossAxisSpacing: 12.0,
@@ -373,7 +558,8 @@ class _TaskPlannerState extends State<TaskPlanner> {
               },
             ),
             Container(
-              margin: EdgeInsets.only(left: 60, right: 2, top: 140),
+              margin: EdgeInsets.only(
+                  left: 60, right: 2, top: teamTasks ? 190 : 140),
               child: _listDisplay ? taskListView() : Container(),
             ),
             CollapsingNavigationDrawer("3"),
@@ -793,6 +979,197 @@ class _TaskPlannerState extends State<TaskPlanner> {
                           fontSize: 12.0,
                           fontFamily: "Roboto",
                           color: myTasks ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Material assingbyRL() {
+    return Material(
+      color: rlTeam ? lwtColor : Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: rlTeam ? lwtColor : Colors.white,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            rlTeam = !rlTeam;
+            checkServices();
+            if (forTeam == true) {
+              forTeam = !forTeam;
+              checkServices();
+            } else if (byTeam == true) {
+              byTeam = !byTeam;
+              checkServices();
+            } else if (rlTeam == false) {
+              byTeam = !byTeam;
+              checkServices();
+            }
+          });
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text(
+                        "Assinged By",
+                        style: TextStyle(
+                          fontSize: 8.0,
+                          fontFamily: "Roboto",
+                          color: rlTeam ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text(
+                        "RL".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: rlTeam ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Material assignbyTeam() {
+    return Material(
+      color: byTeam ? lwtColor : Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: byTeam ? lwtColor : Colors.white,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            byTeam = !byTeam;
+            checkServices();
+            if (forTeam == true) {
+              forTeam = !forTeam;
+              checkServices();
+            } else if (rlTeam == true) {
+              rlTeam = !rlTeam;
+              checkServices();
+            } else if (byTeam == false) {
+              forTeam = !forTeam;
+              checkServices();
+            }
+          });
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text(
+                        "Assinged By",
+                        style: TextStyle(
+                          fontSize: 8.0,
+                          fontFamily: "Roboto",
+                          color: byTeam ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text(
+                        "Team".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: byTeam ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Material assignforTeam() {
+    return Material(
+      color: forTeam ? lwtColor : Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      shadowColor: forTeam ? lwtColor : Colors.white,
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            forTeam = !forTeam;
+            if (rlTeam == true) {
+              rlTeam = !rlTeam;
+              checkServices();
+            } else if (byTeam == true) {
+              byTeam = !byTeam;
+              checkServices();
+            } else if (forTeam == false) {
+              rlTeam = !rlTeam;
+              checkServices();
+            }
+          });
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text(
+                        "Assinged For",
+                        style: TextStyle(
+                          fontSize: 8.0,
+                          fontFamily: "Roboto",
+                          color: forTeam ? Colors.white : lwtColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: Text(
+                        "Team".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontFamily: "Roboto",
+                          color: forTeam ? Colors.white : lwtColor,
                         ),
                       ),
                     ),

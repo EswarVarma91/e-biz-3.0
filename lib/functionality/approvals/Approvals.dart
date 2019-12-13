@@ -562,6 +562,31 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                             ],
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 6),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Leave Type        :     ",
+                                style: TextStyle(
+                                  fontSize: 8,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 4),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  leaveList[index]?.leave_type ?? '',
+                                  style: TextStyle(
+                                      color: lwtColor,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     )

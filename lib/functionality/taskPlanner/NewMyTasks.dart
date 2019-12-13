@@ -506,7 +506,7 @@ class _NewTaskState extends State<NewMyTasks> {
           data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
-            "dpGivenBy": fullname,
+            "dpGivenBy": profileName,
             "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
             "dpStatus": 0,
             "dpTask": _controller1.text.toString(),
@@ -521,6 +521,22 @@ class _NewTaskState extends State<NewMyTasks> {
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
+
+          print({
+            "actionMode": "insert",
+            "dpCreatedBy": profileName.toString(),
+            "dpGivenBy": profileName,
+            "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+            "dpStatus": 0,
+            "dpTask": _controller1.text.toString(),
+            "dpTaskDesc": _controller2.text.toString(),
+            "dpType": "Instation",
+            "dayTaskType": "Self",
+            "dpModifiedBy": profileName,
+            "uId": uidd,
+            "dpTaskStartDateTime": startDate,
+            "dpTaskEndDateTime": endDate
+          });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
 //        var responseJson = json.decode(response.data);
