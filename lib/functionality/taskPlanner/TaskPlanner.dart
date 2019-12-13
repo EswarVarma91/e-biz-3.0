@@ -1027,7 +1027,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     Padding(
                       padding: EdgeInsets.all(1.0),
                       child: Text(
-                        "Assinged By",
+                        "Assinged By RL",
                         style: TextStyle(
                           fontSize: 8.0,
                           fontFamily: "Roboto",
@@ -1035,17 +1035,17 @@ class _TaskPlannerState extends State<TaskPlanner> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        "RL".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontFamily: "Roboto",
-                          color: rlTeam ? Colors.white : lwtColor,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.all(1.0),
+                    //   child: Text(
+                    //     "RL".toUpperCase(),
+                    //     style: TextStyle(
+                    //       fontSize: 12.0,
+                    //       fontFamily: "Roboto",
+                    //       color: rlTeam ? Colors.white : lwtColor,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
@@ -1091,7 +1091,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     Padding(
                       padding: EdgeInsets.all(1.0),
                       child: Text(
-                        "Assinged By",
+                        "Assinged By Team",
                         style: TextStyle(
                           fontSize: 8.0,
                           fontFamily: "Roboto",
@@ -1099,17 +1099,17 @@ class _TaskPlannerState extends State<TaskPlanner> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        "Team".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontFamily: "Roboto",
-                          color: byTeam ? Colors.white : lwtColor,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.all(1.0),
+                    //   child: Text(
+                    //     "Team".toUpperCase(),
+                    //     style: TextStyle(
+                    //       fontSize: 12.0,
+                    //       fontFamily: "Roboto",
+                    //       color: byTeam ? Colors.white : lwtColor,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
@@ -1154,7 +1154,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                     Padding(
                       padding: EdgeInsets.all(1.0),
                       child: Text(
-                        "Assinged For",
+                        "Assinged For Team",
                         style: TextStyle(
                           fontSize: 8.0,
                           fontFamily: "Roboto",
@@ -1162,17 +1162,17 @@ class _TaskPlannerState extends State<TaskPlanner> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(1.0),
-                      child: Text(
-                        "Team".toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontFamily: "Roboto",
-                          color: forTeam ? Colors.white : lwtColor,
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.all(1.0),
+                    //   child: Text(
+                    //     "Team".toUpperCase(),
+                    //     style: TextStyle(
+                    //       fontSize: 12.0,
+                    //       fontFamily: "Roboto",
+                    //       color: forTeam ? Colors.white : lwtColor,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
@@ -1378,7 +1378,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 15),
+                                    fontSize: 10),
                               ),
                             ],
                           )

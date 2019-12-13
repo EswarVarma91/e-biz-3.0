@@ -14,6 +14,8 @@ class ServicesApi {
   static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
   // static String hrms_Service ="http://192.168.2.5:8383/hrms.service.prod/"; //production
   // static String hrms_Service = "http://49.207.32.34:8383/hrms.service.prod/"; //global
+
+  // static String dayPlanLocalCheck="http://10.100.1.32:8080/hrms.service/hrms/saveDayPlan";
   
 
   static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";

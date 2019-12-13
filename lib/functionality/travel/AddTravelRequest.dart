@@ -239,6 +239,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       setState(() {
                         _isItflight = true;
                       });
+                    } else if (data.toString() == "Train") {
+                      setState(() {
+                        _isItflight = true;
+                      });
                     } else {
                       setState(() {
                         _isItflight = false;
@@ -258,6 +262,10 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     Tmode = data.toString();
                   });
                   if (data.toString() == "Flight") {
+                    setState(() {
+                      _isItflight = true;
+                    });
+                  } else if (data.toString() == "Team") {
                     setState(() {
                       _isItflight = true;
                     });
@@ -491,7 +499,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                 onPressed: () {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
-                      minTime: DateTime(y, m, d, hh, mm ),
+                      minTime: DateTime(y, m, d, hh, mm),
                       maxTime: DateTime(y + 1, m, d, hh, mm),
                       onChanged: (date) {
                     changeDateF(date);
@@ -660,7 +668,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       String tcomaplaintRefType,
       String trequiredDateTime,
       String purpose) async {
-        pr.show();
+    pr.show();
     var response = await dio.post(ServicesApi.insert_travel,
         data: {
           "actionMode": "insert",
@@ -687,7 +695,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     } else if (response.statusCode == 401) {
       pr.hide();
       throw Exception("Incorrect data");
-    }else if(response.statusCode==500){
+    } else if (response.statusCode == 500) {
       pr.hide();
     }
   }
@@ -729,7 +737,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
     } else if (response.statusCode == 401) {
       pr.hide();
       throw (Exception);
-    }else if(response.statusCode==500){
+    } else if (response.statusCode == 500) {
       pr.hide();
     }
   }

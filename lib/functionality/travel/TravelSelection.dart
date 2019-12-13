@@ -51,7 +51,11 @@ class _TravelSelectionState extends State<TravelSelection> {
 
   _textCount() {
     if (_controllerCodes.text.length >= 2) {
-      getAirportCodes();
+      if (res == "Flight") {
+        getAirportCodes();
+      } else if (res == "Train") {
+        getTrainCodes();
+      }
       print(_controllerCodes.text);
     } else {
       if (tcm != null) {
@@ -122,6 +126,8 @@ class _TravelSelectionState extends State<TravelSelection> {
     } else if (mode == "5") {
       if (res == "Flight") {
         dynamicData = true;
+      } else if (res == "Train") {
+        dynamicData = true;
       } else {
         dynamicData = false;
       }
@@ -129,10 +135,33 @@ class _TravelSelectionState extends State<TravelSelection> {
     } else if (mode == "6") {
       if (res == "Flight") {
         dynamicData = true;
+      } else if (res == "Train") {
+        dynamicData = true;
       } else {
         dynamicData = false;
       }
       return "To (Destination)";
+    }
+  }
+
+  void getTrainCodes() async {
+    Response response = await dio.post(ServicesApi.getData,
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getTrainCodes",
+          "parameter2": _controllerCodes.text + "%"
+        },
+        options: Options(
+          contentType: ContentType.parse('application/json'),
+        ));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      setState(() {
+        tcm = (json.decode(response.data) as List)
+            .map((data) => new TravelCodesModel.fromJson(data))
+            .toList();
+        filtertcm = tcm;
+      });
+      // print(tcm);
     }
   }
 
@@ -167,7 +196,7 @@ class _TravelSelectionState extends State<TravelSelection> {
               controller: _controllerCodes,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(15.0),
-                hintText: "Search",
+                hintText: "Enter Minimum 3 Characters",
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),
@@ -190,9 +219,7 @@ class _TravelSelectionState extends State<TravelSelection> {
                       title: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          filtertcm[index].stationCode.toString() +
-                              ", " +
-                              filtertcm[index].stationName,
+                          filtertcm[index].stationCode.toString() ,
                           style: TextStyle(
                             fontSize: 12.0,
                             color: Colors.black,
