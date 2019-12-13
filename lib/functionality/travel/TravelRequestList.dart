@@ -166,14 +166,14 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                     ),
                                   ],
                                 ),
-                                Text(
-                                  checkTravelRequestStatus(
-                                      trlmList[index].tra_status),
-                                  style: TextStyle(
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                ),
+                                // Text(
+                                //   checkTravelRequestStatus(
+                                //       trlmList[index].tra_status),
+                                //   style: TextStyle(
+                                //       color: Colors.amber,
+                                //       fontWeight: FontWeight.bold,
+                                //       fontSize: 10),
+                                // ),
                               ],
                             ),
                             SizedBox(

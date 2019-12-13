@@ -706,18 +706,20 @@ class _HomePageLocationState extends State<HomePageLocation> {
             AttendanceServiceModel.fromJson(res[0]);
         setState(() {
           if (attData.in_time != null && attData != null) {
-            if (timeStart != "" &&timeStart != null &&timeStart != "null" &&timeStart != "-" && timeStart != " ") {
-              workStatus = "At-Office";
-              timeStart = attData.in_time.toString();
-              timeEnd = attData.out_time.toString();
-            } else {
-              
+            if (attData.in_time != "" &&
+                attData.in_time != null &&
+                attData.in_time != "null" &&
+                attData.in_time != "-" &&
+                attData.in_time != " ") {
+              setState(() {
+                workStatus = "At-Office";
+                timeStart = checkTimeAtt(attData.in_time.toString());
+                timeEnd = checkTimeAtt(attData.out_time.toString());
+              });
+              AttendanceGettingModel attendanceModel =
+                  AttendanceGettingModel(userId, timeStart, timeEnd);
+              dbHelper.updateStartandEnd(attendanceModel);
             }
-            AttendanceGettingModel attendanceModel =
-                AttendanceGettingModel(userId, timeStart, timeEnd);
-            dbHelper.updateStartandEnd(attendanceModel);
-          }else{
-            
           }
         });
       } else {
@@ -966,6 +968,14 @@ class _HomePageLocationState extends State<HomePageLocation> {
       print(token);
     } else if (response.statusCode == 401) {
       throw (Exception);
+    }
+  }
+
+  String checkTimeAtt(String data) {
+    if (data == "null") {
+      return "-";
+    } else {
+      return data;
     }
   }
 

@@ -167,14 +167,14 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                     ),
                                   ],
                                 ),
-                                Text(
-                                  checkHotelRequestStatus(
-                                      trlmList[index].hotel_status),
-                                  style: TextStyle(
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10),
-                                ),
+                                // Text(
+                                //   checkHotelRequestStatus(
+                                //       trlmList[index].hotel_status),
+                                //   style: TextStyle(
+                                //       color: Colors.amber,
+                                //       fontWeight: FontWeight.bold,
+                                //       fontSize: 10),
+                                // ),
                               ],
                             ),
                             SizedBox(
