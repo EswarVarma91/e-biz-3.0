@@ -292,7 +292,8 @@ class _NewPermissionState extends State<NewPermissions> {
                     title: TextFormField(
                       controller: _controller1,
                       keyboardType: TextInputType.text,
-                      maxLength: 50,
+                      maxLength: 100,
+                      maxLines: 2,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.chrome_reader_mode),
                         labelText: "Purpose",

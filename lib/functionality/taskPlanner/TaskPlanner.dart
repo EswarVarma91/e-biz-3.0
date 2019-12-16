@@ -148,6 +148,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         });
       }
     } else if (teamTasks == true) {
+
       if (forTeam == true) {
         //for team
         list2.clear();
@@ -272,70 +273,70 @@ class _TaskPlannerState extends State<TaskPlanner> {
           });
         }
       } else {
-        //rl
-        // list2.clear();
-        // teamFilter1 = list33.where(
-        //   (d) {
-        //     DateTime dt = DateTime.parse(d.dp_created_date.toString());
+        
+        list2.clear();
+        teamFilter1 = list33.where(
+          (d) {
+            DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-        //     if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-        //         d.dpTaskType == "Team" &&
-        //         d.dp_given_by != profilename ) {
-        //       return true;
-        //     }
-        //     return false;
-        //   },
-        // ).toList();
-        // //open filter
-        // teamFilter2 = list33.where((d) {
-        //   if (d.dp_status.toString() == "1" &&
-        //       d.dpTaskType == "Team" &&
-        //       d.dp_given_by != profilename ) {
-        //     return true;
-        //   }
-        //   return false;
-        // }).toList();
-        // //progress filter
-        // teamFilter3 = list33.where((d) {
-        //   if (d.dp_status.toString() == "2" &&
-        //       d.dpTaskType == "Team" &&
-        //       d.dp_given_by != profilename) {
-        //     return true;
-        //   }
-        //   return false;
-        // }).toList();
-        // //closed filter
-        // teamFilter4 = list33.where((d) {
-        //   if (d.dp_status.toString() == "3" &&
-        //       d.dpTaskType == "Team" &&
-        //       d.dp_given_by != profilename ) {
-        //     return true;
-        //   }
-        //   return false;
-        // }).toList();
+            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+                d.dpTaskType == "Team" &&
+                d.dp_given_by != profilename ) {
+              return true;
+            }
+            return false;
+          },
+        ).toList();
+        //open filter
+        teamFilter2 = list33.where((d) {
+          if (d.dp_status.toString() == "1" &&
+              d.dpTaskType == "Team" &&
+              d.dp_given_by != profilename ) {
+            return true;
+          }
+          return false;
+        }).toList();
+        //progress filter
+        teamFilter3 = list33.where((d) {
+          if (d.dp_status.toString() == "2" &&
+              d.dpTaskType == "Team" &&
+              d.dp_given_by != profilename) {
+            return true;
+          }
+          return false;
+        }).toList();
+        //closed filter
+        teamFilter4 = list33.where((d) {
+          if (d.dp_status.toString() == "3" &&
+              d.dpTaskType == "Team" &&
+              d.dp_given_by != profilename ) {
+            return true;
+          }
+          return false;
+        }).toList();
 
-        // todayT = teamFilter1.length.toString();
-        // openT = teamFilter2.length.toString();
-        // progressT = teamFilter3.length.toString();
-        // closedT = teamFilter4.length.toString();
+        todayT = teamFilter1.length.toString();
+        openT = teamFilter2.length.toString();
+        progressT = teamFilter3.length.toString();
+        closedT = teamFilter4.length.toString();
 
-        // if (_color1 == true) {
-        //   setState(() {
-        //     list2 = teamFilter1;
-        //   });
-        // } else if (_color2 == true) {
-        //   setState(() {
-        //     list2 = teamFilter2;
-        //   });
-        // } else if (_color3 == true) {
-        //   setState(() {
-        //     list2 = teamFilter3;
-        //   });
-        // } else if (_color4 == true) {
-        //   setState(() {
-        //     list2 = teamFilter4;
-        //   });
-        // }
+        if (_color1 == true) {
+          setState(() {
+            list2 = teamFilter1;
+          });
+        } else if (_color2 == true) {
+          setState(() {
+            list2 = teamFilter2;
+          });
+        } else if (_color3 == true) {
+          setState(() {
+            list2 = teamFilter3;
+          });
+        } else if (_color4 == true) {
+          setState(() {
+            list2 = teamFilter4;
+          });
+        }
       }
     } else if (projectTasks == true) {
       //today

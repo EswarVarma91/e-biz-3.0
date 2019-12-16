@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 import com.microsoft.appcenter.AppCenter;
