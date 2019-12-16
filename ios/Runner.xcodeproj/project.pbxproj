@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09BC99F8239CC43D0059D450 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09BC99F7239CC43D0059D450 /* GoogleService-Info.plist */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		35A8CFE6238BB477009BA766 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35A8CFE5238BB477009BA766 /* GoogleService-Info.plist */; };
 		35A8CFE9238BB570009BA766 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35A8CFE8238BB570009BA766 /* ExternalAccessory.framework */; };
@@ -194,7 +193,7 @@
 		97C146E61CF9000F007C117D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "The Chromium Authors";
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
@@ -233,7 +232,6 @@
 				35E84601235450830058B3F9 /* Default-568h@2x.png in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				35A8CFE6238BB477009BA766 /* GoogleService-Info.plist in Resources */,
-				09BC99F8239CC43D0059D450 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
