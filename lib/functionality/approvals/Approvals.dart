@@ -823,13 +823,13 @@ class _ApprovalsState extends State<Approvals> {
                           ),
                         ],
                       ),
-                      Text(
-                        checkTravelRequestStatus(trlm[index].tra_status),
-                        style: TextStyle(
-                            color: Colors.amber,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10),
-                      ),
+                      // Text(
+                      //   checkTravelRequestStatus(trlm[index].tra_status),
+                      //   style: TextStyle(
+                      //       color: Colors.amber,
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: 10),
+                      // ),
                     ],
                   ),
                   SizedBox(
@@ -1024,13 +1024,13 @@ class _ApprovalsState extends State<Approvals> {
                           ),
                         ],
                       ),
-                      Text(
-                        checkHotelRequestStatus(hrlm[index].hotel_status),
-                        style: TextStyle(
-                            color: Colors.amber,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10),
-                      ),
+                      // Text(
+                      //   checkHotelRequestStatus(hrlm[index].hotel_status),
+                      //   style: TextStyle(
+                      //       color: Colors.amber,
+                      //       fontWeight: FontWeight.bold,
+                      //       fontSize: 10),
+                      // ),
                     ],
                   ),
                   SizedBox(

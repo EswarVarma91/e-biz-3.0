@@ -469,7 +469,7 @@ class _NewTaskState extends State<NewMyTasks> {
     pr.show();
     var now = DateTime.now();
     if (s == "1") {
-      var response = await dio.post(ServicesApi.saveDayPlan,
+      var response = await dio.post(ServicesApi.dayPlanLocalCheck,
           data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
@@ -489,20 +489,27 @@ class _NewTaskState extends State<NewMyTasks> {
           ));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        if (response.data.toString() == '"Success"') {
+          pr.hide();
+          Fluttertoast.showToast(msg: "Task Created");
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+            ModalRoute.withName('/'),
+          );
+        } else if (response.data.toString() == '"Failed"'){
+          pr.hide();
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg: "You can't create task ");
+        }
 //        var responseJson = json.decode(response.data);
-        pr.hide();
-        Fluttertoast.showToast(msg: "Task Created");
-        var navigator = Navigator.of(context);
-        navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-          ModalRoute.withName('/'),
-        );
+
       } else {
         pr.hide();
         Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } else if (s == "2") {
-      var response = await dio.post(ServicesApi.saveDayPlan,
+      var response = await dio.post(ServicesApi.dayPlanLocalCheck,
           data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
@@ -522,21 +529,21 @@ class _NewTaskState extends State<NewMyTasks> {
             contentType: ContentType.parse('application/json'),
           ));
 
-          print({
-            "actionMode": "insert",
-            "dpCreatedBy": profileName.toString(),
-            "dpGivenBy": profileName,
-            "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
-            "dpStatus": 0,
-            "dpTask": _controller1.text.toString(),
-            "dpTaskDesc": _controller2.text.toString(),
-            "dpType": "Instation",
-            "dayTaskType": "Self",
-            "dpModifiedBy": profileName,
-            "uId": uidd,
-            "dpTaskStartDateTime": startDate,
-            "dpTaskEndDateTime": endDate
-          });
+      print({
+        "actionMode": "insert",
+        "dpCreatedBy": profileName.toString(),
+        "dpGivenBy": profileName,
+        "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+        "dpStatus": 0,
+        "dpTask": _controller1.text.toString(),
+        "dpTaskDesc": _controller2.text.toString(),
+        "dpType": "Instation",
+        "dayTaskType": "Self",
+        "dpModifiedBy": profileName,
+        "uId": uidd,
+        "dpTaskStartDateTime": startDate,
+        "dpTaskEndDateTime": endDate
+      });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
 //        var responseJson = json.decode(response.data);
