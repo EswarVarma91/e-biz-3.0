@@ -1,6 +1,6 @@
 name: Ebiz
 description: EBiz.
-version: 1.6+18
+version: 1.8+19
 environment:
   sdk: ">=2.2.0 <3.0.0"
 dependencies:
@@ -8,10 +8,10 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^0.1.3
-  shared_preferences: ^0.5.4+6
+  shared_preferences: ^0.5.6
   fluttertoast: ^3.1.3
   sqflite: ^1.1.7+3
-  path_provider: ^1.4.5
+  path_provider: ^1.5.1
   google_maps_flutter: ^0.5.21+12
   flutter_staggered_grid_view: ^0.3.0
   flutter_datetime_picker: ^1.2.8
@@ -26,8 +26,8 @@ dependencies:
   firebase_messaging: ^6.0.1
   flutter_local_notifications: ^0.8.4+3
   http: ^0.12.0+2
-  # open_appstore: ^1.0.2
-  connectivity: ^0.4.4
+  open_appstore: ^1.0.2
+  connectivity: ^0.4.2
 
 dev_dependencies:
   flutter_test:
@@ -44,7 +44,6 @@ flutter:
     - assets/images/as.png
     - assets/images/eaglbiz.png
     - assets/images/eaglebiz.png
-    
 
   fonts:
     - family: Roboto
@@ -65,4 +64,3 @@ flutter:
     - family: Tangerine
       fonts:
         - asset: assets/fonts/Tangerine-Regular.ttf
-    

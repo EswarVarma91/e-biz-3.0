@@ -469,7 +469,7 @@ class _NewTaskState extends State<NewMyTasks> {
     pr.show();
     var now = DateTime.now();
     if (s == "1") {
-      var response = await dio.post(ServicesApi.dayPlanLocalCheck,
+      var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
@@ -509,7 +509,7 @@ class _NewTaskState extends State<NewMyTasks> {
         Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } else if (s == "2") {
-      var response = await dio.post(ServicesApi.dayPlanLocalCheck,
+      var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString(),
