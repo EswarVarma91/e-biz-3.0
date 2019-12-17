@@ -7,6 +7,7 @@ import 'package:Ebiz/functionality/travel/TravelRequestList.dart';
 import 'package:Ebiz/functionality/travel/TravelSelection.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -53,7 +54,6 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     var now = new DateTime.now();
     y = now.year;
@@ -69,120 +69,159 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add Travel Request',
-          style: TextStyle(color: Colors.white),
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Add Travel Request',
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                if (Tmode == "Bus") {
+                  if (TravelNameId.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
+                  } else if (Tmode.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Mode'.");
+                  } else if (TmodeType.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Mode Type'.");
+                  } else if (Tclass.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Class'.");
+                  } else if (_controllerFrom1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter from 'Address'.");
+                  } else if (_controllerTo1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter to 'Address'.");
+                  } else if (TrarrivalDateTime.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Select 'Journey Date and Time'.");
+                  } else if (TcomaplaintId.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Complaint No'.");
+                  } else if (_controllerPurpose1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter 'Purpose'.");
+                  } else if (TrequiredDateTime.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Select 'Required Date and Time'.");
+                  } else {
+                    alertDialogBus(
+                        TravelNameId,
+                        Tmode,
+                        TmodeType,
+                        Tclass,
+                        _controllerFrom1.text,
+                        _controllerTo1.text,
+                        TrarrivalDateTime,
+                        TcomaplaintId,
+                        TcomaplaintRefType,
+                        TrequiredDateTime,
+                        _controllerPurpose1.text);
+                    // insertTravelRequest(
+                    //     TravelNameId,
+                    //     Tmode,
+                    //     TmodeType,
+                    //     Tclass,
+                    //     _controllerFrom1.text,
+                    //     _controllerTo1.text,
+                    //     TrarrivalDateTime,
+                    //     TcomaplaintId,
+                    //     TcomaplaintRefType,
+                    //     TrequiredDateTime,
+                    //     _controllerPurpose1.text);
+                  }
+                } else {
+                  if (TravelNameId.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
+                  } else if (Tmode.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Mode'.");
+                  } else if (TmodeType.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Mode Type'.");
+                  } else if (Tclass.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Class'.");
+                  } else if (Tfrom.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select from 'Station Code'.");
+                  } else if (Tto.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select to 'Station Code'.");
+                  } else if (TrarrivalDateTime.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Select 'Journey date and time'.");
+                  } else if (TcomaplaintId.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Complaint No'.");
+                  } else if (_controllerPurpose1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter 'Purpose'.");
+                  } else if (TrequiredDateTime.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Select 'Required date and time'.");
+                  } else {
+                    alertDialogFlightTrain(
+                        TravelNameId,
+                        Tmode,
+                        TmodeType,
+                        Tclass,
+                        Tfrom,
+                        Tto,
+                        TrarrivalDateTime,
+                        TcomaplaintId,
+                        TcomaplaintRefType,
+                        TrequiredDateTime,
+                        _controllerPurpose1.text);
+                    // insertTravelRequest(
+                    //     TravelNameId,
+                    //     Tmode,
+                    //     TmodeType,
+                    //     Tclass,
+                    //     Tfrom,
+                    //     Tto,
+                    //     TrarrivalDateTime,
+                    //     TcomaplaintId,
+                    //     TcomaplaintRefType,
+                    //     TrequiredDateTime,
+                    //     _controllerPurpose1.text);
+                  }
+                }
+                // Fluttertoast.showToast(msg: "Saved");
+              },
+            )
+          ],
         ),
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              if (Tmode == "Flight") {
-                if (TravelNameId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
-                } else if (Tmode.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Mode'.");
-                } else if (TmodeType.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Mode Type'.");
-                } else if (Tclass.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Class'.");
-                } else if (Tfrom.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select from 'Station Code'.");
-                } else if (Tto.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select to 'Station Code'.");
-                } else if (TrarrivalDateTime.isEmpty) {
-                  Fluttertoast.showToast(
-                      msg: "Select 'Journey date and time'.");
-                } else if (TcomaplaintId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Complaint No'.");
-                } else if (_controllerPurpose1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter 'Purpose'.");
-                } else if (TrequiredDateTime.isEmpty) {
-                  Fluttertoast.showToast(
-                      msg: "Select 'Required date and time'.");
-                } else {
-                  insertTravelRequest(
-                      TravelNameId,
-                      Tmode,
-                      TmodeType,
-                      Tclass,
-                      Tfrom,
-                      Tto,
-                      TrarrivalDateTime,
-                      TcomaplaintId,
-                      TcomaplaintRefType,
-                      TrequiredDateTime,
-                      _controllerPurpose1.text);
-                }
-              } else {
-                if (TravelNameId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
-                } else if (Tmode.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Mode'.");
-                } else if (TmodeType.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Mode Type'.");
-                } else if (Tclass.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Class'.");
-                } else if (_controllerFrom1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter from 'Address'.");
-                } else if (_controllerTo1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter to 'Address'.");
-                } else if (TrarrivalDateTime.isEmpty) {
-                  Fluttertoast.showToast(
-                      msg: "Select 'Journey Date and Time'.");
-                } else if (TcomaplaintId.isEmpty) {
-                  Fluttertoast.showToast(msg: "Select 'Complaint No'.");
-                } else if (_controllerPurpose1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter 'Purpose'.");
-                } else if (TrequiredDateTime.isEmpty) {
-                  Fluttertoast.showToast(
-                      msg: "Select 'Required Date and Time'.");
-                } else {
-                  insertTravelRequest(
-                      TravelNameId,
-                      Tmode,
-                      TmodeType,
-                      Tclass,
-                      _controllerFrom1.text,
-                      _controllerTo1.text,
-                      TrarrivalDateTime,
-                      TcomaplaintId,
-                      TcomaplaintRefType,
-                      TrequiredDateTime,
-                      _controllerPurpose1.text);
-                }
-              }
-              // Fluttertoast.showToast(msg: "Saved");
-            },
-          )
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 0, top: 5),
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TtravelName),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Traveller Name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+        body: Container(
+          padding: EdgeInsets.only(left: 0, top: 5),
+          child: ListView(
+            children: <Widget>[
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TtravelName),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Traveller Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                DownTeamMembers("Traveller Name")));
+                    if (data != null) {
+                      setState(() {
+                        TtravelName = data.split(" USR_")[0].toString();
+                        TravelNameId = data.split(" USR_")[1].toString();
+                      });
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -196,36 +235,48 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   }
                 },
               ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            DownTeamMembers("Traveller Name")));
-                if (data != null) {
-                  setState(() {
-                    TtravelName = data.split(" USR_")[0].toString();
-                    TravelNameId = data.split(" USR_")[1].toString();
-                  });
-                }
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: Tmode),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Mode",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: Tmode),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Mode",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                TravelSelection("2", "")));
+                    if (data != null) {
+                      setState(() {
+                        Tmode = data.toString();
+                      });
+                      if (data.toString() == "Flight") {
+                        setState(() {
+                          _isItflight = true;
+                        });
+                      } else if (data.toString() == "Train") {
+                        setState(() {
+                          _isItflight = true;
+                        });
+                      } else {
+                        setState(() {
+                          _isItflight = false;
+                        });
+                      }
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -248,51 +299,42 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                         _isItflight = false;
                       });
                     }
-                  }
-                },
-              ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            TravelSelection("2", "")));
-                if (data != null) {
-                  setState(() {
-                    Tmode = data.toString();
-                  });
-                  if (data.toString() == "Flight") {
-                    setState(() {
-                      _isItflight = true;
-                    });
-                  } else if (data.toString() == "Team") {
-                    setState(() {
-                      _isItflight = true;
-                    });
                   } else {
                     setState(() {
                       _isItflight = false;
                     });
                   }
-                }
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TmodeType),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Mode Type",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                },
+              ),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TmodeType),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Mode Type",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                TravelSelection("3", "")));
+                    if (data != null) {
+                      setState(() {
+                        TmodeType = data.toString();
+                      });
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -305,35 +347,39 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   }
                 },
               ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            TravelSelection("3", "")));
-                if (data != null) {
-                  setState(() {
-                    TmodeType = data.toString();
-                  });
-                }
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: Tclass),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Class",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: Tclass),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Class",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    if (Tmode != null) {
+                      var data = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  TravelSelection("4", Tmode)));
+                      if (data != null) {
+                        setState(() {
+                          Tclass = data.toString();
+                        });
+                      }
+                    } else {
+                      Fluttertoast.showToast(msg: " select mode.");
+                    }
+                  },
+                ),
+                onTap: () async {
                   if (Tmode != null) {
                     var data = await Navigator.push(
                         context,
@@ -350,40 +396,37 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   }
                 },
               ),
-              onTap: () async {
-                if (Tmode != null) {
-                  var data = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              TravelSelection("4", Tmode)));
-                  if (data != null) {
-                    setState(() {
-                      Tclass = data.toString();
-                    });
-                  }
-                } else {
-                  Fluttertoast.showToast(msg: " select mode.");
-                }
-              },
-            ),
-            _isItflight
-                ? ListTile(
-                    title: TextFormField(
-                      enabled: false,
-                      controller: TextEditingController(text: Tfrom),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "From(Source)",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+              _isItflight
+                  ? ListTile(
+                      title: TextFormField(
+                        enabled: false,
+                        controller: TextEditingController(text: Tfrom),
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "From(Source)",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () async {
+                      trailing: IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () async {
+                          var data = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      TravelSelection("5", Tmode)));
+                          if (data != null) {
+                            setState(() {
+                              Tfrom = data.split(" U_")[0].toString();
+                              // TfromId = data.split(" U_")[1].toString();
+                            });
+                          }
+                        },
+                      ),
+                      onTap: () async {
                         var data = await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -396,51 +439,51 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                           });
                         }
                       },
-                    ),
-                    onTap: () async {
-                      var data = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  TravelSelection("5", Tmode)));
-                      if (data != null) {
-                        setState(() {
-                          Tfrom = data.split(" U_")[0].toString();
-                          // TfromId = data.split(" U_")[1].toString();
-                        });
-                      }
-                    },
-                  )
-                : ListTile(
-                    title: TextFormField(
-                      controller: _controllerFrom1,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "From (Source)",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                    )
+                  : ListTile(
+                      title: TextFormField(
+                        controller: _controllerFrom1,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "From (Source)",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-            _isItflight
-                ? ListTile(
-                    title: TextFormField(
-                      enabled: false,
-                      controller: TextEditingController(text: Tto),
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "To (Destination)",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+              _isItflight
+                  ? ListTile(
+                      title: TextFormField(
+                        enabled: false,
+                        controller: TextEditingController(text: Tto),
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "To (Destination)",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.add),
-                      onPressed: () async {
+                      trailing: IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () async {
+                          var data = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      TravelSelection("6", Tmode)));
+                          if (data != null) {
+                            setState(() {
+                              Tto = data.split(" U_")[0].toString();
+                              // TtoId = data.split(" U_")[1].toString();
+                            });
+                          }
+                        },
+                      ),
+                      onTap: () async {
                         var data = await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -453,50 +496,48 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                           });
                         }
                       },
-                    ),
-                    onTap: () async {
-                      var data = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  TravelSelection("6", Tmode)));
-                      if (data != null) {
-                        setState(() {
-                          Tto = data.split(" U_")[0].toString();
-                          // TtoId = data.split(" U_")[1].toString();
-                        });
-                      }
-                    },
-                  )
-                : ListTile(
-                    title: TextFormField(
-                      controller: _controllerTo1,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.chrome_reader_mode),
-                        labelText: "To(Destination)",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                    )
+                  : ListTile(
+                      title: TextFormField(
+                        controller: _controllerTo1,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "To(Destination)",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TrarrivalDateTime),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Journey Date & Time",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TrarrivalDateTime),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Journey Date & Time",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.calendar_today),
-                onPressed: () {
+                trailing: IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: () {
+                    DatePicker.showDateTimePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(y, m, d, hh, mm),
+                        maxTime: DateTime(y + 1, m, d, hh, mm),
+                        onChanged: (date) {
+                      changeDateF(date);
+                    }, onConfirm: (date) {
+                      changeDateF(date);
+                    }, locale: LocaleType.en);
+                  },
+                ),
+                onTap: () async {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(y, m, d, hh, mm),
@@ -508,33 +549,34 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   }, locale: LocaleType.en);
                 },
               ),
-              onTap: () async {
-                DatePicker.showDateTimePicker(context,
-                    showTitleActions: true,
-                    minTime: DateTime(y, m, d, hh, mm),
-                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
-                  changeDateF(date);
-                }, onConfirm: (date) {
-                  changeDateF(date);
-                }, locale: LocaleType.en);
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TrequiredDateTime),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Required Arrival Date & Time",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TrequiredDateTime),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Required Arrival Date & Time",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.calendar_today),
-                onPressed: () {
+                trailing: IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: () {
+                    DatePicker.showDateTimePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(year, month, day, hour, minute + 1),
+                        maxTime: DateTime(y + 1, m, d, hh, mm),
+                        onChanged: (date) {
+                      changeDateT(date);
+                    }, onConfirm: (date) {
+                      changeDateT(date);
+                    }, locale: LocaleType.en);
+                  },
+                ),
+                onTap: () async {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(year, month, day, hour, minute + 1),
@@ -546,33 +588,37 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   }, locale: LocaleType.en);
                 },
               ),
-              onTap: () async {
-                DatePicker.showDateTimePicker(context,
-                    showTitleActions: true,
-                    minTime: DateTime(year, month, day, hour, minute + 1),
-                    maxTime: DateTime(y + 1, m, d, hh, mm), onChanged: (date) {
-                  changeDateT(date);
-                }, onConfirm: (date) {
-                  changeDateT(date);
-                }, locale: LocaleType.en);
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TcomaplaintTicketNo),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "OA/Complaint Ticket No.",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TcomaplaintTicketNo),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "OA/Complaint Ticket No.",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ProjectSelection("OA/Complaint Ticket No.")));
+                    if (data != null) {
+                      setState(() {
+                        TcomaplaintTicketNo = data.split(" P_")[0].toString();
+                        TcomaplaintId = data.split(" P_")[1].toString();
+                        TcomaplaintRefType = data.split(" P_")[2].toString();
+                      });
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -587,37 +633,51 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                   }
                 },
               ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ProjectSelection("OA/Complaint Ticket No.")));
-                if (data != null) {
-                  setState(() {
-                    TcomaplaintTicketNo = data.split(" P_")[0].toString();
-                    TcomaplaintId = data.split(" P_")[1].toString();
-                    TcomaplaintRefType = data.split(" P_")[2].toString();
-                  });
-                }
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                controller: _controllerPurpose1,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Purpose",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  controller: _controllerPurpose1,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Purpose",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+      onWillPop: () {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return CupertinoAlertDialog(
+                title: Text('Are you sure ?'),
+                actions: <Widget>[
+                  CupertinoButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  TravelRequestList()));
+                    },
+                    child: Text('Yes'),
+                  ),
+                  CupertinoButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                ],
+              );
+            });
+      },
     );
   }
 
@@ -778,4 +838,123 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       ModalRoute.withName('/'),
     );
   }
+
+  void alertDialogBus(
+      String travelNameId,
+      String tmode,
+      String tmodeType,
+      String tclass,
+      String fromB,
+      String toB,
+      String trarrivalDateTime,
+      String tcomaplaintId,
+      String tcomaplaintRefType,
+      String trequiredDateTime,
+      String purposeB) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to create travel request.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  insertTravelRequest(
+                      TravelNameId,
+                      Tmode,
+                      TmodeType,
+                      Tclass,
+                      fromB,
+                      toB,
+                      TrarrivalDateTime,
+                      TcomaplaintId,
+                      TcomaplaintRefType,
+                      TrequiredDateTime,
+                      purposeB);
+                },
+                child: Text('Yes'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+            ],
+          );
+        });
+  }
+
+  void alertDialogFlightTrain(
+      String travelNameId,
+      String tmode,
+      String tmodeType,
+      String tclass,
+      String tfrom,
+      String tto,
+      String trarrivalDateTime,
+      String tcomaplaintId,
+      String tcomaplaintRefType,
+      String trequiredDateTime,
+      String purposeFT) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to create travel request.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  insertTravelRequest(
+                      travelNameId,
+                      tmode,
+                      tmodeType,
+                      tclass,
+                      tfrom,
+                      tto,
+                      trarrivalDateTime,
+                      tcomaplaintId,
+                      tcomaplaintRefType,
+                      trequiredDateTime,
+                      purposeFT);
+                },
+                child: Text('Yes'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+            ],
+          );
+        });
+  }
 }
+
+//  void alertTravelDialog(int t_id) {
+//   showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       builder: (BuildContext context) {
+//         return CupertinoAlertDialog(
+//           title: Text('Do you want to Cancel.?'),
+//           actions: <Widget>[
+//             CupertinoButton(
+//               onPressed: () {
+//                 cancelRequest(t_id);
+//               },
+//               child: Text('Yes'),
+//             ),
+//             CupertinoButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text('No'),
+//             ),
+//           ],
+//         );
+//       });
+// }
