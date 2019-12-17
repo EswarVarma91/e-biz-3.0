@@ -352,7 +352,6 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           "actionMode": "insert",
           "dpCreatedBy": profileName.toString(),
           "dpGivenBy": profileName,
-          "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
           "dpTask": _controller1.text.toString(),
           "dpTaskDesc": _controller2.text.toString(),
           "dpType": "Office",
