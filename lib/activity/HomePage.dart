@@ -70,7 +70,7 @@ class HomePageLocation extends StatefulWidget {
 class _HomePageLocationState extends State<HomePageLocation> {
   String paidCount = '', taskPending = "-", shortcut = "no action set";
   static Dio dio = Dio(Config.options);
-  String empCode = "-",
+  String empCode = "-",profilePic,
       profilename = "-",
       fullname = "-",
       userId = "-",
@@ -101,6 +101,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       profilename = preferences.getString("profileName");
       fullname = preferences.getString("fullname");
       userId = preferences.getString("userId");
+      profilePic =preferences.getString("picPath");
       getPaidCount(empCode);
       getPendingCount(userId);
       // getCurrentDate();
@@ -197,9 +198,13 @@ class _HomePageLocationState extends State<HomePageLocation> {
           automaticallyImplyLeading: false,
           actions: <Widget>[
             Padding(
-              padding: EdgeInsets.only(right: 0),
+              padding: EdgeInsets.only(right: 5),
               child: IconButton(
-                icon: Icon(Icons.account_circle, color: Colors.white, size: 35),
+                // icon: CircleAvatar(
+                //   radius: 20,
+                //   backgroundImage: NetworkImage(ServicesApi.basic_url+profilePic),
+                // ),
+                icon: Icon(Icons.account_circle,size: 35,color: Colors.white,),
                 onPressed: () {
                   Navigator.push(
                       context,

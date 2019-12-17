@@ -350,13 +350,13 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
     var response = await dio.post(ServicesApi.saveDayPlan,
         data: {
           "actionMode": "insert",
-          "dpCreatedBy": profileName.toString(),
-          "dpGivenBy": profileName,
+          "dpCreatedBy": profileName.toString().toLowerCase(),
+          "dpGivenBy": profileName.toLowerCase(),
           "dpTask": _controller1.text.toString(),
           "dpTaskDesc": _controller2.text.toString(),
           "dpType": "Office",
           "dayTaskType": "Team",
-          "dpModifiedBy": profileName,
+          "dpModifiedBy": profileName.toLowerCase(),
           "uId": resourceId,
           "dpTaskStartDateTime": startDate,
           "dpTaskEndDateTime": endDate

@@ -1,4 +1,5 @@
 import 'package:Ebiz/activity/HomePage.dart';
+import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +15,9 @@ class ProfileScreenState extends State<ProfileScreen> {
       mobilenumber = '-',
       department = '-',
       designation = '-',
-      employCode = "-";
+      employCode = "-",
+      profilePic = "";
+      bool profile;
 
   getAccountDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -24,12 +27,19 @@ class ProfileScreenState extends State<ProfileScreen> {
       emailid = preferences.getString("emailId");
       department = preferences.getString("department");
       designation = preferences.getString("designation");
+      profilePic = preferences.getString("picPath");
+      if(profilePic!=null){
+        profile=true;
+      }else{
+        profile=false;
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
+    profile=false;
     getAccountDetails();
   }
 
@@ -124,17 +134,37 @@ class ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
+                        profile ? Container(
                             margin: EdgeInsets.only(top: 30, bottom: 30),
                             width: 160.0,
                             height: 160.0,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: ExactAssetImage('assets/images/as.png'),
+                                image: NetworkImage(
+                                    ServicesApi.basic_url + profilePic),
+                                fit: BoxFit.cover,
+                              ),
+                            )):Container(
+                            margin: EdgeInsets.only(top: 30, bottom: 30),
+                            width: 160.0,
+                            height: 160.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/ebiz.png'),
                                 fit: BoxFit.cover,
                               ),
                             )),
+                        // Container(
+                        //     padding: EdgeInsets.only(top: 15, bottom: 15),
+                        //     height: 250.0,
+                        //     width: 250.0,
+                        //     child: FadeInImage(
+                        //       placeholder: AssetImage('assets/images/ebiz.png'),
+                        //       image: NetworkImage(
+                        //           ServicesApi.basic_url + profilePic),
+                        //     ))
                       ],
                     ),
                     ListTile(

@@ -158,7 +158,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
 
             if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
                 d.dpTaskType == "Team" &&
-                d.dp_given_by == profilename) {
+                d.dp_given_by.toLowerCase() == profilename.toLowerCase()) {
               return true;
             }
             return false;
@@ -168,7 +168,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter2 = list33.where((d) {
           if (d.dp_status.toString() == "1" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by == profilename) {
+              d.dp_given_by.toLowerCase() == profilename.toLowerCase()) {
             return true;
           }
           return false;
@@ -177,7 +177,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter3 = list33.where((d) {
           if (d.dp_status.toString() == "2" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by == profilename) {
+              d.dp_given_by.toLowerCase() == profilename.toLowerCase()) {
             return true;
           }
           return false;
@@ -186,7 +186,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter4 = list33.where((d) {
           if (d.dp_status.toString() == "3" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by == profilename) {
+              d.dp_given_by.toLowerCase() == profilename.toLowerCase()) {
             return true;
           }
           return false;
@@ -281,7 +281,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
 
             if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
                 d.dpTaskType == "Team" &&
-                d.dp_given_by != profilename ) {
+                d.dp_given_by.toLowerCase() != profilename.toLowerCase() ) {
               return true;
             }
             return false;
@@ -291,7 +291,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter2 = list33.where((d) {
           if (d.dp_status.toString() == "1" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by != profilename ) {
+              d.dp_given_by.toLowerCase() != profilename.toLowerCase() ) {
             return true;
           }
           return false;
@@ -300,7 +300,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter3 = list33.where((d) {
           if (d.dp_status.toString() == "2" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by != profilename) {
+              d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
             return true;
           }
           return false;
@@ -309,7 +309,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter4 = list33.where((d) {
           if (d.dp_status.toString() == "3" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by != profilename ) {
+              d.dp_given_by.toLowerCase() != profilename.toLowerCase() ) {
             return true;
           }
           return false;

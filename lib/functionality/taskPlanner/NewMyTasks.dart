@@ -472,14 +472,14 @@ class _NewTaskState extends State<NewMyTasks> {
       var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "insert",
-            "dpCreatedBy": profileName.toString(),
-            "dpGivenBy": profileName,
+            "dpCreatedBy": profileName.toString().toLowerCase(),
+            "dpGivenBy": profileName.toLowerCase(),
             "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Office",
             "dayTaskType": "Self",
-            "dpModifiedBy": profileName,
+            "dpModifiedBy": profileName.toLowerCase(),
             "uId": uidd,
             "dpTaskStartDateTime": "",
             "dpTaskEndDateTime": ""
@@ -512,14 +512,14 @@ class _NewTaskState extends State<NewMyTasks> {
       var response = await dio.post(ServicesApi.saveDayPlan,
           data: {
             "actionMode": "insert",
-            "dpCreatedBy": profileName.toString(),
-            "dpGivenBy": profileName,
+            "dpCreatedBy": profileName.toString().toLowerCase(),
+            "dpGivenBy": profileName.toLowerCase(),
             "dpStatus": 0,
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Instation",
             "dayTaskType": "Self",
-            "dpModifiedBy": profileName,
+            "dpModifiedBy": profileName.toLowerCase(),
             "uId": uidd,
             "dpTaskStartDateTime": startDate,
             "dpTaskEndDateTime": endDate
@@ -530,14 +530,14 @@ class _NewTaskState extends State<NewMyTasks> {
 
       print({
         "actionMode": "insert",
-        "dpCreatedBy": profileName.toString(),
-        "dpGivenBy": profileName,
+        "dpCreatedBy": profileName.toString().toLowerCase(),
+        "dpGivenBy": profileName.toLowerCase(),
         "dpStatus": 0,
         "dpTask": _controller1.text.toString(),
         "dpTaskDesc": _controller2.text.toString(),
         "dpType": "Instation",
         "dayTaskType": "Self",
-        "dpModifiedBy": profileName,
+        "dpModifiedBy": profileName.toLowerCase(),
         "uId": uidd,
         "dpTaskStartDateTime": startDate,
         "dpTaskEndDateTime": endDate

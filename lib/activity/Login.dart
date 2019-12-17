@@ -317,7 +317,8 @@ class _LoginState extends State<Login> {
               json.decode(response.data)['empEmail'],
               json.decode(response.data)['empDepartment'],
               json.decode(response.data)['empDesignation'],
-              json.decode(response.data)['fixedTerm']);
+              json.decode(response.data)['fixedTerm'],
+              json.decode(response.data)['picPath']);
 
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
@@ -366,7 +367,7 @@ class _LoginState extends State<Login> {
       String emailId,
       String department,
       String designation,
-      int fixedTerm) async {
+      int fixedTerm,String picPath) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("data", userEmail.toString());
     preferences.setString("userId", uId.toString());
@@ -383,5 +384,6 @@ class _LoginState extends State<Login> {
     preferences.setString("department", department.toString());
     preferences.setString("designation", designation.toString());
     preferences.setString("fixedTerm", fixedTerm.toString());
+    preferences.setString("picPath", picPath.toString());
   }
 }

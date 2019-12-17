@@ -217,7 +217,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
           data: {
             "actionMode": "update",
             "dpId": dp_id,
-            "dpModifiedBy": profilename,
+            "dpModifiedBy": profilename.toLowerCase(),
             "dpReason": reason,
             "dpStatus": mainStatus
           },
