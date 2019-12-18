@@ -277,6 +277,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       } else if (data.toString() == "Train") {
                         setState(() {
                           _isItflight = true;
+                          _modeTypeFlight = false;
                         });
                       } else {
                         setState(() {
@@ -310,6 +311,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     } else if (data.toString() == "Train") {
                       setState(() {
                         _isItflight = true;
+                        _modeTypeFlight = false;
                       });
                     } else {
                       setState(() {
