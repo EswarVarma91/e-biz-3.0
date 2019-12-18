@@ -277,9 +277,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
           (d) {
             DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
-                d.dpTaskType == "Team" &&
-                d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
+            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Team" && d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
               return true;
             }
             return false;
@@ -1317,13 +1315,19 @@ class _TaskPlannerState extends State<TaskPlanner> {
                             ],
                           ),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
-                              Text(
-                                "Created Date",
-                                style:
-                                    TextStyle(fontSize: 7, color: Colors.black),
-                              ),
+                              myTasks
+                                  ? Text(
+                                      "Start Date",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    )
+                                  : Text(
+                                      "Created Date",
+                                      style: TextStyle(
+                                          fontSize: 7, color: Colors.black),
+                                    ),
                               Text(
                                 displayDateFormat(list2[index]?.dp_created_date)
                                         .toString() ??
@@ -1373,7 +1377,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                               Text(
                                 // displayDateFormat(list2[index]?.dp_created_date)
                                 //         .toString() ??
-                                list2[index]?.assignedTo ?? "",
+                                list2[index]?.assignedTo ?? "-",
                                 style: TextStyle(
                                     color: lwtColor,
                                     fontWeight: FontWeight.bold,
@@ -1402,7 +1406,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                     Text(
                                       displayDateTimeFormat(
                                               list2[index]?.startDate) ??
-                                          "",
+                                          "-",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
@@ -1421,7 +1425,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                     Text(
                                       displayDateTimeFormat(
                                               list2[index]?.endDate) ??
-                                          "",
+                                          "-",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
