@@ -1,5 +1,5 @@
 class ServicesApi {
-  static String versionNew = "1.8";
+  static String versionNew = "1.9";
 
 
 
@@ -18,9 +18,11 @@ class ServicesApi {
   // static String hrms_Service ="http://192.168.2.5:8383/hrms.service.prod/"; //production
   // static String hrms_Service = "http://49.207.32.34:8383/hrms.service.prod/"; //global
 
-  static String dayPlanLocalCheck="http://10.100.1.32:8080/hrms.service/hrms/saveDayPlan";
+  // static String dayPlanLocalCheck="http://10.100.1.32:8080/hrms.service/hrms/saveDayPlan";
 
   static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";
+
+
   static String global_Service = "global.service/global/";
   static String att_Service = "att.service/hrms/";
   static String travel_Service = "travel.service/";

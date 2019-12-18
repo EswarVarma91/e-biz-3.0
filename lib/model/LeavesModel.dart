@@ -12,6 +12,7 @@ class LeavesModel {
   String el_modified_date;
   String el_modified_by;
   String el_approvedby;
+  String el_created_date;
 
   LeavesModel(
       this.el_noofdays,
@@ -26,7 +27,7 @@ class LeavesModel {
       this.el_modified_date,
       this.el_approved_date,
       this.el_approvedby,
-      this.el_modified_by);
+      this.el_modified_by,el_created_date);
 
   LeavesModel.fromJson(Map<String, dynamic> json)
       : el_noofdays = json['el_noofdays'],
@@ -41,6 +42,7 @@ class LeavesModel {
         el_approved_date = json['el_approved_date'],
         el_modified_date = json['el_modified_date'],
         el_modified_by = json['el_modified_by'],
+        el_created_date = json['el_created_date'],
         el_approvedby = json['el_approved_by'];
 
   Map<String, dynamic> toJson() => {
@@ -57,5 +59,6 @@ class LeavesModel {
         'el_modified_date': el_modified_date,
         'el_modified_by': el_modified_by,
         'el_approved_by': el_approvedby,
+        'el_created_date':el_created_date,
       };
 }

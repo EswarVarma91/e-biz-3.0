@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:Ebiz/functionality/taskPlanner/TaskPlanner.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -497,12 +498,13 @@ class _NewTaskState extends State<NewMyTasks> {
             MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
             ModalRoute.withName('/'),
           );
-        } else if (response.data.toString() == '"Failed"'){
+        } else if (response.data.toString() == '"Failed"') {
           pr.hide();
-          Navigator.pop(context);
-          Fluttertoast.showToast(msg: "You can't create task ");
+
+          alertDialogSelfTask();
+          // Fluttertoast.showToast(msg: "You have crossed time period of self task assignment. please talk to your reporting level for further support.");
         }
-//        var responseJson = json.decode(response.data);
+        //        var responseJson = json.decode(response.data);
 
       } else {
         pr.hide();
@@ -521,6 +523,7 @@ class _NewTaskState extends State<NewMyTasks> {
             "dayTaskType": "Self",
             "dpModifiedBy": profileName.toLowerCase(),
             "uId": uidd,
+            "dpReason": reasonType,
             "dpTaskStartDateTime": startDate,
             "dpTaskEndDateTime": endDate
           },
@@ -544,14 +547,21 @@ class _NewTaskState extends State<NewMyTasks> {
       });
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-//        var responseJson = json.decode(response.data);
-        pr.hide();
-        Fluttertoast.showToast(msg: "Task Created");
-        var navigator = Navigator.of(context);
-        navigator.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
-          ModalRoute.withName('/'),
-        );
+        //        var responseJson = json.decode(response.data);
+        if (response.data.toString() == '"Success"') {
+          pr.hide();
+          Fluttertoast.showToast(msg: "Task Created");
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => TaskPlanner()),
+            ModalRoute.withName('/'),
+          );
+        } else if (response.data.toString() == '"Failed"') {
+          pr.hide();
+
+          alertDialogSelfTask();
+          // Fluttertoast.showToast(msg: "You have crossed time period of self task assignment. please talk to your reporting level for further support.");
+        }
       } else {
         pr.hide();
         Fluttertoast.showToast(msg: "Check your internet connection.");
@@ -619,5 +629,25 @@ class _NewTaskState extends State<NewMyTasks> {
           " " +
           d[0].toString().split(" ")[1].toString();
     });
+  }
+
+  void alertDialogSelfTask() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text(
+                'You have crossed time period of self task assignment. Please talk to your reporting level for further support.'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Ok'),
+              ),
+            ],
+          );
+        });
   }
 }

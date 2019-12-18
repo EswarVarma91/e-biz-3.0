@@ -39,7 +39,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       TcomaplaintId,
       TcomaplaintRefType;
   ProgressDialog pr;
-  bool _isItflight = false;
+  bool _isItflight = false, _modeTypeFlight = false;
   static Dio dio = Dio(Config.options);
   int y, m, d, hh, mm, ss;
   int year, month, day, hour, minute;
@@ -89,8 +89,6 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
                   } else if (Tmode.isEmpty) {
                     Fluttertoast.showToast(msg: "Select 'Mode'.");
-                  } else if (TmodeType.isEmpty) {
-                    Fluttertoast.showToast(msg: "Select 'Mode Type'.");
                   } else if (Tclass.isEmpty) {
                     Fluttertoast.showToast(msg: "Select 'Class'.");
                   } else if (_controllerFrom1.text.isEmpty) {
@@ -111,7 +109,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     alertDialogBus(
                         TravelNameId,
                         Tmode,
-                        TmodeType,
+                        "-",
                         Tclass,
                         _controllerFrom1.text,
                         _controllerTo1.text,
@@ -120,20 +118,8 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                         TcomaplaintRefType,
                         TrequiredDateTime,
                         _controllerPurpose1.text);
-                    // insertTravelRequest(
-                    //     TravelNameId,
-                    //     Tmode,
-                    //     TmodeType,
-                    //     Tclass,
-                    //     _controllerFrom1.text,
-                    //     _controllerTo1.text,
-                    //     TrarrivalDateTime,
-                    //     TcomaplaintId,
-                    //     TcomaplaintRefType,
-                    //     TrequiredDateTime,
-                    //     _controllerPurpose1.text);
                   }
-                } else {
+                } else if (Tmode == "Flight") {
                   if (TravelNameId.isEmpty) {
                     Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
                   } else if (Tmode.isEmpty) {
@@ -169,18 +155,41 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                         TcomaplaintRefType,
                         TrequiredDateTime,
                         _controllerPurpose1.text);
-                    // insertTravelRequest(
-                    //     TravelNameId,
-                    //     Tmode,
-                    //     TmodeType,
-                    //     Tclass,
-                    //     Tfrom,
-                    //     Tto,
-                    //     TrarrivalDateTime,
-                    //     TcomaplaintId,
-                    //     TcomaplaintRefType,
-                    //     TrequiredDateTime,
-                    //     _controllerPurpose1.text);
+                  }
+                } else if (Tmode == "Train") {
+                  if (TravelNameId.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Traveller Name'.");
+                  } else if (Tmode.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Mode'.");
+                  } else if (Tclass.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Class'.");
+                  } else if (Tfrom.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select from 'Station Code'.");
+                  } else if (Tto.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select to 'Station Code'.");
+                  } else if (TrarrivalDateTime.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Select 'Journey date and time'.");
+                  } else if (TcomaplaintId.isEmpty) {
+                    Fluttertoast.showToast(msg: "Select 'Complaint No'.");
+                  } else if (_controllerPurpose1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter 'Purpose'.");
+                  } else if (TrequiredDateTime.isEmpty) {
+                    Fluttertoast.showToast(
+                        msg: "Select 'Required date and time'.");
+                  } else {
+                    alertDialogFlightTrain(
+                        TravelNameId,
+                        Tmode,
+                        "-",
+                        Tclass,
+                        Tfrom,
+                        Tto,
+                        TrarrivalDateTime,
+                        TcomaplaintId,
+                        TcomaplaintRefType,
+                        TrequiredDateTime,
+                        _controllerPurpose1.text);
                   }
                 }
                 // Fluttertoast.showToast(msg: "Saved");
@@ -263,6 +272,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       if (data.toString() == "Flight") {
                         setState(() {
                           _isItflight = true;
+                          _modeTypeFlight = true;
                         });
                       } else if (data.toString() == "Train") {
                         setState(() {
@@ -271,8 +281,14 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       } else {
                         setState(() {
                           _isItflight = false;
+                          _modeTypeFlight = false;
                         });
                       }
+                    } else {
+                      setState(() {
+                        _isItflight = false;
+                        _modeTypeFlight = false;
+                      });
                     }
                   },
                 ),
@@ -289,6 +305,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     if (data.toString() == "Flight") {
                       setState(() {
                         _isItflight = true;
+                        _modeTypeFlight = true;
                       });
                     } else if (data.toString() == "Train") {
                       setState(() {
@@ -297,56 +314,60 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                     } else {
                       setState(() {
                         _isItflight = false;
+                        _modeTypeFlight = false;
                       });
                     }
                   } else {
                     setState(() {
                       _isItflight = false;
+                      _modeTypeFlight = false;
                     });
                   }
                 },
               ),
-              ListTile(
-                title: TextFormField(
-                  enabled: false,
-                  controller: TextEditingController(text: TmodeType),
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.chrome_reader_mode),
-                    labelText: "Mode Type",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () async {
-                    var data = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                TravelSelection("3", "")));
-                    if (data != null) {
-                      setState(() {
-                        TmodeType = data.toString();
-                      });
-                    }
-                  },
-                ),
-                onTap: () async {
-                  var data = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              TravelSelection("3", "")));
-                  if (data != null) {
-                    setState(() {
-                      TmodeType = data.toString();
-                    });
-                  }
-                },
-              ),
+              _modeTypeFlight
+                  ? ListTile(
+                      title: TextFormField(
+                        enabled: false,
+                        controller: TextEditingController(text: TmodeType),
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.chrome_reader_mode),
+                          labelText: "Mode Type",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () async {
+                          var data = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      TravelSelection("3", "")));
+                          if (data != null) {
+                            setState(() {
+                              TmodeType = data.toString();
+                            });
+                          }
+                        },
+                      ),
+                      onTap: () async {
+                        var data = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    TravelSelection("3", "")));
+                        if (data != null) {
+                          setState(() {
+                            TmodeType = data.toString();
+                          });
+                        }
+                      },
+                    )
+                  : Container(),
               ListTile(
                 title: TextFormField(
                   enabled: false,
@@ -656,7 +677,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
-                title: Text('Are you sure ?'),
+                title: Text('Do you want exit from travel module.'),
                 actions: <Widget>[
                   CupertinoButton(
                     onPressed: () {
@@ -958,3 +979,5 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
 //         );
 //       });
 // }
+
+// train & bus mode type disable

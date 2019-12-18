@@ -148,7 +148,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
         });
       }
     } else if (teamTasks == true) {
-
       if (forTeam == true) {
         //for team
         list2.clear();
@@ -273,7 +272,6 @@ class _TaskPlannerState extends State<TaskPlanner> {
           });
         }
       } else {
-        
         list2.clear();
         teamFilter1 = list33.where(
           (d) {
@@ -281,7 +279,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
 
             if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
                 d.dpTaskType == "Team" &&
-                d.dp_given_by.toLowerCase() != profilename.toLowerCase() ) {
+                d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
               return true;
             }
             return false;
@@ -291,7 +289,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter2 = list33.where((d) {
           if (d.dp_status.toString() == "1" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by.toLowerCase() != profilename.toLowerCase() ) {
+              d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
             return true;
           }
           return false;
@@ -309,7 +307,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
         teamFilter4 = list33.where((d) {
           if (d.dp_status.toString() == "3" &&
               d.dpTaskType == "Team" &&
-              d.dp_given_by.toLowerCase() != profilename.toLowerCase() ) {
+              d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
             return true;
           }
           return false;
@@ -1229,10 +1227,10 @@ class _TaskPlannerState extends State<TaskPlanner> {
       }
       response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["string"],
+            "encryptedFields": ["assignedTo"],
             "parameter1": "GetAllProjectsTasks",
             "parameter2": uiddd.toString(),
-            "parameter3": profilename
+            "parameter3": profilename.toLowerCase()
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

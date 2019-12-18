@@ -185,6 +185,7 @@ class _LoginState extends State<Login> {
                                         color: Colors.black12, blurRadius: 5),
                                   ]),
                               child: TextField(
+                                keyboardType: TextInputType.number,
                                 controller: _controller1,
                                 style: TextStyle(fontSize: 14),
                                 decoration: InputDecoration(
@@ -287,7 +288,7 @@ class _LoginState extends State<Login> {
     String email = _controller1.text.toString();
     String password = _controller2.text.toString();
     if (email.isEmpty) {
-      Fluttertoast.showToast(msg: "Enter Empployee Code");
+      Fluttertoast.showToast(msg: "Enter Employee Code");
     } else if (password.isEmpty) {
       Fluttertoast.showToast(msg: "Enter Password");
     } else {
