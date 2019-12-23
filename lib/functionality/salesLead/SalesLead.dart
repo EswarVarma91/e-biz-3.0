@@ -46,7 +46,7 @@ class StateSalesLead extends State<SalesLead> {
     _color2 = false;
     getUserID().then((val) => setState(() {
           uidd = val;
-          print(uidd);
+          // print(uidd);
           pendingListM();
         }));
   }
@@ -329,7 +329,7 @@ class StateSalesLead extends State<SalesLead> {
 
   //  Service Call of Completed List
   completedListM() async {
-    print("uidd" + uidd.toString());
+    // print("uidd" + uidd.toString());
     try {
       var response = await dio.post(ServicesApi.Pending_Url,
           data: {

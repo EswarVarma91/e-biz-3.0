@@ -110,7 +110,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       dbHelper.save(attendanceModel);
       _firebaseMessaging.getToken().then((String token) {
         assert(token != null);
-        print(token);
+        // print(token);
         insertToken(userId, token);
       });
     });
@@ -144,7 +144,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
     super.initState();
     var now = DateTime.now();
     var checkDate = DateFormat("yyyy-MMMM-dd").format(now).toString();
-    print(checkDate);
+    // print(checkDate);
     monthA = checkDate.split("-")[1].toString().substring(0, 3);
     yearA = checkDate.split("-")[0].toString().substring(0, 2);
     yearB = checkDate.split("-")[0].toString().substring(2, 4);
@@ -672,7 +672,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         PaidCountModel data = PaidCountModel.fromJson(res[0]);
-        print(data.toString());
+        // print(data.toString());
         setState(() {
           paidCount = data.paidCount.toString();
         });
@@ -800,7 +800,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
-        print(res.toString());
+        // print(res.toString());
       } else {
         Fluttertoast.showToast(msg: "Check your internet connection.");
       }
@@ -834,7 +834,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
-        print(res.toString());
+        // print(res.toString());
       } else {
         Fluttertoast.showToast(msg: "Check your internet connection.");
       }
@@ -970,7 +970,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         },
         options: Options(contentType: ContentType.parse('application/json')));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print(token);
+      // print(token);
     } else if (response.statusCode == 401) {
       throw (Exception);
     }

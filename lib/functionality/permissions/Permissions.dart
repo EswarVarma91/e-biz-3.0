@@ -60,7 +60,7 @@ class _PermissionsState extends State<Permissions> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     employCode = preferences.getString("uEmpCode");
     profilename = preferences.getString("profileName");
-    print(employCode.toString() + "-" + profilename);
+    // print(employCode.toString() + "-" + profilename);
   }
 
   @override
