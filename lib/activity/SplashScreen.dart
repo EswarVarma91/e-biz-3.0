@@ -26,7 +26,7 @@ class StateSplash extends State<SplashScreen> {
   void initState() {
     super.initState();
     checkMobileVersion();
-      startTime();
+      // startTime();
   }
 
   startTime() async {
