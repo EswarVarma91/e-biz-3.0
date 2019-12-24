@@ -603,7 +603,10 @@ class _ApprovalsState extends State<Approvals> {
                               ),
                               Expanded(
                                 child: Text(
-                                  leaveList[index]?.el_created_date.toString() ?? '',
+                                  leaveList[index]
+                                          ?.el_created_date
+                                          .toString() ??
+                                      '',
                                   style: TextStyle(
                                       color: lwtColor,
                                       fontSize: 10,
@@ -1631,12 +1634,8 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   cancelTravelRequestServiceCall(TravelRequestListModel trlm) async {
-    var response = await dio.post(ServicesApi.updateData,
-        data: {
-          "parameter1": "rejectTravelRequestStatus",
-          "parameter2": trlm.tra_id,
-          "parameter3": profilename
-        },
+    var response = await dio.post(ServicesApi.updateTravelRequest,
+        data: {"statusId": 2, "traId": trlm.tra_id, "modifiedBy": profilename},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserTravelToken(trlm.reqNo, "Rejected", trlm.u_id.toString());
@@ -1646,12 +1645,8 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   approveTravelRequestServiceCall(TravelRequestListModel trlm) async {
-    var response = await dio.post(ServicesApi.updateData,
-        data: {
-          "parameter1": "approveTravelRequestStatus",
-          "parameter2": trlm.tra_id,
-          "parameter3": profilename
-        },
+    var response = await dio.post(ServicesApi.updateTravelRequest,
+        data: {"statusId": 1, "traId": trlm.tra_id, "modifiedBy": profilename},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserTravelToken(trlm.reqNo, "Approved", trlm.u_id.toString());
@@ -1661,11 +1656,11 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   cancelHotelRequestServiceCall(HotelRequestModel hrlm) async {
-    var response = await dio.post(ServicesApi.updateData,
+    var response = await dio.post(ServicesApi.updateHotelRequest,
         data: {
-          "parameter1": "rejectHotelRequestStatus",
-          "parameter2": hrlm.hotel_id,
-          "parameter3": profilename
+          "statusId": 2,
+          "hotelId": hrlm.hotel_id,
+          "modifiedBy": profilename
         },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -1676,11 +1671,11 @@ class _ApprovalsState extends State<Approvals> {
   }
 
   approveHotelRequestServiceCall(HotelRequestModel hrlm) async {
-    var response = await dio.post(ServicesApi.updateData,
+    var response = await dio.post(ServicesApi.updateHotelRequest,
         data: {
-          "parameter1": "approveHotelRequestStatus",
-          "parameter2": hrlm.hotel_id,
-          "parameter3": profilename
+          "statusId": 1,
+          "hotelId": hrlm.hotel_id,
+          "modifiedBy": profilename
         },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {

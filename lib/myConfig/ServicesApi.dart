@@ -2,8 +2,7 @@ class ServicesApi {
   static String versionNew = "1.9";
 
   static String fcm_Send = "https://fcm.googleapis.com/fcm/send";
-  static String FCM_KEY =
-      "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";
+  static String FCM_KEY = "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";
 
   static String basic_url = "http://192.168.2.5:8383/"; //dev
   // static String basic_url = "http://192.168.2.3:8080/"; //test
@@ -14,8 +13,7 @@ class ServicesApi {
   // static String hrms_Service = "http://www.e-biz.in:8383/hrms.service.prod/"; //global
 
 
-  static String new_login_url =
-      hrms_Service + "encryption/getValidateMobileLogIn";
+  static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";
 
   static String global_Service = "global.service/global/";
   static String att_Service = "att.service/hrms/";
@@ -29,10 +27,8 @@ class ServicesApi {
   static String Sales_Insert_Url = basic_url + crm + 'crm/sales/request/save';
 
   //
-  static String getData =
-      hrms_Service + "encryption/getEncryptedDataDecryptedForMobile";
-  static String updateData =
-      basic_url + global_Service + "updateAnyGlobalDataForMobile";
+  static String getData = hrms_Service + "encryption/getEncryptedDataDecryptedForMobile";
+  static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
 
   //Leaves
   static String insertLeave = hrms_Service + "hrms/saveEmployeeLeave";
@@ -41,22 +37,19 @@ class ServicesApi {
 
   //Permissions
   static String insertPermission = hrms_Service + "hrms/saveEmpPermission";
-  static String ChangePermissionStatus =
-      hrms_Service + "hrms/update/Permission/status";
-  static String getLeaves =
-      basic_url + att_Service + "attendance/get/user/leaves?id=";
+  static String ChangePermissionStatus = hrms_Service + "hrms/update/Permission/status";
+  static String getLeaves = basic_url + att_Service + "attendance/get/user/leaves?id=";
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = hrms_Service + "hrms/saveDayPlan";
 
   //Travel Insertion
-  static String insert_travel =
-      basic_url + travel_Service + "travel/request/save";
-  static String canceltravelRequest =
-      basic_url + travel_Service + "travel/cancelTravelRequestByUser";
-  static String insert_hotel =
-      basic_url + travel_Service + "hotel/request/save";
+  static String insert_travel = basic_url + travel_Service + "travel/request/save";
+  static String canceltravelRequest = basic_url + travel_Service + "travel/cancelTravelRequestByUser";
+  static String updateTravelRequest = basic_url + travel_Service +"travel/update/mobile/approvals";
 
-  static String cancelhotelRequest =
-      basic_url + travel_Service + "hotel/cancelHotelRequestByUser";
+  // Hotel Services
+  static String insert_hotel = basic_url + travel_Service + "hotel/request/save";
+  static String cancelhotelRequest = basic_url + travel_Service + "hotel/cancelHotelRequestByUser";
+  static String updateHotelRequest = basic_url + travel_Service +"hotel/update/mobile/approvals";
 }
