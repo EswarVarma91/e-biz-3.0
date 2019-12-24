@@ -26,7 +26,7 @@ class StateSplash extends State<SplashScreen> {
   void initState() {
     super.initState();
     checkMobileVersion();
-      // startTime();
+    // startTime();
   }
 
   startTime() async {
@@ -63,26 +63,44 @@ class StateSplash extends State<SplashScreen> {
   }
 
   checkMobileVersion() async {
-    var response = await dio.post(ServicesApi.getData,
-        data: {
-          "encryptedFields": ["string"],
-          "parameter1": "getMobileVersion"
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["string"],
+            "parameter1": "getMobileVersion"
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      String data = json.decode(response.data)[0]["status"];
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        String data = json.decode(response.data)[0]["status"];
 
-      if (data == ServicesApi.versionNew) {
+        if (data == ServicesApi.versionNew) {
+          startTime();
+        } else {
+          roundedAlertDialog();
+        }
+        return data;
+      } else if (response.statusCode == 401) {
         startTime();
+        throw Exception("Incorrect data");
       } else {
-        roundedAlertDialog();
+        startTime();
       }
-      return data;
-    } else if (response.statusCode == 401) {
-      throw Exception("Incorrect data");
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+            startTime();
+        // Fluttertoast.showToast(msg: "Socket Time out.");
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        // Fluttertoast.showToast(msg: "Check your internet connection.");
+        throw Exception("Check your internet connection.");
+      } else {
+        return null;
+      }
     }
   }
 

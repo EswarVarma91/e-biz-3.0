@@ -1186,11 +1186,11 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
 
   void cancelRequest(int tra_id) async {
     pr.show();
-    var response = await dio.post(ServicesApi.updateData,
+    var response = await dio.post(ServicesApi.canceltravelRequest,
         data: {
-          "parameter1": "cancelTravelRequestStatus",
-          "parameter2": tra_id,
-          "parameter3": profilename
+          "traCancelReqBy": profilename,
+          "traCancelReqRemarks": "",
+          "traId": tra_id
         },
         options: Options(
           contentType: ContentType.parse("application/json"),

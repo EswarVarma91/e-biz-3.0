@@ -962,11 +962,11 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
 
   void cancelRequest(int hotel_id) async {
     pr.show();
-    var response = await dio.post(ServicesApi.updateData,
+    var response = await dio.post(ServicesApi.cancelhotelRequest,
         data: {
-          "parameter1": "cancelHotelRequestStatus",
-          "parameter2": hotel_id,
-          "parameter3": profilename
+          "hotelCancelReqRemarks": "",
+          "hotelId": hotel_id,
+          "hotelCancelReqBy": profilename
         },
         options: Options(
           contentType: ContentType.parse("application/json"),
