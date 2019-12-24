@@ -1180,7 +1180,7 @@ class _PermissionsState extends State<Permissions> {
   }
 
   void cancelRequestServiceCall(String leavepermissionId, String leaveType,
-      String noofDays, int i) async {
+      String noofDays, int i,String ulpid) async {
     pr.show();
     var response;
     try {
@@ -1192,7 +1192,7 @@ class _PermissionsState extends State<Permissions> {
               "modifiedBy": profilename,
               "noOfDays": noofDays,
               "statusId": 0,
-              "userId": uuid
+              "userId": ulpid
             },
             options: Options(
               contentType: ContentType.parse('application/json'),
@@ -1204,6 +1204,7 @@ class _PermissionsState extends State<Permissions> {
               "permissionId": leavepermissionId,
               "remarks": "",
               "statusId": 0,
+              "userId": ulpid
             },
             options: Options(
               contentType: ContentType.parse('application/json'),
@@ -1491,7 +1492,8 @@ class _PermissionsState extends State<Permissions> {
                       leavesModel.el_id.toString(),
                       leavesModel.leave_type,
                       leavesModel.el_noofdays.toString(),
-                      i);
+                      i,
+                      leavesModel.u_id.toString());
                 },
                 child: new Text('Yes'),
               ),
@@ -1581,7 +1583,7 @@ class _PermissionsState extends State<Permissions> {
               CupertinoButton(
                 onPressed: () {
                   cancelRequestServiceCall(
-                      permissionModel.per_id.toString(), "", "", i);
+                      permissionModel.per_id.toString(), "", "", i,permissionModel.u_id.toString());
                 },
                 child: new Text('Yes'),
               ),

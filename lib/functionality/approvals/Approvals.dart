@@ -1491,7 +1491,7 @@ class _ApprovalsState extends State<Approvals> {
             "leaveType": leaveList.leave_type.toString(),
             "noOfDays": leaveList.el_noofdays.toString(),
             "statusId": 3,
-            "userId": uidd
+            "userId": leaveList.u_id
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -1530,7 +1530,7 @@ class _ApprovalsState extends State<Approvals> {
             "leaveType": leaveList.leave_type,
             "noOfDays": leaveList.el_noofdays,
             "statusId": 2,
-            "userId": uidd
+            "userId": leaveList.u_id
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -1566,7 +1566,7 @@ class _ApprovalsState extends State<Approvals> {
             "remarks": "string",
             "statusId": 2,
             "tlApprovedBy": profilename,
-            "userId": uidd
+            "userId": permissionModel.u_id
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -1604,7 +1604,7 @@ class _ApprovalsState extends State<Approvals> {
             "permissionId": permissionModel.per_id,
             "remarks": "string",
             "statusId": 3,
-            "tlApprovedBy": profilename
+            "userId": permissionModel.u_id
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
