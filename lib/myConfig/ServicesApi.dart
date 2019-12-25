@@ -10,7 +10,7 @@ class ServicesApi {
 
   // static String hrms_Service = "http://192.168.2.5:8383/hrms.service/"; //dev
   static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
-  // static String hrms_Service = "http://www.e-biz.in:8383/hrms.service.prod/"; //global
+  // static String hrms_Service = "http://www.e-biz.in:8083/hrms.service/"; //global
 
 
   static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";
