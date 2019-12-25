@@ -13,6 +13,7 @@ import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../main.dart';
@@ -277,7 +278,9 @@ class _TaskPlannerState extends State<TaskPlanner> {
           (d) {
             DateTime dt = DateTime.parse(d.dp_created_date.toString());
 
-            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck && d.dpTaskType == "Team" && d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
+            if (DateFormat("yyyy-MM-dd").format(dt) == timeCheck &&
+                d.dpTaskType == "Team" &&
+                d.dp_given_by.toLowerCase() != profilename.toLowerCase()) {
               return true;
             }
             return false;
@@ -1484,7 +1487,16 @@ class _TaskPlannerState extends State<TaskPlanner> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       onPressed: () {
-                                        onClickForStatus(list2[index]);
+                                        if (list2[index].dp_status == 3) {
+                                          Fluttertoast.showToast(
+                                              msg: "EDP_" +
+                                                  list2[index]
+                                                      .dp_id
+                                                      .toString() +
+                                                  " has been closed.");
+                                        } else {
+                                          onClickForStatus(list2[index]);
+                                        }
                                       },
                                     ),
                                   ),
