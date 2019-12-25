@@ -13,6 +13,7 @@ import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -1501,6 +1502,7 @@ class _ApprovalsState extends State<Approvals> {
         // pr.hide();
         // getPendingApprovals();
         // Navigator.pop(context);
+        Fluttertoast.showToast(msg:"Leave has been Rejected.");
         getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
             "Rejected", leaveList.u_id.toString());
       }
@@ -1536,6 +1538,7 @@ class _ApprovalsState extends State<Approvals> {
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
+        Fluttertoast.showToast(msg: "Leave has been Approved.");
         getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
             "Approved", leaveList.u_id.toString());
       }
@@ -1576,6 +1579,7 @@ class _ApprovalsState extends State<Approvals> {
         // pr.hide();
         // getPendingApprovals();
         // Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Permission has been Approved.");
         getUserPermissionToken(permissionModel.per_date, "Approved",
             permissionModel.u_id.toString());
       }
@@ -1614,6 +1618,7 @@ class _ApprovalsState extends State<Approvals> {
         // getPendingApprovals();
         // pr.hide();
         // Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Permission has been Rejected.");
         getUserPermissionToken(permissionModel.per_date, "Rejected",
             permissionModel.u_id.toString());
       }
@@ -1638,6 +1643,7 @@ class _ApprovalsState extends State<Approvals> {
         data: {"statusId": 2, "traId": trlm.tra_id, "modifiedBy": profilename},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
+      Fluttertoast.showToast(msg: "Travel Request has been Rejected.");
       getUserTravelToken(trlm.reqNo, "Rejected", trlm.u_id.toString());
     } else if (response.statusCode == 401) {
       throw (Exception);
@@ -1649,6 +1655,7 @@ class _ApprovalsState extends State<Approvals> {
         data: {"statusId": 1, "traId": trlm.tra_id, "modifiedBy": profilename},
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
+      Fluttertoast.showToast(msg: "Travel Request has been Approved.");
       getUserTravelToken(trlm.reqNo, "Approved", trlm.u_id.toString());
     } else if (response.statusCode == 401) {
       throw (Exception);
@@ -1664,6 +1671,7 @@ class _ApprovalsState extends State<Approvals> {
         },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
+      Fluttertoast.showToast(msg: "Hotel Request has been Rejected.");
       getUserHotelToken(hrlm.hotel_ref_no, "Rejected", hrlm.u_id.toString());
     } else if (response.statusCode == 401) {
       throw (Exception);
@@ -1679,6 +1687,7 @@ class _ApprovalsState extends State<Approvals> {
         },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
+      Fluttertoast.showToast(msg: "Hotel Request has been Approved.");
       getUserHotelToken(hrlm.hotel_ref_no, "Approved", hrlm.u_id.toString());
     } else if (response.statusCode == 401) {
       throw (Exception);
