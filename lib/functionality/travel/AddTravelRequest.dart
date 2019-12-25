@@ -883,6 +883,12 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+              CupertinoButton(
+                onPressed: () {
                   insertTravelRequest(
                       TravelNameId,
                       Tmode,
@@ -897,12 +903,6 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       purposeB);
                 },
                 child: Text('Yes'),
-              ),
-              CupertinoButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('No'),
               ),
             ],
           );
@@ -930,6 +930,12 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+              CupertinoButton(
+                onPressed: () {
                   insertTravelRequest(
                       travelNameId,
                       tmode,
@@ -944,12 +950,6 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       purposeFT);
                 },
                 child: Text('Yes'),
-              ),
-              CupertinoButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('No'),
               ),
             ],
           );

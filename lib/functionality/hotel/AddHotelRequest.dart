@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:Ebiz/main.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/functionality/hotel/DownTeamMembers.dart';
 import 'package:Ebiz/functionality/hotel/HotelRequestList.dart';
@@ -8,6 +9,7 @@ import 'package:Ebiz/functionality/travel/ProjectSelection.dart';
 import 'package:Ebiz/model/HotelUserDetailsModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class AddHotelRequest extends StatefulWidget {
   @override
@@ -33,11 +36,10 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       TcomplaintId,
       TcomplaintRefType,
       _packages;
-  double ratingBar;
+  double ratingBar = 0.0;
   List<HotelUserDetailsModel> multiUser = [];
   TextEditingController _controllerLocation = new TextEditingController();
   TextEditingController _controllerPurpose = new TextEditingController();
-  TextEditingController _controllerRating = new TextEditingController();
   TextEditingController _controllerRemarks = new TextEditingController();
 
   int y, m, d;
@@ -65,63 +67,88 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context);
     pr.style(message: 'Please wait...');
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Add Hotel Request',
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.check,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              if (TravelNameId.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose Traveller Name.");
-              } else if (_controllerLocation.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Enter location");
-              } else if (_controllerRating.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Enter Rating.");
-              } else if (checkIn.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose Check-In Time.");
-              } else if (checkOut.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose Check-Out Time.");
-              } else if (_controllerPurpose.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Enter Purpose.");
-              } else if (_controllerRemarks.text.isEmpty) {
-                Fluttertoast.showToast(msg: "Enter Remarks.");
-              } else if (TcomplaintTicketNo.isEmpty) {
-                Fluttertoast.showToast(msg: "Choose Complaint Ticket No.");
-              } else {
-                insertHotelRequest();
-              }
-            },
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Add Hotel Request',
+            style: TextStyle(color: Colors.white),
           ),
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 0, top: 5),
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TtravelName),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Traveller Name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+          iconTheme: IconThemeData(color: Colors.white),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                if (TravelNameId.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose Traveller Name.");
+                } else if (_controllerLocation.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Enter location");
+                } else if (ratingBar.toString().isEmpty) {
+                  Fluttertoast.showToast(msg: "Enter Rating.");
+                } else if (checkIn.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose Check-In Time.");
+                } else if (checkOut.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose Check-Out Time.");
+                } else if (_controllerPurpose.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Enter Purpose.");
+                } else if (_controllerRemarks.text.isEmpty) {
+                  Fluttertoast.showToast(msg: "Enter Remarks.");
+                } else if (TcomplaintTicketNo.isEmpty) {
+                  Fluttertoast.showToast(msg: "Choose Complaint Ticket No.");
+                } else {
+                  // insertHotelRequest();
+                  alertDialogHotel(
+                    TravelNameId,
+                    _controllerLocation.text,
+                    ratingBar.toString(),
+                    checkIn,
+                    checkOut,
+                    _controllerPurpose.text,
+                    _controllerRemarks.text,
+                    TcomplaintTicketNo,
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+        body: Container(
+          padding: EdgeInsets.only(left: 0, top: 5),
+          child: ListView(
+            children: <Widget>[
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TtravelName),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Traveller Name",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                DownTeamMembers("Traveller Name")));
+                    if (data != null) {
+                      setState(() {
+                        TtravelName = data.split(" USR_")[0].toString();
+                        TravelNameId = data.split(" USR_")[1].toString();
+                      });
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -135,84 +162,55 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   }
                 },
               ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            DownTeamMembers("Traveller Name")));
-                if (data != null) {
-                  setState(() {
-                    TtravelName = data.split(" USR_")[0].toString();
-                    TravelNameId = data.split(" USR_")[1].toString();
-                  });
-                }
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                controller: _controllerLocation,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Hotel Location",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
+              ListTile(
                 title: TextFormField(
-              controller: _controllerRating,
-              keyboardType: TextInputType.number,
-              maxLength: 1,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.star),
-                border: OutlineInputBorder(),
-                labelText: "Request Hotel Rating",
-              ),
-            )),
-            ListTile(
-              onTap: () {
-                setState(() {
-                  checkOut = "";
-                  checkOuts = "";
-                });
-                DatePicker.showDatePicker(context,
-                    showTitleActions: true,
-                    minTime: DateTime(y, m, d),
-                    maxTime: DateTime(y, m + 3, d),
-                    theme: DatePickerTheme(
-                        backgroundColor: Colors.white,
-                        itemStyle: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                        ),
-                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
-                    onChanged: (date) {
-                  changeDateF(date);
-                }, onConfirm: (date) {
-                  changeDateF(date);
-                }, currentTime: DateTime.now(), locale: LocaleType.en);
-              },
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: checkIns),
-                keyboardType: TextInputType.datetime,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.event),
-                  labelText: "Check In",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                  controller: _controllerLocation,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Hotel Location",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
               ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.calendar_today,
+              // ListTile(
+              //     title: TextFormField(
+              //   controller: _controllerRating,
+              //   keyboardType: TextInputType.number,
+              //   maxLength: 1,
+              //   decoration: InputDecoration(
+              //     prefixIcon: Icon(Icons.star),
+              //     border: OutlineInputBorder(),
+              //     labelText: "Request Hotel Rating",
+              //   ),
+              // )),
+              Container(
+                margin: const EdgeInsets.only(
+                    left: 15.0, right: 15.0, top: 5, bottom: 5),
+                padding: const EdgeInsets.only(
+                    top: 5.0, bottom: 5.0, left: 10.0, right: 10.0),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12.0)),
+                child: SmoothStarRating(
+                  allowHalfRating: false,
+                  onRatingChanged: (v) {
+                    setState(() {
+                      ratingBar = v;
+                    });
+                  },
+                  starCount: 5,
+                  rating: ratingBar,
+                  size: 60.0,
+                  color: lwtColor,
+                  borderColor: Colors.grey,
+                  spacing: 2.0,
                 ),
-                onPressed: () {
+              ),
+              ListTile(
+                onTap: () {
                   setState(() {
                     checkOut = "";
                     checkOuts = "";
@@ -235,45 +233,49 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                     changeDateF(date);
                   }, currentTime: DateTime.now(), locale: LocaleType.en);
                 },
-              ),
-            ),
-            ListTile(
-              onTap: () {
-                DatePicker.showDatePicker(context,
-                    showTitleActions: true,
-                    minTime: DateTime(
-                        int.parse(toA), int.parse(toB), int.parse(toC)),
-                    maxTime: DateTime(y, m + 3, d),
-                    theme: DatePickerTheme(
-                        backgroundColor: Colors.white,
-                        itemStyle: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20,
-                        ),
-                        doneStyle: TextStyle(color: Colors.blue, fontSize: 12)),
-                    onChanged: (date) {
-                  changeDateT(date);
-                }, onConfirm: (date) {
-                  changeDateT(date);
-                }, currentTime: DateTime.now(), locale: LocaleType.en);
-              },
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: checkOuts),
-                keyboardType: TextInputType.datetime,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.event),
-                  labelText: "Check Out",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: checkIns),
+                  keyboardType: TextInputType.datetime,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.event),
+                    labelText: "Check In",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.calendar_today,
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.calendar_today,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      checkOut = "";
+                      checkOuts = "";
+                    });
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(y, m, d),
+                        maxTime: DateTime(y, m + 3, d),
+                        theme: DatePickerTheme(
+                            backgroundColor: Colors.white,
+                            itemStyle: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                            ),
+                            doneStyle:
+                                TextStyle(color: Colors.blue, fontSize: 12)),
+                        onChanged: (date) {
+                      changeDateF(date);
+                    }, onConfirm: (date) {
+                      changeDateF(date);
+                    }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  },
                 ),
-                onPressed: () {
+              ),
+              ListTile(
+                onTap: () {
                   DatePicker.showDatePicker(context,
                       showTitleActions: true,
                       minTime: DateTime(
@@ -293,24 +295,75 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                     changeDateT(date);
                   }, currentTime: DateTime.now(), locale: LocaleType.en);
                 },
-              ),
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: TcomplaintTicketNo),
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "OA/Complaint Ticket No.",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: checkOuts),
+                  keyboardType: TextInputType.datetime,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.event),
+                    labelText: "Check Out",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.calendar_today,
+                  ),
+                  onPressed: () {
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(
+                            int.parse(toA), int.parse(toB), int.parse(toC)),
+                        maxTime: DateTime(y, m + 3, d),
+                        theme: DatePickerTheme(
+                            backgroundColor: Colors.white,
+                            itemStyle: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 20,
+                            ),
+                            doneStyle:
+                                TextStyle(color: Colors.blue, fontSize: 12)),
+                        onChanged: (date) {
+                      changeDateT(date);
+                    }, onConfirm: (date) {
+                      changeDateT(date);
+                    }, currentTime: DateTime.now(), locale: LocaleType.en);
+                  },
+                ),
               ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: TcomplaintTicketNo),
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "OA/Complaint Ticket No.",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ProjectSelection("OA/Complaint Ticket No.")));
+                    if (data != null) {
+                      setState(() {
+                        TcomplaintTicketNo = data.split(" P_")[0].toString();
+                        TcomplaintId = data.split(" P_")[1].toString();
+                        TcomplaintRefType = data.split(" P_")[2].toString();
+                      });
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -325,64 +378,66 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                   }
                 },
               ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ProjectSelection("OA/Complaint Ticket No.")));
-                if (data != null) {
-                  setState(() {
-                    TcomplaintTicketNo = data.split(" P_")[0].toString();
-                    TcomplaintId = data.split(" P_")[1].toString();
-                    TcomplaintRefType = data.split(" P_")[2].toString();
-                  });
-                }
-              },
-            ),
-            ListTile(
-              title: TextFormField(
-                controller: _controllerPurpose,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Purpose",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  controller: _controllerPurpose,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Purpose",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-            ListTile(
-              title: TextFormField(
-                controller: _controllerRemarks,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Remarks",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  controller: _controllerRemarks,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Remarks",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-            ListTile(
-              title: TextFormField(
-                enabled: false,
-                controller: TextEditingController(text: _packages),
-                keyboardType: TextInputType.text,
-                maxLines: 3,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.chrome_reader_mode),
-                  labelText: "Package",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: TextEditingController(text: _packages),
+                  keyboardType: TextInputType.text,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.chrome_reader_mode),
+                    labelText: "Package",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () async {
+                trailing: IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    var data = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                PackageSelection("Package Selection")));
+                    SharedPreferences pre =
+                        await SharedPreferences.getInstance();
+                    var Users = pre.getString("Users");
+                    multiUser = data;
+                    if (Users == null) {
+                      _packages = _packages;
+                    } else {
+                      _packages = Users;
+                    }
+                  },
+                ),
+                onTap: () async {
                   var data = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -397,26 +452,39 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
                     _packages = Users;
                   }
                 },
-              ),
-              onTap: () async {
-                var data = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            PackageSelection("Package Selection")));
-                SharedPreferences pre = await SharedPreferences.getInstance();
-                var Users = pre.getString("Users");
-                multiUser = data;
-                if (Users == null) {
-                  _packages = _packages;
-                } else {
-                  _packages = Users;
-                }
-              },
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
+      onWillPop: () {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return CupertinoAlertDialog(
+                title: Text('Do you want exit from hotel module.'),
+                actions: <Widget>[
+                  CupertinoButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                  CupertinoButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  HotelRequestList()));
+                    },
+                    child: Text('Yes'),
+                  ),
+                ],
+              );
+            });
+      },
     );
   }
 
@@ -451,21 +519,29 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     });
   }
 
-  insertHotelRequest() async {
+  insertHotelRequest(
+      String travelNameId,
+      String locationT,
+      String ratingT,
+      String checkinT,
+      String checkoutT,
+      String purposeT,
+      String remarksT,
+      String tcomplaintTicketNo) async {
     pr.show();
     var now = DateTime.now();
     var response = await dio.post(ServicesApi.insert_hotel,
         data: {
           "actionMode": "insert",
-          "hotelLocation": _controllerLocation.text,
-          "hotelCheckIn": checkIn,
-          "hotelCheckOut": checkOut,
-          "hotelRating": _controllerRating.text,
-          "hotelPurpose": _controllerPurpose.text,
+          "hotelLocation": locationT,
+          "hotelCheckIn": checkinT,
+          "hotelCheckOut": checkoutT,
+          "hotelRating": ratingT,
+          "hotelPurpose": purposeT,
           "hotelCreatedBy": profilename,
           "hotelModifiedBy": profilename,
-          "hotelRemarks": _controllerRemarks.text,
-          "list": multiUser,
+          "hotelRemarks": remarksT,
+          "list": multiUser ?? [],
           "refId": TcomplaintId,
           "refType": TcomplaintRefType,
           "uId": TravelNameId,
@@ -474,6 +550,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserRequestNo(TravelNameId.toString());
     } else if (response.statusCode == 401) {
@@ -566,5 +643,55 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
       MaterialPageRoute(builder: (BuildContext context) => HotelRequestList()),
       ModalRoute.withName('/'),
     );
+  }
+
+// TravelNameId,
+//                     _controllerLocation.text,
+//                     ratingBar.toString(),
+//                     checkIn,
+//                     checkOut,
+//                     _controllerPurpose.text,
+//                     _controllerRemarks.text,
+//                     TcomplaintTicketNo,
+  void alertDialogHotel(
+      String travelNameId,
+      String locationT,
+      String ratingT,
+      String checkinT,
+      String checkoutT,
+      String purposeT,
+      String remarksT,
+      String tcomplaintTicketNo) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to create hotel request.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  insertHotelRequest(
+                    travelNameId,
+                    locationT,
+                    ratingT,
+                    checkinT,
+                    checkoutT,
+                    purposeT,
+                    remarksT,
+                    tcomplaintTicketNo,
+                  );
+                },
+                child: Text('Yes'),
+              ),
+            ],
+          );
+        });
   }
 }
