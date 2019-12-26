@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application android:name="io.flutter.app.FlutterApplication" android:icon="@mipmap/launcher_icon" android:label="EBiz">
         <meta-data android:name="flutterEmbedding" android:value="2" />
@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!-- <receiver android:name="MyBroadcastReceiver" >
-        </receiver> -->
+         <receiver android:name="MyBroadcastReceiver" >
+        </receiver>
     </application>
 </manifest>

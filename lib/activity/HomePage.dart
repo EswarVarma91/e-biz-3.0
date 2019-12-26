@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
+import 'package:device_id/device_id.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/activity/ProfileScreen.dart';
 import 'package:Ebiz/activity/WorkStatus.dart';
@@ -37,15 +38,6 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  // static const methodChannel = const MethodChannel('com.eb');
-
-  // _MyHomePageState() {
-  //   methodChannel.setMethodCallHandler((call) {
-  //     Fluttertoast.showToast(msg: " ");
-  //     print(" " + call.method);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -70,7 +62,9 @@ class HomePageLocation extends StatefulWidget {
 class _HomePageLocationState extends State<HomePageLocation> {
   String paidCount = '', taskPending = "-", shortcut = "no action set";
   static Dio dio = Dio(Config.options);
-  String empCode = "-",profilePic,
+  String empCode = "-",
+      profilePic,
+      deviceId,
       profilename = "-",
       fullname = "-",
       userId = "-",
@@ -95,13 +89,15 @@ class _HomePageLocationState extends State<HomePageLocation> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   getEmpCode() async {
+    deviceId = await DeviceId.getID;
+    print("Device Id : " + deviceId);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       empCode = preferences.getString("uEmpCode").toString();
       profilename = preferences.getString("profileName");
       fullname = preferences.getString("fullname");
       userId = preferences.getString("userId");
-      profilePic =preferences.getString("picPath");
+      profilePic = preferences.getString("picPath");
       getPaidCount(empCode);
       getPendingCount(userId);
       // getCurrentDate();
@@ -113,6 +109,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         // print(token);
         insertToken(userId, token);
       });
+      insertDeviceID(deviceId, userId);
     });
   }
 
@@ -139,16 +136,33 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
+  // _getId() async{
+  //   DeviceInfoPlugin deviceInfo =DeviceInfoPlugin();
+  //  if(Theme.of(context).platform ==TargetPlatform.iOS){
+  //   IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+  //    return iosDeviceInfo.identifierForVendor;
+  //  }else{
+  //   AndroidDeviceInfo androidDeviceInfo=await deviceInfo.androidInfo;
+  //    return androidDeviceInfo.androidId;
+  //  }
+  //}
+
   @override
   void initState() {
     super.initState();
+
     var now = DateTime.now();
     var checkDate = DateFormat("yyyy-MMMM-dd").format(now).toString();
     // print(checkDate);
     monthA = checkDate.split("-")[1].toString().substring(0, 3);
     yearA = checkDate.split("-")[0].toString().substring(0, 2);
     yearB = checkDate.split("-")[0].toString().substring(2, 4);
-
+    //_getId().then((id){
+    //     setState(() {
+    //      deviceId =id;
+    //      print("Device ID : "+deviceId);
+    //    });
+    //  });
     getEmpCode();
     _localGet();
     pushAttendance();
@@ -204,7 +218,11 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 //   radius: 20,
                 //   backgroundImage: NetworkImage(ServicesApi.basic_url+profilePic),
                 // ),
-                icon: Icon(Icons.account_circle,size: 35,color: Colors.white,),
+                icon: Icon(
+                  Icons.account_circle,
+                  size: 35,
+                  color: Colors.white,
+                ),
                 onPressed: () {
                   Navigator.push(
                       context,
@@ -981,6 +999,21 @@ class _HomePageLocationState extends State<HomePageLocation> {
       return "-";
     } else {
       return data;
+    }
+  }
+
+  void insertDeviceID(String deviceId, String userId) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "insertdeviceId",
+          "parameter2": userId,
+          "parameter3": deviceId
+        },
+        options: Options(contentType: ContentType.parse('application/json')));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // print(token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
     }
   }
 
