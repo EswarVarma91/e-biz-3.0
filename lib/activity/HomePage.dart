@@ -1003,11 +1003,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
   }
 
   void insertDeviceID(String deviceId, String userId) async {
-    var response = await dio.post(ServicesApi.updateData,
+    var response = await dio.post(ServicesApi.insertDeviceid,
         data: {
-          "parameter1": "insertdeviceId",
-          "parameter2": userId,
-          "parameter3": deviceId
+          "deviceId": deviceId,
+          "uId": userId
         },
         options: Options(contentType: ContentType.parse('application/json')));
     if (response.statusCode == 200 || response.statusCode == 201) {

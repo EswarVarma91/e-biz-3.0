@@ -52,4 +52,11 @@ class ServicesApi {
   static String insert_hotel = basic_url + travel_Service + "hotel/request/save";
   static String cancelhotelRequest = basic_url + travel_Service + "hotel/cancelHotelRequestByUser";
   static String updateHotelRequest = basic_url + travel_Service +"hotel/update/mobile/approvals";
+
+
+  //text
+  static String insertDeviceid= "http://10.100.1.32:8080/att.service/hrms/attendance/save/device";
 }
+
+
+

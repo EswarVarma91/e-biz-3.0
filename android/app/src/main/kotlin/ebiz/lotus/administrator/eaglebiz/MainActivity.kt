@@ -17,7 +17,6 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine)
         AppCenter.start(application, "f56ca720-90e4-4964-92a4-10c291e68a86", Analytics::class.java, Crashes::class.java)
-
         startAlert()
     }
 
@@ -26,6 +25,6 @@ class MainActivity: FlutterActivity() {
         val pendingIntent = PendingIntent.getBroadcast(this.applicationContext,234,intent,0)
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),5*60*1000,pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1*60*1000,pendingIntent)
     }
 }

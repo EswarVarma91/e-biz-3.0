@@ -52,6 +52,7 @@ class _LoginState extends State<Login> {
         // print('on message $message');
         // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
         displayNotification(message);
+        // print(message);
         // _showItemDialog(message);
       },
       onResume: (Map<String, dynamic> message) {
