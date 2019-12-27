@@ -1016,17 +1016,4 @@ class _HomePageLocationState extends State<HomePageLocation> {
       throw (Exception);
     }
   }
-
-  // void getCurrentDate() async {
-  //   var response = await dio.post(ServicesApi.getData,
-  //       data: {"parameter1": "getCurrentDate"},
-  //       options: Options(contentType: ContentType.parse("application/json")));
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     dateA = json.decode(response.data)[0]['dateC'];
-  //     monthA = json.decode(response.data)[0]['monthC'];
-  //     yearA = json.decode(response.data)[0]['yearC'];
-  //   } else if (response.statusCode == 401) {
-  //     throw (Exception);
-  //   } else if (response.statusCode == 500) {}
-  // }
 }

@@ -39,36 +39,36 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             longitude=simpleLocation.getLongitude();
             android_id = Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID);
 
-            JSONObject jsonObject=new JSONObject();
-            try {
-                jsonObject.put("parameter1","");
-                jsonObject.put("parameter3",latitude);
-                jsonObject.put("parameter4",longitude);
-                jsonObject.put("parameter5",android_id);
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-            RequestQueue que= Volley.newRequestQueue(context);
-            JsonObjectRequest req= new JsonObjectRequest(Request.Method.POST,hrms_Service,jsonObject,
-                    new Response.Listener<JSONObject>(){
-
-                        @Override
-                        public void onResponse(JSONObject response) {
-
-                        }
-                    },new Response.ErrorListener(){
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    });
-
-            que.add(req);
+//            JSONObject jsonObject=new JSONObject();
+//            try {
+//                jsonObject.put("parameter1","");
+//                jsonObject.put("parameter3",latitude);
+//                jsonObject.put("parameter4",longitude);
+//                jsonObject.put("parameter5",android_id);
+//
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//
+//            RequestQueue que= Volley.newRequestQueue(context);
+//            JsonObjectRequest req= new JsonObjectRequest(Request.Method.POST,hrms_Service,jsonObject,
+//                    new Response.Listener<JSONObject>(){
+//
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//
+//                        }
+//                    },new Response.ErrorListener(){
+//
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//
+//                        }
+//                    });
+//
+//            que.add(req);
 
         }
     }
