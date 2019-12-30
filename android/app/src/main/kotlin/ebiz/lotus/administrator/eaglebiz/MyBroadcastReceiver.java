@@ -71,7 +71,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             latitude = simpleLocation.getLatitude();
             longitude = simpleLocation.getLongitude();
             android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-            
+
             Log.v("android_id : ", android_id);
 
 //
@@ -81,18 +81,13 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 //
 //            cid=cellLocation.getCid();
 //            lac=cellLocation.getLac();
-//
 //            if(!TextUtils.isEmpty(networkOperator)){
 //                 mcc= Integer.parseInt(networkOperator.substring(0,3));
 //                 mnc = Integer.parseInt(networkOperator.substring(3));
 //            }
-//
 //            Log.d("eskNetwork Operator : ",networkOperator);
 //            Log.d("Mcc : ",String.valueOf(mcc));
 //            Log.d("Mnc : ",String.valueOf(mnc));
-//
-//
-//
 //            Log.d("Lac : ",""+lac);
 //            Log.d("Cid : ",""+cid);
 
