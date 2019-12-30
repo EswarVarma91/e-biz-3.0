@@ -35,7 +35,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
   double minWidth = 55;
   bool isCollapsed = false;
   int currentSelectedIndex = 0;
-  var downteam, profilename, hrCnt, salesCnt, travelCnt;
+  var downteam, profilename, hrCnt, salesCnt, travelCnt, managerCnt;
 
   List<NavigationModel> listMain = [];
 
@@ -47,6 +47,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemsPermissions = [
@@ -57,6 +58,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemsSales = [
@@ -67,6 +69,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemsTask = [
@@ -77,6 +80,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemsTravel = [
@@ -87,6 +91,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemsApprovals = [
@@ -97,6 +102,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
     NavigationModel(title: "Hotel Request", icon: Icons.hotel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemsHotels = [
@@ -107,6 +113,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     NavigationModel(title: "L & P", icon: Icons.event_busy),
     NavigationModel(title: "Approvals", icon: Icons.assignment_turned_in),
     NavigationModel(title: "Travel Request", icon: Icons.card_travel),
+    NavigationModel(title: "Tracking", icon: Icons.my_location),
   ];
 
   List<NavigationModel> navigationItemslocation = [
@@ -128,28 +135,68 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       hrCnt = preferences.getString("hrCnt");
       travelCnt = preferences.getString("travelCnt");
       salesCnt = preferences.getString("salesCnt");
+      managerCnt = 1;
 
       if (downteam == "null" || downteam == null) {
         if (result.toString() == "1") {
-          navigationItems.removeWhere((a) => a.title == "Approvals");
+          navigationItems.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
           listMain = navigationItems;
         } else if (result.toString() == "2") {
-          navigationItemsSales.removeWhere((a) => a.title == "Approvals");
+          navigationItemsSales.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
           listMain = navigationItemsSales;
         } else if (result.toString() == "3") {
-          navigationItemsTask.removeWhere((a) => a.title == "Approvals");
+          navigationItemsTask.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
           listMain = navigationItemsTask;
         } else if (result.toString() == "4") {
-          navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
+          navigationItemsPermissions.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
           listMain = navigationItemsPermissions;
         } else if (result.toString() == "7") {
-          navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
+          navigationItemsTravel.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
           listMain = navigationItemsTravel;
         } else if (result.toString() == "8") {
-          navigationItemsHotels.removeWhere((a) => a.title == "Approvals");
+          navigationItemsHotels.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
           listMain = navigationItemsHotels;
         }
-      } else if (salesCnt == 1) {
+      // } else if (salesCnt == 1) {
+      //   if (result.toString() == "1") {
+      //     listMain = navigationItems;
+      //   } else if (result.toString() == "2") {
+      //     listMain = navigationItemsSales;
+      //   } else if (result.toString() == "3") {
+      //     listMain = navigationItemsTask;
+      //   } else if (result.toString() == "4") {
+      //     listMain = navigationItemsPermissions;
+      //   } else if (result.toString() == "5") {
+      //     listMain = navigationItemsApprovals;
+      //   } else if (result.toString() == "7") {
+      //     listMain = navigationItemsTravel;
+      //   } else if (result.toString() == "8") {
+      //     listMain = navigationItemsHotels;
+      //   }
+      // } else if (downteam != null || downteam != "null") {
+      //   if (result.toString() == "1") {
+      //     listMain = navigationItems;
+      //     navigationItems.removeWhere((a) => a.title =="Tracking");
+      //   } else if (result.toString() == "2") {
+      //     listMain = navigationItemsSales;
+      //     navigationItemsSales.removeWhere((a) => a.title =="Tracking");
+      //   } else if (result.toString() == "3") {
+      //     listMain = navigationItemsTask;
+      //     navigationItemsTask.removeWhere((a) => a.title =="Tracking");
+      //   } else if (result.toString() == "4") {
+      //     listMain = navigationItemsPermissions;
+      //     navigationItemsPermissions.removeWhere((a) => a.title =="Tracking");
+      //   } else if (result.toString() == "5") {
+      //     listMain = navigationItemsApprovals;
+      //     navigationItemsApprovals.removeWhere((a) => a.title =="Tracking");
+      //   } else if (result.toString() == "7") {
+      //     listMain = navigationItemsTravel;
+      //     navigationItemsTravel.removeWhere((a) => a.title =="Tracking");
+      //   } else if (result.toString() == "8") {
+      //     listMain = navigationItemsHotels;
+      //     navigationItemsHotels.removeWhere((a) => a.title =="Tracking");
+      //   }
+      } else if (managerCnt == 1) {
         if (result.toString() == "1") {
           listMain = navigationItems;
         } else if (result.toString() == "2") {
@@ -164,22 +211,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           listMain = navigationItemsTravel;
         } else if (result.toString() == "8") {
           listMain = navigationItemsHotels;
-        }
-      } else if (downteam != null || downteam != "null") {
-        if (result.toString() == "1") {
-          listMain = navigationItems;
-        } else if (result.toString() == "2") {
-          listMain = navigationItemsSales;
-        } else if (result.toString() == "3") {
-          listMain = navigationItemsTask;
-        } else if (result.toString() == "4") {
-          listMain = navigationItemsPermissions;
-        } else if (result.toString() == "5") {
-          listMain = navigationItemsApprovals;
-        } else if (result.toString() == "7") {
-          listMain = navigationItemsTravel;
-        } else if (result.toString() == "8") {
-          listMain = navigationItemsHotels;
+        } else if (result.toString() == "6") {
+          listMain = navigationItemslocation;
         }
       }
     });
@@ -245,7 +278,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                           MaterialPageRoute(
                               builder: (BuildContext context) => Approvals()),
                         );
-                      } else if (listMain[counter].title == "Location") {
+                      } else if (listMain[counter].title == "Tracking") {
                         var navigator = Navigator.of(context);
                         navigator.push(
                           MaterialPageRoute(
@@ -276,8 +309,10 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
                 itemCount: listMain.length,
               ),
             ),
-            Text("Version No.",style: TextStyle(color: Colors.white,fontSize: 8)),
-            Text(ServicesApi.versionNew,style: TextStyle(color: Colors.white,fontSize: 16)),
+            Text("Version No.",
+                style: TextStyle(color: Colors.white, fontSize: 8)),
+            Text(ServicesApi.versionNew,
+                style: TextStyle(color: Colors.white, fontSize: 16)),
             // Text("Test",style: TextStyle(color: Colors.white,fontSize: 8)),
             IconButton(
               icon: Icon(Icons.exit_to_app),

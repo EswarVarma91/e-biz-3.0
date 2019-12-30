@@ -1,5 +1,5 @@
 class LocationModel {
-  String uloc_id;
+  int uloc_id;
   String u_department;
   String user_id;
   String u_profile_name;

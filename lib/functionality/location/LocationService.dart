@@ -22,12 +22,13 @@ class LocationService {
         //     ));
         //   }
         // });
-        location.getLocation().then((locationData){
-          if(locationData!=null){
-            _locationController.add(UserLocationModel(latitude: locationData?.latitude ??0.0,longitude: locationData?.longitude ??0.0));
+        location.getLocation().then((locationData) {
+          if (locationData != null) {
+            _locationController.add(UserLocationModel(
+                latitude: locationData?.latitude ?? 0.0,
+                longitude: locationData?.longitude ?? 0.0));
           }
         });
-        
       }
     });
   }
@@ -46,6 +47,4 @@ class LocationService {
     }
     return _currentLocation;
   }
-
-  
 }

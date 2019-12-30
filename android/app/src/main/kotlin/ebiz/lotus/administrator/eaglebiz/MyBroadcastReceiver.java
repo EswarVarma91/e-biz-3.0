@@ -53,7 +53,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     String android_id;
     double latitude = 0.0, longitude = 0.0;
     int cid, lac, mcc, mnc;
-    //    String hrms_Service= "http://10.100.1.32:8080/att.service/hrms/attendance/save/location"; //local
 //    String hrms_Service = "http://192.168.2.5:8383/att.service/hrms/attendance/save/location"; //dev
 //    String hrms_Service= "http://192.168.2.3:8080/att.service/hrms/attendance/save/location"; //test
       String hrms_Service = "http://www.e-biz.in:8083/att.service/hrms/attendance/save/location"; //global
@@ -91,70 +90,70 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 //            Log.d("Lac : ",""+lac);
 //            Log.d("Cid : ",""+cid);
 
-            RequestQueue queue = Volley.newRequestQueue(context);
-            final StringRequest reqQueue = new StringRequest(Request.Method.POST, ""+hrms_Service, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+//             RequestQueue queue = Volley.newRequestQueue(context);
+//             final StringRequest reqQueue = new StringRequest(Request.Method.POST, ""+hrms_Service, new Response.Listener<String>() {
+//                 @Override
+//                 public void onResponse(String response) {
 
-                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
-                    Log.d("eskoResponse : ",response);
+// //                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+//                     Log.d("eskoResponse : ",response);
 
 
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    String message = null;
-                    Log.d("eskoError : ",volleyError.toString());
-                    if (volleyError instanceof NetworkError) {
-//                        message = "1 Cannot connect to Internet...Please check your connection!";
-                    } else if (volleyError instanceof ServerError) {
-                        if (volleyError.networkResponse.statusCode == 417) {
-                            message = "Invalid credentials. Please try again...";
-                        }
-                        else
-                        if (volleyError.networkResponse.statusCode == 500) {
-                            message = "Server could not be found. Please check.";
-                        } else {
-                            message = "The server could not be found. Please try again after some time!!";
-                        }
-                    } else if (volleyError instanceof AuthFailureError) {
-                        message = "Cannot connect to Internet...Please check your connection!";
-                    } else if (volleyError instanceof ParseError) {
-                        message = "Parsing error! Please try again after some time!!";
-                    } else if (volleyError instanceof NoConnectionError) {
-                        message = "Cannot connect to Internet...Please check your connection!";
-                    } else if (volleyError instanceof TimeoutError) {
-                        message = "Connection TimeOut! Please check your internet connection.";
-                    }
-                    Toast.makeText(context, "Error: " + message, Toast.LENGTH_LONG).show();
-                }
-            }) {
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        JSONObject jsonObject = new JSONObject();
+//                 }
+//             }, new Response.ErrorListener() {
+//                 @Override
+//                 public void onErrorResponse(VolleyError volleyError) {
+//                     String message = null;
+//                     Log.d("eskoError : ",volleyError.toString());
+//                     if (volleyError instanceof NetworkError) {
+// //                        message = "1 Cannot connect to Internet...Please check your connection!";
+//                     } else if (volleyError instanceof ServerError) {
+//                         if (volleyError.networkResponse.statusCode == 417) {
+//                             message = "Invalid credentials. Please try again...";
+//                         }
+//                         else
+//                         if (volleyError.networkResponse.statusCode == 500) {
+//                             message = "Server could not be found. Please check.";
+//                         } else {
+//                             message = "The server could not be found. Please try again after some time!!";
+//                         }
+//                     } else if (volleyError instanceof AuthFailureError) {
+//                         message = "Cannot connect to Internet...Please check your connection!";
+//                     } else if (volleyError instanceof ParseError) {
+//                         message = "Parsing error! Please try again after some time!!";
+//                     } else if (volleyError instanceof NoConnectionError) {
+//                         message = "Cannot connect to Internet...Please check your connection!";
+//                     } else if (volleyError instanceof TimeoutError) {
+//                         message = "Connection TimeOut! Please check your internet connection.";
+//                     }
+//                     Toast.makeText(context, "Error: " + message, Toast.LENGTH_LONG).show();
+//                 }
+//             }) {
+//                 @Override
+//                 public byte[] getBody() throws AuthFailureError {
+//                     try {
+//                         JSONObject jsonObject = new JSONObject();
 
-                        jsonObject.put("latitude", latitude);
-                        jsonObject.put("longitude",longitude);
-                        jsonObject.put("deviceId",android_id);
+//                         jsonObject.put("latitude", latitude);
+//                         jsonObject.put("longitude",longitude);
+//                         jsonObject.put("deviceId",android_id);
 
-                        return jsonObject.toString().getBytes("utf-8");
-                    } catch (Exception ex) {
-                        Toast.makeText(context, "Some error occurred. Please try again", Toast.LENGTH_LONG).show();
-                    }
+//                         return jsonObject.toString().getBytes("utf-8");
+//                     } catch (Exception ex) {
+//                         Toast.makeText(context, "Some error occurred. Please try again", Toast.LENGTH_LONG).show();
+//                     }
 
-                    return super.getBody();
-                }
+//                     return super.getBody();
+//                 }
 
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-            reqQueue.setRetryPolicy(new DefaultRetryPolicy(5*DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-            reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
-            queue.add(reqQueue);
+//                 @Override
+//                 public String getBodyContentType() {
+//                     return "application/json";
+//                 }
+//             };
+//             reqQueue.setRetryPolicy(new DefaultRetryPolicy(5*DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+//             reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+//             queue.add(reqQueue);
 
         }
     }

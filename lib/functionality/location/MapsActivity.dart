@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
@@ -37,7 +38,7 @@ class ViewMap extends StatefulWidget {
 }
 
 class _ViewMapState extends State<ViewMap> {
-  static double lati, longi;
+  static double lati = 0.0, longi = 0.0;
   var userlocation;
   List<Marker> allmarkers = new List();
   List<LocationModel> lm = new List();
@@ -49,7 +50,7 @@ class _ViewMapState extends State<ViewMap> {
   @override
   void initState() {
     super.initState();
-    // _getuserLocations();
+    _getuserLocations();
   }
 
   @override
@@ -135,33 +136,50 @@ class _ViewMapState extends State<ViewMap> {
   _getuserLocations() async {
     try {
       var response = await dio.post(ServicesApi.getData,
-          data: {"encryptedFields": ["string"],"actionMode": "getUserLocation"},
+          data: {
+            "encryptedFields": ["u_profile_name"],
+            "parameter1": "getUserLocation"
+          },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        setState(() {
-          List responseJson = response.data;
-          lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
-        });
+        // setState(() {
+        //   String responseJson = response.data;
+        //   lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
+        // // });
+
+        lm = (json.decode(response.data) as List)
+            .map((data) => new LocationModel.fromJson(data))
+            .toList();
+
+        // List<LocationModel> lm;
+
+        // String uloc_id = json.decode(response.data)['uloc_id'];
+        // String user_id = json.decode(response.data)['user_id'];
+        // String u_profile_name = json.decode(response.data)['u_profile_name'];
+        // String u_department = json.decode(response.data)['u_department'];
+        // String lati = json.decode(response.data)['lati'];
+        // String longi = json.decode(response.data)['longi'];
+        // String created_date = json.decode(response.data)['created_date'];
+
         for (int i = 0; i < lm.length; i++) {
           setState(() {
             allmarkers.add(Marker(
               markerId: MarkerId("marker"),
-              position: LatLng(double.parse(lm[i].lati.substring(0, 10)),
-                  double.parse(lm[i].longi.substring(0, 10))),
+              position: LatLng(double.parse(lm[i].lati.substring(0, 10)),double.parse(lm[i].longi.substring(0, 10))),
               icon: BitmapDescriptor.defaultMarker,
               infoWindow: InfoWindow(
-                  title: lm[i].u_profile_name[0].toUpperCase() +
-                      lm[i].u_profile_name.substring(1),
+                  title: lm[i].u_profile_name[0].toUpperCase() +lm[i].u_profile_name.substring(1),
                   snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
               draggable: false,
             ));
+            print(allmarkers);
           });
         }
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
       } else {
-        Fluttertoast.showToast(msg: "Incorrect Email/Password");
+        Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception('Connection Failure.');
       }
     } on DioError catch (exception) {
