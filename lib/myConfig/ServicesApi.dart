@@ -1,16 +1,16 @@
 class ServicesApi {
-  static String versionNew = "2.0";
+  static String versionNew = "1.9";
 
   static String fcm_Send = "https://fcm.googleapis.com/fcm/send";
   static String FCM_KEY = "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";
 
-  static String basic_url = "http://192.168.2.5:8383/"; //dev
+  // static String basic_url = "http://192.168.2.5:8383/"; //dev
   // static String basic_url = "http://192.168.2.3:8080/"; //test
-  // static String basic_url = "http://www.e-biz.in:8083/"; //global
+  static String basic_url = "http://www.e-biz.in:8083/"; //global
 
-  static String hrms_Service = "http://192.168.2.5:8383/hrms.service/"; //dev
+  // static String hrms_Service = "http://192.168.2.5:8383/hrms.service/"; //dev
   // static String hrms_Service="http://192.168.2.3:8080/hrms.service/"; //test
-  // static String hrms_Service = "http://www.e-biz.in:8083/hrms.service/"; //global
+  static String hrms_Service = "http://www.e-biz.in:8083/hrms.service/"; //global
 
 
   static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";
@@ -29,6 +29,8 @@ class ServicesApi {
   //
   static String getData = hrms_Service + "encryption/getEncryptedDataDecryptedForMobile";
   static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
+
+  static String insertDeviceid= basic_url+"att.service/hrms/attendance/save/device";
 
   //Leaves
   static String insertLeave = hrms_Service + "hrms/saveEmployeeLeave";
@@ -55,7 +57,7 @@ class ServicesApi {
 
 
   //text
-  static String insertDeviceid= "http://10.100.1.32:8080/att.service/hrms/attendance/save/device";
+  // static String insertDeviceid= "http://10.100.1.32:8080/att.service/hrms/attendance/save/device";
 }
 
 
