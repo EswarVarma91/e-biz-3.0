@@ -39,7 +39,7 @@ class ViewMap extends StatefulWidget {
 }
 
 class _ViewMapState extends State<ViewMap> {
-  static double lati = 0.0, longi = 0.0;
+  static double lati = 17.6918918, longi = 83.2011254;
   var userlocation;
   List<Marker> allmarkers = new List();
   List<LocationModel> lm = new List();
@@ -47,17 +47,23 @@ class _ViewMapState extends State<ViewMap> {
   static Dio dio = Dio(Config.options);
   bool mapDisplay = false;
   ProgressDialog pr;
-  String result = "0";
+  String result ="0", dataId;
 
   @override
   void initState() {
     super.initState();
-
-    _getuserLocations();
+    checkServices();
+    // _getuserLocations();
   }
 
-  void choiceAction(String choice) {
-
+  void checkServices() {
+    if (result == 0) {
+      _getuserLocations();
+    } else if (result == 1) {
+      Fluttertoast.showToast(msg: "Result 1");
+    } else if (result == 2) {
+      Fluttertoast.showToast(msg: "Result 2");
+    }
   }
 
   @override
@@ -88,6 +94,19 @@ class _ViewMapState extends State<ViewMap> {
                   MaterialPageRoute(
                       builder: (BuildContext context) => ChooseMapByType()));
               print(data);
+              var res = data.split(" USR_")[0];
+              dataId = data.split(" USR_")[1];
+
+              if (res == "1") {
+                result = "1";
+                checkServices();
+              } else if (res == "2") {
+                result = "2";
+                checkServices();
+              } else {
+                result = "0";
+                checkServices();
+              }
             },
           )
         ],

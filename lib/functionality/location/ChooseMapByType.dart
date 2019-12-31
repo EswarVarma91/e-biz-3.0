@@ -1,5 +1,4 @@
 import 'package:Ebiz/activity/Departments.dart';
-import 'package:Ebiz/functionality/location/MapsActivity.dart';
 import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:Ebiz/main.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
   TextEditingController _controllerUser = new TextEditingController();
   TextEditingController _controllerDepartment = new TextEditingController();
 
-  String result;
+  String result, userName, userId;
 
   @override
   void initState() {
@@ -42,11 +41,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
             color: Colors.white,
             icon: Icon(Icons.check),
             onPressed: () async {
-              // var data = await Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (BuildContext context) => MapsActivity()));
-              // print(data);
+              Navigator.pop(context,result+" USR_"+userId);
             },
           )
         ],
@@ -231,7 +226,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
         },
         title: TextFormField(
           enabled: false,
-          controller: _controllerUser,
+          controller: TextEditingController(text: userName),
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.chrome_reader_mode),
@@ -250,12 +245,18 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
       var data = await Navigator.push(context,
           MaterialPageRoute(builder: (BuildContext context) => Departments()));
       print(data);
+      userName = data.split("USR_")[0];
+      userId = data.split("USR_")[1];
+      print(data + " " + userName + " " + userId);
     } else if (result == "2") {
       var data = await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => ReferedBy("Users")));
       print(data);
+      userName = data.split("USR_")[0];
+      userId = data.split("USR_")[1];
+      print(data + " " + userName + " " + userId);
     }
   }
 }
