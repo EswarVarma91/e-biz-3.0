@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/dio.dart';
+
+import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
+import 'package:Ebiz/model/ReferedbyModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
-import 'package:Ebiz/model/ReferedbyModel.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ReferedBy extends StatefulWidget {
-  var data;
-  ReferedBy(this.data);
+class Departments extends StatefulWidget {
   @override
-  _ReferedByState createState() => _ReferedByState(data);
+  _DepartmentsState createState() => _DepartmentsState();
 }
 
 Future<String> getUserID() async {
@@ -21,10 +21,8 @@ Future<String> getUserID() async {
   return id;
 }
 
-class _ReferedByState extends State<ReferedBy> {
-  var data;
+class _DepartmentsState extends State<Departments> {
   String uidd;
-  _ReferedByState(this.data);
 
   static Dio dio = Dio(Config.options);
   List<ReferedbyModel> listReferals = new List();
@@ -37,7 +35,7 @@ class _ReferedByState extends State<ReferedBy> {
     super.initState();
     getUserID().then((val) => setState(() {
           uidd = val;
-          getReferals();
+          // getDepartments();
         }));
   }
 
@@ -47,7 +45,7 @@ class _ReferedByState extends State<ReferedBy> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          data,
+          "Departments",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -58,7 +56,7 @@ class _ReferedByState extends State<ReferedBy> {
             child: TextField(
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(15.0),
-                hintText: 'Search User or Emp Code',
+                hintText: 'Search',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),

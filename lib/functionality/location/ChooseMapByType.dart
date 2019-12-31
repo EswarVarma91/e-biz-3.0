@@ -1,4 +1,6 @@
+import 'package:Ebiz/activity/Departments.dart';
 import 'package:Ebiz/functionality/location/MapsActivity.dart';
+import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:Ebiz/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -10,6 +12,10 @@ class ChooseMapByType extends StatefulWidget {
 
 class _ChooseMapByTypeState extends State<ChooseMapByType> {
   bool _isSelectedD, _isSelectedU;
+
+  TextEditingController _controllerUser = new TextEditingController();
+  TextEditingController _controllerDepartment = new TextEditingController();
+
   String result;
 
   @override
@@ -82,13 +88,13 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
           ),
           _isSelectedD
               ? Container(
-                  margin: EdgeInsets.only(left: 60, right: 2, top: 160),
+                  margin: EdgeInsets.only(left: 0, right: 2, top: 130),
                   child: departmentView(),
                 )
               : Container(),
           _isSelectedU
               ? Container(
-                  margin: EdgeInsets.only(left: 60, right: 2, top: 160),
+                  margin: EdgeInsets.only(left: 0, right: 2, top: 130),
                   child: userView(),
                 )
               : Container(),
@@ -195,7 +201,61 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
     );
   }
 
-  departmentView() {}
+  departmentView() {
+    return Container(
+      child: ListTile(
+        onTap: () {
+          selectDU(context, "1");
+        },
+        title: TextFormField(
+          enabled: false,
+          controller: _controllerDepartment,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.chrome_reader_mode),
+            labelText: "Department",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-  userView() {}
+  userView() {
+    return Container(
+      child: ListTile(
+        onTap: () {
+          selectDU(context, "2");
+        },
+        title: TextFormField(
+          enabled: false,
+          controller: _controllerUser,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.chrome_reader_mode),
+            labelText: "Users",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void selectDU(BuildContext context, String result) async {
+    if (result == "1") {
+      var data = await Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => Departments()));
+      print(data);
+    } else if (result == "2") {
+      var data = await Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => ReferedBy("Users")));
+      print(data);
+    }
+  }
 }
