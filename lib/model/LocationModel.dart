@@ -21,7 +21,7 @@ class LocationModel {
       uloc_id: json['uloc_id'],
       u_department: json['u_department'],
       user_id: json['user_id'],
-      u_profile_name: json['u_profile_name'],
+      u_profile_name: json['u_first_name'],
       lati: json['lati'],
       longi: json['longi'],
       created_date: json['created_date'],

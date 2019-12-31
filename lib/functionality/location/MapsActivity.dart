@@ -57,12 +57,12 @@ class _ViewMapState extends State<ViewMap> {
   }
 
   void checkServices() {
-    if (result == 0) {
+    if (result == "0") {
       _getuserLocations();
-    } else if (result == 1) {
-      Fluttertoast.showToast(msg: "Result 1");
-    } else if (result == 2) {
-      Fluttertoast.showToast(msg: "Result 2");
+    } else if (result == "1") {
+      _getuserLocationsByDepartment(dataId);
+    } else if (result == "2") {
+      _getUserLocationByUid(dataId);
     }
   }
 
@@ -169,15 +169,64 @@ class _ViewMapState extends State<ViewMap> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["u_profile_name"],
+            "encryptedFields": ["u_first_name"],
             "parameter1": "getUserLocation"
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // setState(() {
-        //   String responseJson = response.data;
-        //   lm = responseJson.map((m) => new LocationModel.fromJson(m)).toList();
-        // // });
+        lm = (json.decode(response.data) as List)
+            .map((data) => new LocationModel.fromJson(data))
+            .toList();
+
+        for (int i = 0; i < lm.length; i++) {
+          setState(() {
+            allmarkers.add(Marker(
+              markerId: MarkerId(lm[i].uloc_id.toString()),
+              position:
+                  LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
+              icon: BitmapDescriptor.defaultMarker,
+              infoWindow: InfoWindow(
+                  title: lm[i].u_profile_name[0].toUpperCase() +
+                      lm[i].u_profile_name.substring(1),
+                  snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
+              draggable: false,
+            ));
+          });
+        }
+        print(allmarkers);
+      } else if (response.statusCode == 401) {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
+        throw Exception("Connection Failure.");
+      } else {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
+        throw Exception('Connection Failure.');
+      }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception(
+            "Could'nt connect, please ensure you have a stable network.");
+      } else {
+        return null;
+      }
+    }
+  }
+
+
+  _getUserLocationByUid(String dataId) async {
+    allmarkers.clear();
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["u_first_name"],
+            "parameter1": "getUserLocationByID",
+            "parameter2": dataId
+          },
+          options: Options(contentType: ContentType.parse("application/json")));
+      if (response.statusCode == 200 || response.statusCode == 201) {
 
         lm = (json.decode(response.data) as List)
             .map((data) => new LocationModel.fromJson(data))
@@ -219,4 +268,57 @@ class _ViewMapState extends State<ViewMap> {
       }
     }
   }
+
+  _getuserLocationsByDepartment(String dataId) async {
+    allmarkers.clear();
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["u_first_name"],
+            "parameter1": "getUserLocationByDepartment",
+            "parameter2": dataId
+          },
+          options: Options(contentType: ContentType.parse("application/json")));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        lm = (json.decode(response.data) as List)
+            .map((data) => new LocationModel.fromJson(data))
+            .toList();
+
+        for (int i = 0; i < lm.length; i++) {
+          setState(() {
+            allmarkers.add(Marker(
+              markerId: MarkerId(lm[i].uloc_id.toString()),
+              position:
+                  LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
+              icon: BitmapDescriptor.defaultMarker,
+              infoWindow: InfoWindow(
+                  title: lm[i].u_profile_name[0].toUpperCase() +
+                      lm[i].u_profile_name.substring(1),
+                  snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
+              draggable: false,
+            ));
+          });
+        }
+        print(allmarkers);
+      } else if (response.statusCode == 401) {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
+        throw Exception("Connection Failure.");
+      } else {
+        Fluttertoast.showToast(msg: "Check your internet connection.");
+        throw Exception('Connection Failure.');
+      }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception(
+            "Could'nt connect, please ensure you have a stable network.");
+      } else {
+        return null;
+      }
+    }
+}
 }
