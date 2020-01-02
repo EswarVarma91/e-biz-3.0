@@ -115,7 +115,7 @@ class _ViewMapState extends State<ViewMap> {
         Container(
           margin: EdgeInsets.only(left: 0, right: 0, top: 0),
           child: GoogleMap(
-              mapType: MapType.normal,
+              mapType: MapType.terrain,
               zoomGesturesEnabled: true,
               myLocationEnabled: true,
               initialCameraPosition:
@@ -278,7 +278,7 @@ class _ViewMapState extends State<ViewMap> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["string"],
+            "encryptedFields": ["u_first_name"],
             "parameter1": "getUserLocationByDepartment",
             "parameter2": dataId
           },
