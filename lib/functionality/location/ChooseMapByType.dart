@@ -15,7 +15,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
   TextEditingController _controllerUser = new TextEditingController();
   TextEditingController _controllerDepartment = new TextEditingController();
 
-  String result, userName, userId;
+  String result="1", userName, userId;
 
   @override
   void initState() {
@@ -106,6 +106,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
+          userName="";userId="";
           setState(() {
             _isSelectedD = !_isSelectedD;
             checkSeletion();
@@ -155,6 +156,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
+          userName="";userId="";
           setState(() {
             _isSelectedU = !_isSelectedU;
             checkSeletion();
@@ -204,7 +206,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
         },
         title: TextFormField(
           enabled: false,
-          controller: _controllerDepartment,
+          controller: TextEditingController(text: userName),
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.chrome_reader_mode),

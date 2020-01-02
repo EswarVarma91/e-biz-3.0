@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
+import 'package:Ebiz/model/DepartmentModel.dart';
 import 'package:Ebiz/model/ReferedbyModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -25,9 +26,9 @@ class _DepartmentsState extends State<Departments> {
   String uidd;
 
   static Dio dio = Dio(Config.options);
-  List<ReferedbyModel> listReferals = new List();
-  List<ReferedbyModel> dataCheckList = new List();
-  List<ReferedbyModel> fliterReferals = new List();
+  List<DepartmentModel> listReferals = new List();
+  List<DepartmentModel> dataCheckList = new List();
+  List<DepartmentModel> fliterReferals = new List();
   bool _isloading = false;
   final _debouncer = Debouncer(milliseconds: 500);
   @override
@@ -35,7 +36,7 @@ class _DepartmentsState extends State<Departments> {
     super.initState();
     getUserID().then((val) => setState(() {
           uidd = val;
-          // getDepartments();
+          getDepartments();
         }));
   }
 
@@ -64,10 +65,9 @@ class _DepartmentsState extends State<Departments> {
                 _debouncer.run(() {
                   setState(() {
                     fliterReferals = listReferals
-                        .where((u) => (u.fullName
+                        .where((u) => (u.dept_name
                                 .toLowerCase()
-                                .contains(string.toLowerCase()) ||
-                            u.u_emp_code.toString().contains(string)))
+                                .contains(string.toLowerCase())))
                         .toList();
                   });
                 });
@@ -84,15 +84,15 @@ class _DepartmentsState extends State<Departments> {
                       onTap: () {
                         Navigator.pop(
                             context,
-                            fliterReferals[index].fullName +
+                            fliterReferals[index].dept_name +
                                 " USR_" +
-                                fliterReferals[index].uId.toString());
+                                fliterReferals[index].dept_id.toString());
                       },
                       title: Padding(
                         padding: EdgeInsets.all(10),
                         child: Text(
-                          fliterReferals[index].fullName[0].toUpperCase() +
-                              fliterReferals[index].fullName.substring(1),
+                          fliterReferals[index].dept_name[0].toUpperCase() +
+                              fliterReferals[index].dept_name.substring(1),
                           style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,
@@ -109,13 +109,13 @@ class _DepartmentsState extends State<Departments> {
     );
   }
 
-  getReferals() async {
+  getDepartments() async {
     _isloading = false;
 //    var response=await dio.get(url);
     var response = await dio.post(ServicesApi.getData,
         data: {
-          "encryptedFields": ["u_first_name"],
-          "parameter1": "GetAllEmps"
+          "encryptedFields": ["string"],
+          "parameter1": "getDepartments"
         },
         options: Options(
           contentType: ContentType.parse('application/json'),
@@ -124,12 +124,8 @@ class _DepartmentsState extends State<Departments> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         dataCheckList = (json.decode(response.data) as List)
-            .map((data) => new ReferedbyModel.fromJson(data))
+            .map((data) => new DepartmentModel.fromJson(data))
             .toList();
-
-        dataCheckList.removeWhere((item) => item.fullName.toString() == null);
-        dataCheckList.removeWhere((item) => item.fullName.toString().isEmpty);
-
         listReferals = dataCheckList;
         fliterReferals = dataCheckList;
 

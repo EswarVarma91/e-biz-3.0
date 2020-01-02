@@ -166,6 +166,8 @@ class _ViewMapState extends State<ViewMap> {
   }
 
   _getuserLocations() async {
+    allmarkers.clear();
+    lm.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -218,6 +220,7 @@ class _ViewMapState extends State<ViewMap> {
 
   _getUserLocationByUid(String dataId) async {
     allmarkers.clear();
+    lm.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -271,10 +274,11 @@ class _ViewMapState extends State<ViewMap> {
 
   _getuserLocationsByDepartment(String dataId) async {
     allmarkers.clear();
+    lm.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["u_first_name"],
+            "encryptedFields": ["string"],
             "parameter1": "getUserLocationByDepartment",
             "parameter2": dataId
           },
@@ -284,6 +288,8 @@ class _ViewMapState extends State<ViewMap> {
         lm = (json.decode(response.data) as List)
             .map((data) => new LocationModel.fromJson(data))
             .toList();
+
+            print(lm);
 
         for (int i = 0; i < lm.length; i++) {
           setState(() {
