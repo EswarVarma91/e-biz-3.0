@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:Ebiz/functionality/location/ChooseMapByType.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
@@ -47,11 +48,15 @@ class _ViewMapState extends State<ViewMap> {
   static Dio dio = Dio(Config.options);
   bool mapDisplay = false;
   ProgressDialog pr;
-  String result ="0", dataId;
+  String result = "0", dataId;
+  String _mapStyle;
 
   @override
   void initState() {
     super.initState();
+    rootBundle.loadString('assets/map_style.txt').then((st) {
+      _mapStyle = st;
+    });
     checkServices();
     // _getuserLocations();
   }
@@ -93,7 +98,7 @@ class _ViewMapState extends State<ViewMap> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => ChooseMapByType()));
-             
+
               var res = data.split(" USR_")[0];
               dataId = data.split(" USR_")[1];
 
@@ -115,13 +120,13 @@ class _ViewMapState extends State<ViewMap> {
         Container(
           margin: EdgeInsets.only(left: 0, right: 0, top: 0),
           child: GoogleMap(
-              mapType: MapType.terrain,
               zoomGesturesEnabled: true,
               myLocationEnabled: true,
               initialCameraPosition:
                   CameraPosition(target: LatLng(lati, longi), zoom: 8),
               onMapCreated: (GoogleMapController controller) {
                 _controller.complete(controller);
+                controller.setMapStyle(_mapStyle);
               },
               markers: Set.from(allmarkers)),
         ),
@@ -186,7 +191,7 @@ class _ViewMapState extends State<ViewMap> {
               markerId: MarkerId(lm[i].uloc_id.toString()),
               position:
                   LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
-              icon: BitmapDescriptor.defaultMarker,
+              icon: BitmapDescriptor.defaultMarker ,
               infoWindow: InfoWindow(
                   title: lm[i].u_profile_name[0].toUpperCase() +
                       lm[i].u_profile_name.substring(1),
@@ -217,7 +222,6 @@ class _ViewMapState extends State<ViewMap> {
     }
   }
 
-
   _getUserLocationByUid(String dataId) async {
     allmarkers.clear();
     lm.clear();
@@ -230,7 +234,6 @@ class _ViewMapState extends State<ViewMap> {
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-
         lm = (json.decode(response.data) as List)
             .map((data) => new LocationModel.fromJson(data))
             .toList();
@@ -284,12 +287,11 @@ class _ViewMapState extends State<ViewMap> {
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-
         lm = (json.decode(response.data) as List)
             .map((data) => new LocationModel.fromJson(data))
             .toList();
 
-            print(lm);
+        print(lm);
 
         for (int i = 0; i < lm.length; i++) {
           setState(() {
@@ -326,5 +328,5 @@ class _ViewMapState extends State<ViewMap> {
         return null;
       }
     }
-}
+  }
 }

@@ -46,6 +46,7 @@ flutter:
     - assets/images/as.png
     - assets/images/eaglbiz.png
     - assets/images/eaglebiz.png
+    - assets/map_style.txt
 
   fonts:
     - family: Roboto
