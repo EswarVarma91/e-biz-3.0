@@ -191,7 +191,7 @@ class _ViewMapState extends State<ViewMap> {
               markerId: MarkerId(lm[i].uloc_id.toString()),
               position:
                   LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
-              icon: BitmapDescriptor.defaultMarker ,
+              icon: BitmapDescriptor.defaultMarker,
               infoWindow: InfoWindow(
                   title: lm[i].u_profile_name[0].toUpperCase() +
                       lm[i].u_profile_name.substring(1),
