@@ -77,7 +77,7 @@ class DatabaseHelper {
     String dateO = DateFormat("yyyy-MM-dd").format(now).toString();
     String userId = am.user_id.toString();
     var dbClient = await db;
-    print([am.user_id].toString());
+    // print([am.user_id].toString());
     var res = await dbClient.rawUpdate(
         'UPDATE $TABLE SET  $START_TIME = ?, $END_TIME = ? WHERE $DATE= \'$dateO\' AND $USER_ID = \'$userId\'',
         [am.starttime, am.endtime]);
@@ -138,7 +138,7 @@ class DatabaseHelper {
         am.add(AttendanceModel.fromMap(res[i]));
       }
     }
-    print(am.toString());
+    // print(am.toString());
     return am;
   }
 
@@ -152,7 +152,7 @@ class DatabaseHelper {
       }
     }
 
-    print(am.toString());
+    // print(am.toString());
     return am;
   }
 
@@ -162,7 +162,7 @@ class DatabaseHelper {
     var res =
         await dbClient.rawQuery('SELECT * FROM $TABLE WHERE $DATE<$dateO');
 
-    print(res.toString());
+    // print(res.toString());
     return res.toString();
   }
 

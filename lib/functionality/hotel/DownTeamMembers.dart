@@ -41,7 +41,6 @@ class _MembersStateS extends State<DownTeamMembers> {
     getUserID().then((val) => setState(() {
           uidd = val;
           getDownTeamMembers(uidd);
-          print(uidd);
         }));
   }
 
@@ -71,7 +70,7 @@ class _MembersStateS extends State<DownTeamMembers> {
                   setState(() {
                     fliterReferals = listReferals
                         .where((u) => (u.FullName.toLowerCase()
-                                .contains(string.toLowerCase())))
+                            .contains(string.toLowerCase())))
                         .toList();
                   });
                 });
@@ -115,7 +114,6 @@ class _MembersStateS extends State<DownTeamMembers> {
 
   getDownTeamMembers(String uidds) async {
     _isloading = false;
-    print(uidd);
     var response = await dio.post(ServicesApi.getData,
         data: {
           "encryptedFields": ["string"],
@@ -127,16 +125,10 @@ class _MembersStateS extends State<DownTeamMembers> {
         ));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var responseJson = response.data.toString();
-      print(responseJson);
-
       setState(() {
         dataCheck = (json.decode(response.data) as List)
             .map((data) => new DownTeamMembersModel.fromJson(data))
             .toList();
-        // dataCheck
-        //     .removeWhere((item) => item.u_id.toString() == uidd.toString());
-
         listReferals = dataCheck;
         fliterReferals = dataCheck;
         _isloading = false;

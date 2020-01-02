@@ -620,14 +620,7 @@ class _NewLeaveState extends State<NewLeave> {
           "haldayCount": _color1 ? 1 : 0
         },
         options: Options(contentType: ContentType.parse("application/json")));
-    print({
-      "branchId": branchId,
-      "fromDate": fromDate,
-      "toDate": toDate,
-      "leaveType": leaveType,
-      "userId": uuid,
-      "haldayCount": _color1 ? 1 : 0
-    });
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       // int noofBeforeDays = json.decode(response.data)['NO_OF_BEFORE_DAYS'];
       // int totaleffectiveDays =json.decode(response.data)['TOTAL_EFFECTIVE_DAYS'];
@@ -663,7 +656,8 @@ class _NewLeaveState extends State<NewLeave> {
                             "Sick leave should apply previous dates only & on joined date.");
                   }
                 } else if (leaveType == "CAL") {
-                  if (json.decode(response.data)['EMERGENCY_LEAVE'] == true && json.decode(response.data)['STATUS'] == "1") {
+                  if (json.decode(response.data)['EMERGENCY_LEAVE'] == true &&
+                      json.decode(response.data)['STATUS'] == "1") {
                     //insert data
                     callServiceInsert();
                   } else {
@@ -677,7 +671,9 @@ class _NewLeaveState extends State<NewLeave> {
                                 "You are exceeding the maximum number of leave days.");
                       }
                     } else {
-                      if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
+                      if (listData(json
+                              .decode(response.data)['EFFECTIVE_LEAVE_DATES']) >
+                          1) {
                         Fluttertoast.showToast(
                             msg:
                                 "You should apply before 6 days of applied date.");
@@ -705,7 +701,9 @@ class _NewLeaveState extends State<NewLeave> {
                                   "You are exceeding the maximum number of leave days.");
                         }
                       } else {
-                        if (listData(json.decode(response.data)['EFFECTIVE_LEAVE_DATES']) >1) {
+                        if (listData(json.decode(
+                                response.data)['EFFECTIVE_LEAVE_DATES']) >
+                            1) {
                           Fluttertoast.showToast(
                               msg:
                                   "You should apply before 6 days of from date.");
@@ -800,7 +798,7 @@ class _NewLeaveState extends State<NewLeave> {
         }
       } else {
         Fluttertoast.showToast(
-                msg: "You have already applied leave on these dates.");
+            msg: "You have already applied leave on these dates.");
       }
     } else if (response.statusCode == 401) {
       throw (Exception);

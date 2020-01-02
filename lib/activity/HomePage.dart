@@ -90,7 +90,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   getEmpCode() async {
     deviceId = await DeviceId.getID;
-    print("Device Id : " + deviceId);
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       empCode = preferences.getString("uEmpCode").toString();
@@ -106,7 +105,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       dbHelper.save(attendanceModel);
       _firebaseMessaging.getToken().then((String token) {
         assert(token != null);
-        print(token);
         insertToken(userId, token);
       });
       insertDeviceID(deviceId, userId);
@@ -135,34 +133,14 @@ class _HomePageLocationState extends State<HomePageLocation> {
       }
     }
   }
-
-  // _getId() async{
-  //   DeviceInfoPlugin deviceInfo =DeviceInfoPlugin();
-  //  if(Theme.of(context).platform ==TargetPlatform.iOS){
-  //   IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-  //    return iosDeviceInfo.identifierForVendor;
-  //  }else{
-  //   AndroidDeviceInfo androidDeviceInfo=await deviceInfo.androidInfo;
-  //    return androidDeviceInfo.androidId;
-  //  }
-  //}
-
   @override
   void initState() {
     super.initState();
-
     var now = DateTime.now();
     var checkDate = DateFormat("yyyy-MMMM-dd").format(now).toString();
-    // print(checkDate);
     monthA = checkDate.split("-")[1].toString().substring(0, 3);
     yearA = checkDate.split("-")[0].toString().substring(0, 2);
     yearB = checkDate.split("-")[0].toString().substring(2, 4);
-    //_getId().then((id){
-    //     setState(() {
-    //      deviceId =id;
-    //      print("Device ID : "+deviceId);
-    //    });
-    //  });
     getEmpCode();
     _localGet();
     pushAttendance();

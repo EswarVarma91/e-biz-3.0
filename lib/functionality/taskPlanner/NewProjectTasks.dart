@@ -407,7 +407,6 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
 
   void CallProjectTaskApi() async {
     pr.show();
-    print(projectId);
     var response = await dio.post(ServicesApi.saveDayPlan,
         data: {
           "actionMode": "insert",

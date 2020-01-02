@@ -15,7 +15,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
   TextEditingController _controllerUser = new TextEditingController();
   TextEditingController _controllerDepartment = new TextEditingController();
 
-  String result="1", userName, userId;
+  String result = "1", userName, userId;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
             color: Colors.white,
             icon: Icon(Icons.check),
             onPressed: () async {
-              Navigator.pop(context,result+" USR_"+userId);
+              Navigator.pop(context, result + " USR_" + userId);
             },
           )
         ],
@@ -106,7 +106,8 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          userName="";userId="";
+          userName = "";
+          userId = "";
           setState(() {
             _isSelectedD = !_isSelectedD;
             checkSeletion();
@@ -156,7 +157,8 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          userName="";userId="";
+          userName = "";
+          userId = "";
           setState(() {
             _isSelectedU = !_isSelectedU;
             checkSeletion();
@@ -246,7 +248,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
     if (result == "1") {
       var data = await Navigator.push(context,
           MaterialPageRoute(builder: (BuildContext context) => Departments()));
-      print(data);
+
       userName = data.split("USR_")[0];
       userId = data.split("USR_")[1];
       print(data + " " + userName + " " + userId);
@@ -255,7 +257,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => ReferedBy("Users")));
-      print(data);
+
       userName = data.split("USR_")[0];
       userId = data.split("USR_")[1];
       print(data + " " + userName + " " + userId);

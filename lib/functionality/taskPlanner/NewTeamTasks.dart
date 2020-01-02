@@ -101,8 +101,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
               onPressed: () {
                 //Service Call
                 //Service Call
-                if (choosePerson == "Select Member" ||
-                    choosePerson == "null") {
+                if (choosePerson == "Select Member" || choosePerson == "null") {
                   Fluttertoast.showToast(msg: "Select 'Member'");
                 } else if (_controller1.text.isEmpty) {
                   Fluttertoast.showToast(msg: "Enter 'Task Name'");
@@ -330,23 +329,13 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => Members(choosePerson)));
-    print(data.toString());
     var string = data.split(" USR_");
     choosePerson = string[0];
     resourceId = string[1];
-    print(resourceId);
   }
 
   void CallTeamTaskApi() async {
     pr.show();
-    var now = DateTime.now();
-    print(profileName +
-        "," +
-        _controller1.text +
-        "," +
-        _controller2.text +
-        "," +
-        resourceId.toString());
     var response = await dio.post(ServicesApi.saveDayPlan,
         data: {
           "actionMode": "insert",
@@ -377,7 +366,11 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
   void getFirebaseToken(String resourceId, String taskName,
       String taskDescription, String profileName) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": resourceId},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getUserToken",
+          "parameter2": resourceId
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

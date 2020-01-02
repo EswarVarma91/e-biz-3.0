@@ -1401,7 +1401,6 @@ class _ApprovalsState extends State<Approvals> {
           leaveList = (json.decode(response.data) as List)
               .map((data) => LeavesModel.fromJson(data))
               .toList();
-          print(leaveList.toString());
         });
         checkServices();
       }
@@ -1422,7 +1421,6 @@ class _ApprovalsState extends State<Approvals> {
           permissionsList = (json.decode(response1.data) as List)
               .map((data) => PermissionModel.fromJson(data))
               .toList();
-          print(permissionsList.toString());
         });
         checkServices();
       }
@@ -1443,7 +1441,6 @@ class _ApprovalsState extends State<Approvals> {
           trlm = (json.decode(response2.data) as List)
               .map((data) => TravelRequestListModel.fromJson(data))
               .toList();
-          print(trlm);
         });
         checkServices();
       }
@@ -1462,7 +1459,6 @@ class _ApprovalsState extends State<Approvals> {
           hrlm = (json.decode(response3.data) as List)
               .map((data) => HotelRequestModel.fromJson(data))
               .toList();
-          print(trlm);
         });
         checkServices();
       }
@@ -1502,7 +1498,7 @@ class _ApprovalsState extends State<Approvals> {
         // pr.hide();
         // getPendingApprovals();
         // Navigator.pop(context);
-        Fluttertoast.showToast(msg:"Leave has been Rejected.");
+        Fluttertoast.showToast(msg: "Leave has been Rejected.");
         getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
             "Rejected", leaveList.u_id.toString());
       }

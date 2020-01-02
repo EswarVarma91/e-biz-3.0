@@ -40,7 +40,6 @@ class _MembersState extends State<Members> {
     getUserID().then((val) => setState(() {
           uidd = val;
           getDownTeamMembers(uidd);
-          print(uidd);
         }));
   }
 
@@ -118,10 +117,9 @@ class _MembersState extends State<Members> {
 
   getDownTeamMembers(String uidds) async {
     _isloading = false;
-    print(uidd);
     var response = await dio.post(ServicesApi.getData,
         data: {
-          "encryptedFields": ["u_first_name","u_email"],
+          "encryptedFields": ["u_first_name", "u_email"],
           "parameter1": "GetDownTeamByUId",
           "parameter2": uidd.toString(),
         },
@@ -130,9 +128,6 @@ class _MembersState extends State<Members> {
         ));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var responseJson = response.data.toString();
-      print(responseJson);
-
       setState(() {
         dataCheck = (json.decode(response.data) as List)
             .map((data) => new TeamMembersModel.fromJson(data))

@@ -52,7 +52,6 @@ class _PackageSelectionState extends State<PackageSelection> {
     getUserID().then((val) => setState(() {
           uidd = val;
           getDownTeamMembers(uidd);
-          print(uidd);
         }));
   }
 
@@ -81,11 +80,9 @@ class _PackageSelectionState extends State<PackageSelection> {
             IconButton(
               icon: Icon(Icons.check),
               onPressed: () {
-                print(selectedList);
                 var data1 = selectedList.toString().replaceAll("[", "");
                 var data2 = data1.replaceAll("]", "");
                 var result = data2.replaceAll(" ", "");
-                print(result);
 
                 getUserDetailsNameId(result);
               },
@@ -95,27 +92,26 @@ class _PackageSelectionState extends State<PackageSelection> {
         body: Column(
           children: <Widget>[
             Padding(
-            padding: EdgeInsets.all(10.0),
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(15.0),
-                hintText: 'Search',
-                border: OutlineInputBorder(),
-                suffixIcon: Icon(Icons.search),
-              ),
-              onChanged: (string) {
-                _debouncer.run(() {
-                  setState(() {
-                    fliterReferals = listReferals
-                        .where((u) => (u.FullName
-                            .toLowerCase()
-                            .contains(string.toLowerCase())) )
-                        .toList();
+              padding: EdgeInsets.all(10.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(15.0),
+                  hintText: 'Search',
+                  border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.search),
+                ),
+                onChanged: (string) {
+                  _debouncer.run(() {
+                    setState(() {
+                      fliterReferals = listReferals
+                          .where((u) => (u.FullName.toLowerCase()
+                              .contains(string.toLowerCase())))
+                          .toList();
+                    });
                   });
-                });
-              },
+                },
+              ),
             ),
-          ),
             Expanded(
               child: ListView.builder(
                 itemCount: fliterReferals?.length ?? 0,
@@ -135,8 +131,7 @@ class _PackageSelectionState extends State<PackageSelection> {
               ),
             ),
           ],
-        )
-        );
+        ));
   }
 
   getDownTeamMembers(String uidds) async {

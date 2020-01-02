@@ -44,7 +44,6 @@ class _ProjectsState extends State<Projects> {
     getUserID().then((val) => setState(() {
           uidd = val;
           getProject();
-          print(uidd);
         }));
   }
 
@@ -151,7 +150,6 @@ class _ProjectsState extends State<Projects> {
 
   getProject() async {
     _isloading = false;
-    print(uidd);
     var response = await dio.post(ServicesApi.getData,
         data: {
           "encryptedFields": ["string"],

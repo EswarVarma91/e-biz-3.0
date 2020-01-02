@@ -53,7 +53,6 @@ class _NewTaskState extends State<NewMyTasks> {
     onsite = false;
     getUserID().then((val) => setState(() {
           uidd = val;
-          print(uidd);
         }));
     getProfileName();
   }
@@ -531,21 +530,6 @@ class _NewTaskState extends State<NewMyTasks> {
             contentType: ContentType.parse('application/json'),
           ));
 
-      print({
-        "actionMode": "insert",
-        "dpCreatedBy": profileName.toString().toLowerCase(),
-        "dpGivenBy": profileName.toLowerCase(),
-        "dpStatus": 0,
-        "dpTask": _controller1.text.toString(),
-        "dpTaskDesc": _controller2.text.toString(),
-        "dpType": "Instation",
-        "dayTaskType": "Self",
-        "dpModifiedBy": profileName.toLowerCase(),
-        "uId": uidd,
-        "dpTaskStartDateTime": startDate,
-        "dpTaskEndDateTime": endDate
-      });
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         //        var responseJson = json.decode(response.data);
         if (response.data.toString() == '"Success"') {
@@ -572,7 +556,6 @@ class _NewTaskState extends State<NewMyTasks> {
   reasonTypeM(BuildContext context) async {
     var data = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => ReasonType()));
-    print(data.toString());
     reasonType = data.toString();
   }
 

@@ -101,7 +101,6 @@ class _ReferedByState extends State<ReferedBy> {
                           ),
                         ),
                       ),
-//                  trailing:Padding(padding:EdgeInsets.all(10),child: Text(fliterReferals[index].uId)),
                     ),
                   );
                 }),
@@ -113,7 +112,6 @@ class _ReferedByState extends State<ReferedBy> {
 
   getReferals() async {
     _isloading = false;
-//    var response=await dio.get(url);
     var response = await dio.post(ServicesApi.getData,
         data: {
           "encryptedFields": ["u_first_name"],

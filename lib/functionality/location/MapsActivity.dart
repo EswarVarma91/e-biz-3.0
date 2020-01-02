@@ -93,7 +93,7 @@ class _ViewMapState extends State<ViewMap> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => ChooseMapByType()));
-              print(data);
+             
               var res = data.split(" USR_")[0];
               dataId = data.split(" USR_")[1];
 
