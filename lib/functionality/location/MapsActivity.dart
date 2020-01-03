@@ -19,27 +19,12 @@ import 'package:provider/provider.dart';
 
 class MapsActivity extends StatefulWidget {
   @override
-  _MapsActivityState createState() => _MapsActivityState();
-}
-
-class _MapsActivityState extends State<MapsActivity> {
-  @override
-  Widget build(BuildContext context) {
-    return StreamProvider<UserLocationModel>(
-      builder: (context) => LocationService().locationStream,
-      child: ViewMap(),
-    );
-  }
-}
-
-class ViewMap extends StatefulWidget {
-  @override
   State<StatefulWidget> createState() {
     return _ViewMapState();
   }
 }
 
-class _ViewMapState extends State<ViewMap> {
+class _ViewMapState extends State<MapsActivity> {
   List<Marker> allocationListarkers = [];
   PageController _pageController;
   List<LocationModel> locationList = [];
@@ -76,7 +61,7 @@ class _ViewMapState extends State<ViewMap> {
     }
   }
 
-  _coffeeShopList(index) {
+  _employeesList(index) {
     return AnimatedBuilder(
       animation: _pageController,
       builder: (BuildContext context, Widget widget) {
@@ -120,17 +105,19 @@ class _ViewMapState extends State<ViewMap> {
                             borderRadius: BorderRadius.circular(10.0),
                             color: Colors.white),
                         child: Row(children: [
-                          // Container(
-                          //     height: 90.0,
-                          //     width: 90.0,
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.only(
-                          //             bottomLeft: Radius.circular(10.0),
-                          //             topLeft: Radius.circular(10.0)),
-                          //         image: DecorationImage(
-                          //             image: NetworkImage(
-                          //                 locationList[index].thumbNail),
-                          //             fit: BoxFit.cover))),
+                          Container(
+                              margin: EdgeInsets.only(
+                                  top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+                              height: 60.0,
+                              width: 60.0,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10.0),
+                                      topLeft: Radius.circular(10.0)),
+                                  image: DecorationImage(
+                                      image:
+                                          AssetImage('assets/images/ebiz.png'),
+                                      fit: BoxFit.cover))),
                           SizedBox(width: 5.0),
                           Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -149,9 +136,11 @@ class _ViewMapState extends State<ViewMap> {
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Container(
-                                  width: 170.0,
+                                  width: 160.0,
                                   child: Text(
-                                    locationList[index].user_id,
+                                    "Last seen " +
+                                        _lastSeenTime(
+                                            locationList[index].created_date),
                                     style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w300),
@@ -215,13 +204,13 @@ class _ViewMapState extends State<ViewMap> {
               left: 30.0,
               bottom: 1.0,
               child: Container(
-                height: 200.0,
-                width: 300,
+                height: 130.0,
+                width: 320,
                 child: PageView.builder(
                   controller: _pageController,
                   itemCount: locationList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _coffeeShopList(index);
+                    return _employeesList(index);
                   },
                 ),
               ),
@@ -288,12 +277,13 @@ class _ViewMapState extends State<ViewMap> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["u_first_name"],
+            "encryptedFields": ["u_profile_name"],
             "parameter1": "getUserLocation"
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
+        List<LocationModel> listModel = [];
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
             markerId:
@@ -304,26 +294,34 @@ class _ViewMapState extends State<ViewMap> {
             icon: BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(
                 title: json
-                        .decode(response.data)[i]['u_first_name'][0]
+                        .decode(response.data)[i]['u_profile_name'][0]
                         .toUpperCase() +
-                    json.decode(response.data)[i]['u_first_name'].substring(1),
+                    json
+                        .decode(response.data)[i]['u_profile_name']
+                        .substring(1),
                 snippet: "last seen " +
                     _lastSeenTime(
                         json.decode(response.data)[i]['created_date'])),
             draggable: false,
           ));
 
-          locationList.add(LocationModel(
+          listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
             u_department: json.decode(response.data)[i]['u_department'],
             created_date: json.decode(response.data)[i]['created_date'],
-            u_profile_name: json.decode(response.data)[i]['u_first_name'],
+            u_profile_name: json
+                    .decode(response.data)[i]['u_profile_name'][0]
+                    .toUpperCase() +
+                json.decode(response.data)[i]['u_profile_name'].substring(1),
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
+        setState(() {
+          locationList = listModel;
+        });
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
@@ -353,13 +351,14 @@ class _ViewMapState extends State<ViewMap> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["u_first_name"],
+            "encryptedFields": ["u_profile_name"],
             "parameter1": "getUserLocationByID",
             "parameter2": dataId
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
+        List<LocationModel> listModel = [];
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
             markerId:
@@ -370,29 +369,36 @@ class _ViewMapState extends State<ViewMap> {
             icon: BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(
                 title: json
-                        .decode(response.data)[i]['u_first_name'][0]
+                        .decode(response.data)[i]['u_profile_name'][0]
                         .toUpperCase() +
-                    json.decode(response.data)[i]['u_first_name'].substring(1),
+                    json
+                        .decode(response.data)[i]['u_profile_name']
+                        .substring(1),
                 snippet: "last seen " +
                     _lastSeenTime(
                         json.decode(response.data)[i]['created_date'])),
             draggable: false,
           ));
 
-          locationList.add(LocationModel(
+          listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
             u_department: json.decode(response.data)[i]['u_department'],
             created_date: json.decode(response.data)[i]['created_date'],
-            u_profile_name: json.decode(response.data)[i]['u_first_name'],
+            u_profile_name: json
+                    .decode(response.data)[i]['u_profile_name'][0]
+                    .toUpperCase() +
+                json.decode(response.data)[i]['u_profile_name'].substring(1),
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
+        setState(() {
+          locationList = listModel;
+        });
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
-        print(allocationListarkers);
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
@@ -420,13 +426,14 @@ class _ViewMapState extends State<ViewMap> {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
-            "encryptedFields": ["u_first_name"],
+            "encryptedFields": ["u_profile_name"],
             "parameter1": "getUserLocationByDepartment",
             "parameter2": dataId
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
+        List<LocationModel> listModel = [];
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
             markerId:
@@ -437,29 +444,36 @@ class _ViewMapState extends State<ViewMap> {
             icon: BitmapDescriptor.defaultMarker,
             infoWindow: InfoWindow(
                 title: json
-                        .decode(response.data)[i]['u_first_name'][0]
+                        .decode(response.data)[i]['u_profile_name'][0]
                         .toUpperCase() +
-                    json.decode(response.data)[i]['u_first_name'].substring(1),
+                    json
+                        .decode(response.data)[i]['u_profile_name']
+                        .substring(1),
                 snippet: "last seen " +
                     _lastSeenTime(
                         json.decode(response.data)[i]['created_date'])),
             draggable: false,
           ));
 
-          locationList.add(LocationModel(
+          listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
             u_department: json.decode(response.data)[i]['u_department'],
             created_date: json.decode(response.data)[i]['created_date'],
-            u_profile_name: json.decode(response.data)[i]['u_first_name'],
+            u_profile_name: json
+                    .decode(response.data)[i]['u_profile_name'][0]
+                    .toUpperCase() +
+                json.decode(response.data)[i]['u_profile_name'].substring(1),
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
+        setState(() {
+          locationList = listModel;
+        });
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
-        print(allocationListarkers);
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
@@ -479,5 +493,11 @@ class _ViewMapState extends State<ViewMap> {
         return null;
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _pageController.removeListener(_onScroll);
+    super.dispose();
   }
 }

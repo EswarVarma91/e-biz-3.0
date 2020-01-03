@@ -921,7 +921,7 @@ class _PermissionsState extends State<Permissions> {
                                       'NA',
                                   style: TextStyle(
                                     color: lwtColor,
-                                    fontSize: 24,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ],
@@ -1036,7 +1036,7 @@ class _PermissionsState extends State<Permissions> {
                                     list22[index]?.per_date ?? "Na", "1"),
                                 style: TextStyle(
                                     color: lwtColor,
-                                    fontSize: 25,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
