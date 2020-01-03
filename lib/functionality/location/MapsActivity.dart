@@ -6,16 +6,12 @@ import 'package:Ebiz/functionality/location/ChooseMapByType.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
-import 'package:Ebiz/functionality/location/LocationService.dart';
 import 'package:Ebiz/model/LocationModel.dart';
-import 'package:Ebiz/model/UserLocationModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:provider/provider.dart';
 
 class MapsActivity extends StatefulWidget {
   @override
@@ -192,10 +188,11 @@ class _ViewMapState extends State<MapsActivity> {
           children: <Widget>[
             Container(
               child: GoogleMap(
+                compassEnabled: true,
                 zoomGesturesEnabled: true,
                 myLocationEnabled: true,
                 initialCameraPosition: CameraPosition(
-                    target: LatLng(17.6918918, 83.2011254), zoom: 8.0),
+                    target: LatLng(17.6918918, 83.2011254), zoom: 6.0),
                 markers: Set.from(allocationListarkers),
                 onMapCreated: mapCreated,
               ),
