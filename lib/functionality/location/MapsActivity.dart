@@ -40,26 +40,15 @@ class ViewMap extends StatefulWidget {
 }
 
 class _ViewMapState extends State<ViewMap> {
-  static double lati = 17.6918918, longi = 83.2011254;
-  var userlocation;
-  List<Marker> allmarkers = new List();
-  List<LocationModel> lm = new List();
-  Completer<GoogleMapController> _controller = Completer();
-  static Dio dio = Dio(Config.options);
-  bool mapDisplay = false;
-  ProgressDialog pr;
-  String result = "0", dataId;
+  List<Marker> allocationListarkers = [];
+  PageController _pageController;
+  List<LocationModel> locationList = [];
+  int prevPage;
+  GoogleMapController _controller;
+  Completer<GoogleMapController> _controllerCompleter = Completer();
   String _mapStyle;
-
-  @override
-  void initState() {
-    super.initState();
-    rootBundle.loadString('assets/map_style.txt').then((st) {
-      _mapStyle = st;
-    });
-    checkServices();
-    // _getuserLocations();
-  }
+  String result = "0", dataId;
+  static Dio dio = Dio(Config.options);
 
   void checkServices() {
     if (result == "0") {
@@ -72,67 +61,190 @@ class _ViewMapState extends State<ViewMap> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    userlocation = Provider.of<UserLocationModel>(context);
-    if (userlocation != null) {
-      setState(() {
-        mapDisplay = true;
-        lati = userlocation?.latitude ?? 0.0;
-        longi = userlocation?.longitude ?? 0.0;
-      });
+  void initState() {
+    super.initState();
+    rootBundle.loadString('assets/map_style.txt').then((st) {
+      _mapStyle = st;
+    });
+    checkServices();
+  }
+
+  void _onScroll() {
+    if (_pageController.page.toInt() != prevPage) {
+      prevPage = _pageController.page.toInt();
+      moveCamera();
     }
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Track",
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: <Widget>[
-          IconButton(
-            color: Colors.white,
-            icon: Icon(Icons.filter_list),
-            onPressed: () async {
-              var data = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => ChooseMapByType()));
-
-              var res = data.split(" USR_")[0];
-              dataId = data.split(" USR_")[1];
-
-              if (res == "1") {
-                result = "1";
-                checkServices();
-              } else if (res == "2") {
-                result = "2";
-                checkServices();
-              } else {
-                result = "0";
-                checkServices();
-              }
-            },
-          )
-        ],
-      ),
-      body: Stack(children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(left: 0, right: 0, top: 0),
-          child: GoogleMap(
-              zoomGesturesEnabled: true,
-              myLocationEnabled: true,
-              initialCameraPosition:
-                  CameraPosition(target: LatLng(lati, longi), zoom: 8),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-                controller.setMapStyle(_mapStyle);
-              },
-              markers: Set.from(allmarkers)),
-        ),
-        CollapsingNavigationDrawer("6"),
-      ]),
+  _coffeeShopList(index) {
+    return AnimatedBuilder(
+      animation: _pageController,
+      builder: (BuildContext context, Widget widget) {
+        double value = 1;
+        if (_pageController.position.haveDimensions) {
+          value = _pageController.page - index;
+          value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
+        }
+        return Center(
+          child: SizedBox(
+            height: Curves.easeInOut.transform(value) * 125.0,
+            width: Curves.easeInOut.transform(value) * 350.0,
+            child: widget,
+          ),
+        );
+      },
+      child: InkWell(
+          onTap: () {
+            // moveCamera();
+          },
+          child: Stack(children: [
+            Center(
+                child: Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                      vertical: 20.0,
+                    ),
+                    height: 125.0,
+                    width: 275.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            offset: Offset(0.0, 4.0),
+                            blurRadius: 10.0,
+                          ),
+                        ]),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: Colors.white),
+                        child: Row(children: [
+                          // Container(
+                          //     height: 90.0,
+                          //     width: 90.0,
+                          //     decoration: BoxDecoration(
+                          //         borderRadius: BorderRadius.only(
+                          //             bottomLeft: Radius.circular(10.0),
+                          //             topLeft: Radius.circular(10.0)),
+                          //         image: DecorationImage(
+                          //             image: NetworkImage(
+                          //                 locationList[index].thumbNail),
+                          //             fit: BoxFit.cover))),
+                          SizedBox(width: 5.0),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  locationList[index].u_profile_name,
+                                  style: TextStyle(
+                                      fontSize: 12.5,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  locationList[index].u_department,
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Container(
+                                  width: 170.0,
+                                  child: Text(
+                                    locationList[index].user_id,
+                                    style: TextStyle(
+                                        fontSize: 11.0,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                )
+                              ])
+                        ]))))
+          ])),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Track",
+            style: TextStyle(color: Colors.white),
+          ),
+          iconTheme: IconThemeData(color: Colors.white),
+          actions: <Widget>[
+            IconButton(
+              color: Colors.white,
+              icon: Icon(Icons.filter_list),
+              onPressed: () async {
+                var data = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => ChooseMapByType()));
+
+                var res = data.split(" USR_")[0];
+                dataId = data.split(" USR_")[1];
+
+                if (res == "1") {
+                  result = "1";
+                  checkServices();
+                } else if (res == "2") {
+                  result = "2";
+                  checkServices();
+                } else {
+                  result = "0";
+                  checkServices();
+                }
+              },
+            )
+          ],
+        ),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              child: GoogleMap(
+                zoomGesturesEnabled: true,
+                myLocationEnabled: true,
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(17.6918918, 83.2011254), zoom: 8.0),
+                markers: Set.from(allocationListarkers),
+                onMapCreated: mapCreated,
+              ),
+            ),
+            Positioned(
+              left: 30.0,
+              bottom: 1.0,
+              child: Container(
+                height: 200.0,
+                width: 300,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: locationList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _coffeeShopList(index);
+                  },
+                ),
+              ),
+            ),
+            CollapsingNavigationDrawer("6"),
+          ],
+        ));
+  }
+
+  void mapCreated(controller) {
+    setState(() {
+      _controllerCompleter.complete(controller);
+      _controller = controller;
+      controller.setMapStyle(_mapStyle);
+    });
+  }
+
+  moveCamera() {
+    _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: locationList[_pageController.page.toInt()].localCordinates,
+        zoom: 14.0,
+        bearing: 45.0,
+        tilt: 45.0)));
   }
 
   String _lastSeenTime(String datetime) {
@@ -171,8 +283,8 @@ class _ViewMapState extends State<ViewMap> {
   }
 
   _getuserLocations() async {
-    allmarkers.clear();
-    lm.clear();
+    allocationListarkers.clear();
+    locationList.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -181,26 +293,39 @@ class _ViewMapState extends State<ViewMap> {
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        lm = (json.decode(response.data) as List)
-            .map((data) => new LocationModel.fromJson(data))
-            .toList();
+        List list = json.decode(response.data) as List;
+        for (int i = 0; i < list.length; i++) {
+          allocationListarkers.add(Marker(
+            markerId:
+                MarkerId(json.decode(response.data)[i]['uloc_id'].toString()),
+            position: LatLng(
+                double.parse(json.decode(response.data)[i]['lati']),
+                double.parse(json.decode(response.data)[i]['longi'])),
+            icon: BitmapDescriptor.defaultMarker,
+            infoWindow: InfoWindow(
+                title: json
+                        .decode(response.data)[i]['u_first_name'][0]
+                        .toUpperCase() +
+                    json.decode(response.data)[i]['u_first_name'].substring(1),
+                snippet: "last seen " +
+                    _lastSeenTime(
+                        json.decode(response.data)[i]['created_date'])),
+            draggable: false,
+          ));
 
-        for (int i = 0; i < lm.length; i++) {
-          setState(() {
-            allmarkers.add(Marker(
-              markerId: MarkerId(lm[i].uloc_id.toString()),
-              position:
-                  LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
-              icon: BitmapDescriptor.defaultMarker,
-              infoWindow: InfoWindow(
-                  title: lm[i].u_profile_name[0].toUpperCase() +
-                      lm[i].u_profile_name.substring(1),
-                  snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
-              draggable: false,
-            ));
-          });
+          locationList.add(LocationModel(
+            uloc_id: json.decode(response.data)[i]['uloc_id'],
+            localCordinates: LatLng(
+                double.parse(json.decode(response.data)[i]['lati']),
+                double.parse(json.decode(response.data)[i]['longi'])),
+            u_department: json.decode(response.data)[i]['u_department'],
+            created_date: json.decode(response.data)[i]['created_date'],
+            u_profile_name: json.decode(response.data)[i]['u_first_name'],
+            user_id: json.decode(response.data)[i]['user_id'],
+          ));
         }
-        print(allmarkers);
+        _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
+          ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
@@ -223,8 +348,8 @@ class _ViewMapState extends State<ViewMap> {
   }
 
   _getUserLocationByUid(String dataId) async {
-    allmarkers.clear();
-    lm.clear();
+    allocationListarkers.clear();
+    locationList.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -234,26 +359,40 @@ class _ViewMapState extends State<ViewMap> {
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        lm = (json.decode(response.data) as List)
-            .map((data) => new LocationModel.fromJson(data))
-            .toList();
+        List list = json.decode(response.data) as List;
+        for (int i = 0; i < list.length; i++) {
+          allocationListarkers.add(Marker(
+            markerId:
+                MarkerId(json.decode(response.data)[i]['uloc_id'].toString()),
+            position: LatLng(
+                double.parse(json.decode(response.data)[i]['lati']),
+                double.parse(json.decode(response.data)[i]['longi'])),
+            icon: BitmapDescriptor.defaultMarker,
+            infoWindow: InfoWindow(
+                title: json
+                        .decode(response.data)[i]['u_first_name'][0]
+                        .toUpperCase() +
+                    json.decode(response.data)[i]['u_first_name'].substring(1),
+                snippet: "last seen " +
+                    _lastSeenTime(
+                        json.decode(response.data)[i]['created_date'])),
+            draggable: false,
+          ));
 
-        for (int i = 0; i < lm.length; i++) {
-          setState(() {
-            allmarkers.add(Marker(
-              markerId: MarkerId(lm[i].uloc_id.toString()),
-              position:
-                  LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
-              icon: BitmapDescriptor.defaultMarker,
-              infoWindow: InfoWindow(
-                  title: lm[i].u_profile_name[0].toUpperCase() +
-                      lm[i].u_profile_name.substring(1),
-                  snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
-              draggable: false,
-            ));
-          });
+          locationList.add(LocationModel(
+            uloc_id: json.decode(response.data)[i]['uloc_id'],
+            localCordinates: LatLng(
+                double.parse(json.decode(response.data)[i]['lati']),
+                double.parse(json.decode(response.data)[i]['longi'])),
+            u_department: json.decode(response.data)[i]['u_department'],
+            created_date: json.decode(response.data)[i]['created_date'],
+            u_profile_name: json.decode(response.data)[i]['u_first_name'],
+            user_id: json.decode(response.data)[i]['user_id'],
+          ));
         }
-        print(allmarkers);
+        _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
+          ..addListener(_onScroll);
+        print(allocationListarkers);
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
@@ -276,8 +415,8 @@ class _ViewMapState extends State<ViewMap> {
   }
 
   _getuserLocationsByDepartment(String dataId) async {
-    allmarkers.clear();
-    lm.clear();
+    allocationListarkers.clear();
+    locationList.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -287,28 +426,40 @@ class _ViewMapState extends State<ViewMap> {
           },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        lm = (json.decode(response.data) as List)
-            .map((data) => new LocationModel.fromJson(data))
-            .toList();
+        List list = json.decode(response.data) as List;
+        for (int i = 0; i < list.length; i++) {
+          allocationListarkers.add(Marker(
+            markerId:
+                MarkerId(json.decode(response.data)[i]['uloc_id'].toString()),
+            position: LatLng(
+                double.parse(json.decode(response.data)[i]['lati']),
+                double.parse(json.decode(response.data)[i]['longi'])),
+            icon: BitmapDescriptor.defaultMarker,
+            infoWindow: InfoWindow(
+                title: json
+                        .decode(response.data)[i]['u_first_name'][0]
+                        .toUpperCase() +
+                    json.decode(response.data)[i]['u_first_name'].substring(1),
+                snippet: "last seen " +
+                    _lastSeenTime(
+                        json.decode(response.data)[i]['created_date'])),
+            draggable: false,
+          ));
 
-        print(lm);
-
-        for (int i = 0; i < lm.length; i++) {
-          setState(() {
-            allmarkers.add(Marker(
-              markerId: MarkerId(lm[i].uloc_id.toString()),
-              position:
-                  LatLng(double.parse(lm[i].lati), double.parse(lm[i].longi)),
-              icon: BitmapDescriptor.defaultMarker,
-              infoWindow: InfoWindow(
-                  title: lm[i].u_profile_name[0].toUpperCase() +
-                      lm[i].u_profile_name.substring(1),
-                  snippet: "last seen " + _lastSeenTime(lm[i].created_date)),
-              draggable: false,
-            ));
-          });
+          locationList.add(LocationModel(
+            uloc_id: json.decode(response.data)[i]['uloc_id'],
+            localCordinates: LatLng(
+                double.parse(json.decode(response.data)[i]['lati']),
+                double.parse(json.decode(response.data)[i]['longi'])),
+            u_department: json.decode(response.data)[i]['u_department'],
+            created_date: json.decode(response.data)[i]['created_date'],
+            u_profile_name: json.decode(response.data)[i]['u_first_name'],
+            user_id: json.decode(response.data)[i]['user_id'],
+          ));
         }
-        print(allmarkers);
+        _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
+          ..addListener(_onScroll);
+        print(allocationListarkers);
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");

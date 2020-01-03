@@ -1,3 +1,5 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class LocationModel {
   int uloc_id;
   String u_department;
@@ -5,6 +7,7 @@ class LocationModel {
   String u_profile_name;
   String lati;
   String longi;
+  LatLng localCordinates;
   String created_date;
 
   LocationModel(
@@ -12,19 +15,18 @@ class LocationModel {
       this.u_department,
       this.user_id,
       this.u_profile_name,
-      this.lati,
-      this.longi,
+      this.localCordinates,
       this.created_date});
 
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-      uloc_id: json['uloc_id'],
-      u_department: json['u_department'],
-      user_id: json['user_id'],
-      u_profile_name: json['u_first_name'],
-      lati: json['lati'],
-      longi: json['longi'],
-      created_date: json['created_date'],
-    );
-  }
+  // factory LocationModel.fromJson(Map<String, dynamic> json) {
+  //   return LocationModel(
+  //     uloc_id: json['uloc_id'],
+  //     u_department: json['u_department'],
+  //     user_id: json['user_id'],
+  //     u_profile_name: json['u_first_name'],
+  //     lati:  json['lati'],
+  //     longi: json['longi'],
+  //     created_date: json['created_date'],
+  //   );
+  // }
 }

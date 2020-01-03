@@ -723,8 +723,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
             }
           }
         });
-      } else {
-        // Fluttertoast.showToast(msg: "Check your internet connection.");
       }
     } on DioError catch (exception) {
       if (exception == null ||
