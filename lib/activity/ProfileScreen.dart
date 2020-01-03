@@ -17,7 +17,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       designation = '-',
       employCode = "-",
       profilePic = "";
-      bool profile;
+  bool profile;
 
   getAccountDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -28,10 +28,10 @@ class ProfileScreenState extends State<ProfileScreen> {
       department = preferences.getString("department");
       designation = preferences.getString("designation");
       profilePic = preferences.getString("picPath");
-      if(profilePic!=null){
-        profile=true;
-      }else{
-        profile=false;
+      if (profilePic != null) {
+        profile = true;
+      } else {
+        profile = false;
       }
     });
   }
@@ -39,7 +39,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    profile=false;
+    profile = false;
     getAccountDetails();
   }
 
@@ -134,28 +134,30 @@ class ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        profile ? Container(
-                            margin: EdgeInsets.only(top: 30, bottom: 30),
-                            width: 160.0,
-                            height: 160.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    ServicesApi.basic_url + profilePic),
-                                fit: BoxFit.cover,
-                              ),
-                            )):Container(
-                            margin: EdgeInsets.only(top: 30, bottom: 30),
-                            width: 160.0,
-                            height: 160.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: AssetImage('assets/images/ebiz.png'),
-                                fit: BoxFit.cover,
-                              ),
-                            )),
+                        profile
+                            ? Container(
+                                margin: EdgeInsets.only(top: 30, bottom: 30),
+                                width: 160.0,
+                                height: 160.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                        ServicesApi.basic_url + profilePic),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ))
+                            : Container(
+                                margin: EdgeInsets.only(top: 30, bottom: 30),
+                                width: 160.0,
+                                height: 160.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: AssetImage('assets/images/ebiz.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
                         // Container(
                         //     padding: EdgeInsets.only(top: 15, bottom: 15),
                         //     height: 250.0,
