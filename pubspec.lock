@@ -105,7 +105,7 @@ packages:
       name: expandable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "3.0.1"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -139,13 +139,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.4+3"
-  flutter_polyline_points:
-    dependency: "direct main"
-    description:
-      name: flutter_polyline_points
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   flutter_speed_dial:
     dependency: "direct main"
     description:
@@ -233,6 +226,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.8"
+  open_appstore:
+    dependency: "direct main"
+    description:
+      name: open_appstore
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.2"
   path:
     dependency: transitive
     description:
@@ -414,5 +414,5 @@ packages:
     source: hosted
     version: "2.2.0"
 sdks:
-  dart: ">=2.7.0 <3.0.0"
+  dart: ">=2.5.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.4 <2.0.0"
