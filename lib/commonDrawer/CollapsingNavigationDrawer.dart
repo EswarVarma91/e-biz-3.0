@@ -134,68 +134,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       hrCnt = preferences.getString("hrCnt");
       travelCnt = preferences.getString("travelCnt");
       salesCnt = preferences.getString("salesCnt");
-      managerCnt = 1;
-
-      if (downteam == "null" || downteam == null) {
-        if (result.toString() == "1") {
-          navigationItems.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
-          listMain = navigationItems;
-        } else if (result.toString() == "2") {
-          navigationItemsSales.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
-          listMain = navigationItemsSales;
-        } else if (result.toString() == "3") {
-          navigationItemsTask.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
-          listMain = navigationItemsTask;
-        } else if (result.toString() == "4") {
-          navigationItemsPermissions.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
-          listMain = navigationItemsPermissions;
-        } else if (result.toString() == "7") {
-          navigationItemsTravel.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
-          listMain = navigationItemsTravel;
-        } else if (result.toString() == "8") {
-          navigationItemsHotels.removeWhere((a) => a.title == "Approvals" && a.title =="Tracking");
-          listMain = navigationItemsHotels;
-        }
-      // } else if (salesCnt == 1) {
-      //   if (result.toString() == "1") {
-      //     listMain = navigationItems;
-      //   } else if (result.toString() == "2") {
-      //     listMain = navigationItemsSales;
-      //   } else if (result.toString() == "3") {
-      //     listMain = navigationItemsTask;
-      //   } else if (result.toString() == "4") {
-      //     listMain = navigationItemsPermissions;
-      //   } else if (result.toString() == "5") {
-      //     listMain = navigationItemsApprovals;
-      //   } else if (result.toString() == "7") {
-      //     listMain = navigationItemsTravel;
-      //   } else if (result.toString() == "8") {
-      //     listMain = navigationItemsHotels;
-      //   }
-      // } else if (downteam != null || downteam != "null") {
-      //   if (result.toString() == "1") {
-      //     listMain = navigationItems;
-      //     navigationItems.removeWhere((a) => a.title =="Tracking");
-      //   } else if (result.toString() == "2") {
-      //     listMain = navigationItemsSales;
-      //     navigationItemsSales.removeWhere((a) => a.title =="Tracking");
-      //   } else if (result.toString() == "3") {
-      //     listMain = navigationItemsTask;
-      //     navigationItemsTask.removeWhere((a) => a.title =="Tracking");
-      //   } else if (result.toString() == "4") {
-      //     listMain = navigationItemsPermissions;
-      //     navigationItemsPermissions.removeWhere((a) => a.title =="Tracking");
-      //   } else if (result.toString() == "5") {
-      //     listMain = navigationItemsApprovals;
-      //     navigationItemsApprovals.removeWhere((a) => a.title =="Tracking");
-      //   } else if (result.toString() == "7") {
-      //     listMain = navigationItemsTravel;
-      //     navigationItemsTravel.removeWhere((a) => a.title =="Tracking");
-      //   } else if (result.toString() == "8") {
-      //     listMain = navigationItemsHotels;
-      //     navigationItemsHotels.removeWhere((a) => a.title =="Tracking");
-      //   }
-      } else if (managerCnt == 1) {
+      // managerCnt = "1";
+      if (managerCnt == "1") {
         if (result.toString() == "1") {
           listMain = navigationItems;
         } else if (result.toString() == "2") {
@@ -206,13 +146,91 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           listMain = navigationItemsPermissions;
         } else if (result.toString() == "5") {
           listMain = navigationItemsApprovals;
+        } else if (result.toString() == "6") {
+          listMain = navigationItemslocation;
         } else if (result.toString() == "7") {
           listMain = navigationItemsTravel;
         } else if (result.toString() == "8") {
           listMain = navigationItemsHotels;
-        } else if (result.toString() == "6") {
-          listMain = navigationItemslocation;
         }
+      } else if (managerCnt == "0") {
+        if (downteam != null && downteam != "null") {
+          if (result.toString() == "1") {
+            navigationItems.removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItems;
+          } else if (result.toString() == "2") {
+            navigationItemsSales.removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItemsSales;
+          } else if (result.toString() == "3") {
+            navigationItemsTask.removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItemsTask;
+          } else if (result.toString() == "4") {
+            navigationItemsPermissions
+                .removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItemsPermissions;
+          } else if (result.toString() == "5") {
+            navigationItemsApprovals.removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItemsApprovals;
+          } else if (result.toString() == "7") {
+            navigationItemsTravel.removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItemsTravel;
+          } else if (result.toString() == "8") {
+            navigationItemsHotels.removeWhere((a) => a.title == "Tracking");
+            listMain = navigationItemsHotels;
+          }
+        } else {
+          if (result.toString() == "1") {
+            navigationItems.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItems;
+          } else if (result.toString() == "2") {
+            navigationItemsSales.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsSales;
+          } else if (result.toString() == "3") {
+            navigationItemsTask.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsTask;
+          } else if (result.toString() == "4") {
+            navigationItemsPermissions.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsPermissions;
+          } else if (result.toString() == "7") {
+            navigationItemsTravel.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsTravel;
+          } else if (result.toString() == "8") {
+            navigationItemsHotels.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsHotels;
+          }
+        }
+      }else{
+        if (result.toString() == "1") {
+            navigationItems.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItems;
+          } else if (result.toString() == "2") {
+            navigationItemsSales.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsSales;
+          } else if (result.toString() == "3") {
+            navigationItemsTask.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsTask;
+          } else if (result.toString() == "4") {
+            navigationItemsPermissions.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsPermissions;
+          } else if (result.toString() == "7") {
+            navigationItemsTravel.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsTravel;
+          } else if (result.toString() == "8") {
+            navigationItemsHotels.removeWhere(
+                (a) => a.title == "Tracking" && a.title == "Approvals");
+            listMain = navigationItemsHotels;
+          }
       }
     });
   }
