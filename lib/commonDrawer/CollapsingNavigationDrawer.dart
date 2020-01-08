@@ -134,7 +134,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       hrCnt = preferences.getString("hrCnt");
       travelCnt = preferences.getString("travelCnt");
       salesCnt = preferences.getString("salesCnt");
-      // managerCnt = "1";
+      managerCnt = "1";
       if (managerCnt == "1") {
         if (result.toString() == "1") {
           listMain = navigationItems;
@@ -180,55 +180,55 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           }
         } else {
           if (result.toString() == "1") {
-            navigationItems.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItems.removeWhere((a) => a.title == "Tracking" );
+            navigationItems.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItems;
           } else if (result.toString() == "2") {
-            navigationItemsSales.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsSales.removeWhere((a) => a.title == "Tracking");
+            navigationItemsSales.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsSales;
           } else if (result.toString() == "3") {
-            navigationItemsTask.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsTask.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsTask.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsTask;
           } else if (result.toString() == "4") {
-            navigationItemsPermissions.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsPermissions.removeWhere((a) => a.title == "Tracking");
+            navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsPermissions;
           } else if (result.toString() == "7") {
-            navigationItemsTravel.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsTravel.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsTravel;
           } else if (result.toString() == "8") {
-            navigationItemsHotels.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsHotels.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsHotels.removeWhere((a) =>  a.title == "Approvals");
             listMain = navigationItemsHotels;
           }
         }
       }else{
         if (result.toString() == "1") {
-            navigationItems.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItems.removeWhere((a) => a.title == "Tracking" );
+            navigationItems.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItems;
           } else if (result.toString() == "2") {
-            navigationItemsSales.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsSales.removeWhere((a) => a.title == "Tracking");
+            navigationItemsSales.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsSales;
           } else if (result.toString() == "3") {
-            navigationItemsTask.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsTask.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsTask.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsTask;
           } else if (result.toString() == "4") {
-            navigationItemsPermissions.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsPermissions.removeWhere((a) => a.title == "Tracking");
+            navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsPermissions;
           } else if (result.toString() == "7") {
-            navigationItemsTravel.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsTravel.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsTravel;
           } else if (result.toString() == "8") {
-            navigationItemsHotels.removeWhere(
-                (a) => a.title == "Tracking" && a.title == "Approvals");
+            navigationItemsHotels.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsHotels.removeWhere((a) =>  a.title == "Approvals");
             listMain = navigationItemsHotels;
           }
       }

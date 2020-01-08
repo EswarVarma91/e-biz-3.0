@@ -25,8 +25,8 @@ class NewPermissions extends StatefulWidget {
 
 class _NewPermissionState extends State<NewPermissions> {
   bool personal, official;
-  String selectDate = " ",
-      selectDateS = " ",
+  String selectDate = "",
+      selectDateS = "",
       fromTime = "",
       toTime = "",
       uidd,
@@ -91,7 +91,7 @@ class _NewPermissionState extends State<NewPermissions> {
 
               if (personal == true) {
                 if (selectDate.isEmpty) {
-                  Fluttertoast.showToast(msg: "Choose Date for Application.");
+                  Fluttertoast.showToast(msg: "Select a Date.");
                 } else if (fromTime.isEmpty) {
                   Fluttertoast.showToast(msg: "Choose your From Time.");
                 } else if (toTime.isEmpty) {
@@ -106,7 +106,7 @@ class _NewPermissionState extends State<NewPermissions> {
                 }
               } else if (official == true) {
                 if (selectDate.isEmpty) {
-                  Fluttertoast.showToast(msg: "Choose Date for Application.");
+                  Fluttertoast.showToast(msg: "Select a Date.");
                 } else if (fromTime.isEmpty) {
                   Fluttertoast.showToast(msg: "Choose your From Time.");
                 } else if (toTime.isEmpty) {
