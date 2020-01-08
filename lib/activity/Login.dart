@@ -246,8 +246,9 @@ class _LoginState extends State<Login> {
                               height: 20,
                             ),
                             Material(
+                              color: lwtColor,
                               borderRadius: BorderRadius.circular(32.0),
-                              shadowColor: lwtColor,
+                              shadowColor: Colors.grey,
                               elevation: 15.0,
                               child: MaterialButton(
                                 minWidth: 300.0,
@@ -257,7 +258,7 @@ class _LoginState extends State<Login> {
                                 },
                                 child: Text('Login'.toUpperCase(),
                                     style: TextStyle(
-                                        color: lwtColor,
+                                        color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
                               ),
