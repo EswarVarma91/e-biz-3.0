@@ -231,7 +231,7 @@ class _ViewMapState extends State<MapsActivity> {
   moveCamera() {
     _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: locationList[_pageController.page.toInt()].localCordinates,
-        zoom: 14.0,
+        zoom: 6.0,
         bearing: 45.0,
         tilt: 45.0)));
   }
