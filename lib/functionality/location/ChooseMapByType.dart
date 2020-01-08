@@ -41,7 +41,7 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
             color: Colors.white,
             icon: Icon(Icons.check),
             onPressed: () async {
-              Navigator.pop(context, result + " USR_" + userId);
+              Navigator.pop(context, result + " USR_" + userId+ " U_"+userName);
             },
           )
         ],

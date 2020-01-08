@@ -305,22 +305,24 @@ class _LoginState extends State<Login> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         if ((json.decode(response.data)['cnt'] == 1)) {
           _writeData(
-              json.decode(response.data)['empEmail'],
-              json.decode(response.data)['userId'],
-              json.decode(response.data)['empFullName'],
-              json.decode(response.data)['empCode'],
-              json.decode(response.data)['hrCnt'],
-              json.decode(response.data)['travelCnt'],
-              json.decode(response.data)['salesCnt'],
-              json.decode(response.data)['empProfileName'],
-              json.decode(response.data)['empDownTeamIds'],
-              "",
-              json.decode(response.data)['brnachId'],
-              json.decode(response.data)['empEmail'],
-              json.decode(response.data)['empDepartment'],
-              json.decode(response.data)['empDesignation'],
-              json.decode(response.data)['fixedTerm'],
-              json.decode(response.data)['picPath']);
+            json.decode(response.data)['empEmail'],
+            json.decode(response.data)['userId'],
+            json.decode(response.data)['empFullName'],
+            json.decode(response.data)['empCode'],
+            json.decode(response.data)['hrCnt'],
+            json.decode(response.data)['travelCnt'],
+            json.decode(response.data)['salesCnt'],
+            json.decode(response.data)['empProfileName'],
+            json.decode(response.data)['empDownTeamIds'],
+            "",
+            json.decode(response.data)['brnachId'],
+            json.decode(response.data)['empEmail'],
+            json.decode(response.data)['empDepartment'],
+            json.decode(response.data)['empDesignation'],
+            json.decode(response.data)['fixedTerm'],
+            json.decode(response.data)['picPath'],
+            json.decode(response.data)['mgmtCnt'],
+          );
 
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
@@ -342,7 +344,9 @@ class _LoginState extends State<Login> {
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
-            Fluttertoast.showToast(msg: "Socket time out.",);
+        Fluttertoast.showToast(
+          msg: "Socket time out.",
+        );
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
@@ -368,7 +372,9 @@ class _LoginState extends State<Login> {
       String emailId,
       String department,
       String designation,
-      int fixedTerm,String picPath) async {
+      int fixedTerm,
+      String picPath,
+      int mgmtCnt) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.setString("data", userEmail.toString());
     preferences.setString("userId", uId.toString());
@@ -386,5 +392,6 @@ class _LoginState extends State<Login> {
     preferences.setString("designation", designation.toString());
     preferences.setString("fixedTerm", fixedTerm.toString());
     preferences.setString("picPath", picPath.toString());
+    preferences.setString("mgmtCnt", mgmtCnt.toString());
   }
 }

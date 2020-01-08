@@ -134,7 +134,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       hrCnt = preferences.getString("hrCnt");
       travelCnt = preferences.getString("travelCnt");
       salesCnt = preferences.getString("salesCnt");
-      managerCnt = "1";
+      managerCnt = preferences.getString("mgmtCnt");
       if (managerCnt == "1") {
         if (result.toString() == "1") {
           listMain = navigationItems;

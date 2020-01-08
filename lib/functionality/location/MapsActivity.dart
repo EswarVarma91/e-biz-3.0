@@ -28,7 +28,7 @@ class _ViewMapState extends State<MapsActivity> {
   GoogleMapController _controller;
   Completer<GoogleMapController> _controllerCompleter = Completer();
   String _mapStyle;
-  String result = "0", dataId;
+  String result = "0", dataId,dataName;
   static Dio dio = Dio(Config.options);
 
   void checkServices() {
@@ -134,9 +134,10 @@ class _ViewMapState extends State<MapsActivity> {
                                 Container(
                                   width: 160.0,
                                   child: Text(
-                                    "Last seen " +
-                                        _lastSeenTime(
-                                            locationList[index].created_date),
+                                    "Last seen: " +
+                                            _lastSeenTime(locationList[index]
+                                                .created_date) ??
+                                        " ",
                                     style: TextStyle(
                                         fontSize: 11.0,
                                         fontWeight: FontWeight.w300),
@@ -168,7 +169,9 @@ class _ViewMapState extends State<MapsActivity> {
                         builder: (BuildContext context) => ChooseMapByType()));
 
                 var res = data.split(" USR_")[0];
-                dataId = data.split(" USR_")[1];
+                dataId = data.split(" USR_")[1].split(" U_")[0];
+                dataName = data.split(" USR_")[1].split(" U_")[1];
+
 
                 if (res == "1") {
                   result = "1";
@@ -234,37 +237,44 @@ class _ViewMapState extends State<MapsActivity> {
   }
 
   String _lastSeenTime(String datetime) {
-    var now = DateTime.now();
-    List splitDateTime = datetime.split(" ");
-    List splitTime = splitDateTime[1].toString().split(":");
-    var lastSeenTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
-    var currentTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
-    if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
-      return currentTime.difference(lastSeenTime).inSeconds.toString() +
-          " sec ago ";
-    } else if (currentTime.difference(lastSeenTime).inMinutes <= 60) {
-      return currentTime.difference(lastSeenTime).inMinutes.toString() +
-          " min ago ";
-    } else if (currentTime.difference(lastSeenTime).inHours <= 24) {
-      return currentTime.difference(lastSeenTime).inHours.toString() +
-          " hours ago ";
-    } else if (currentTime.difference(lastSeenTime).inDays <= 7) {
-      if (currentTime.difference(lastSeenTime).inDays == 0) {
-        return " yesterday at " + splitTime[0] + ":" + splitTime[1].toString();
-      } else if (currentTime.difference(lastSeenTime).inDays == 1) {
-        return currentTime.difference(lastSeenTime).inDays.toString() +
-            " day ago ";
+    if (datetime.isNotEmpty) {
+      var now = DateTime.now();
+      List splitDateTime = datetime.split(" ");
+      List splitTime = splitDateTime[1].toString().split(":");
+      var lastSeenTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
+      var currentTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
+      if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
+        return currentTime.difference(lastSeenTime).inSeconds.toString() +
+            " sec ago ";
+      } else if (currentTime.difference(lastSeenTime).inMinutes <= 60) {
+        return currentTime.difference(lastSeenTime).inMinutes.toString() +
+            " min ago ";
+      } else if (currentTime.difference(lastSeenTime).inHours <= 24) {
+        return currentTime.difference(lastSeenTime).inHours.toString() +
+            " hours ago ";
+      } else if (currentTime.difference(lastSeenTime).inDays <= 7) {
+        if (currentTime.difference(lastSeenTime).inDays == 0) {
+          return " yesterday at " +
+              splitTime[0] +
+              ":" +
+              splitTime[1].toString();
+        } else if (currentTime.difference(lastSeenTime).inDays == 1) {
+          return currentTime.difference(lastSeenTime).inDays.toString() +
+              " day ago ";
+        } else {
+          return currentTime.difference(lastSeenTime).inDays.toString() +
+              " days ago ";
+        }
       } else {
-        return currentTime.difference(lastSeenTime).inDays.toString() +
-            " days ago ";
+        return "at " +
+            splitDateTime[0] +
+            " " +
+            splitTime[0] +
+            ":" +
+            splitTime[1].toString();
       }
     } else {
-      return "at " +
-          splitDateTime[0] +
-          " " +
-          splitTime[0] +
-          ":" +
-          splitTime[1].toString();
+      return "--";
     }
   }
 
@@ -297,8 +307,9 @@ class _ViewMapState extends State<MapsActivity> {
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
                 snippet: "last seen " +
-                    _lastSeenTime(
-                        json.decode(response.data)[i]['created_date'])),
+                        _lastSeenTime(
+                            json.decode(response.data)[i]['created_date']) ??
+                    " "),
             draggable: false,
           ));
 
@@ -316,9 +327,24 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
-        setState(() {
-          locationList = listModel;
-        });
+        if (listModel.length != 0) {
+          setState(() {
+            locationList = listModel;
+          });
+        } else {
+          listModel.add(LocationModel(
+            uloc_id: 1,
+            u_department: "--",
+            localCordinates: LatLng(17.6918918, 83.2011254),
+            created_date: "",
+            u_profile_name: "--",
+            user_id: "1",
+          ));
+          setState(() {
+            locationList = listModel;
+          });
+        }
+
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
@@ -372,8 +398,9 @@ class _ViewMapState extends State<MapsActivity> {
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
                 snippet: "last seen " +
-                    _lastSeenTime(
-                        json.decode(response.data)[i]['created_date'])),
+                        _lastSeenTime(
+                            json.decode(response.data)[i]['created_date']) ??
+                    " "),
             draggable: false,
           ));
 
@@ -391,9 +418,23 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
-        setState(() {
-          locationList = listModel;
-        });
+        if (listModel.length != 0) {
+          setState(() {
+            locationList = listModel;
+          });
+        } else {
+          listModel.add(LocationModel(
+            uloc_id: 1,
+            u_department: "--",
+            localCordinates: LatLng(17.6918918, 83.2011254),
+            created_date: "",
+            u_profile_name: dataName,
+            user_id: "1",
+          ));
+          setState(() {
+            locationList = listModel;
+          });
+        }
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
@@ -447,8 +488,9 @@ class _ViewMapState extends State<MapsActivity> {
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
                 snippet: "last seen " +
-                    _lastSeenTime(
-                        json.decode(response.data)[i]['created_date'])),
+                        _lastSeenTime(
+                            json.decode(response.data)[i]['created_date']) ??
+                    " "),
             draggable: false,
           ));
 
@@ -466,9 +508,23 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
-        setState(() {
-          locationList = listModel;
-        });
+        if (listModel.length != 0) {
+          setState(() {
+            locationList = listModel;
+          });
+        } else {
+          listModel.add(LocationModel(
+            uloc_id: 1,
+            u_department: dataName,
+            localCordinates: LatLng(17.6918918, 83.2011254),
+            created_date: "",
+            u_profile_name: "--",
+            user_id: "1",
+          ));
+          setState(() {
+            locationList = listModel;
+          });
+        }
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
