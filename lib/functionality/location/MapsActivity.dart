@@ -28,7 +28,8 @@ class _ViewMapState extends State<MapsActivity> {
   GoogleMapController _controller;
   Completer<GoogleMapController> _controllerCompleter = Completer();
   String _mapStyle;
-  String result = "0", dataId,dataName;
+  String result = "0", dataId, dataName;
+  MediaQuery queryData;
   static Dio dio = Dio(Config.options);
 
   void checkServices() {
@@ -59,94 +60,77 @@ class _ViewMapState extends State<MapsActivity> {
 
   _employeesList(index) {
     return AnimatedBuilder(
-      animation: _pageController,
-      builder: (BuildContext context, Widget widget) {
-        double value = 1;
-        if (_pageController.position.haveDimensions) {
-          value = _pageController.page - index;
-          value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
-        }
-        return Center(
-          child: SizedBox(
-            height: Curves.easeInOut.transform(value) * 125.0,
-            width: Curves.easeInOut.transform(value) * 350.0,
-            child: widget,
-          ),
-        );
-      },
-      child: InkWell(
-          onTap: () {
-            // moveCamera();
-          },
-          child: Stack(children: [
-            Center(
-                child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 10.0,
-                      vertical: 20.0,
-                    ),
-                    height: 125.0,
-                    width: 275.0,
+        animation: _pageController,
+        builder: (BuildContext context, Widget widget) {
+          double value = 1;
+          if (_pageController.position.haveDimensions) {
+            value = _pageController.page - index;
+            value = (1 - (value.abs() * 0.3) + 0.06).clamp(0.0, 1.0);
+          }
+          return Center(
+            child: SizedBox(
+              height: Curves.easeInOut.transform(value) * 125.0,
+              width: Curves.easeInOut.transform(value) * 650.0,
+              child: widget,
+            ),
+          );
+        },
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0)),
+            elevation: 10.0,
+            child: Row(
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(
+                        top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
+                    height: 60.0,
+                    width: 60.0,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            offset: Offset(0.0, 4.0),
-                            blurRadius: 10.0,
-                          ),
-                        ]),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.white),
-                        child: Row(children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                  top: 5.0, bottom: 5.0, left: 5.0, right: 5.0),
-                              height: 60.0,
-                              width: 60.0,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(10.0),
-                                      topLeft: Radius.circular(10.0)),
-                                  image: DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/ebiz.png'),
-                                      fit: BoxFit.cover))),
-                          SizedBox(width: 5.0),
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  locationList[index].u_profile_name,
-                                  style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  locationList[index].u_department,
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Container(
-                                  width: 160.0,
-                                  child: Text(
-                                    "Last seen: " +
-                                            _lastSeenTime(locationList[index]
-                                                .created_date) ??
-                                        " ",
-                                    style: TextStyle(
-                                        fontSize: 11.0,
-                                        fontWeight: FontWeight.w300),
-                                  ),
-                                )
-                              ])
-                        ]))))
-          ])),
-    );
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10.0),
+                            topLeft: Radius.circular(10.0)),
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/ebiz.png'),
+                            fit: BoxFit.cover))),
+                SizedBox(
+                  width: 5.0,
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        locationList[index].u_profile_name,
+                        style: TextStyle(
+                            fontSize: 12.5, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        locationList[index].u_department,
+                        style: TextStyle(
+                            fontSize: 12.0, fontWeight: FontWeight.w600),
+                      ),
+                      Container(
+                        child: Text(
+                          "Last seen: " +
+                                  _lastSeenTime(
+                                      locationList[index].created_date) ??
+                              " ",
+                          style: TextStyle(
+                              fontSize: 11.0, fontWeight: FontWeight.w300),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
   }
 
   @override
@@ -171,7 +155,6 @@ class _ViewMapState extends State<MapsActivity> {
                 var res = data.split(" USR_")[0];
                 dataId = data.split(" USR_")[1].split(" U_")[0];
                 dataName = data.split(" USR_")[1].split(" U_")[1];
-
 
                 if (res == "1") {
                   result = "1";
@@ -201,11 +184,11 @@ class _ViewMapState extends State<MapsActivity> {
               ),
             ),
             Positioned(
-              left: 30.0,
+              left: 1.0,
               bottom: 1.0,
               child: Container(
-                height: 130.0,
-                width: 320,
+                height: 100.0,
+                width: MediaQuery.of(context).size.width,
                 child: PageView.builder(
                   controller: _pageController,
                   itemCount: locationList.length,
@@ -231,7 +214,7 @@ class _ViewMapState extends State<MapsActivity> {
   moveCamera() {
     _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: locationList[_pageController.page.toInt()].localCordinates,
-        zoom: 6.0,
+        zoom: 10.0,
         bearing: 45.0,
         tilt: 45.0)));
   }
