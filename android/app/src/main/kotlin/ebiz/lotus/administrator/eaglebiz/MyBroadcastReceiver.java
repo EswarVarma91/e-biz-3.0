@@ -68,7 +68,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     MediaPlayer mp;
     private SimpleLocation simpleLocation;
     String android_id;
-    double latitude = 0.0, longitude = 0.0;
+    double latitude , longitude ;
     int cid, lac, mcc, mnc;
 //    String hrms_Service = "http://192.168.2.5:8383/att.service/hrms/attendance/save/location"; //dev
 //    String hrms_Service= "http://192.168.2.3:8080/att.service/hrms/attendance/save/location"; //test

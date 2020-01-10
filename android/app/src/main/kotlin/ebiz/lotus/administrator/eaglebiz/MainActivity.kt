@@ -27,4 +27,11 @@ class MainActivity: FlutterActivity() {
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),5*60*1000,pendingIntent)
     }
+
+    // simpleLocation = new SimpleLocation(context);
+    //     if (!simpleLocation.hasLocationEnabled()) {
+    //         SimpleLocation.openSettings(context);
+    //     } else {
+            
+    //     }
 }
