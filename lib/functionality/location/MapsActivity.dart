@@ -31,6 +31,10 @@ class _ViewMapState extends State<MapsActivity> {
   String result = "0", dataId, dataName;
   MediaQuery queryData;
   static Dio dio = Dio(Config.options);
+  // bool polyCheck = false;
+  // Set<Polyline> _polylines;
+
+  // List<LatLng> latlngSegment1 = List();
 
   void checkServices() {
     if (result == "0") {
@@ -173,12 +177,15 @@ class _ViewMapState extends State<MapsActivity> {
                 dataName = data.split(" USR_")[1].split(" U_")[1];
 
                 if (res == "1") {
+                  // polyCheck = false;
                   result = "1";
                   checkServices();
                 } else if (res == "2") {
+                  // polyCheck = true;
                   result = "2";
                   checkServices();
                 } else {
+                  // polyCheck = false;
                   result = "0";
                   checkServices();
                 }
@@ -188,32 +195,49 @@ class _ViewMapState extends State<MapsActivity> {
         ),
         body: Stack(
           children: <Widget>[
-            Container(
-              child: GoogleMap(
-                compassEnabled: true,
-                zoomGesturesEnabled: true,
-                myLocationEnabled: true,
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
-                markers: Set.from(allocationListarkers),
-                onMapCreated: mapCreated,
-              ),
-            ),
-            Positioned(
-              left: 1.0,
-              bottom: 1.0,
-              child: Container(
-                height: 120.0,
-                width: MediaQuery.of(context).size.width,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: locationList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return _employeesList(index);
-                  },
-                ),
-              ),
-            ),
+            // polyCheck
+            //     ? Container(
+            //         child: GoogleMap(
+            //           compassEnabled: true,
+            //           zoomGesturesEnabled: true,
+            //           myLocationEnabled: true,
+            //           polylines: _polylines,
+            //           initialCameraPosition: CameraPosition(
+            //               target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
+            //           // markers: Set.from(allocationListarkers),
+            //           onMapCreated: mapCreated,
+            //         ),
+            //       )
+            //     : 
+                Container(
+                    child: GoogleMap(
+                      compassEnabled: true,
+                      zoomGesturesEnabled: true,
+                      myLocationEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
+                      markers: Set.from(allocationListarkers),
+                      onMapCreated: mapCreated,
+                    ),
+                  ),
+            // polyCheck
+            //     ? Container()
+            //     : 
+                Positioned(
+                    left: 1.0,
+                    bottom: 1.0,
+                    child: Container(
+                      height: 120.0,
+                      width: MediaQuery.of(context).size.width,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        itemCount: locationList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return _employeesList(index);
+                        },
+                      ),
+                    ),
+                  ),
             CollapsingNavigationDrawer("6"),
           ],
         ));
@@ -370,6 +394,7 @@ class _ViewMapState extends State<MapsActivity> {
   _getUserLocationByUid(String dataId) async {
     allocationListarkers.clear();
     locationList.clear();
+    // latlngSegment1.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -403,6 +428,16 @@ class _ViewMapState extends State<MapsActivity> {
             draggable: false,
           ));
 
+          // print("LatLong(" +
+          //     double.parse(json.decode(response.data)[i]['lati']).toString() +
+          //     " " +
+          //     double.parse(json.decode(response.data)[i]['longi']).toString() +
+          //     ")");
+
+          // latlngSegment1.add(LatLng(
+          //     double.parse(json.decode(response.data)[i]['lati']),
+          //     double.parse(json.decode(response.data)[i]['longi'])));
+
           listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
@@ -417,6 +452,15 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
+
+        // _polylines.add(Polyline(
+        //   polylineId: PolylineId('line1'),
+        //   visible: true,
+        //   //latlng is List<LatLng>
+        //   points: latlngSegment1,
+        //   color: Colors.blue,
+        // ));
+        // print(_polylines);
         if (listModel.length != 0) {
           setState(() {
             locationList = listModel;

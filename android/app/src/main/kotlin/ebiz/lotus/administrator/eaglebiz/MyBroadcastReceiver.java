@@ -88,10 +88,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             latitude = simpleLocation.getLatitude();
             longitude = simpleLocation.getLongitude();
             android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-
             Log.v("android_id : ", android_id);
-
-//
 //            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 //            @SuppressLint("MissingPermission") GsmCellLocation cellLocation = (GsmCellLocation) telephonyManager.getCellLocation();
 //            String networkOperator = telephonyManager.getNetworkOperator();
@@ -107,17 +104,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 //            Log.d("Mnc : ",String.valueOf(mnc));
 //            Log.d("Lac : ",""+lac);
 //            Log.d("Cid : ",""+cid);
-
             RequestQueue queue = Volley.newRequestQueue(context);
-
             final StringRequest reqQueue = new StringRequest(Request.Method.POST, ""+hrms_Service, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
 //                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                     Log.d("eskoResponse : ",response);
-
-
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -152,19 +144,15 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                 public byte[] getBody() throws AuthFailureError {
                     try {
                         JSONObject jsonObject = new JSONObject();
-
                         jsonObject.put("latitude", latitude);
                         jsonObject.put("longitude",longitude);
                         jsonObject.put("deviceId",android_id);
-
                         return jsonObject.toString().getBytes("utf-8");
                     } catch (Exception ex) {
                         Toast.makeText(context, "Some error occurred. Please try again", Toast.LENGTH_LONG).show();
                     }
-
                     return super.getBody();
                 }
-
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
@@ -173,78 +161,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             reqQueue.setRetryPolicy(new DefaultRetryPolicy(5*DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
             reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
             queue.add(reqQueue);
-
         }
-
-
     }
-
-
-//    private SSLSocketFactory getSocketFactory(){
-//
-//        CertificateFactory cf = null;
-//        try {
-//            cf = CertificateFactory.getInstance("X.509");
-//            InputStream caInput = getResources().openRawResource(R.raw.server);
-//            Certificate ca;
-//            try {
-//                ca = cf.generateCertificate(caInput);
-//                Log.e("CERT", "ca=" + ((X509Certificate) ca).getSubjectDN());
-//            } finally {
-//                caInput.close();
-//            }
-//
-//
-//            String keyStoreType = KeyStore.getDefaultType();
-//            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-//            keyStore.load(null, null);
-//            keyStore.setCertificateEntry("ca", ca);
-//
-//
-//            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-//            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-//            tmf.init(keyStore);
-//
-//
-//            HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-//                @Override
-//                public boolean verify(String hostname, SSLSession session) {
-//
-//                    Log.e("CipherUsed", session.getCipherSuite());
-//                    return hostname.compareTo("e-biz.in")==0; //The Hostname of your server
-//
-//                }
-//            };
-//
-//
-//            HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
-//            SSLContext cont = null;
-//            cont = SSLContext.getInstance("TLS");
-//
-//            cont.init(null, tmf.getTrustManagers(), null);
-//            HttpsURLConnection.setDefaultSSLSocketFactory(cont.getSocketFactory());
-//
-//            SSLSocketFactory sf = cont.getSocketFactory();
-//
-//
-//            return sf;
-//
-//        } catch (CertificateException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (KeyStoreException e) {
-//            e.printStackTrace();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (KeyManagementException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return  null;
-//    }
 }
 
 
