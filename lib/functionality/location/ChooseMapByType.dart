@@ -3,6 +3,7 @@ import 'package:Ebiz/functionality/salesLead/ReferedBy.dart';
 import 'package:Ebiz/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChooseMapByType extends StatefulWidget {
   @override
@@ -41,7 +42,16 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
             color: Colors.white,
             icon: Icon(Icons.check),
             onPressed: () async {
-              Navigator.pop(context, result + " USR_" + userId+ " U_"+userName);
+              if (userName == null) {
+                Fluttertoast.showToast(
+                    msg: "Please select the required input.");
+              } else if (userName.isEmpty && userId.isEmpty) {
+                Fluttertoast.showToast(
+                    msg: "Please select the required input.");
+              } else {
+                Navigator.pop(
+                    context, result + " USR_" + userId + " U_" + userName);
+              }
             },
           )
         ],
