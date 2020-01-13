@@ -7,13 +7,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.provider.Settings;
 import android.telephony.CellInfo;
+import android.telephony.CellInfoGsm;
+import android.telephony.CellInfoLte;
+import android.telephony.CellSignalStrength;
+import android.telephony.CellSignalStrengthGsm;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -32,6 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,15 +75,18 @@ import okhttp3.RequestBody;
 public class MyBroadcastReceiver extends BroadcastReceiver {
     MediaPlayer mp;
     private SimpleLocation simpleLocation;
-    String android_id;
+    String android_id, networkOperator, carrierName;
     double latitude = 0.0, longitude = 0.0;
-    int cid, lac, mcc, mnc;
+    int cid, lac, mcc, mnc,signalStrength;
     // String hrms_Service =
     // "http://192.168.2.5:8383/att.service/hrms/attendance/save/location"; //dev
     // String hrms_Service=
     // "http://192.168.2.3:8080/att.service/hrms/attendance/save/location"; //test
     String hrms_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/location"; // global
+//    String cellTowerService = "https://us1.unwiredlabs.com/v2/process.php";
+//    String cellTowerGoogleService = "https://googleapis.com/geolocation/v1/geolocate?key=AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY";
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onReceive(Context context, Intent intent) {
         mp = MediaPlayer.create(context, R.raw.alarm);
@@ -91,87 +102,185 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             longitude = simpleLocation.getLongitude();
             android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
             Log.v("android_id : ", android_id);
-            // TelephonyManager telephonyManager = (TelephonyManager)
-            // context.getSystemService(Context.TELEPHONY_SERVICE);
-            // @SuppressLint("MissingPermission") GsmCellLocation cellLocation =
-            // (GsmCellLocation) telephonyManager.getCellLocation();
-            // String networkOperator = telephonyManager.getNetworkOperator();
-            //
-            // cid=cellLocation.getCid();
-            // lac=cellLocation.getLac();
-            // if(!TextUtils.isEmpty(networkOperator)){
-            // mcc= Integer.parseInt(networkOperator.substring(0,3));
-            // mnc = Integer.parseInt(networkOperator.substring(3));
-            // }
-            // Log.d("eskNetwork Operator : ",networkOperator);
-            // Log.d("Mcc : ",String.valueOf(mcc));
-            // Log.d("Mnc : ",String.valueOf(mnc));
-            // Log.d("Lac : ",""+lac);
-            // Log.d("Cid : ",""+cid);
-            if (android_id == null || android_id == "null" || android_id.isEmpty()) {
-            } else {
-                if (latitude == 0.0) {
-                } else {
-                    RequestQueue queue = Volley.newRequestQueue(context);
-                    final StringRequest reqQueue = new StringRequest(Request.Method.POST, "" + hrms_Service,
-                            new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    // Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
-                                    Log.d("eskoResponse : ", response);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError volleyError) {
-                                    String message = null;
-                                    Log.d("eskoError : ", volleyError.toString());
-                                    if (volleyError instanceof NetworkError) {
-                                        // message = "1 Cannot connect to Internet...Please check your connection!";
-                                    } else if (volleyError instanceof ServerError) {
-                                        if (volleyError.networkResponse.statusCode == 417) {
-                                            message = "Invalid credentials. Please try again...";
-                                        } else if (volleyError.networkResponse.statusCode == 500) {
-                                            message = "Server could not be found. Please check.";
-                                        } else {
-                                            message = "The server could not be found. Please try again after some time!!";
-                                        }
-                                    } else if (volleyError instanceof AuthFailureError) {
-                                        message = "Cannot connect to Internet...Please check your connection!";
-                                    } else if (volleyError instanceof ParseError) {
-                                        message = "Parsing error! Please try again after some time!!";
-                                    } else if (volleyError instanceof NoConnectionError) {
-                                        message = "Cannot connect to Internet...Please check your connection!";
-                                    } else if (volleyError instanceof TimeoutError) {
-                                        message = "Connection TimeOut! Please check your internet connection.";
-                                    }
-//                                    Toast.makeText(context, "Error: " + message, Toast.LENGTH_LONG).show();
-                                }
-                            }) {
-                        @Override
-                        public byte[] getBody() throws AuthFailureError {
-                            try {
-                                JSONObject jsonObject = new JSONObject();
-                                jsonObject.put("latitude", latitude);
-                                jsonObject.put("longitude", longitude);
-                                jsonObject.put("deviceId", android_id);
-                                return jsonObject.toString().getBytes("utf-8");
-                            } catch (Exception ex) {
-//                                Toast.makeText(context, "Some error occurred. Please try again", Toast.LENGTH_LONG)
-//                                        .show();
-                            }
-                            return super.getBody();
-                        }
+//            TelephonyManager telephonyManager = (TelephonyManager)
+//                    context.getSystemService(Context.TELEPHONY_SERVICE);
+//            @SuppressLint("MissingPermission") GsmCellLocation cellLocation =
+//                    (GsmCellLocation) telephonyManager.getCellLocation();
+//            networkOperator = telephonyManager.getNetworkOperator();
+//            carrierName = telephonyManager.getSimOperatorName();
+//
+//                @SuppressLint({"MissingPermission", "NewApi", "LocalSuppress"}) CellInfoLte cellInfoGsm = (CellInfoLte) telephonyManager.getAllCellInfo().get(0);
+//                @SuppressLint({"NewApi", "LocalSuppress"}) CellSignalStrength cellSignalStrengthGsm=cellInfoGsm.getCellSignalStrength();
+//
+//            signalStrength= cellSignalStrengthGsm.getDbm();
+//
+//
+//
+//
+//
+//
+//
+//
+//            cid = cellLocation.getCid();
+//            lac = cellLocation.getLac();
+//            if (!TextUtils.isEmpty(networkOperator)) {
+//                mcc = Integer.parseInt(networkOperator.substring(0, 3));
+//                mnc = Integer.parseInt(networkOperator.substring(3));
+//            }
+//            Log.d("eskNetwork Operator : ", networkOperator);
+//            Log.d("Mcc : ", String.valueOf(mcc));
+//            Log.d("Mnc : ", String.valueOf(mnc));
+//            Log.d("Lac : ", "" + lac);
+//            Log.d("Cid : ", "" + cid);
+//            Log.d("Carrier : ", "" + carrierName);
 
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json";
-                        }
-                    };
-                    reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-                    reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
-                    queue.add(reqQueue);
-                }
-            }
+//            try {
+//                JSONObject cellsS=new JSONObject();
+//                cellsS.put("locationAreaCode",lac);
+//                cellsS.put("cellId",cid);
+//                cellsS.put("homeMobileCountryCode", mcc);
+//                cellsS.put("homeMobileNetworkCode", mnc);
+//                cellsS.put("age",0);
+//                cellsS.put("signalStrength",signalStrength);
+//
+//                JSONArray cellDetailsArray=new JSONArray();
+//                cellDetailsArray.put(cellsS);
+//
+//                JSONObject jsonObject = new JSONObject();
+//                jsonObject.put("homeMobileCountryCode", mcc);
+//                jsonObject.put("homeMobileNetworkCode", mnc);
+//                jsonObject.put("radioType", "lte");
+//                jsonObject.put("considerIp", "true");
+//                jsonObject.put("carrier", carrierName);
+//                jsonObject.put("cellTowers", cellDetailsArray);
+//
+//
+//
+//                RequestQueue que=Volley.newRequestQueue(context);
+//                JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, cellTowerGoogleService, jsonObject,
+//                        new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+////                        Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
+//                        Log.d("esko Repsonse Cell",response.toString());
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                });
+////                que.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+////                que.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+//                que.add(jsonObjectRequest);
+//            } catch (Exception ex) {
+//
+//            }
+
+
+//            try {
+//                JSONObject cellsS=new JSONObject();
+//                cellsS.put("lac",lac);
+//                cellsS.put("cid",cid);
+//
+//                JSONArray jsonArray=new JSONArray();
+//                jsonArray.put(cellsS);
+//
+//                JSONObject jsonObject = new JSONObject();
+//                jsonObject.put("token", "a9dcacdd7c348c");
+//                jsonObject.put("radio", "gsm");
+//                jsonObject.put("mcc", mcc);
+//                jsonObject.put("mnc", mnc);
+//                jsonObject.put("cells", jsonArray);
+//                jsonObject.put("address", 1);
+
+//                RequestQueue que=Volley.newRequestQueue(context);
+//                JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, cellTowerService, jsonObject,
+//                        new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+////                        Toast.makeText(context, response.toString(), Toast.LENGTH_SHORT).show();
+//                        Log.d("esko Repsonse Cell",response.toString());
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                    }
+//                });
+////                que.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+////                que.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+//                que.add(jsonObjectRequest);
+//            } catch (Exception ex) {
+//
+//            }
+
+
+
+             if (android_id == null || android_id == "null" || android_id.isEmpty()) {
+             } else {
+                 if (latitude == 0.0) {
+                 } else {
+                     RequestQueue queue = Volley.newRequestQueue(context);
+                     final StringRequest reqQueue = new StringRequest(Request.Method.POST, "" + hrms_Service,
+                             new Response.Listener<String>() {
+                                 @Override
+                                 public void onResponse(String response) {
+                                     // Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                                     Log.d("eskoResponse : ", response);
+                                 }
+                             }, new Response.ErrorListener() {
+                                 @Override
+                                 public void onErrorResponse(VolleyError volleyError) {
+                                     String message = null;
+                                     Log.d("eskoError : ", volleyError.toString());
+                                     if (volleyError instanceof NetworkError) {
+                                         // message = "1 Cannot connect to Internet...Please check your connection!";
+                                     } else if (volleyError instanceof ServerError) {
+                                         if (volleyError.networkResponse.statusCode == 417) {
+                                             message = "Invalid credentials. Please try again...";
+                                         } else if (volleyError.networkResponse.statusCode == 500) {
+                                             message = "Server could not be found. Please check.";
+                                         } else {
+                                             message = "The server could not be found. Please try again after some time!!";
+                                         }
+                                     } else if (volleyError instanceof AuthFailureError) {
+                                         message = "Cannot connect to Internet...Please check your connection!";
+                                     } else if (volleyError instanceof ParseError) {
+                                         message = "Parsing error! Please try again after some time!!";
+                                     } else if (volleyError instanceof NoConnectionError) {
+                                         message = "Cannot connect to Internet...Please check your connection!";
+                                     } else if (volleyError instanceof TimeoutError) {
+                                         message = "Connection TimeOut! Please check your internet connection.";
+                                     }
+ //                                    Toast.makeText(context, "Error: " + message, Toast.LENGTH_LONG).show();
+                                 }
+                             }) {
+                         @Override
+                         public byte[] getBody() throws AuthFailureError {
+                             try {
+                                 JSONObject jsonObject = new JSONObject();
+                                 jsonObject.put("latitude", latitude);
+                                 jsonObject.put("longitude", longitude);
+                                 jsonObject.put("deviceId", android_id);
+                                 return jsonObject.toString().getBytes("utf-8");
+                             } catch (Exception ex) {
+ //                                Toast.makeText(context, "Some error occurred. Please try again", Toast.LENGTH_LONG)
+ //                                        .show();
+                             }
+                             return super.getBody();
+                         }
+
+                         @Override
+                         public String getBodyContentType() {
+                             return "application/json";
+                         }
+                     };
+                     reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+                     reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+                     queue.add(reqQueue);
+                 }
+             }
         }
     }
 }
