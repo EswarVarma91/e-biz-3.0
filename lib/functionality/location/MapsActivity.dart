@@ -9,6 +9,7 @@ import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:Ebiz/model/LocationModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -31,10 +32,19 @@ class _ViewMapState extends State<MapsActivity> {
   String result = "0", dataId, dataName;
   MediaQuery queryData;
   static Dio dio = Dio(Config.options);
-  // bool polyCheck = false;
-  // Set<Polyline> _polylines;
 
-  // List<LatLng> latlngSegment1 = List();
+  Set<Marker> _markers = {};
+  // this will hold the generated polylines
+  Set<Polyline> _polylines = {};
+  // this will hold each polyline coordinate as Lat and Lng pairs
+  List<LatLng> polylineCoordinates = [];
+  // this is the key object - the PolylinePoints
+  // which generates every polyline between start and finish
+  PolylinePoints polylinePoints = PolylinePoints();
+  String googleAPIKey = "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY";
+  // for my custom icons
+  BitmapDescriptor sourceIcon;
+  BitmapDescriptor destinationIcon;
 
   void checkServices() {
     if (result == "0") {
@@ -49,11 +59,14 @@ class _ViewMapState extends State<MapsActivity> {
   @override
   void initState() {
     super.initState();
+    //  setSourceAndDestinationIcons();
     rootBundle.loadString('assets/map_style.txt').then((st) {
       _mapStyle = st;
     });
     checkServices();
   }
+
+  
 
   void _onScroll() {
     if (_pageController.page.toInt() != prevPage) {
@@ -208,36 +221,36 @@ class _ViewMapState extends State<MapsActivity> {
             //           onMapCreated: mapCreated,
             //         ),
             //       )
-            //     : 
-                Container(
-                    child: GoogleMap(
-                      compassEnabled: true,
-                      zoomGesturesEnabled: true,
-                      myLocationEnabled: true,
-                      initialCameraPosition: CameraPosition(
-                          target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
-                      markers: Set.from(allocationListarkers),
-                      onMapCreated: mapCreated,
-                    ),
-                  ),
+            //     :
+            Container(
+              child: GoogleMap(
+                compassEnabled: true,
+                zoomGesturesEnabled: true,
+                myLocationEnabled: true,
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
+                markers: Set.from(allocationListarkers),
+                onMapCreated: mapCreated,
+              ),
+            ),
             // polyCheck
             //     ? Container()
-            //     : 
-                Positioned(
-                    left: 1.0,
-                    bottom: 1.0,
-                    child: Container(
-                      height: 120.0,
-                      width: MediaQuery.of(context).size.width,
-                      child: PageView.builder(
-                        controller: _pageController,
-                        itemCount: locationList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return _employeesList(index);
-                        },
-                      ),
-                    ),
-                  ),
+            //     :
+            Positioned(
+              left: 1.0,
+              bottom: 1.0,
+              child: Container(
+                height: 120.0,
+                width: MediaQuery.of(context).size.width,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: locationList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _employeesList(index);
+                  },
+                ),
+              ),
+            ),
             CollapsingNavigationDrawer("6"),
           ],
         ));

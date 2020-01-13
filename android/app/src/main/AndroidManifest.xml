@@ -33,7 +33,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-         <receiver android:name=".MyBroadcastReceiver" >
+        <receiver android:name=".MyBroadcastReceiver" >
         </receiver>
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>

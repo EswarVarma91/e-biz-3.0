@@ -128,7 +128,7 @@ class _NewTaskState extends State<NewMyTasks> {
                   } else if (_controller3.text.isEmpty) {
                     Fluttertoast.showToast(msg: "Enter 'Location'");
                   } else if (_controller4.text.isEmpty) {
-                    Fluttertoast.showToast(msg: "Enter 'Contact Person'");
+                    Fluttertoast.showToast(msg: "Enter Contact Person");
                   } else if (reasonType == "Reason" || reasonType == "null") {
                     Fluttertoast.showToast(msg: "Enter 'Reason'");
                   } else {
@@ -523,8 +523,8 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpModifiedBy": profileName.toLowerCase(),
             "uId": uidd,
             "dpReason": reasonType,
-            "dpTaskStartDateTime": startDate,
-            "dpTaskEndDateTime": endDate
+            "dpTaskStartDateTime": "",
+            "dpTaskEndDateTime": ""
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
