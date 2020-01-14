@@ -92,7 +92,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         mp = MediaPlayer.create(context, R.raw.alarm);
         mp.reset();
         mp.start();
-        new NukeSSLCerts().nuke();
+//        new NukeSSLCerts().nuke();
         // HttpsTrustManager.allowAllSSL();
         simpleLocation = new SimpleLocation(context);
         if (!simpleLocation.hasLocationEnabled()) {
