@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:Ebiz/functionality/location/ChooseMapByType.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -12,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as intl;
 
 class MapsActivity extends StatefulWidget {
   @override
@@ -343,8 +345,9 @@ class _ViewMapState extends State<MapsActivity> {
       var now = DateTime.now();
       List splitDateTime = datetime.split(" ");
       List splitTime = splitDateTime[1].toString().split(":");
-      var lastSeenTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
-      var currentTime = DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
+      var lastSeenTime = intl.DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
+      var currentTime =
+          intl.DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
       if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
         return currentTime.difference(lastSeenTime).inSeconds.toString() +
             " sec ago ";
@@ -485,6 +488,9 @@ class _ViewMapState extends State<MapsActivity> {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
 
+        // final Uint8List markerIcon =
+        //     await getBytesFromCanvas(200, 100, list.length);
+
         // if (list.length != 0) {
         //   SOURCE_LOCATION = LatLng(
         //       double.parse(json.decode(response.data)[0]['lati']),
@@ -498,13 +504,14 @@ class _ViewMapState extends State<MapsActivity> {
         // } else {}
 
         for (int i = 0; i < list.length; i++) {
+          final Uint8List markerIcon = await getBytesFromCanvas(200, 100, i);
           allocationListarkers.add(Marker(
             markerId:
                 MarkerId(json.decode(response.data)[i]['uloc_id'].toString()),
             position: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
-            icon: BitmapDescriptor.defaultMarker,
+            icon: BitmapDescriptor.fromBytes(markerIcon),
             infoWindow: InfoWindow(
                 title: json
                         .decode(response.data)[i]['u_profile_name'][0]
@@ -676,5 +683,46 @@ class _ViewMapState extends State<MapsActivity> {
   void dispose() {
     _pageController.removeListener(_onScroll);
     super.dispose();
+  }
+
+  // Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  //   ByteData data = await rootBundle.load(path);
+  //   ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+  //       targetWidth: width);
+  //   ui.FrameInfo fi = await codec.getNextFrame();
+  //   return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+  //       .buffer
+  //       .asUint8List();
+  // }
+
+  Future<Uint8List> getBytesFromCanvas(int width, int height, int i) async {
+    final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(pictureRecorder);
+    final Paint paint = Paint()..color = Colors.white;
+    final Radius radius = Radius.circular(10.0);
+    canvas.drawRRect(
+        RRect.fromRectAndCorners(
+          Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
+          topLeft: radius,
+          topRight: radius,
+          bottomLeft: radius,
+          bottomRight: radius,
+        ),
+        paint);
+    TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
+    painter.text = TextSpan(
+      text: i.toString(),
+      style: TextStyle(
+          fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),
+    );
+    painter.layout();
+    painter.paint(
+        canvas,
+        Offset((width * 0.5) - painter.width * 0.5,
+            (height * 0.5) - painter.height * 0.5));
+    final img = await pictureRecorder.endRecording().toImage(width, height);
+    final data = await img.toByteData(format: ui.ImageByteFormat.png);
+
+    return data.buffer.asUint8List();
   }
 }
