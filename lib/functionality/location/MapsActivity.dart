@@ -97,7 +97,7 @@ class _ViewMapState extends State<MapsActivity> {
         return Center(
           child: SizedBox(
             height: Curves.easeInOut.transform(value) * 125.0,
-            width: Curves.easeInOut.transform(value) * 650.0,
+            width: Curves.easeInOut.transform(value) * 670.0,
             child: widget,
           ),
         );
@@ -218,21 +218,21 @@ class _ViewMapState extends State<MapsActivity> {
         ),
         body: Stack(
           children: <Widget>[
-            // polyCheck
-            //     ? Container(
-            //         child: GoogleMap(
-            //           compassEnabled: true,
-            //           zoomGesturesEnabled: true,
-            //           myLocationEnabled: true,
-            //           polylines: _polylines,
-            //           markers: _markers,
-            //           mapType: MapType.normal,
-            //           initialCameraPosition: CameraPosition(
-            //               target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
-            //           // markers: Set.from(allocationListarkers),
-            //           onMapCreated: mapCreatedPolyLines,
-            //         ),
-            //       ):
+            polyCheck
+                ? Container(
+                    child: GoogleMap(
+                      compassEnabled: true,
+                      zoomGesturesEnabled: true,
+                      myLocationEnabled: true,
+                      polylines: _polylines,
+                      markers: _markers,
+                      mapType: MapType.normal,
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
+                      // markers: Set.from(allocationListarkers),
+                      onMapCreated: mapCreatedPolyLines,
+                    ),
+                  ):
             Container(
               child: GoogleMap(
                 compassEnabled: true,
@@ -244,9 +244,9 @@ class _ViewMapState extends State<MapsActivity> {
                 onMapCreated: mapCreated,
               ),
             ),
-            // polyCheck
-            //     ? Container()
-            // :
+            polyCheck
+                ? Container()
+            :
             Positioned(
               left: 1.0,
               bottom: 1.0,
@@ -267,15 +267,15 @@ class _ViewMapState extends State<MapsActivity> {
         ));
   }
 
-  //  mapCreatedPolyLines(controller) {
-  //   setState(() {
-  //     _controllerCompleter.complete(controller);
-  //     _controller = controller;
-  //     // controller.setMapStyle(_mapStyle);
-  //     setMapPins();
-  //     setPolylines();
-  //   });
-  // }
+   mapCreatedPolyLines(controller) {
+    setState(() {
+      _controllerCompleter.complete(controller);
+      _controller = controller;
+      // controller.setMapStyle(_mapStyle);
+      setMapPins();
+      setPolylines();
+    });
+  }
 
   void setMapPins() {
     setState(() {
@@ -519,9 +519,9 @@ class _ViewMapState extends State<MapsActivity> {
             draggable: false,
           ));
 
-          // polylineCoordinates.add(LatLng(
-          //     double.parse(json.decode(response.data)[i]['lati']),
-          //     double.parse(json.decode(response.data)[i]['longi'])));
+          polylineCoordinates.add(LatLng(
+              double.parse(json.decode(response.data)[i]['lati']),
+              double.parse(json.decode(response.data)[i]['longi'])));
 
           // print("LatLong(" +
           //     double.parse(json.decode(response.data)[i]['lati']).toString() +
@@ -561,9 +561,6 @@ class _ViewMapState extends State<MapsActivity> {
         }
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
-        setState(() {
-          print(polylineCoordinates);
-        });
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
