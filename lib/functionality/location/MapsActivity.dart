@@ -26,6 +26,7 @@ class _ViewMapState extends State<MapsActivity> {
   PageController _pageController;
   List<LocationModel> locationList = [];
   int prevPage;
+  bool polyCheck = false;
   GoogleMapController _controller;
   Completer<GoogleMapController> _controllerCompleter = Completer();
   String _mapStyle;
@@ -36,8 +37,11 @@ class _ViewMapState extends State<MapsActivity> {
   Set<Marker> _markers = {};
   // this will hold the generated polylines
   Set<Polyline> _polylines = {};
+  LatLng SOURCE_LOCATION = LatLng(17.6918918, 83.2011254);
+  LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
   // this will hold each polyline coordinate as Lat and Lng pairs
   List<LatLng> polylineCoordinates = [];
+  Map<PolylineId, Polyline> polylines = {};
   // this is the key object - the PolylinePoints
   // which generates every polyline between start and finish
   PolylinePoints polylinePoints = PolylinePoints();
@@ -59,14 +63,20 @@ class _ViewMapState extends State<MapsActivity> {
   @override
   void initState() {
     super.initState();
-    //  setSourceAndDestinationIcons();
+    setSourceAndDestinationIcons();
     rootBundle.loadString('assets/map_style.txt').then((st) {
       _mapStyle = st;
     });
     checkServices();
   }
 
-  
+  void setSourceAndDestinationIcons() async {
+    sourceIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/driving_pin.png');
+    destinationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/destination_map_marker.png');
+  }
 
   void _onScroll() {
     if (_pageController.page.toInt() != prevPage) {
@@ -190,15 +200,15 @@ class _ViewMapState extends State<MapsActivity> {
                 dataName = data.split(" USR_")[1].split(" U_")[1];
 
                 if (res == "1") {
-                  // polyCheck = false;
+                  polyCheck = false;
                   result = "1";
                   checkServices();
                 } else if (res == "2") {
-                  // polyCheck = true;
+                  polyCheck = true;
                   result = "2";
                   checkServices();
                 } else {
-                  // polyCheck = false;
+                  polyCheck = false;
                   result = "0";
                   checkServices();
                 }
@@ -215,13 +225,14 @@ class _ViewMapState extends State<MapsActivity> {
             //           zoomGesturesEnabled: true,
             //           myLocationEnabled: true,
             //           polylines: _polylines,
+            //           markers: _markers,
+            //           mapType: MapType.normal,
             //           initialCameraPosition: CameraPosition(
             //               target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
             //           // markers: Set.from(allocationListarkers),
-            //           onMapCreated: mapCreated,
+            //           onMapCreated: mapCreatedPolyLines,
             //         ),
-            //       )
-            //     :
+            //       ):
             Container(
               child: GoogleMap(
                 compassEnabled: true,
@@ -235,7 +246,7 @@ class _ViewMapState extends State<MapsActivity> {
             ),
             // polyCheck
             //     ? Container()
-            //     :
+            // :
             Positioned(
               left: 1.0,
               bottom: 1.0,
@@ -254,6 +265,61 @@ class _ViewMapState extends State<MapsActivity> {
             CollapsingNavigationDrawer("6"),
           ],
         ));
+  }
+
+  //  mapCreatedPolyLines(controller) {
+  //   setState(() {
+  //     _controllerCompleter.complete(controller);
+  //     _controller = controller;
+  //     // controller.setMapStyle(_mapStyle);
+  //     setMapPins();
+  //     setPolylines();
+  //   });
+  // }
+
+  void setMapPins() {
+    setState(() {
+      // source pin
+      _markers.add(Marker(
+          markerId: MarkerId('sourcePin'),
+          position: SOURCE_LOCATION,
+          icon: sourceIcon));
+      // destination pin
+      _markers.add(Marker(
+          markerId: MarkerId('destPin'),
+          position: DEST_LOCATION,
+          icon: destinationIcon));
+    });
+  }
+
+  setPolylines() async {
+    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
+        googleAPIKey,
+        SOURCE_LOCATION.latitude,
+        SOURCE_LOCATION.longitude,
+        DEST_LOCATION.latitude,
+        DEST_LOCATION.longitude);
+    if (result.isNotEmpty) {
+      // loop through all PointLatLng points and convert them
+      // to a list of LatLng, required by the Polyline
+      result.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+
+    setState(() {
+      // create a Polyline instance
+      // with an id, an RGB color and the list of LatLng pairs
+      Polyline polyline = Polyline(
+          polylineId: PolylineId("poly"),
+          color: Color.fromARGB(255, 40, 122, 198),
+          points: polylineCoordinates);
+
+      // add the constructed polyline as a set of points
+      // to the polyline set, which will eventually
+      // end up showing up on the map
+      _polylines.add(polyline);
+    });
   }
 
   void mapCreated(controller) {
@@ -407,7 +473,6 @@ class _ViewMapState extends State<MapsActivity> {
   _getUserLocationByUid(String dataId) async {
     allocationListarkers.clear();
     locationList.clear();
-    // latlngSegment1.clear();
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -419,6 +484,19 @@ class _ViewMapState extends State<MapsActivity> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
+
+        if (list.length != 0) {
+          SOURCE_LOCATION = LatLng(
+              double.parse(json.decode(response.data)[0]['lati']),
+              double.parse(json.decode(response.data)[0]['longi']));
+          print(SOURCE_LOCATION);
+          DEST_LOCATION = LatLng(
+              double.parse(json.decode(response.data)[list.length - 1]['lati']),
+              double.parse(
+                  json.decode(response.data)[list.length - 1]['longi']));
+          print(DEST_LOCATION);
+        } else {}
+
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
             markerId:
@@ -441,16 +519,15 @@ class _ViewMapState extends State<MapsActivity> {
             draggable: false,
           ));
 
+          // polylineCoordinates.add(LatLng(
+          //     double.parse(json.decode(response.data)[i]['lati']),
+          //     double.parse(json.decode(response.data)[i]['longi'])));
+
           // print("LatLong(" +
           //     double.parse(json.decode(response.data)[i]['lati']).toString() +
           //     " " +
           //     double.parse(json.decode(response.data)[i]['longi']).toString() +
           //     ")");
-
-          // latlngSegment1.add(LatLng(
-          //     double.parse(json.decode(response.data)[i]['lati']),
-          //     double.parse(json.decode(response.data)[i]['longi'])));
-
           listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
@@ -465,15 +542,6 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
-
-        // _polylines.add(Polyline(
-        //   polylineId: PolylineId('line1'),
-        //   visible: true,
-        //   //latlng is List<LatLng>
-        //   points: latlngSegment1,
-        //   color: Colors.blue,
-        // ));
-        // print(_polylines);
         if (listModel.length != 0) {
           setState(() {
             locationList = listModel;
@@ -493,6 +561,9 @@ class _ViewMapState extends State<MapsActivity> {
         }
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
+        setState(() {
+          print(polylineCoordinates);
+        });
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Check your internet connection.");
         throw Exception("Connection Failure.");
