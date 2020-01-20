@@ -512,7 +512,6 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     var display = d[0].toString();
     List<String> a = display.split("-");
 
-    // print(d[0]);
     setState(() {
       checkOut = d[0].toString();
       checkOuts = a[2] + "-" + a[1] + "-" + a[0];
@@ -645,14 +644,6 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
     );
   }
 
-// TravelNameId,
-//                     _controllerLocation.text,
-//                     ratingBar.toString(),
-//                     checkIn,
-//                     checkOut,
-//                     _controllerPurpose.text,
-//                     _controllerRemarks.text,
-//                     TcomplaintTicketNo,
   void alertDialogHotel(
       String travelNameId,
       String locationT,

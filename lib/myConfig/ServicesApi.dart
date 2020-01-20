@@ -22,25 +22,28 @@ class ServicesApi {
 
   //leave policy
   static String leavePolicy = hrms_Service + "check/leavePolicy";
+
   //crm Sales Lead
   static String Pending_Url = basic_url + crm + "crm/get/data";
   static String Sales_Insert_Url = basic_url + crm + 'crm/sales/request/save';
 
-  //
+  //decryption
   static String getData = hrms_Service + "encryption/getEncryptedDataDecryptedForMobile";
   static String updateData = basic_url + global_Service + "updateAnyGlobalDataForMobile";
 
+  //device id
   static String insertDeviceid= basic_url+"att.service/hrms/attendance/save/device";
 
   //Leaves
   static String insertLeave = hrms_Service + "hrms/saveEmployeeLeave";
   static String ChangeLeaveStatus = hrms_Service + "hrms/update/leave/status";
   static String checkLeaveStatus = hrms_Service + "hrms/get/hruser/data";
+  static String getLeaves = basic_url + att_Service + "attendance/get/user/leaves?id=";
 
   //Permissions
   static String insertPermission = hrms_Service + "hrms/saveEmpPermission";
   static String ChangePermissionStatus = hrms_Service + "hrms/update/Permission/status";
-  static String getLeaves = basic_url + att_Service + "attendance/get/user/leaves?id=";
+
 
   //Day Plan (Insert, Update):- Self, Team, Project
   static String saveDayPlan = hrms_Service + "hrms/saveDayPlan";

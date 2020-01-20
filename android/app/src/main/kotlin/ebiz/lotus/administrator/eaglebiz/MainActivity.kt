@@ -32,6 +32,5 @@ class MainActivity: FlutterActivity() {
     //     if (!simpleLocation.hasLocationEnabled()) {
     //         SimpleLocation.openSettings(context);
     //     } else {
-            
     //     }
 }
