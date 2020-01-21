@@ -4,6 +4,7 @@ https://solido.github.io/awesome-flutter/
 changes 2.0 release 
 
  * Location Tracking
+ * Day Plan - Self Task (Out of Office Issue has been fixed).
 
 changes 1.9 release 
 
