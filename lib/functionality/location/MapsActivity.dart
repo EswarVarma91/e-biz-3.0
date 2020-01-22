@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:Ebiz/main.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:Ebiz/functionality/location/ChooseMapByType.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -13,6 +14,7 @@ import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -28,7 +30,7 @@ class _ViewMapState extends State<MapsActivity> {
   PageController _pageController;
   List<LocationModel> locationList = [];
   int prevPage;
-  // bool polyCheck = false;
+  bool polyCheck = false;
   GoogleMapController _controller;
   Completer<GoogleMapController> _controllerCompleter = Completer();
   String _mapStyle;
@@ -36,19 +38,11 @@ class _ViewMapState extends State<MapsActivity> {
   MediaQuery queryData;
   static Dio dio = Dio(Config.options);
 
-  Set<Marker> _markers = {};
-  // this will hold the generated polylines
-  Set<Polyline> _polylines = {};
-  // LatLng SOURCE_LOCATION = LatLng(17.6918918, 83.2011254);
+  LatLng SOURCE_LOCATION = LatLng(17.6918918, 83.2011254);
   // LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
-  // this will hold each polyline coordinate as Lat and Lng pairs
-  List<LatLng> polylineCoordinates = [];
-  Map<PolylineId, Polyline> polylines = {};
-  // this is the key object - the PolylinePoints
-  // which generates every polyline between start and finish
-  PolylinePoints polylinePoints = PolylinePoints();
-  String googleAPIKey = "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY";
-  // for my custom icons
+  List<LatLng> routeCoords = [];
+  Set<Polyline> _polylines = {};
+  GoogleMapPolyline googleMapPolyline=new GoogleMapPolyline(apiKey: "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY");
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
 
@@ -174,7 +168,7 @@ class _ViewMapState extends State<MapsActivity> {
                                   ),
                                 )
                               ])
-                        ]))))
+                        ])))),
           ])),
     );
   }
@@ -202,15 +196,15 @@ class _ViewMapState extends State<MapsActivity> {
                 dataName = data.split(" USR_")[1].split(" U_")[1];
 
                 if (res == "1") {
-                  // polyCheck = false;
+                  polyCheck = false;
                   result = "1";
                   checkServices();
                 } else if (res == "2") {
-                  // polyCheck = true;
+                  polyCheck = true;
                   result = "2";
                   checkServices();
                 } else {
-                  // polyCheck = false;
+                  polyCheck = false;
                   result = "0";
                   checkServices();
                 }
@@ -220,35 +214,18 @@ class _ViewMapState extends State<MapsActivity> {
         ),
         body: Stack(
           children: <Widget>[
-            // polyCheck
-            //     ? Container(
-            //         child: GoogleMap(
-            //           compassEnabled: true,
-            //           zoomGesturesEnabled: true,
-            //           myLocationEnabled: true,
-            //           polylines: _polylines,
-            //           markers: _markers,
-            //           mapType: MapType.normal,
-            //           initialCameraPosition: CameraPosition(
-            //               target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
-            //           // markers: Set.from(allocationListarkers),
-            //           onMapCreated: mapCreatedPolyLines,
-            //         ),
-            //       ):
             Container(
               child: GoogleMap(
                 compassEnabled: true,
                 zoomGesturesEnabled: true,
                 myLocationEnabled: true,
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(17.6918918, 83.2011254), zoom: 10.0),
+                // polylines:  polyCheck ? _polylines: {},
+                initialCameraPosition:
+                    CameraPosition(target: SOURCE_LOCATION, zoom: 4.0),
                 markers: Set.from(allocationListarkers),
                 onMapCreated: mapCreated,
               ),
             ),
-            // polyCheck
-            //     ? Container()
-            // :
             Positioned(
               left: 1.0,
               bottom: 1.0,
@@ -264,6 +241,55 @@ class _ViewMapState extends State<MapsActivity> {
                 ),
               ),
             ),
+            polyCheck
+                ? SafeArea(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(280, 440, 10, 10),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 10,
+                                width: 10,
+                                child: Container(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                "Started",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 5),
+                          Row(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 10,
+                                width: 10,
+                                child: Container(
+                                  color: Colors.red,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                "Ended",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10)
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(),
             CollapsingNavigationDrawer("6"),
           ],
         ));
@@ -335,7 +361,7 @@ class _ViewMapState extends State<MapsActivity> {
   moveCamera() {
     _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: locationList[_pageController.page.toInt()].localCordinates,
-        zoom: 10.0,
+        zoom: 4.0,
         bearing: 45.0,
         tilt: 45.0)));
   }
@@ -396,6 +422,19 @@ class _ViewMapState extends State<MapsActivity> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
+        if (list.length != 0) {
+        setState(() {
+            SOURCE_LOCATION = LatLng(
+              double.parse(json.decode(response.data)[0]['lati']),
+              double.parse(json.decode(response.data)[0]['longi']));
+          });
+          print(SOURCE_LOCATION);
+          // DEST_LOCATION = LatLng(
+          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
+          //     double.parse(
+          //         json.decode(response.data)[list.length - 1]['longi']));
+          // print(DEST_LOCATION);
+        } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
             markerId:
@@ -491,20 +530,23 @@ class _ViewMapState extends State<MapsActivity> {
         // final Uint8List markerIcon =
         //     await getBytesFromCanvas(200, 100, list.length);
 
-        // if (list.length != 0) {
-        //   SOURCE_LOCATION = LatLng(
-        //       double.parse(json.decode(response.data)[0]['lati']),
-        //       double.parse(json.decode(response.data)[0]['longi']));
-        //   print(SOURCE_LOCATION);
-        //   DEST_LOCATION = LatLng(
-        //       double.parse(json.decode(response.data)[list.length - 1]['lati']),
-        //       double.parse(
-        //           json.decode(response.data)[list.length - 1]['longi']));
-        //   print(DEST_LOCATION);
-        // } else {}
+        if (list.length != 0) {
+          setState(() {
+            SOURCE_LOCATION = LatLng(
+              double.parse(json.decode(response.data)[0]['lati']),
+              double.parse(json.decode(response.data)[0]['longi']));
+          });
+          print(SOURCE_LOCATION);
+          // DEST_LOCATION = LatLng(
+          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
+          //     double.parse(
+          //         json.decode(response.data)[list.length - 1]['longi']));
+          // print(DEST_LOCATION);
+        } else {}
 
         for (int i = 0; i < list.length; i++) {
-          final Uint8List markerIcon = await getBytesFromCanvas(200, 100, i);
+          final Uint8List markerIcon =
+              await getBytesFromCanvas(200, 100, i, list.length);
           allocationListarkers.add(Marker(
             markerId:
                 MarkerId(json.decode(response.data)[i]['uloc_id'].toString()),
@@ -519,22 +561,13 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: "last seen " +
-                        _lastSeenTime(
-                            json.decode(response.data)[i]['created_date']) ??
+                snippet: json
+                        .decode(response.data)[i]['created_date']
+                        .split(" ")[1] ??
                     " "),
             draggable: false,
           ));
 
-          polylineCoordinates.add(LatLng(
-              double.parse(json.decode(response.data)[i]['lati']),
-              double.parse(json.decode(response.data)[i]['longi'])));
-
-          // print("LatLong(" +
-          //     double.parse(json.decode(response.data)[i]['lati']).toString() +
-          //     " " +
-          //     double.parse(json.decode(response.data)[i]['longi']).toString() +
-          //     ")");
           listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
@@ -549,6 +582,12 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
+
+        // for(int i = 0; i < list.length; i+2){
+        //   for(int j = 1; j < list.length; j+2 ){
+        //     print(json.decode(response.data)[i]['lati']+json.decode(response.data)[i]['longi'] + " destination "+json.decode(response.data)[j]['lati']+json.decode(response.data)[j]['longi']);
+        //   }
+        // }
         if (listModel.length != 0) {
           setState(() {
             locationList = listModel;
@@ -603,6 +642,20 @@ class _ViewMapState extends State<MapsActivity> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
+
+        if (list.length != 0) {
+          setState(() {
+            SOURCE_LOCATION = LatLng(
+              double.parse(json.decode(response.data)[0]['lati']),
+              double.parse(json.decode(response.data)[0]['longi']));
+          });
+          print(SOURCE_LOCATION);
+          // DEST_LOCATION = LatLng(
+          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
+          //     double.parse(
+          //         json.decode(response.data)[list.length - 1]['longi']));
+          // print(DEST_LOCATION);
+        } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
             markerId:
@@ -685,25 +738,35 @@ class _ViewMapState extends State<MapsActivity> {
     super.dispose();
   }
 
-  Future<Uint8List> getBytesFromCanvas(int width, int height, int i) async {
+  Future<Uint8List> getBytesFromCanvas(
+      int width, int height, int i, int length) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
-    final Paint paint = Paint()..color = Colors.white;
-    final Radius radius = Radius.circular(10.0);
+    Paint paint;
+    int value = i + 1;
+    int finalValue = length - 1;
+    if (finalValue == i) {
+      paint = Paint()..color = Colors.red;
+    } else {
+      paint = Paint()..color = value == 1 ? Colors.green : Colors.black;
+    }
+    // finalValue == length-1 ? Colors.red : Colors.black;
+    final Radius radius = Radius.circular(60.0);
     canvas.drawRRect(
         RRect.fromRectAndCorners(
-          Rect.fromLTWH(0.0, 0.0, width.toDouble(), height.toDouble()),
+          Rect.fromLTWH(0.4, 0.3, width * 0.4, height * 0.5),
           topLeft: radius,
           topRight: radius,
           bottomLeft: radius,
           bottomRight: radius,
         ),
         paint);
+
     TextPainter painter = TextPainter(textDirection: TextDirection.ltr);
     painter.text = TextSpan(
-      text: i.toString(),
+      text: value.toString(),
       style: TextStyle(
-          fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),
+          fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),
     );
     painter.layout();
     painter.paint(

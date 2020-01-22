@@ -1,5 +1,5 @@
 class PaidCountModel {
-  final int paidCount;
+  final double paidCount;
 
   PaidCountModel(
     this.paidCount,
