@@ -39,12 +39,10 @@ class _ViewMapState extends State<MapsActivity> {
   static Dio dio = Dio(Config.options);
 
   LatLng SOURCE_LOCATION = LatLng(17.6918918, 83.2011254);
-  LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
+  // LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
   List<LatLng> routeCoords = [];
   Set<Polyline> _polylines = {};
-  PolylinePoints polylinePoints = PolylinePoints();
   GoogleMapPolyline googleMapPolyline=new GoogleMapPolyline(apiKey: "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY");
-  String googleAPIKey="AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY";
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
 
@@ -61,20 +59,20 @@ class _ViewMapState extends State<MapsActivity> {
   @override
   void initState() {
     super.initState();
-    setSourceAndDestinationIcons();
+    // setSourceAndDestinationIcons();
     rootBundle.loadString('assets/map_style.txt').then((st) {
       _mapStyle = st;
     });
     checkServices();
   }
 
-  void setSourceAndDestinationIcons() async {
-    sourceIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/driving_pin.png');
-    destinationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/destination_map_marker.png');
-  }
+  // void setSourceAndDestinationIcons() async {
+  //   sourceIcon = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(devicePixelRatio: 2.5), 'assets/driving_pin.png');
+  //   destinationIcon = await BitmapDescriptor.fromAssetImage(
+  //       ImageConfiguration(devicePixelRatio: 2.5),
+  //       'assets/destination_map_marker.png');
+  // }
 
   void _onScroll() {
     if (_pageController.page.toInt() != prevPage) {
@@ -221,7 +219,7 @@ class _ViewMapState extends State<MapsActivity> {
                 compassEnabled: true,
                 zoomGesturesEnabled: true,
                 myLocationEnabled: true,
-                polylines:  polyCheck ? _polylines: {},
+                // polylines:  polyCheck ? _polylines: {},
                 initialCameraPosition:
                     CameraPosition(target: SOURCE_LOCATION, zoom: 4.0),
                 markers: Set.from(allocationListarkers),
@@ -297,42 +295,66 @@ class _ViewMapState extends State<MapsActivity> {
         ));
   }
 
-  setPolylines() async {
-    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-        googleAPIKey,
-        SOURCE_LOCATION.latitude,
-        SOURCE_LOCATION.longitude,
-        DEST_LOCATION.latitude,
-        DEST_LOCATION.longitude);
-    if (result.isNotEmpty) {
-      // loop through all PointLatLng points and convert them
-      // to a list of LatLng, required by the Polyline
-      result.forEach((PointLatLng point) {
-        routeCoords.add(LatLng(point.latitude, point.longitude));
-      });
-    }
+  //  mapCreatedPolyLines(controller) {
+  //   setState(() {
+  //     _controllerCompleter.complete(controller);
+  //     _controller = controller;
+  //     // controller.setMapStyle(_mapStyle);
+  //     setMapPins();
+  //     setPolylines();
+  //   });
+  // }
 
-    setState(() {
-      // create a Polyline instance
-      // with an id, an RGB color and the list of LatLng pairs
-      Polyline polyline = Polyline(
-          polylineId: PolylineId("poly"),
-          color: Color.fromARGB(255, 40, 122, 198),
-          points: routeCoords);
+  // void setMapPins() {
+  //   setState(() {
+  //     // source pin
+  //     _markers.add(Marker(
+  //         markerId: MarkerId('sourcePin'),
+  //         position: SOURCE_LOCATION,
+  //         icon: sourceIcon));
+  //     // destination pin
+  //     _markers.add(Marker(
+  //         markerId: MarkerId('destPin'),
+  //         position: DEST_LOCATION,
+  //         icon: destinationIcon));
+  //   });
+  // }
 
-      // add the constructed polyline as a set of points
-      // to the polyline set, which will eventually
-      // end up showing up on the map
-      _polylines.add(polyline);
-    });
-  }
+  // setPolylines() async {
+  //   List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
+  //       googleAPIKey,
+  //       SOURCE_LOCATION.latitude,
+  //       SOURCE_LOCATION.longitude,
+  //       DEST_LOCATION.latitude,
+  //       DEST_LOCATION.longitude);
+  //   if (result.isNotEmpty) {
+  //     // loop through all PointLatLng points and convert them
+  //     // to a list of LatLng, required by the Polyline
+  //     result.forEach((PointLatLng point) {
+  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     });
+  //   }
+
+  //   setState(() {
+  //     // create a Polyline instance
+  //     // with an id, an RGB color and the list of LatLng pairs
+  //     Polyline polyline = Polyline(
+  //         polylineId: PolylineId("poly"),
+  //         color: Color.fromARGB(255, 40, 122, 198),
+  //         points: polylineCoordinates);
+
+  //     // add the constructed polyline as a set of points
+  //     // to the polyline set, which will eventually
+  //     // end up showing up on the map
+  //     _polylines.add(polyline);
+  //   });
+  // }
 
   void mapCreated(controller) {
     setState(() {
       _controllerCompleter.complete(controller);
       _controller = controller;
       controller.setMapStyle(_mapStyle);
-      polyCheck ?  setPolylines() : "" ;
     });
   }
 
@@ -505,6 +527,9 @@ class _ViewMapState extends State<MapsActivity> {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
 
+        // final Uint8List markerIcon =
+        //     await getBytesFromCanvas(200, 100, list.length);
+
         if (list.length != 0) {
           setState(() {
             SOURCE_LOCATION = LatLng(
@@ -512,18 +537,16 @@ class _ViewMapState extends State<MapsActivity> {
               double.parse(json.decode(response.data)[0]['longi']));
           });
           print(SOURCE_LOCATION);
-          DEST_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[list.length - 1]['lati']),
-              double.parse(
-                  json.decode(response.data)[list.length - 1]['longi']));
-          print(DEST_LOCATION);
+          // DEST_LOCATION = LatLng(
+          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
+          //     double.parse(
+          //         json.decode(response.data)[list.length - 1]['longi']));
+          // print(DEST_LOCATION);
         } else {}
 
         for (int i = 0; i < list.length; i++) {
           final Uint8List markerIcon =
               await getBytesFromCanvas(200, 100, i, list.length);
-          
-          //markers
           allocationListarkers.add(Marker(
             markerId:
                 MarkerId(json.decode(response.data)[i]['uloc_id'].toString()),
@@ -544,7 +567,7 @@ class _ViewMapState extends State<MapsActivity> {
                     " "),
             draggable: false,
           ));
-          //cards
+
           listModel.add(LocationModel(
             uloc_id: json.decode(response.data)[i]['uloc_id'],
             localCordinates: LatLng(
@@ -560,8 +583,11 @@ class _ViewMapState extends State<MapsActivity> {
           ));
         }
 
-
-        // cards
+        // for(int i = 0; i < list.length; i+2){
+        //   for(int j = 1; j < list.length; j+2 ){
+        //     print(json.decode(response.data)[i]['lati']+json.decode(response.data)[i]['longi'] + " destination "+json.decode(response.data)[j]['lati']+json.decode(response.data)[j]['longi']);
+        //   }
+        // }
         if (listModel.length != 0) {
           setState(() {
             locationList = listModel;
@@ -579,13 +605,6 @@ class _ViewMapState extends State<MapsActivity> {
             locationList = listModel;
           });
         }
-
-        //list polylines
-
-       
-
-
-        //page controller for cards
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
