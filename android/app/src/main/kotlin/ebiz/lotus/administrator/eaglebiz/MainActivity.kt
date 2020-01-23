@@ -22,6 +22,7 @@ class MainActivity: FlutterActivity() {
 
     fun startAlert(){
         val intent = Intent(this,MyBroadcastReceiver::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         val pendingIntent = PendingIntent.getBroadcast(this.applicationContext,234,intent,0)
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
