@@ -39,35 +39,16 @@ class _ViewMapState extends State<MapsActivity> {
   static Dio dio = Dio(Config.options);
 
   LatLng SOURCE_LOCATION = LatLng(17.6918918, 83.2011254);
-  LatLng DEST_LOCATION = LatLng(16.6918918, 84.2011254);
+  LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
   List<LatLng> routeCoords = [];
-  // Set<Polyline> _polylines = {};
+  Set<Polyline> _polylines = {};
   PolylinePoints polylinePoints = PolylinePoints();
   GoogleMapPolyline googleMapPolyline=new GoogleMapPolyline(apiKey: "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY");
   String googleAPIKey="AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY";
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
-  int _polylineCount = 1;
-   bool _loading = false;
-   Map<PolylineId, Polyline> _polylines = <PolylineId, Polyline>{};
-   //Polyline patterns
-  List<List<PatternItem>> patterns = <List<PatternItem>>[
-    <PatternItem>[], //line
-    <PatternItem>[PatternItem.dash(30.0), PatternItem.gap(20.0)], //dash
-    <PatternItem>[PatternItem.dot, PatternItem.gap(10.0)], //dot
-    <PatternItem>[
-      //dash-dot
-      PatternItem.dash(30.0),
-      PatternItem.gap(20.0),
-      PatternItem.dot,
-      PatternItem.gap(20.0)
-    ],
-  ];
-   LatLng _originLocation = LatLng(40.677939, -73.941755);
-  LatLng _destinationLocation = LatLng(40.698432, -73.924038);
 
   void checkServices() {
-     _getPolylinesWithLocation();
     if (result == "0") {
       _getuserLocations();
     } else if (result == "1") {
@@ -77,49 +58,9 @@ class _ViewMapState extends State<MapsActivity> {
     }
   }
 
-
-  _getPolylinesWithLocation() async {
-    _setLoadingMenu(true);
-    List<LatLng> _coordinates =
-        await googleMapPolyline.getCoordinatesWithLocation(
-            origin: _originLocation,
-            destination: _destinationLocation,
-            mode: RouteMode.driving);
-
-    setState(() {
-      _polylines.clear();
-    });
-    _addPolyline(_coordinates);
-    _setLoadingMenu(false);
-  }
-
-    _setLoadingMenu(bool _status) {
-    setState(() {
-      _loading = _status;
-    });
-  }
-
-  _addPolyline(List<LatLng> _coordinates) {
-    PolylineId id = PolylineId("poly$_polylineCount");
-    Polyline polyline = Polyline(
-        polylineId: id,
-        patterns: patterns[0],
-        color: Colors.blueAccent,
-        points: _coordinates,
-        width: 10,
-        onTap: () {});
-
-    setState(() {
-      _polylines[id] = polyline;
-      _polylineCount++;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    // setPolylines();
-    _getPolylinesWithLocation();
     setSourceAndDestinationIcons();
     rootBundle.loadString('assets/map_style.txt').then((st) {
       _mapStyle = st;
@@ -280,14 +221,14 @@ class _ViewMapState extends State<MapsActivity> {
                 compassEnabled: true,
                 zoomGesturesEnabled: true,
                 myLocationEnabled: true,
-                polylines: Set<Polyline>.of(_polylines.values) ,
+                polylines:  polyCheck ? _polylines: {},
                 initialCameraPosition:
                     CameraPosition(target: SOURCE_LOCATION, zoom: 4.0),
                 markers: Set.from(allocationListarkers),
                 onMapCreated: mapCreated,
               ),
             ),
-           polyCheck ?  Positioned(
+            Positioned(
               left: 1.0,
               bottom: 1.0,
               child: Container(
@@ -301,7 +242,7 @@ class _ViewMapState extends State<MapsActivity> {
                   },
                 ),
               ),
-            ):Container(),
+            ),
             polyCheck
                 ? SafeArea(
                     child: Container(
@@ -356,12 +297,42 @@ class _ViewMapState extends State<MapsActivity> {
         ));
   }
 
+  setPolylines() async {
+    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
+        googleAPIKey,
+        SOURCE_LOCATION.latitude,
+        SOURCE_LOCATION.longitude,
+        DEST_LOCATION.latitude,
+        DEST_LOCATION.longitude);
+    if (result.isNotEmpty) {
+      // loop through all PointLatLng points and convert them
+      // to a list of LatLng, required by the Polyline
+      result.forEach((PointLatLng point) {
+        routeCoords.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+
+    setState(() {
+      // create a Polyline instance
+      // with an id, an RGB color and the list of LatLng pairs
+      Polyline polyline = Polyline(
+          polylineId: PolylineId("poly"),
+          color: Color.fromARGB(255, 40, 122, 198),
+          points: routeCoords);
+
+      // add the constructed polyline as a set of points
+      // to the polyline set, which will eventually
+      // end up showing up on the map
+      _polylines.add(polyline);
+    });
+  }
+
   void mapCreated(controller) {
     setState(() {
       _controllerCompleter.complete(controller);
       _controller = controller;
       controller.setMapStyle(_mapStyle);
-      // polyCheck ?  setPolylines() : "" ;
+      polyCheck ?  setPolylines() : "" ;
     });
   }
 
@@ -436,11 +407,11 @@ class _ViewMapState extends State<MapsActivity> {
               double.parse(json.decode(response.data)[0]['longi']));
           });
           print(SOURCE_LOCATION);
-          DEST_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[list.length - 1]['lati']),
-              double.parse(
-                  json.decode(response.data)[list.length - 1]['longi']));
-          print(DEST_LOCATION);
+          // DEST_LOCATION = LatLng(
+          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
+          //     double.parse(
+          //         json.decode(response.data)[list.length - 1]['longi']));
+          // print(DEST_LOCATION);
         } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
@@ -660,11 +631,11 @@ class _ViewMapState extends State<MapsActivity> {
               double.parse(json.decode(response.data)[0]['longi']));
           });
           print(SOURCE_LOCATION);
-          DEST_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[list.length - 1]['lati']),
-              double.parse(
-                  json.decode(response.data)[list.length - 1]['longi']));
-          print(DEST_LOCATION);
+          // DEST_LOCATION = LatLng(
+          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
+          //     double.parse(
+          //         json.decode(response.data)[list.length - 1]['longi']));
+          // print(DEST_LOCATION);
         } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
