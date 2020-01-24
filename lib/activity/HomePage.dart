@@ -133,6 +133,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       }
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -670,7 +671,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         PaidCountModel data = PaidCountModel.fromJson(res[0]);
         // print(data.toString());
         setState(() {
-          paidCount = data.paidCount.toString();
+          paidCount = checkPaidCount(data.paidCount.toString());
         });
       } else {
         Fluttertoast.showToast(msg: "Check your internet connection.");
@@ -980,15 +981,20 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   void insertDeviceID(String deviceId, String userId) async {
     var response = await dio.post(ServicesApi.insertDeviceid,
-        data: {
-          "deviceId": deviceId,
-          "uId": userId
-        },
+        data: {"deviceId": deviceId, "uId": userId},
         options: Options(contentType: ContentType.parse('application/json')));
     if (response.statusCode == 200 || response.statusCode == 201) {
       // print(token);
     } else if (response.statusCode == 401) {
       throw (Exception);
+    }
+  }
+
+  String checkPaidCount(String countP) {
+    if (countP.split(".")[1] == "0") {
+      return countP.split(".")[0];
+    } else if (countP.split(".")[1] == "5") {
+      return countP;
     }
   }
 }

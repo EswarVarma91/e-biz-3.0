@@ -31,7 +31,7 @@ class _ViewMapState extends State<MapsActivity> {
   List<LocationModel> locationList = [];
   int prevPage;
   bool polyCheck = false;
-  GoogleMapController _controller;
+  GoogleMapController con;
   Completer<GoogleMapController> _controllerCompleter = Completer();
   String _mapStyle;
   String result = "0", dataId, dataName;
@@ -39,10 +39,17 @@ class _ViewMapState extends State<MapsActivity> {
   static Dio dio = Dio(Config.options);
 
   LatLng SOURCE_LOCATION = LatLng(17.6918918, 83.2011254);
-  // LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
-  List<LatLng> routeCoords = [];
+  LatLng DEST_LOCATION = LatLng(17.6918918, 83.2011254);
+
+  // this will hold the generated polylines
   Set<Polyline> _polylines = {};
-  GoogleMapPolyline googleMapPolyline=new GoogleMapPolyline(apiKey: "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY");
+  // this will hold each polyline coordinate as Lat and Lng pairs
+  List<LatLng> polylineCoordinates = [];
+  // this is the key object - the PolylinePoints
+  // which generates every polyline between start and finish
+  PolylinePoints polylinePoints = PolylinePoints();
+  String googleAPIKey = "AIzaSyBqgribdISpSb392mekKstHkm-bzC9GBTY";
+  // for my custom icons
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
 
@@ -59,20 +66,20 @@ class _ViewMapState extends State<MapsActivity> {
   @override
   void initState() {
     super.initState();
-    // setSourceAndDestinationIcons();
+    setSourceAndDestinationIcons();
     rootBundle.loadString('assets/map_style.txt').then((st) {
       _mapStyle = st;
     });
     checkServices();
   }
 
-  // void setSourceAndDestinationIcons() async {
-  //   sourceIcon = await BitmapDescriptor.fromAssetImage(
-  //       ImageConfiguration(devicePixelRatio: 2.5), 'assets/driving_pin.png');
-  //   destinationIcon = await BitmapDescriptor.fromAssetImage(
-  //       ImageConfiguration(devicePixelRatio: 2.5),
-  //       'assets/destination_map_marker.png');
-  // }
+  void setSourceAndDestinationIcons() async {
+    sourceIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/driving_pin.png');
+    destinationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/destination_map_marker.png');
+  }
 
   void _onScroll() {
     if (_pageController.page.toInt() != prevPage) {
@@ -214,18 +221,30 @@ class _ViewMapState extends State<MapsActivity> {
         ),
         body: Stack(
           children: <Widget>[
-            Container(
-              child: GoogleMap(
-                compassEnabled: true,
-                zoomGesturesEnabled: true,
-                myLocationEnabled: true,
-                // polylines:  polyCheck ? _polylines: {},
-                initialCameraPosition:
-                    CameraPosition(target: SOURCE_LOCATION, zoom: 4.0),
-                markers: Set.from(allocationListarkers),
-                onMapCreated: mapCreated,
-              ),
-            ),
+            polyCheck
+                ? Container(
+                    child: GoogleMap(
+                        myLocationEnabled: true,
+                        compassEnabled: true,
+                        tiltGesturesEnabled: false,
+                        markers: Set.from(allocationListarkers),
+                        polylines: _polylines,
+                        mapType: MapType.normal,
+                        initialCameraPosition:
+                            CameraPosition(target: SOURCE_LOCATION, zoom: 4),
+                        onMapCreated: mapCreatedPoints),
+                  )
+                : Container(
+                    child: GoogleMap(
+                        myLocationEnabled: true,
+                        compassEnabled: true,
+                        tiltGesturesEnabled: false,
+                        markers: Set.from(allocationListarkers),
+                        mapType: MapType.normal,
+                        initialCameraPosition:
+                            CameraPosition(target: SOURCE_LOCATION, zoom: 10),
+                        onMapCreated: mapCreated),
+                  ),
             Positioned(
               left: 1.0,
               bottom: 1.0,
@@ -295,75 +314,69 @@ class _ViewMapState extends State<MapsActivity> {
         ));
   }
 
-  //  mapCreatedPolyLines(controller) {
-  //   setState(() {
-  //     _controllerCompleter.complete(controller);
-  //     _controller = controller;
-  //     // controller.setMapStyle(_mapStyle);
-  //     setMapPins();
-  //     setPolylines();
-  //   });
-  // }
-
-  // void setMapPins() {
-  //   setState(() {
-  //     // source pin
-  //     _markers.add(Marker(
-  //         markerId: MarkerId('sourcePin'),
-  //         position: SOURCE_LOCATION,
-  //         icon: sourceIcon));
-  //     // destination pin
-  //     _markers.add(Marker(
-  //         markerId: MarkerId('destPin'),
-  //         position: DEST_LOCATION,
-  //         icon: destinationIcon));
-  //   });
-  // }
-
-  // setPolylines() async {
-  //   List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-  //       googleAPIKey,
-  //       SOURCE_LOCATION.latitude,
-  //       SOURCE_LOCATION.longitude,
-  //       DEST_LOCATION.latitude,
-  //       DEST_LOCATION.longitude);
-  //   if (result.isNotEmpty) {
-  //     // loop through all PointLatLng points and convert them
-  //     // to a list of LatLng, required by the Polyline
-  //     result.forEach((PointLatLng point) {
-  //       polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-  //     });
-  //   }
-
-  //   setState(() {
-  //     // create a Polyline instance
-  //     // with an id, an RGB color and the list of LatLng pairs
-  //     Polyline polyline = Polyline(
-  //         polylineId: PolylineId("poly"),
-  //         color: Color.fromARGB(255, 40, 122, 198),
-  //         points: polylineCoordinates);
-
-  //     // add the constructed polyline as a set of points
-  //     // to the polyline set, which will eventually
-  //     // end up showing up on the map
-  //     _polylines.add(polyline);
-  //   });
-  // }
-
-  void mapCreated(controller) {
+  void mapCreated(GoogleMapController controller) {
     setState(() {
       _controllerCompleter.complete(controller);
-      _controller = controller;
+      con = controller;
       controller.setMapStyle(_mapStyle);
+      // polyCheck ? setMapPins() : check();
+      // polyCheck ? setPolylines() : check();
+    });
+  }
+
+  void mapCreatedPoints(GoogleMapController controller) {
+    setState(() {
+      _controllerCompleter.complete(controller);
+      con = controller;
+      controller.setMapStyle(_mapStyle);
+      setMapPins();
+      setPolylines();
+    });
+  }
+
+  void setMapPins() {
+    setState(() {
+      // source pin
+      allocationListarkers.add(Marker(
+          markerId: MarkerId('sourcePin'),
+          position: SOURCE_LOCATION,
+          icon: sourceIcon));
+      // destination pin
+      allocationListarkers.add(Marker(
+          markerId: MarkerId('destPin'),
+          position: DEST_LOCATION,
+          icon: destinationIcon));
+    });
+  }
+
+  setPolylines() async {
+    _polylines.clear();
+    List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
+        googleAPIKey,
+        SOURCE_LOCATION.latitude,
+        SOURCE_LOCATION.longitude,
+        DEST_LOCATION.latitude,
+        DEST_LOCATION.longitude);
+    if (result.isNotEmpty) {
+      result.forEach((PointLatLng point) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      });
+    }
+    print(polylineCoordinates);
+
+    setState(() {
+      Polyline polyline = Polyline(
+          polylineId: PolylineId("poly"),
+          color: Colors.grey,
+          points: polylineCoordinates);
+      _polylines.add(polyline);
     });
   }
 
   moveCamera() {
-    _controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+    con.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: locationList[_pageController.page.toInt()].localCordinates,
-        zoom: 4.0,
-        bearing: 45.0,
-        tilt: 45.0)));
+        zoom: 10.0,)));
   }
 
   String _lastSeenTime(String datetime) {
@@ -423,17 +436,17 @@ class _ViewMapState extends State<MapsActivity> {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
         if (list.length != 0) {
-        setState(() {
+          setState(() {
             SOURCE_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[0]['lati']),
-              double.parse(json.decode(response.data)[0]['longi']));
+                double.parse(json.decode(response.data)[0]['lati']),
+                double.parse(json.decode(response.data)[0]['longi']));
           });
           print(SOURCE_LOCATION);
-          // DEST_LOCATION = LatLng(
-          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
-          //     double.parse(
-          //         json.decode(response.data)[list.length - 1]['longi']));
-          // print(DEST_LOCATION);
+          DEST_LOCATION = LatLng(
+              double.parse(json.decode(response.data)[list.length - 1]['lati']),
+              double.parse(
+                  json.decode(response.data)[list.length - 1]['longi']));
+          print(DEST_LOCATION);
         } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
@@ -526,25 +539,23 @@ class _ViewMapState extends State<MapsActivity> {
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
-
-        // final Uint8List markerIcon =
-        //     await getBytesFromCanvas(200, 100, list.length);
-
         if (list.length != 0) {
           setState(() {
             SOURCE_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[0]['lati']),
-              double.parse(json.decode(response.data)[0]['longi']));
+                double.parse(json.decode(response.data)[0]['lati']),
+                double.parse(json.decode(response.data)[0]['longi']));
+            print(SOURCE_LOCATION);
+            DEST_LOCATION = LatLng(
+                double.parse(
+                    json.decode(response.data)[list.length - 1]['lati']),
+                double.parse(
+                    json.decode(response.data)[list.length - 1]['longi']));
+            print(DEST_LOCATION);
           });
-          print(SOURCE_LOCATION);
-          // DEST_LOCATION = LatLng(
-          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
-          //     double.parse(
-          //         json.decode(response.data)[list.length - 1]['longi']));
-          // print(DEST_LOCATION);
         } else {}
 
         for (int i = 0; i < list.length; i++) {
+          int value = i+1;
           final Uint8List markerIcon =
               await getBytesFromCanvas(200, 100, i, list.length);
           allocationListarkers.add(Marker(
@@ -560,7 +571,7 @@ class _ViewMapState extends State<MapsActivity> {
                         .toUpperCase() +
                     json
                         .decode(response.data)[i]['u_profile_name']
-                        .substring(1),
+                        .substring(1)+" "+value.toString(),
                 snippet: json
                         .decode(response.data)[i]['created_date']
                         .split(" ")[1] ??
@@ -582,12 +593,14 @@ class _ViewMapState extends State<MapsActivity> {
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
-
-        // for(int i = 0; i < list.length; i+2){
-        //   for(int j = 1; j < list.length; j+2 ){
-        //     print(json.decode(response.data)[i]['lati']+json.decode(response.data)[i]['longi'] + " destination "+json.decode(response.data)[j]['lati']+json.decode(response.data)[j]['longi']);
-        //   }
+        //   for(int i=0;i<list.length;i++){
+        //   int j=i+1;
+        //   print(json.decode(response.data)[i]['lati']+", "+json.decode(response.data)[i]['longi'] + " destination "+
+        //   json.decode(response.data)[j]['lati']+", "+json.decode(response.data)[j]['longi']);
         // }
+        setMapPins();
+        setPolylines();
+
         if (listModel.length != 0) {
           setState(() {
             locationList = listModel;
@@ -646,15 +659,16 @@ class _ViewMapState extends State<MapsActivity> {
         if (list.length != 0) {
           setState(() {
             SOURCE_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[0]['lati']),
-              double.parse(json.decode(response.data)[0]['longi']));
+                double.parse(json.decode(response.data)[0]['lati']),
+                double.parse(json.decode(response.data)[0]['longi']));
+            print(SOURCE_LOCATION);
+            DEST_LOCATION = LatLng(
+                double.parse(
+                    json.decode(response.data)[list.length - 1]['lati']),
+                double.parse(
+                    json.decode(response.data)[list.length - 1]['longi']));
+            print(DEST_LOCATION);
           });
-          print(SOURCE_LOCATION);
-          // DEST_LOCATION = LatLng(
-          //     double.parse(json.decode(response.data)[list.length - 1]['lati']),
-          //     double.parse(
-          //         json.decode(response.data)[list.length - 1]['longi']));
-          // print(DEST_LOCATION);
         } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
@@ -750,11 +764,10 @@ class _ViewMapState extends State<MapsActivity> {
     } else {
       paint = Paint()..color = value == 1 ? Colors.green : Colors.black;
     }
-    // finalValue == length-1 ? Colors.red : Colors.black;
     final Radius radius = Radius.circular(60.0);
     canvas.drawRRect(
         RRect.fromRectAndCorners(
-          Rect.fromLTWH(0.4, 0.3, width * 0.4, height * 0.5),
+          Rect.fromLTWH(10, 0.9, width * 0.3, height * 0.4),
           topLeft: radius,
           topRight: radius,
           bottomLeft: radius,

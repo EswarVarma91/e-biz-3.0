@@ -89,14 +89,14 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onReceive(Context context, Intent intent) {
-        mp = MediaPlayer.create(context, R.raw.alarm);
-        mp.reset();
-        mp.start();
+//        mp = MediaPlayer.create(context, R.raw.alarm);
+//        mp.reset();
+//        mp.start();
 //        new NukeSSLCerts().nuke();
         // HttpsTrustManager.allowAllSSL();
         simpleLocation = new SimpleLocation(context);
         if (!simpleLocation.hasLocationEnabled()) {
-            SimpleLocation.openSettings(context);
+//            context.SimpleLocation.openSettings(context);
         } else {
             latitude = simpleLocation.getLatitude();
             longitude = simpleLocation.getLongitude();
