@@ -376,7 +376,7 @@ class _ViewMapState extends State<MapsActivity> {
   moveCamera() {
     con.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target: locationList[_pageController.page.toInt()].localCordinates,
-        zoom: 10.0,)));
+        zoom: 18.0,)));
   }
 
   String _lastSeenTime(String datetime) {
@@ -598,8 +598,8 @@ class _ViewMapState extends State<MapsActivity> {
         //   print(json.decode(response.data)[i]['lati']+", "+json.decode(response.data)[i]['longi'] + " destination "+
         //   json.decode(response.data)[j]['lati']+", "+json.decode(response.data)[j]['longi']);
         // }
-        setMapPins();
-        setPolylines();
+        // setMapPins();
+        // setPolylines();
 
         if (listModel.length != 0) {
           setState(() {

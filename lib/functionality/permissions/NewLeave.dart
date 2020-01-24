@@ -553,7 +553,32 @@ class _NewLeaveState extends State<NewLeave> {
     }
   }
 
-  void callServiceInsert() async {
+  callServiceInsert() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to create leave request.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  _serviceDataRequestInsert();
+                },
+                child: Text('Yes'),
+              ),
+            ],
+          );
+        });
+  }
+
+  void _serviceDataRequestInsert() async {
     var response;
     if (_color1 == true) {
       response = await dio.post(ServicesApi.insertLeave,

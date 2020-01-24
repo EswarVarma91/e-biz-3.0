@@ -1,6 +1,6 @@
 name: Ebiz
 description: EBiz.
-version: 2.0+25
+version: 2.1+26
 environment:
   sdk: ">=2.2.0 <3.0.0"
 dependencies:

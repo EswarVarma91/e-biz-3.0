@@ -434,6 +434,31 @@ class _NewPermissionState extends State<NewPermissions> {
   }
 
   permissionSerivceCall() async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Do you want to create leave request.?'),
+            actions: <Widget>[
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('No'),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  _servicepermissionDataInsert();
+                },
+                child: Text('Yes'),
+              ),
+            ],
+          );
+        });
+  }
+
+  _servicepermissionDataInsert() async{
     pr.show();
     try {
       var response;
