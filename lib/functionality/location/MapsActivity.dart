@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
-import 'package:Ebiz/main.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:Ebiz/functionality/location/ChooseMapByType.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -14,7 +13,6 @@ import 'package:Ebiz/myConfig/Config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_map_polyline/google_map_polyline.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -107,7 +105,7 @@ class _ViewMapState extends State<MapsActivity> {
       },
       child: InkWell(
           onTap: () {
-            // moveCamera();
+            moveCamera();
           },
           child: Stack(children: [
             Center(
@@ -165,19 +163,28 @@ class _ViewMapState extends State<MapsActivity> {
                                 Container(
                                   width: 160.0,
                                   child: Text(
-                                    "Last seen: " +
-                                            _lastSeenTime(locationList[index]
-                                                .created_date) ??
+                                    _changeDateFormat(
+                                            locationList[index].created_date) ??
                                         " ",
                                     style: TextStyle(
                                         fontSize: 11.0,
-                                        fontWeight: FontWeight.w300),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 )
                               ])
                         ])))),
           ])),
     );
+  }
+
+  _changeDateFormat(String _date) {
+    if (_date != null && _date != "") {
+      var __date =
+          intl.DateFormat("dd-MM-yyyy hh:mm:ss").format(DateTime.parse(_date));
+      return __date;
+    } else {
+      return "--";
+    }
   }
 
   @override
@@ -227,6 +234,7 @@ class _ViewMapState extends State<MapsActivity> {
                         myLocationEnabled: true,
                         compassEnabled: true,
                         tiltGesturesEnabled: false,
+                        zoomGesturesEnabled: true,
                         markers: Set.from(allocationListarkers),
                         polylines: _polylines,
                         mapType: MapType.normal,
@@ -239,6 +247,7 @@ class _ViewMapState extends State<MapsActivity> {
                         myLocationEnabled: true,
                         compassEnabled: true,
                         tiltGesturesEnabled: false,
+                        zoomGesturesEnabled: true,
                         markers: Set.from(allocationListarkers),
                         mapType: MapType.normal,
                         initialCameraPosition:
@@ -375,52 +384,53 @@ class _ViewMapState extends State<MapsActivity> {
 
   moveCamera() {
     con.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: locationList[_pageController.page.toInt()].localCordinates,
-        zoom: 18.0,)));
+      target: locationList[_pageController.page.toInt()].localCordinates,
+      zoom: 15.0,
+    )));
   }
 
-  String _lastSeenTime(String datetime) {
-    if (datetime.isNotEmpty) {
-      var now = DateTime.now();
-      List splitDateTime = datetime.split(" ");
-      List splitTime = splitDateTime[1].toString().split(":");
-      var lastSeenTime = intl.DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
-      var currentTime =
-          intl.DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
-      if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
-        return currentTime.difference(lastSeenTime).inSeconds.toString() +
-            " sec ago ";
-      } else if (currentTime.difference(lastSeenTime).inMinutes <= 60) {
-        return currentTime.difference(lastSeenTime).inMinutes.toString() +
-            " min ago ";
-      } else if (currentTime.difference(lastSeenTime).inHours <= 24) {
-        return currentTime.difference(lastSeenTime).inHours.toString() +
-            " hours ago ";
-      } else if (currentTime.difference(lastSeenTime).inDays <= 7) {
-        if (currentTime.difference(lastSeenTime).inDays == 0) {
-          return " yesterday at " +
-              splitTime[0] +
-              ":" +
-              splitTime[1].toString();
-        } else if (currentTime.difference(lastSeenTime).inDays == 1) {
-          return currentTime.difference(lastSeenTime).inDays.toString() +
-              " day ago ";
-        } else {
-          return currentTime.difference(lastSeenTime).inDays.toString() +
-              " days ago ";
-        }
-      } else {
-        return "at " +
-            splitDateTime[0] +
-            " " +
-            splitTime[0] +
-            ":" +
-            splitTime[1].toString();
-      }
-    } else {
-      return "--";
-    }
-  }
+  // String _lastSeenTime(String datetime) {
+  //   if (datetime.isNotEmpty) {
+  //     var now = DateTime.now();
+  //     List splitDateTime = datetime.split(" ");
+  //     List splitTime = splitDateTime[1].toString().split(":");
+  //     var lastSeenTime = intl.DateFormat("yyyy-mm-dd HH:mm:ss").parse(datetime);
+  //     var currentTime =
+  //         intl.DateFormat("yyyy-mm-dd HH:mm:ss").parse(now.toString());
+  //     if (currentTime.difference(lastSeenTime).inSeconds <= 59) {
+  //       return currentTime.difference(lastSeenTime).inSeconds.toString() +
+  //           " sec ago ";
+  //     } else if (currentTime.difference(lastSeenTime).inMinutes <= 60) {
+  //       return currentTime.difference(lastSeenTime).inMinutes.toString() +
+  //           " min ago ";
+  //     } else if (currentTime.difference(lastSeenTime).inHours <= 24) {
+  //       return currentTime.difference(lastSeenTime).inHours.toString() +
+  //           " hours ago ";
+  //     } else if (currentTime.difference(lastSeenTime).inDays <= 7) {
+  //       if (currentTime.difference(lastSeenTime).inDays == 0) {
+  //         return " yesterday at " +
+  //             splitTime[0] +
+  //             ":" +
+  //             splitTime[1].toString();
+  //       } else if (currentTime.difference(lastSeenTime).inDays == 1) {
+  //         return currentTime.difference(lastSeenTime).inDays.toString() +
+  //             " day ago ";
+  //       } else {
+  //         return currentTime.difference(lastSeenTime).inDays.toString() +
+  //             " days ago ";
+  //       }
+  //     } else {
+  //       return "at " +
+  //           splitDateTime[0] +
+  //           " " +
+  //           splitTime[0] +
+  //           ":" +
+  //           splitTime[1].toString();
+  //     }
+  //   } else {
+  //     return "--";
+  //   }
+  // }
 
   _getuserLocations() async {
     allocationListarkers.clear();
@@ -440,13 +450,14 @@ class _ViewMapState extends State<MapsActivity> {
             SOURCE_LOCATION = LatLng(
                 double.parse(json.decode(response.data)[0]['lati']),
                 double.parse(json.decode(response.data)[0]['longi']));
+            print(SOURCE_LOCATION);
+            DEST_LOCATION = LatLng(
+                double.parse(
+                    json.decode(response.data)[list.length - 1]['lati']),
+                double.parse(
+                    json.decode(response.data)[list.length - 1]['longi']));
+            print(DEST_LOCATION);
           });
-          print(SOURCE_LOCATION);
-          DEST_LOCATION = LatLng(
-              double.parse(json.decode(response.data)[list.length - 1]['lati']),
-              double.parse(
-                  json.decode(response.data)[list.length - 1]['longi']));
-          print(DEST_LOCATION);
         } else {}
         for (int i = 0; i < list.length; i++) {
           allocationListarkers.add(Marker(
@@ -463,10 +474,7 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: "last seen " +
-                        _lastSeenTime(
-                            json.decode(response.data)[i]['created_date']) ??
-                    " "),
+                snippet: json.decode(response.data)[i]['created_date'] ?? " "),
             draggable: false,
           ));
 
@@ -555,7 +563,6 @@ class _ViewMapState extends State<MapsActivity> {
         } else {}
 
         for (int i = 0; i < list.length; i++) {
-          int value = i+1;
           final Uint8List markerIcon =
               await getBytesFromCanvas(200, 100, i, list.length);
           allocationListarkers.add(Marker(
@@ -571,11 +578,9 @@ class _ViewMapState extends State<MapsActivity> {
                         .toUpperCase() +
                     json
                         .decode(response.data)[i]['u_profile_name']
-                        .substring(1)+" "+value.toString(),
-                snippet: json
-                        .decode(response.data)[i]['created_date']
-                        .split(" ")[1] ??
-                    " "),
+                        .substring(1) +
+                    " ",
+                snippet: json.decode(response.data)[i]['created_date'] ?? " "),
             draggable: false,
           ));
 
@@ -618,6 +623,7 @@ class _ViewMapState extends State<MapsActivity> {
             locationList = listModel;
           });
         }
+        moveCamera();
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
@@ -685,10 +691,7 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: "last seen " +
-                        _lastSeenTime(
-                            json.decode(response.data)[i]['created_date']) ??
-                    " "),
+                snippet: json.decode(response.data)[i]['created_date'] ?? " "),
             draggable: false,
           ));
 
@@ -723,6 +726,7 @@ class _ViewMapState extends State<MapsActivity> {
             locationList = listModel;
           });
         }
+        moveCamera();
         _pageController = PageController(initialPage: 1, viewportFraction: 0.8)
           ..addListener(_onScroll);
       } else if (response.statusCode == 401) {
@@ -762,7 +766,7 @@ class _ViewMapState extends State<MapsActivity> {
     if (finalValue == i) {
       paint = Paint()..color = Colors.red;
     } else {
-      paint = Paint()..color = value == 1 ? Colors.green : Colors.black;
+      paint = Paint()..color = value == 1 ? Colors.green : Colors.grey;
     }
     final Radius radius = Radius.circular(60.0);
     canvas.drawRRect(
