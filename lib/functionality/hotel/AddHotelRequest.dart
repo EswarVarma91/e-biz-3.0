@@ -463,7 +463,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
             barrierDismissible: false,
             builder: (BuildContext context) {
               return CupertinoAlertDialog(
-                title: Text('Do you want exit from hotel module.'),
+                title: Text('Do you want exit from hotel module ?'),
                 actions: <Widget>[
                   CupertinoButton(
                     onPressed: () {

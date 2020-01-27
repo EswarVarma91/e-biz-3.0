@@ -559,7 +559,7 @@ class _NewLeaveState extends State<NewLeave> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text('Do you want to create leave request.?'),
+            title: Text('Do you want to create leave request ?'),
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {

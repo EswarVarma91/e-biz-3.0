@@ -371,7 +371,7 @@ class _ViewMapState extends State<MapsActivity> {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       });
     }
-    print(polylineCoordinates);
+    // print(polylineCoordinates);
 
     setState(() {
       Polyline polyline = Polyline(
@@ -450,13 +450,13 @@ class _ViewMapState extends State<MapsActivity> {
             SOURCE_LOCATION = LatLng(
                 double.parse(json.decode(response.data)[0]['lati']),
                 double.parse(json.decode(response.data)[0]['longi']));
-            print(SOURCE_LOCATION);
+            // print(SOURCE_LOCATION);
             DEST_LOCATION = LatLng(
                 double.parse(
                     json.decode(response.data)[list.length - 1]['lati']),
                 double.parse(
                     json.decode(response.data)[list.length - 1]['longi']));
-            print(DEST_LOCATION);
+            // print(DEST_LOCATION);
           });
         } else {}
         for (int i = 0; i < list.length; i++) {
@@ -552,13 +552,13 @@ class _ViewMapState extends State<MapsActivity> {
             SOURCE_LOCATION = LatLng(
                 double.parse(json.decode(response.data)[0]['lati']),
                 double.parse(json.decode(response.data)[0]['longi']));
-            print(SOURCE_LOCATION);
+            // print(SOURCE_LOCATION);
             DEST_LOCATION = LatLng(
                 double.parse(
                     json.decode(response.data)[list.length - 1]['lati']),
                 double.parse(
                     json.decode(response.data)[list.length - 1]['longi']));
-            print(DEST_LOCATION);
+            // print(DEST_LOCATION);
           });
         } else {}
 
@@ -667,13 +667,13 @@ class _ViewMapState extends State<MapsActivity> {
             SOURCE_LOCATION = LatLng(
                 double.parse(json.decode(response.data)[0]['lati']),
                 double.parse(json.decode(response.data)[0]['longi']));
-            print(SOURCE_LOCATION);
+            // print(SOURCE_LOCATION);
             DEST_LOCATION = LatLng(
                 double.parse(
                     json.decode(response.data)[list.length - 1]['lati']),
                 double.parse(
                     json.decode(response.data)[list.length - 1]['longi']));
-            print(DEST_LOCATION);
+            // print(DEST_LOCATION);
           });
         } else {}
         for (int i = 0; i < list.length; i++) {

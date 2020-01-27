@@ -879,7 +879,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text('Do you want to create travel request.?'),
+            title: Text('Do you want to create travel request ?'),
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {
@@ -926,7 +926,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text('Do you want to create travel request.?'),
+            title: Text('Do you want to create travel request ?'),
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {

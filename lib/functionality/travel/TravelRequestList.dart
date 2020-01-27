@@ -241,7 +241,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 10),
+                                          fontSize: 7),
                                     ),
                                   ],
                                 ),
@@ -259,7 +259,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 10),
+                                          fontSize: 7),
                                     ),
                                   ],
                                 )

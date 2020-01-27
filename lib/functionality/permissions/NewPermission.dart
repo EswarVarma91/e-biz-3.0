@@ -439,7 +439,7 @@ class _NewPermissionState extends State<NewPermissions> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text('Do you want to create leave request.?'),
+            title: Text('Do you want to create permission request ?'),
             actions: <Widget>[
               CupertinoButton(
                 onPressed: () {
