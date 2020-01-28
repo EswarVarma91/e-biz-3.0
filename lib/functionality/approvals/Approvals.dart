@@ -1438,9 +1438,7 @@ class _ApprovalsState extends State<Approvals> {
           ));
       if (response2.statusCode == 200 || response2.statusCode == 201) {
         setState(() {
-          trlm = (json.decode(response2.data) as List)
-              .map((data) => TravelRequestListModel.fromJson(data))
-              .toList();
+          trlm = (json.decode(response2.data) as List).map((a) => TravelRequestListModel.fromJson(a)).toList();
         });
         checkServices();
       }

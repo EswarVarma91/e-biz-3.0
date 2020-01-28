@@ -26,7 +26,7 @@ class MainActivity: FlutterActivity() {
         val pendingIntent = PendingIntent.getBroadcast(applicationContext,234,intent,0)
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),15*60*1000,pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),1*60*1000,pendingIntent)
     }
 
 
