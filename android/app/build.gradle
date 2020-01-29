@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation("com.squareup.okhttp3:okhttp:4.2.2")
     implementation 'com.github.delight-im:Android-SimpleLocation:v1.0.1'
+    implementation 'com.github.quentin7b:android-location-tracker:3.2'
     
 }
 
