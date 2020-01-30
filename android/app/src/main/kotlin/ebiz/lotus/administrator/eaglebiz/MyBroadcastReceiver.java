@@ -22,11 +22,13 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import ebiz.lotus.administrator.eaglebiz.database.DBManager;
+import ebiz.lotus.administrator.eaglebiz.model.LocationDataModel;
 import im.delight.android.location.SimpleLocation;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
@@ -34,6 +36,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     String android_id;
     double latitude = 0.0, longitude = 0.0;
     DBManager dbManager;
+    List<LocationDataModel> listlocationData =new ArrayList<>();
     String hrms_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/location"; // global
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -108,7 +111,9 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
                         dbManager.open();
                         dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),currentDateandTime);
-                        Toast.makeText(context, String.valueOf(dbManager.getAllLocationsData()), Toast.LENGTH_SHORT).show();
+
+                        listlocationData.addAll(dbManager.getAllLocationsData());
+
                         dbManager.close();
 
 
