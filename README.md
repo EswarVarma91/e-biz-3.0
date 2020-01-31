@@ -1,6 +1,10 @@
 
 https://solido.github.io/awesome-flutter/
 
+changes 2.1 release
+  
+ * Location Tracking by User with indication of users start and latest.
+
 changes 2.0 release 
 
  * Location Tracking
