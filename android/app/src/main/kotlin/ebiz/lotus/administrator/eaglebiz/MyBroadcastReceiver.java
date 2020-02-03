@@ -21,8 +21,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -62,43 +65,34 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
 //                        Toast.makeText(context, "Yes Internet", Toast.LENGTH_SHORT).show();
                         Log.d("Receiver","Yes Internet");
+                        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        String currentDateandTime = sdf.format(new Date());
+
+                        dbManager.open();
+                        listlocationData.addAll(dbManager.getAllLocationsData());
+                        dbManager.close();
                         //==================
-                        RequestQueue queue = Volley.newRequestQueue(context);
-                        final StringRequest reqQueue = new StringRequest(Request.Method.POST, hrms_Service,
-                                new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        Log.d("eskoResponse : ", response);
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                Log.d("eskoError : ", volleyError.toString());
-                            }
-                        }) {
-                            @Override
-                            public byte[] getBody() throws AuthFailureError {
-                                try {
-                                    JSONObject jsonObject = new JSONObject();
-                                    jsonObject.put("latitude", latitude);
-                                    jsonObject.put("longitude", longitude);
-                                    jsonObject.put("deviceId", android_id);
-                                    return jsonObject.toString().getBytes("utf-8");
-                                } catch (Exception ex) {
+                       pushData(context,android_id,latitude,longitude,currentDateandTime);
 
-                                }
-                                return super.getBody();
-                            }
-
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json";
-                            }
-                        };
-                        reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-                        reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
-                        queue.add(reqQueue);
-
+//                       for(int i=0; i<listlocationData.size();i++){
+//                           int finalValue = listlocationData.size()-1;
+//                           String aid = listlocationData.get(i).getDevice_idM();
+//                           double alati = Double.parseDouble(listlocationData.get(i).getLatiM());
+//                           double alongi = Double.parseDouble(listlocationData.get(i).getLongiM());
+//                           String acreatedDate = listlocationData.get(i).getCreadted_dateM();
+//
+//                           pushData(context,aid,alati,alongi,acreatedDate);
+//
+//                           if(finalValue == i){
+//                               dbManager.open();
+//                               dbManager.deleteAll();
+//                               dbManager.close();
+//                               listlocationData.clear();
+////                               listlocationData.size();
+//                           }else{
+//
+//                           }
+//                       }
                         //=============================
 
                     }else{
@@ -108,20 +102,79 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
                         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                         String currentDateandTime = sdf.format(new Date());
-
                         dbManager.open();
-                        dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),currentDateandTime);
 
-                        listlocationData.addAll(dbManager.getAllLocationsData());
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            LocalTime time1= LocalTime.now();
 
+                            LocalTime time2= LocalTime.of(8,50,0,0);
+                            LocalTime time3= LocalTime.of(19,0,0,0);
+
+                            DateFormat dateFormat= new SimpleDateFormat("HH:mm:ss");
+
+                            java.util.Date date = new java.util.Date();
+                            String formattedDate = dateFormat.format(date);
+
+                            String[] parts = formattedDate.split(":");
+                            Calendar cal = Calendar.getInstance();
+                            cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(parts[0]));
+                            cal.set(Calendar.MINUTE,Integer.parseInt(parts[1]));
+                            cal.set(Calendar.SECOND,Integer.parseInt(parts[2]));
+
+                            if(cal.get(Calendar.DAY_OF_WEEK)!= Calendar.SUNDAY){
+                                if((time1.isBefore(time2)|| time1.equals(time2)) && (time1.isBefore(time3)|| time1.equals(time3))
+                                        || (time1.isAfter(time2) || time1.equals(time2))  && (time1.isAfter(time3) || time1.equals(time3))){
+
+                                }else{
+//                                    dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),currentDateandTime);
+                                }
+                            }else{
+
+                            }
+                        }
                         dbManager.close();
-
-
-
-
                     }
                 }
             }
         }
+    }
+    private void pushData(Context context, String android_id, double latitude, double longitude,String createdDate) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final StringRequest reqQueue = new StringRequest(Request.Method.POST, hrms_Service,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("eskoResponse : ", response);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("eskoError : ", volleyError.toString());
+            }
+        }) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("latitude", latitude);
+                    jsonObject.put("longitude", longitude);
+                    jsonObject.put("deviceId", android_id);
+//                    jsonObject.put("createdDate", createdDate);
+                    return jsonObject.toString().getBytes("utf-8");
+                } catch (Exception ex) {
+
+                }
+                return super.getBody();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+        reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+        queue.add(reqQueue);
     }
 }
