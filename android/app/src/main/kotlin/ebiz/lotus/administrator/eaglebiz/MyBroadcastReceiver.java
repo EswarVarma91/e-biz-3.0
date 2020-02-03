@@ -17,18 +17,25 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import ebiz.lotus.administrator.eaglebiz.database.DBManager;
 import ebiz.lotus.administrator.eaglebiz.model.LocationDataModel;
@@ -41,6 +48,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     DBManager dbManager;
     List<LocationDataModel> listlocationData =new ArrayList<>();
     String hrms_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/location"; // global
+    String hrms_offline_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/offline/location"; // global
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -72,7 +80,13 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                         listlocationData.addAll(dbManager.getAllLocationsData());
                         dbManager.close();
                         //==================
+
+//                        String arrayaData = JSONArray.toJSONString(list);
                        pushData(context,android_id,latitude,longitude,currentDateandTime);
+
+                       pushDataOffline(context,listlocationData);
+
+
 
 //                       for(int i=0; i<listlocationData.size();i++){
 //                           int finalValue = listlocationData.size()-1;
@@ -126,7 +140,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                                         || (time1.isAfter(time2) || time1.equals(time2))  && (time1.isAfter(time3) || time1.equals(time3))){
 
                                 }else{
-//                                    dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),currentDateandTime);
+                                    dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),currentDateandTime);
                                 }
                             }else{
 
@@ -138,6 +152,31 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             }
         }
     }
+
+    private void pushDataOffline(Context context, List<LocationDataModel> listlocationData) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JSONObject jsonParam = new JSONObject();
+//        jsonParam.put("data",listlocationData);
+
+        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.POST,hrms_offline_Service,null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+
+            }
+        });
+
+        queue.add(jsonArrayRequest);
+//
+    }
+
     private void pushData(Context context, String android_id, double latitude, double longitude,String createdDate) {
         RequestQueue queue = Volley.newRequestQueue(context);
         final StringRequest reqQueue = new StringRequest(Request.Method.POST, hrms_Service,
