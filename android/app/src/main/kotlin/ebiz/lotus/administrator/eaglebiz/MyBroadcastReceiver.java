@@ -52,8 +52,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     DBManager dbManager;
     List<LocationModel> listlocationData =new ArrayList<>();
     String hrms_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/location"; // global
-//    String hrms_offline_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/offline/location"; // global
-String hrms_offline_Service = "http://10.100.1.32:8080/att.service/hrms/attendance/save/offline/location"; // global
+    String hrms_offline_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/offline/location"; // global
+//String hrms_offline_Service = "http://10.100.1.32:8080/att.service/hrms/attendance/save/offline/location"; // global
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
