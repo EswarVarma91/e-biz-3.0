@@ -3,8 +3,8 @@ package ebiz.lotus.administrator.eaglebiz.model;
 public class LocationDataModel {
 
     int idM;
-    String device_idM,creadted_dateM;
-    String latiM,longiM;
+    String deviceId,date;
+    String latitude,longitude;
 
     public LocationDataModel(){
 
@@ -12,10 +12,10 @@ public class LocationDataModel {
 
     public LocationDataModel(int id, String device_id, String lati, String longi, String creadted_date) {
         this.idM=id;
-        this.device_idM=device_id;
-        this.latiM=lati;
-        this.longiM=longi;
-        this.creadted_dateM=creadted_date;
+        this.deviceId=device_id;
+        this.latitude=lati;
+        this.longitude=longi;
+        this.date=creadted_date;
 
     }
 
@@ -27,35 +27,35 @@ public class LocationDataModel {
         this.idM = idM;
     }
 
-    public String getDevice_idM() {
-        return device_idM;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDevice_idM(String device_idM) {
-        this.device_idM = device_idM;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
-    public String getCreadted_dateM() {
-        return creadted_dateM;
+    public String getDate() {
+        return date;
     }
 
-    public void setCreadted_dateM(String creadted_dateM) {
-        this.creadted_dateM = creadted_dateM;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getLatiM() {
-        return latiM;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLatiM(String latiM) {
-        this.latiM = latiM;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public String getLongiM() {
-        return longiM;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLongiM(String longiM) {
-        this.longiM = longiM;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

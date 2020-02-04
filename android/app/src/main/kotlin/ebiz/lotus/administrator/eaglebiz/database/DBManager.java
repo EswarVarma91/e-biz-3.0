@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ebiz.lotus.administrator.eaglebiz.model.LocationDataModel;
+import ebiz.lotus.administrator.eaglebiz.model.LocationModel;
 
 
 public class DBManager {
@@ -44,8 +45,8 @@ public class DBManager {
         database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
     }
 
-    public List<LocationDataModel> getAllLocationsData() {
-        List<LocationDataModel> locationList = new ArrayList<LocationDataModel>();
+    public List<LocationModel> getAllLocationsData() {
+        List<LocationModel> locationList = new ArrayList<LocationModel>();
 
         String selectQuery = "SELECT * FROM " + DatabaseHelper.TABLE_NAME;
 
@@ -54,12 +55,12 @@ public class DBManager {
 
         if(cursor.moveToFirst()){
             do{
-                LocationDataModel locationDataModel= new LocationDataModel();
-                locationDataModel.setIdM(Integer.parseInt(cursor.getString(0)));
-                locationDataModel.setDevice_idM(cursor.getString(1));
-                locationDataModel.setLatiM(cursor.getString(2));
-                locationDataModel.setLongiM(cursor.getString(3));
-                locationDataModel.setCreadted_dateM(cursor.getString(4));
+                LocationModel locationDataModel= new LocationModel();
+//                locationDataModel.setIdM(Integer.parseInt(cursor.getString(0)));
+                locationDataModel.setDeviceId(cursor.getString(1));
+                locationDataModel.setLatitude(cursor.getString(2));
+                locationDataModel.setLongitude(cursor.getString(3));
+                locationDataModel.setDate(cursor.getString(4));
                 locationList.add(locationDataModel);
             }while (cursor.moveToNext());
         }
