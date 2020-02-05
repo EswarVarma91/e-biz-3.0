@@ -341,6 +341,18 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
           "parameter5": profilename
         },
         options: Options(contentType: ContentType.parse("application/json")));
+
+//  var response = await dio.post(ServicesApi.insert_hotel,
+//         data: {
+//           "actionMode": "update",
+//           "hotelCheckIn": checkIn,
+//           "hotelCheckOut": checkOut,
+//           "hotelId": hotel_id,
+//           "hotelModifiedBy": profilename,
+//           "hotelModifiedDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+//         },
+//         options: Options(contentType: ContentType.parse("application/json")));
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridByhotelId(hotel_id.toString());
     } else if (response.statusCode == 401) {

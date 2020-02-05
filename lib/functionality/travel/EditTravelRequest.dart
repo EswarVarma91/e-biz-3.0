@@ -365,6 +365,20 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
           contentType: ContentType.parse('application/json'),
         ));
 
+
+        // var response = await dio.post(ServicesApi.insert_travel,
+        // data: {
+        //   "actionMode": "update",
+        //   "journeyDate": trarrivalDateTime,
+        //   "reqDateTime": trequiredDateTime,
+        //   "traId": traidT,
+        //   "modifiedBy": profilename,
+        //   "modifiedDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+        // },
+        // options: Options(
+        //   contentType: ContentType.parse('application/json'),
+        // ));
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       // Fluttertoast.showToast(msg: "Travel Update Request Generated.");
 
