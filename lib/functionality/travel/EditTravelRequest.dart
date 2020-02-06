@@ -8,6 +8,7 @@ import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -359,7 +360,8 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
           "parameter2": trarrivalDateTime,
           "parameter3": trequiredDateTime,
           "parameter4": traidT,
-          "parameter5": profilename
+          "parameter5": profilename,
+          "parameter6": DateFormat("yyyy-MM-dd hh:mm:ss").format(now)
         },
         options: Options(
           contentType: ContentType.parse('application/json'),

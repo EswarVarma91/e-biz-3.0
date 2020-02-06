@@ -142,9 +142,9 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
             ListTile(
               onTap: () {
                 setState(() {
-                    checkOut = "";
-                    checkOuts = "";
-                  });
+                  checkOut = "";
+                  checkOuts = "";
+                });
                 DatePicker.showDatePicker(context,
                     showTitleActions: true,
                     minTime: DateTime(y, m, d),
@@ -332,26 +332,17 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
 
   void edithoteRequestService(String checkIn, String checkOut) async {
     pr.show();
+    var now = DateTime.now();
     var response = await dio.post(ServicesApi.updateData,
         data: {
           "parameter1": "updateHotelRequest",
           "parameter2": hotel_id,
           "parameter3": checkIn,
           "parameter4": checkOut,
-          "parameter5": profilename
+          "parameter5": profilename,
+          "parameter6": DateFormat("yyyy-MM-dd hh:mm:ss").format(now)
         },
         options: Options(contentType: ContentType.parse("application/json")));
-
-//  var response = await dio.post(ServicesApi.insert_hotel,
-//         data: {
-//           "actionMode": "update",
-//           "hotelCheckIn": checkIn,
-//           "hotelCheckOut": checkOut,
-//           "hotelId": hotel_id,
-//           "hotelModifiedBy": profilename,
-//           "hotelModifiedDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
-//         },
-//         options: Options(contentType: ContentType.parse("application/json")));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridByhotelId(hotel_id.toString());
@@ -363,13 +354,17 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
 
   void getUseridByhotelId(String hotel_id) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getTokenbyHotelId",
+          "parameter2": hotel_id
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['hotel_req_no'];
         var token = json.decode(response.data)[0]['token'];
-        if (token != null ) {
+        if (token != null) {
           pushNotification(req_no, token);
         } else {
           pr.hide();
