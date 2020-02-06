@@ -99,9 +99,9 @@ class _HotelRequestListState extends State<HotelRequestList> {
           Container(
             color: Colors.white,
           ),
-          // 
+          //
           RefreshIndicator(
-                      child: Container(
+            child: Container(
               margin: EdgeInsets.only(left: 60, right: 5, top: 5),
               child: StaggeredGridView.count(
                 crossAxisCount: 9,
@@ -127,7 +127,8 @@ class _HotelRequestListState extends State<HotelRequestList> {
                   StaggeredTile.extent(3, 85.0),
                 ],
               ),
-            ), onRefresh: () async{
+            ),
+            onRefresh: () async {
               getHotelData(uidd);
             },
           ),
@@ -595,7 +596,11 @@ class _HotelRequestListState extends State<HotelRequestList> {
 
   getHotelData(String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getHotelRequests", "parameter2": uidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getHotelRequests",
+          "parameter2": uidd
+        },
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
@@ -605,23 +610,8 @@ class _HotelRequestListState extends State<HotelRequestList> {
         trlm = (json.decode(response.data) as List)
             .map((f) => HotelRequestModel.fromJson(f))
             .toList();
-        pendingCount = trlm
-            .where((item) =>
-                item.approved_status != 1 && item.hotel_is_cancel_req != 1)
-            .length
-            .toString();
-        approvedCount = trlm
-            .where((item) =>
-                item.approved_status == 1 && item.hotel_is_cancel_req == 0)
-            .length
-            .toString();
-        cancelledCount = trlm
-            .where((item) =>
-                item.hotel_is_cancel_req == 1 && item.approved_status == 0)
-            .length
-            .toString();
       });
-
+      checkandfilterList(trlm);
       checkServices();
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
@@ -634,5 +624,23 @@ class _HotelRequestListState extends State<HotelRequestList> {
     } else {
       return "";
     }
+  }
+
+  void checkandfilterList(List<HotelRequestModel> trlm) {
+    pendingCount = trlm
+        .where((item) =>
+            item.approved_status != 1 && item.hotel_is_cancel_req != 1)
+        .length
+        .toString();
+    approvedCount = trlm
+        .where((item) =>
+            item.approved_status == 1 && item.hotel_is_cancel_req == 0)
+        .length
+        .toString();
+    cancelledCount = trlm
+        .where((item) =>
+            item.hotel_is_cancel_req == 1 && item.approved_status == 0)
+        .length
+        .toString();
   }
 }

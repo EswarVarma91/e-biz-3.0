@@ -103,7 +103,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
             color: Colors.white,
           ),
           RefreshIndicator(
-                      child: Container(
+            child: Container(
               margin: EdgeInsets.only(left: 60, right: 5, top: 5),
               child: StaggeredGridView.count(
                 crossAxisCount: 9,
@@ -129,7 +129,8 @@ class _TravelRequestListState extends State<TravelRequestList> {
                   StaggeredTile.extent(3, 85.0),
                 ],
               ),
-            ), onRefresh: () async{
+            ),
+            onRefresh: () async {
               getTravelData(uidd);
             },
           ),
@@ -563,7 +564,11 @@ class _TravelRequestListState extends State<TravelRequestList> {
 
   getTravelData(String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "GetAllTravelRequests", "parameter2": uidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "GetAllTravelRequests",
+          "parameter2": uidd
+        },
         options: Options(
           contentType: ContentType.parse('application/json'),
         ));
@@ -573,23 +578,8 @@ class _TravelRequestListState extends State<TravelRequestList> {
         trlm = (json.decode(response.data) as List)
             .map((f) => TravelRequestListModel.fromJson(f))
             .toList();
-        pendingCount = trlm
-            .where((item) =>
-                item.approved_status != 1 && item.tra_is_cancel_req != 1)
-            .length
-            .toString();
-        approvedCount = trlm
-            .where((item) =>
-                item.approved_status == 1 && item.tra_is_cancel_req == 0)
-            .length
-            .toString();
-        cancelledCount = trlm
-            .where((item) =>
-                item.tra_is_cancel_req == 1 && item.approved_status == 0)
-            .length
-            .toString();
       });
-
+      checkandfilterList(trlm);
       checkServices();
     } else if (response.statusCode == 401) {
       throw Exception("Incorrect data");
@@ -602,5 +592,25 @@ class _TravelRequestListState extends State<TravelRequestList> {
     } else {
       return "";
     }
+  }
+
+  checkandfilterList(List<TravelRequestListModel> trlm) {
+    setState(() {
+      pendingCount = trlm
+          .where((item) =>
+              item.approved_status != 1 && item.tra_is_cancel_req != 1)
+          .length
+          .toString();
+      approvedCount = trlm
+          .where((item) =>
+              item.approved_status == 1 && item.tra_is_cancel_req == 0)
+          .length
+          .toString();
+      cancelledCount = trlm
+          .where((item) =>
+              item.tra_is_cancel_req == 1 && item.approved_status == 0)
+          .length
+          .toString();
+    });
   }
 }
