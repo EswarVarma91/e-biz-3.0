@@ -31,10 +31,10 @@ class _HotelRequestListState extends State<HotelRequestList> {
   List<HotelRequestModel> trlm = List();
   List<HotelRequestModel> trlmList = List();
 
-  StreamSubscription<ConnectivityResult> streamSubscription;
-  Connectivity connectivity;
+  // StreamSubscription<ConnectivityResult> streamSubscription;
+  // Connectivity connectivity = new Connectivity();
   ProgressDialog pr;
-  bool offlineA;
+  // bool offlineA;
   // var dbHelper = HotelTable();
 
   getUserDetails() async {
@@ -44,32 +44,31 @@ class _HotelRequestListState extends State<HotelRequestList> {
       uidd = preferences.getString("userId");
     });
     getHotelData(uidd);
-    connectivity = Connectivity();
-    streamSubscription =
-        connectivity.onConnectivityChanged.listen((ConnectivityResult event) {
-      if (event != ConnectivityResult.none) {
-        getHotelData(uidd);
-      } else {
-        offlineA = true;
-        Fluttertoast.showToast(msg: "Offline");
-      }
-    });
   }
 
-  @override
-  void dispose() {
-    streamSubscription.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   streamSubscription.cancel();
+  //   super.dispose();
+  // }
 
   @override
   void initState() {
     super.initState();
     getUserDetails();
+    // streamSubscription =
+    //     connectivity.onConnectivityChanged.listen((ConnectivityResult event) {
+    //   if (event != ConnectivityResult.none) {
+    //     getHotelData(uidd);
+    //   } else {
+    //     offlineA = true;
+    //     Fluttertoast.showToast(msg: "Offline");
+    //   }
+    // });
     pending = true;
     approved = false;
     cancel = false;
-    offlineA = false;
+    // offlineA = false;
   }
 
   checkServices() {
@@ -155,7 +154,8 @@ class _HotelRequestListState extends State<HotelRequestList> {
               ),
             ),
             onRefresh: () async {
-              offlineA ? "" : getHotelData(uidd);
+              // offlineA ? "" : 
+              getHotelData(uidd);
             },
           ),
           Container(
@@ -375,9 +375,10 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                 SizedBox(
                                   height: 6,
                                 ),
-                                offlineA
-                                    ? Container()
-                                    : pending
+                                // offlineA
+                                //     ? Container()
+                                //     : 
+                                    pending
                                         ? SizedBox(
                                             height: 30,
                                             width: 70,

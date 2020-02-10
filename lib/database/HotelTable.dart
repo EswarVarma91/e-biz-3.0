@@ -15,16 +15,23 @@ import 'package:path/path.dart';
 class HotelTable {
   var now = DateTime.now();
   static Database _db;
-  static const String ID = 'id';
+  static const String ID = 'hotel_id';
+  static const String UID = 'u_id';
+  static const String HOTEL_PACKAGE_ID = 'hotel_package_id';
   static const String HOTEL_REF_NO = 'hotel_ref_no';
-  static const String PROJ_OANO = 'proj_oano';
-  static const String TRAVELLER_NAME = 'travellerName';
-  static const String HOTEL_RATING = 'hotel_rating';
   static const String HOTEL_LOCATION = 'hotel_location';
   static const String HOTEL_CHECK_IN = 'hotel_check_in';
   static const String HOTEL_CHECK_OUT = 'hotel_check_out';
   static const String HOTEL_PURPOSE = 'hotel_purpose';
-  static const String TABLE = 'hotelTB';
+  static const String HOTEL_RATING = 'hotel_rating';
+  static const String REF_ID = 'ref_id';
+  static const String REF_TYPE = 'ref_type';
+  static const String HOTEL_STATUS = 'hotel_status';
+  static const String HOTEL_CREATED_BY = 'hotel_created_by';
+  static const String HOTEL_CREATED_DATE = 'hotel_created_date';
+  static const String PROJ_OANO = 'proj_oano';
+  static const String TRAVELLER_NAME = 'travellerName';
+  static const String TABLE = 'hotel_booking_info';
   static const String DATABASE = 'EbizDb';
 
   Future<Database> get db async {

@@ -506,43 +506,43 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (workStatus != "At-Office") {
-            if (workStatus == "Tour") {
-              if (timeStart == "-") {
-                var now1 = DateTime.now();
-                setState(() {
-                  if (userlocation != null) {
-                    timeStart = DateFormat("HH:mm:ss").format(now1).toString();
-                    StartAttendanceModel am = StartAttendanceModel(
-                        userId,
-                        timeStart,
-                        userlocation.latitude.toString(),
-                        userlocation.longitude.toString());
-                    dbHelper.updateStart(am);
+          // if (workStatus != "At-Office") {
+          if (workStatus == "Tour" || workStatus == "At-Office") {
+            if (timeStart == "-") {
+              var now1 = DateTime.now();
+              setState(() {
+                if (userlocation != null) {
+                  timeStart = DateFormat("HH:mm:ss").format(now1).toString();
+                  StartAttendanceModel am = StartAttendanceModel(
+                      userId,
+                      timeStart,
+                      userlocation.latitude.toString(),
+                      userlocation.longitude.toString());
+                  dbHelper.updateStart(am);
 
-                    _insertStartTimeService(
-                        timeStart,
-                        userlocation.latitude.toString(),
-                        userlocation.longitude.toString(),
-                        DateFormat("yyyy-MM-dd").format(now1).toString());
-                  } else {
-                    Fluttertoast.showToast(
-                        msg:
-                            "Please Turn on GPS, to mark attendance., to mark attendance.");
-                  }
-                });
-              } else {
-                Fluttertoast.showToast(
-                    msg: 'Day Start has already been marked');
-              }
+                  _insertStartTimeService(
+                      timeStart,
+                      userlocation.latitude.toString(),
+                      userlocation.longitude.toString(),
+                      DateFormat("yyyy-MM-dd").format(now1).toString());
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          "Please Turn on GPS, to mark attendance., to mark attendance.");
+                }
+              });
             } else {
-              Fluttertoast.showToast(
-                  msg: "Choose your work status, to mark attendance.");
+              Fluttertoast.showToast(msg: 'Day Start has already been marked');
             }
           } else {
             Fluttertoast.showToast(
-                msg: "Attendace accept through Bio-Metric only.");
+                msg: "Choose your work status, to mark attendance.");
           }
+          // }
+          // else {
+          //   Fluttertoast.showToast(
+          //       msg: "Attendace accept through Bio-Metric only.");
+          // }
         },
         child: Center(
           child: Padding(
@@ -588,36 +588,36 @@ class _HomePageLocationState extends State<HomePageLocation> {
       shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
-          if (workStatus != "At-Office") {
-            if (workStatus == "Tour") {
-              if (timeStart == "-") {
-                Fluttertoast.showToast(
-                    msg: "Day Start need to be marked before marking day end.");
-              } else if (workStatus == "-" ||
-                  workStatus == " " ||
-                  workStatus == "") {
-                Fluttertoast.showToast(
-                    msg: "Choose your work status, to mark attendance.");
-              } else if (timeEnd == "-") {
-                setState(() {
-                  if (userlocation != null) {
-                    roundedAlertDialog(userlocation);
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "Please Turn on GPS, to mark attendance.");
-                  }
-                });
-              } else {
-                Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
-              }
-            } else {
+          // if (workStatus != "At-Office") {
+          if (workStatus == "Tour" || workStatus == "At-Office") {
+            if (timeStart == "-") {
+              Fluttertoast.showToast(
+                  msg: "Day Start need to be marked before marking day end.");
+            } else if (workStatus == "-" ||
+                workStatus == " " ||
+                workStatus == "") {
               Fluttertoast.showToast(
                   msg: "Choose your work status, to mark attendance.");
+            } else if (timeEnd == "-") {
+              setState(() {
+                if (userlocation != null) {
+                  roundedAlertDialog(userlocation);
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Please Turn on GPS, to mark attendance.");
+                }
+              });
+            } else {
+              Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
             }
           } else {
             Fluttertoast.showToast(
-                msg: "Attendance accept through Bio-Metric only.");
+                msg: "Choose your work status, to mark attendance.");
           }
+          // } else {
+          //   Fluttertoast.showToast(
+          //       msg: "Attendance accept through Bio-Metric only.");
+          // }
         },
         child: Center(
           child: Padding(
@@ -715,8 +715,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 attData.in_time != " ") {
               setState(() {
                 workStatus = "At-Office";
-                timeStart = checkTimeAtt(attData.in_time.toString());
-                timeEnd = checkTimeAtt(attData.out_time.toString());
+                timeStart = checkTimeAtt(attData.in_time.toString(), 1);
+                timeEnd = checkTimeAtt(attData.out_time.toString(), 2);
               });
               AttendanceGettingModel attendanceModel =
                   AttendanceGettingModel(userId, timeStart, timeEnd);
@@ -774,7 +774,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
         }
       }
     }
-
     getAttendance();
   }
 
@@ -900,7 +899,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
               ),
               new CupertinoButton(
                 onPressed: () async {
-                  timeEnd = DateFormat("HH:mm:ss").format(now1).toString();
+                  setState(() {
+                    timeEnd = DateFormat("HH:mm:ss").format(now1).toString();
+                  });
                   EndAttendanceModel am = EndAttendanceModel(
                       userId,
                       timeEnd,
@@ -971,11 +972,26 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  String checkTimeAtt(String data) {
-    if (data == "null") {
-      return "-";
+  String checkTimeAtt(String data, int status) {
+    if (status == 1) {
+      if (data == "null") {
+        return "-";
+      } else {
+        return data;
+      }
     } else {
-      return data;
+      if (data == "null") {
+        return "-";
+      } else {
+        var now = DateTime.now();
+        String time = DateFormat("HH").format(now);
+        int hour = int.parse(time);
+        if (hour >= 19) {
+          return data;
+        } else {
+          return "-";
+        }
+      }
     }
   }
 
