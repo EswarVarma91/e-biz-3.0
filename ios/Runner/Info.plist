@@ -26,6 +26,11 @@
 	<string>Your location is required for this app</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is required for this app</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -46,8 +51,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

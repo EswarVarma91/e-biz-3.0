@@ -14,8 +14,21 @@ class HotelRequestModel {
   int hotel_is_cancel_req;
   int u_id;
 
-  HotelRequestModel(this.hotel_id,this.hotel_ref_no,this.proj_oano,this.travellerName,this.hotel_rating,this.hotel_location,
-  this.hotel_check_in,this.hotel_check_out,this.hotel_purpose,this.hotel_status,this.approved_status,this.hotel_is_cancelled,this.u_id,this.hotel_is_cancel_req);
+  HotelRequestModel(
+      this.hotel_id,
+      this.hotel_ref_no,
+      this.proj_oano,
+      this.travellerName,
+      this.hotel_rating,
+      this.hotel_location,
+      this.hotel_check_in,
+      this.hotel_check_out,
+      this.hotel_purpose,
+      this.hotel_status,
+      this.approved_status,
+      this.hotel_is_cancelled,
+      this.u_id,
+      this.hotel_is_cancel_req);
 
   HotelRequestModel.fromJson(Map<String, dynamic> json)
       : hotel_id = json['hotel_id'],
@@ -28,27 +41,25 @@ class HotelRequestModel {
         hotel_check_out = json['hotel_check_out'],
         hotel_purpose = json['hotel_purpose'],
         hotel_status = json['hotel_status'],
-        hotel_is_cancelled=json['hotel_is_cancelled'],
-        approved_status=json['approved_status'],
-        hotel_is_cancel_req=json['hotel_is_cancel_req'],
-        u_id=json['u_id'];
+        hotel_is_cancelled = json['hotel_is_cancelled'],
+        approved_status = json['approved_status'],
+        hotel_is_cancel_req = json['hotel_is_cancel_req'],
+        u_id = json['u_id'];
+
+  HotelRequestModel.fromMap(Map<String, dynamic> map) {
+    hotel_id = map['hotel_id'];
+        hotel_ref_no = map['hotel_ref_no'];
+        proj_oano = map['proj_oano'];
+        travellerName = map['travellerName'];
+        hotel_rating = map['hotel_rating'];
+        hotel_location = map['hotel_location'];
+        hotel_check_in = map['hotel_check_in'];
+        hotel_check_out = map['hotel_check_out'];
+        hotel_purpose = map['hotel_purpose'];
+        hotel_status = map['hotel_status'];
+        hotel_is_cancelled = map['hotel_is_cancelled'];
+        approved_status = map['approved_status'];
+        hotel_is_cancel_req = map['hotel_is_cancel_req'];
+        u_id = map['u_id'];
+  }
 }
-
-
-
-  // String hotel_created_by;
-  // String hotel_created_date;
-  // String hotel_modified_by;
-  // String hotel_modified_date;
-  // int submit_status;
-  // String submit_by;
-  // String submit_date;
-  // int approved_status;
-  // String approved_by;
-  // String approved_date;
-  // int hotel_is_cancelled;
-  // int hotel_cancelled_charges;
-  // String hotel_cancelled_payment_mode;
-  // String hotel_cancelled_source;
-  // String hotel_cancelled_by;
-  // String hotel_cancelled_date;

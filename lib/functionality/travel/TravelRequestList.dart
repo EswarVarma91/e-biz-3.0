@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:Ebiz/functionality/travel/ViewTravelRequest.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/functionality/travel/AddTravelRequest.dart';
 import 'package:Ebiz/main.dart';
@@ -10,6 +12,7 @@ import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,11 +27,14 @@ class _TravelRequestListState extends State<TravelRequestList> {
   List<TravelRequestListModel> trlmList = List();
   bool pending, approved, cancel;
   ProgressDialog pr;
+  bool offlineA;
   String pendingCount = "-",
       approvedCount = "-",
       cancelledCount = "-",
       uidd,
       profilename;
+  StreamSubscription<ConnectivityResult> streamSubscription;
+  Connectivity connectivity;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -37,6 +43,16 @@ class _TravelRequestListState extends State<TravelRequestList> {
       uidd = preferences.getString("userId");
     });
     getTravelData(uidd);
+    connectivity = Connectivity();
+    streamSubscription =
+        connectivity.onConnectivityChanged.listen((ConnectivityResult event) {
+      if (event != ConnectivityResult.none) {
+        getTravelData(uidd);
+      } else {
+        offlineA = true;
+        Fluttertoast.showToast(msg: "Offline");
+      }
+    });
   }
 
   @override
@@ -46,6 +62,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
     pending = true;
     approved = false;
     cancel = false;
+    offlineA = false;
     // checkServices();
   }
 
@@ -131,7 +148,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
               ),
             ),
             onRefresh: () async {
-              getTravelData(uidd);
+              offlineA ? "" : getTravelData(uidd);
             },
           ),
           Container(
@@ -317,42 +334,47 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                pending
-                                    ? SizedBox(
-                                        height: 30,
-                                        width: 70,
-                                        child: Material(
-                                          elevation: 2.0,
-                                          shadowColor: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: lwtColor,
-                                          child: MaterialButton(
-                                            height: 22.0,
-                                            padding: EdgeInsets.all(3),
-                                            child: Text(
-                                              "View",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
+                                offlineA
+                                    ? Container()
+                                    : pending
+                                        ? SizedBox(
+                                            height: 30,
+                                            width: 70,
+                                            child: Material(
+                                              elevation: 2.0,
+                                              shadowColor: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              color: lwtColor,
+                                              child: MaterialButton(
+                                                height: 22.0,
+                                                padding: EdgeInsets.all(3),
+                                                child: Text(
+                                                  "View",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              ViewTravelRequest(
+                                                                  trlmList[
+                                                                          index]
+                                                                      .tra_id,
+                                                                  trlmList[
+                                                                          index]
+                                                                      .reqNo)));
+                                                },
+                                              ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ViewTravelRequest(
-                                                              trlmList[index]
-                                                                  .tra_id,
-                                                              trlmList[index]
-                                                                  .reqNo)));
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    : Container(),
+                                          )
+                                        : Container(),
                               ],
                             ),
                           ],

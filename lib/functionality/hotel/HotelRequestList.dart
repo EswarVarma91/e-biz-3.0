@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Ebiz/database/HotelTable.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:Ebiz/commonDrawer/CollapsingNavigationDrawer.dart';
 import 'package:Ebiz/functionality/hotel/AddHotelRequest.dart';
@@ -11,6 +14,7 @@ import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +30,12 @@ class _HotelRequestListState extends State<HotelRequestList> {
   String pendingCount = "-", approvedCount = "-", cancelledCount = "-";
   List<HotelRequestModel> trlm = List();
   List<HotelRequestModel> trlmList = List();
+
+  StreamSubscription<ConnectivityResult> streamSubscription;
+  Connectivity connectivity;
   ProgressDialog pr;
+  bool offlineA;
+  // var dbHelper = HotelTable();
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -35,6 +44,22 @@ class _HotelRequestListState extends State<HotelRequestList> {
       uidd = preferences.getString("userId");
     });
     getHotelData(uidd);
+    connectivity = Connectivity();
+    streamSubscription =
+        connectivity.onConnectivityChanged.listen((ConnectivityResult event) {
+      if (event != ConnectivityResult.none) {
+        getHotelData(uidd);
+      } else {
+        offlineA = true;
+        Fluttertoast.showToast(msg: "Offline");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -44,6 +69,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
     pending = true;
     approved = false;
     cancel = false;
+    offlineA = false;
   }
 
   checkServices() {
@@ -129,7 +155,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
               ),
             ),
             onRefresh: () async {
-              getHotelData(uidd);
+              offlineA ? "" : getHotelData(uidd);
             },
           ),
           Container(
@@ -349,42 +375,47 @@ class _HotelRequestListState extends State<HotelRequestList> {
                                 SizedBox(
                                   height: 6,
                                 ),
-                                pending
-                                    ? SizedBox(
-                                        height: 30,
-                                        width: 70,
-                                        child: Material(
-                                          elevation: 2.0,
-                                          shadowColor: Colors.grey,
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          color: lwtColor,
-                                          child: MaterialButton(
-                                            height: 22.0,
-                                            padding: EdgeInsets.all(3),
-                                            child: Text(
-                                              "View",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
+                                offlineA
+                                    ? Container()
+                                    : pending
+                                        ? SizedBox(
+                                            height: 30,
+                                            width: 70,
+                                            child: Material(
+                                              elevation: 2.0,
+                                              shadowColor: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                              color: lwtColor,
+                                              child: MaterialButton(
+                                                height: 22.0,
+                                                padding: EdgeInsets.all(3),
+                                                child: Text(
+                                                  "View",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              ViewHotelRequest(
+                                                                  trlmList[
+                                                                          index]
+                                                                      .hotel_id,
+                                                                  trlmList[
+                                                                          index]
+                                                                      .hotel_ref_no)));
+                                                },
+                                              ),
                                             ),
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ViewHotelRequest(
-                                                              trlmList[index]
-                                                                  .hotel_id,
-                                                              trlmList[index]
-                                                                  .hotel_ref_no)));
-                                            },
-                                          ),
-                                        ),
-                                      )
-                                    : Container()
+                                          )
+                                        : Container()
                               ],
                             )
                           ],
@@ -611,6 +642,9 @@ class _HotelRequestListState extends State<HotelRequestList> {
             .map((f) => HotelRequestModel.fromJson(f))
             .toList();
       });
+      for (int i = 0; i < trlm.length; i++) {
+        // dbHelper.save(hrm)
+      }
       checkandfilterList(trlm);
       checkServices();
     } else if (response.statusCode == 401) {
@@ -626,7 +660,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
     }
   }
 
-  void checkandfilterList(List<HotelRequestModel> trlm) {
+  checkandfilterList(List<HotelRequestModel> trlm) {
     pendingCount = trlm
         .where((item) =>
             item.approved_status != 1 && item.hotel_is_cancel_req != 1)
