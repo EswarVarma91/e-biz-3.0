@@ -1,5 +1,5 @@
 class ServicesApi {
-  static String versionNew = "2.1";
+  static String versionNew = "2.2";
 
   static String fcm_Send = "https://fcm.googleapis.com/fcm/send";
   static String FCM_KEY = "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";

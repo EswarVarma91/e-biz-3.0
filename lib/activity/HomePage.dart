@@ -986,7 +986,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         var now = DateTime.now();
         String time = DateFormat("HH").format(now);
         int hour = int.parse(time);
-        if (hour >= 19) {
+        if (hour >= 22) {
           return data;
         } else {
           return "-";
