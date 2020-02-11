@@ -915,7 +915,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            trlm[index].tra_from,
+                            trlm[index].tra_from?.split("-")[0]??"",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -931,7 +931,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            trlm[index].tra_to,
+                            trlm[index].tra_to?.split("-")[0]??"",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1836,7 +1836,6 @@ class _ApprovalsState extends State<Approvals> {
       'Authorization': "key=" + ServicesApi.FCM_KEY,
       'Content-Type': 'application/json',
     };
-    // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     pr.hide();

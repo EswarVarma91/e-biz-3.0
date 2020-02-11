@@ -253,13 +253,11 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                     ),
                                     Text(
                                       trlmList[index]
-                                              .tra_from[0]
-                                              .toUpperCase() +
-                                          trlmList[index].tra_from.substring(1),
+                                              .tra_from?.split("-")[0]??"",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 7),
+                                          fontSize: 10),
                                     ),
                                   ],
                                 ),
@@ -272,12 +270,11 @@ class _TravelRequestListState extends State<TravelRequestList> {
                                           fontSize: 7, color: Colors.black),
                                     ),
                                     Text(
-                                      trlmList[index].tra_to[0].toUpperCase() +
-                                          trlmList[index].tra_to.substring(1),
+                                      trlmList[index].tra_to?.split("-")[0]??"",
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 7),
+                                          fontSize: 10),
                                     ),
                                   ],
                                 )

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Ebiz/functionality/salesLead/SalesIndutrialEntry.dart';
+import 'package:Ebiz/model/SalesIndustrialEntryModel.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:device_id/device_id.dart';
 import 'package:dio/dio.dart';
@@ -76,6 +78,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       yearB = "         ";
   var dbHelper = DatabaseHelper();
   var now = DateTime.now();
+  List<SalesIndustrialEntryModel> listSalesIndustry = [];
 
   List<AttendanceModel> atteModel = [];
   Future<List<AttendanceModel>> attList;
@@ -99,6 +102,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       profilePic = preferences.getString("picPath");
       getPaidCount(empCode);
       getPendingCount(userId);
+      getSalesIndustrialData(userId);
       // getCurrentDate();
       AttendanceModel attendanceModel =
           AttendanceModel(userId, "-", "-", "-", "-", "-", "-");
@@ -166,20 +170,11 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   @override
   Widget build(BuildContext context) {
-    // Timer.periodic(Duration(minutes: 5), (Timer t) => getAttendance());
     userlocation = Provider.of<UserLocationModel>(context);
     setState(() {
       if (userlocation != null) {
         lati = userlocation.latitude;
         longi = userlocation.longitude;
-        //        var currentTime=DateFormat("HH:mm").format(now);
-        //        var checkCurrentTime=DateFormat("HH:mm").parse(currentTime.toString());
-        //        var checkMorningTime=DateFormat("HH:mm").parse("08:00");
-        //        var checkNightTime=DateFormat("HH:mm").parse("20:00");
-        //        checkCurrentTime.difference(checkMorningTime).inMinutes.toString();
-
-        // sendUserLocation(lati,longi);
-        // getAttendance();
       }
     });
     return Scaffold(
@@ -193,10 +188,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
             Padding(
               padding: EdgeInsets.only(right: 5),
               child: IconButton(
-                // icon: CircleAvatar(
-                //   radius: 20,
-                //   backgroundImage: NetworkImage(ServicesApi.basic_url+profilePic),
-                // ),
                 icon: Icon(
                   Icons.account_circle,
                   size: 35,
@@ -219,9 +210,19 @@ class _HomePageLocationState extends State<HomePageLocation> {
     return Scrollbar(
       child: Stack(
         children: <Widget>[
-          Container(
-            color: Colors.white,
-          ),
+          // Container(
+          //   child: Center(
+          //     child: Padding(
+          //       padding: const EdgeInsets.only(left: 60, top: 260),
+          //       child: Image.asset(
+          //         'assets/images/ebiz.png',
+          //         color: lwtColor,
+          //         height: 120,
+          //         width: 120,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Container(
             padding: EdgeInsets.only(bottom: 5, right: 5),
             alignment: Alignment.bottomRight,
@@ -234,42 +235,49 @@ class _HomePageLocationState extends State<HomePageLocation> {
           ),
           RefreshIndicator(
             child: Container(
-              margin: EdgeInsets.only(left: 65, right: 5, top: 0),
+              margin: EdgeInsets.only(left: 57, right: 0, top: 0),
               child: StaggeredGridView.count(
                 crossAxisCount: 4,
                 crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(
-                      right: 5,
-                      top: 10,
-                    ),
+                    padding:
+                        const EdgeInsets.only(right: 10, top: 10, left: 10),
                     child: dashboard1(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 5),
+                    padding: const EdgeInsets.only(right: 5, left: 5),
                     child: dashboard2(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 5),
+                    padding: const EdgeInsets.only(right: 5, left: 5),
                     child: dashboard3(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 5),
+                    padding: const EdgeInsets.only(right: 5, left: 5),
                     child: dashboard5(),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 5),
+                    padding: const EdgeInsets.only(right: 5, left: 5),
                     child: dashboard6(),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8, left: 8),
+                    child: salesIndustryEntry(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                  )
                 ],
                 staggeredTiles: [
-                  StaggeredTile.extent(4, 120.0),
-                  StaggeredTile.extent(2, 100.0),
-                  StaggeredTile.extent(2, 100.0),
-                  StaggeredTile.extent(2, 100.0),
-                  StaggeredTile.extent(2, 100.0),
+                  StaggeredTile.extent(4, 100.0),
+                  StaggeredTile.extent(2, 80.0),
+                  StaggeredTile.extent(2, 80.0),
+                  StaggeredTile.extent(2, 80.0),
+                  StaggeredTile.extent(2, 80.0),
+                  StaggeredTile.extent(4, 80.0),
+                  // StaggeredTile.extent(2, 80.0),
                 ],
               ),
             ),
@@ -288,7 +296,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   Material dashboard1() {
     return Material(
       color: Colors.white,
-      elevation: 14.0,
+      elevation: 6.0,
       borderRadius: BorderRadius.circular(24.0),
       shadowColor: lwtColor,
       child: Center(
@@ -305,11 +313,11 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   Row(
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(top: 30),
+                        padding: EdgeInsets.only(top: 25),
                         child: Text(
                           yearA,
                           style: TextStyle(
-                              fontSize: 34.0,
+                              fontSize: 24.0,
                               color: Color(0xFF272D34),
                               fontFamily: "Cormorant"),
                         ),
@@ -341,7 +349,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     child: Text(
                       "Attendance".toUpperCase(),
                       style: TextStyle(
-                        fontSize: 12.0,
+                        fontSize: 10.0,
                         color: Color(0xFF272D34),
                       ),
                     ),
@@ -350,7 +358,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     padding: EdgeInsets.all(2.0),
                     child: Text(
                       paidCount != null ? paidCount : "".toString(),
-                      style: TextStyle(fontSize: 35.0, color: lwtColor),
+                      style: TextStyle(fontSize: 30.0, color: lwtColor),
                     ),
                   ),
                   Padding(
@@ -396,7 +404,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       color: Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0xFF272D34),
       child: InkWell(
         onTap: () async {
           if (workStatus == "-" ||
@@ -423,7 +430,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         },
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -431,7 +438,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(5.0),
                       child: Text(
                         "Work Location".toUpperCase(),
                         style: TextStyle(
@@ -441,7 +448,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(4.0),
                       child: Text(
                         workStatus != null ? workStatus : "",
                         style: TextStyle(fontSize: 20.0, color: lwtColor),
@@ -462,10 +469,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
       color: Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      shadowColor: Color(0xFF272D34),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(5.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -473,7 +479,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(4.0),
                     child: Text(
                       "Task Pending".toUpperCase(),
                       style: TextStyle(
@@ -483,7 +489,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(4.0),
                     child: Text(
                       taskPending != null ? taskPending : "",
                       style: TextStyle(fontSize: 25.0, color: lwtColor),
@@ -503,7 +509,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       color: Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
           // if (workStatus != "At-Office") {
@@ -546,7 +551,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         },
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -554,7 +559,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(4.0),
                       child: Text(
                         "Day Start".toUpperCase(),
                         style: TextStyle(
@@ -564,7 +569,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(4.0),
                       child: Text(
                         timeStart != null ? timeStart : "",
                         style: TextStyle(fontSize: 25.0, color: lwtColor),
@@ -585,7 +590,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       color: Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      shadowColor: lwtColor,
       child: InkWell(
         onTap: () {
           // if (workStatus != "At-Office") {
@@ -621,7 +625,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         },
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -629,7 +633,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(4.0),
                       child: Text(
                         "Day End".toUpperCase(),
                         style: TextStyle(
@@ -639,7 +643,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(4.0),
                       child: Text(
                         timeEnd != null ? timeEnd : "",
                         style: TextStyle(fontSize: 25.0, color: lwtColor),
@@ -654,6 +658,200 @@ class _HomePageLocationState extends State<HomePageLocation> {
       ),
     );
   }
+
+  Material salesIndustryEntry() {
+    return Material(
+      color: Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      child: Center(
+        child: Padding(
+          padding: EdgeInsets.only(left:40.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Text(
+                      "Industrial Day Entry",
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: Color(0xFF272D34),
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(2.0),
+                    child: Text(
+                      listSalesIndustry?.length.toString() ?? "-",
+                      style: TextStyle(fontSize: 25.0, color: lwtColor),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left:20,right:2),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.visibility,
+                    color: lwtColor,
+                    size: 34,
+                  ),
+                  onPressed: () {
+                    var navigator = Navigator.of(context);
+                    navigator.pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              SalesIndustrialEntry()),
+                      ModalRoute.withName('/'),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    // return Material(
+    //   color: Colors.white60,
+    //   elevation: 10.0,
+    //   borderRadius: BorderRadius.circular(20.0),
+    //   child: Container(
+    //       child: Column(
+    //     children: <Widget>[
+    //       Padding(
+    //         padding: const EdgeInsets.all(2.0),
+    //         child: Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //           children: <Widget>[
+    //             Padding(
+    //               padding: const EdgeInsets.only(top:5,left:10),
+    //               child: Text(
+    //                 "Industrial Entry",
+    //                 style: TextStyle(
+    //                     color: lwtColor,
+    //                     fontWeight: FontWeight.normal,
+    //                     fontSize: 18),
+    //               ),
+    //             ),
+    //             Padding(
+    //               padding: const EdgeInsets.all(2.0),
+    //               child: IconButton(
+    //                 icon: Icon(
+    //                   Icons.edit,
+    //                   color: lwtColor,
+    //                   size: 24,
+    //                 ),
+    //                 onPressed: () {
+    //                   var navigator = Navigator.of(context);
+    //                   navigator.pushAndRemoveUntil(
+    //                     MaterialPageRoute(
+    //                         builder: (BuildContext context) =>
+    //                             SalesIndustrialEntry()),
+    //                     ModalRoute.withName('/'),
+    //                   );
+    //                 },
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //       // Expanded(
+    //       //   child: salesIndustrialList(),
+    //       // ),
+    //     ],
+    //   )),
+    // );
+  }
+
+  // salesIndustrialList() {
+  //   return ListView.builder(
+  //       itemCount:
+  //           listSalesIndustry == null ? 0 : listSalesIndustry?.length ?? 0,
+  //       itemBuilder: (BuildContext context, int index) {
+  //         return Card(
+  //             elevation: 5.0,
+  //             margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+  //             child: InkWell(
+  //               child: Container(
+  //                   child: Padding(
+  //                 padding: const EdgeInsets.all(10.0),
+  //                 child: ListTile(
+  //                   title: Text(
+  //                     listSalesIndustry[index]?.company_name ?? 'NA',
+  //                     style: TextStyle(
+  //                         color: Colors.black,
+  //                         fontSize: 10,
+  //                         fontWeight: FontWeight.bold),
+  //                   ),
+  //                   subtitle: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: <Widget>[
+  //                       Padding(
+  //                         padding: EdgeInsets.only(top: 4),
+  //                       ),
+  //                       Row(
+  //                         children: <Widget>[
+  //                           Text(
+  //                             "Entry Time  : ",
+  //                             style: TextStyle(
+  //                               color: Colors.black54,
+  //                               fontSize: 10,
+  //                             ),
+  //                           ),
+  //                           Text(
+  //                             listSalesIndustry[index]?.entry_time ?? 'NA',
+  //                             style: TextStyle(
+  //                               color: lwtColor,
+  //                               fontSize: 10,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                       Padding(
+  //                         padding: EdgeInsets.only(top: 2),
+  //                       ),
+  //                       Row(
+  //                         children: <Widget>[
+  //                           Text(
+  //                             "Exit Time    : ",
+  //                             style: TextStyle(
+  //                               color: Colors.black54,
+  //                               fontSize: 10,
+  //                             ),
+  //                           ),
+  //                           Text(
+  //                             listSalesIndustry[index]?.exit_time ?? 'NA',
+  //                             style: TextStyle(
+  //                               color: lwtColor,
+  //                               fontSize: 10,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                       Padding(
+  //                         padding: EdgeInsets.only(top: 2),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                   trailing: IconButton(
+  //                     icon: Icon(
+  //                       Icons.edit,
+  //                       color: lwtColor,
+  //                       size: 25,
+  //                     ),
+  //                     onPressed: () {},
+  //                   ),
+  //                 ),
+  //               )),
+  //             ));
+  //       });
+  // }
 
   getPaidCount(String empCodee) async {
     try {
@@ -845,40 +1043,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  // void sendUserLocation(double lati, double longi) async {
-  //   var now = DateTime.now();
-  //   var dateNow = DateFormat("yyyy-MM-dd hh:mm:ss").format(now);
-  //   try {
-  //     var response = await dio.put(ServicesApi.updateData,
-  //         data: {
-  //           "parameter1": "insertUserLocations",
-  //           "parameter2": userId,
-  //           "parameter3": lati.toString(),
-  //           "parameter4": longi.toString(),
-  //           "parameter5": dateNow
-  //         },
-  //         options: Options(
-  //           contentType: ContentType.parse('application/json'),
-  //         ));
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       var res = json.decode(response.data);
-  //       print(res.toString());
-  //     } else {
-  //       Fluttertoast.showToast(msg: "Check your internet connection.");
-  //     }
-  //   } on DioError catch (exception) {
-  //     if (exception == null ||
-  //         exception.toString().contains('SocketException')) {
-  //       throw Exception("Network Error");
-  //     } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
-  //         exception.type == DioErrorType.CONNECT_TIMEOUT) {
-  //       throw Exception("Check your internet connection.");
-  //     } else {
-  //       return null;
-  //     }
-  //   }
-  // }
-
   roundedAlertDialog(userLocation) {
     var now1 = DateTime.now();
     showDialog(
@@ -991,6 +1155,40 @@ class _HomePageLocationState extends State<HomePageLocation> {
         } else {
           return "-";
         }
+      }
+    }
+  }
+
+  getSalesIndustrialData(String user_id) async {
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["string"],
+            "parameter1": "salesIndustrialDataById",
+            "parameter2": user_id,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          listSalesIndustry = (json.decode(response.data) as List)
+              .map((data) => new SalesIndustrialEntryModel.fromJson(data))
+              .toList();
+          // completedCount = listSalesIndustry?.length.toString() ?? '-';
+          // print(listSalesIndustry);
+        });
+      } else if (response.statusCode == 401) {
+        throw Exception("Incorrect data");
+      } else
+        throw Exception('Authentication Error');
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
       }
     }
   }
