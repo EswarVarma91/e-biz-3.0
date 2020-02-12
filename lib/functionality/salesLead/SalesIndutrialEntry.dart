@@ -1,16 +1,21 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:Ebiz/activity/HomePage.dart';
+import 'package:Ebiz/functionality/salesLead/UpdateSalesInsutrialEntry.dart';
 import 'package:Ebiz/main.dart';
 import 'package:Ebiz/model/SalesIndustrialEntryModel.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:location/location.dart';
+import 'package:gps/gps.dart';
 
 class SalesIndustrialEntry extends StatefulWidget {
   @override
@@ -20,9 +25,14 @@ class SalesIndustrialEntry extends StatefulWidget {
 class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
   final _controller1 = TextEditingController();
   String timeStartI = "-", timeEndI = "-";
+  String datetimeStart = "-", datetimeEnd = "-";
   static Dio dio = Dio(Config.options);
   String userId;
+  String entry_lat, entry_longi, exit_lati, exit_longi;
   List<SalesIndustrialEntryModel> listSalesIndustry = [];
+  var currentLocation = LocationData;
+  var location = new Location();
+  GpsLatlng latlong;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -30,6 +40,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       userId = preferences.getString("userId");
       getSalesIndustrialData(userId);
     });
+    latlong = await Gps.currentGps();
   }
 
   @override
@@ -40,84 +51,90 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Sales Industrial Entry",
-            style: TextStyle(color: Colors.white),
-          ),
-          leading: IconButton(
-            icon: Icon(
-              Icons.close,
-              color: Colors.white,
+    return WillPopScope(
+      onWillPop: () => Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => HomePage()),
+        ModalRoute.withName('/'),
+      ),
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "Sales Industrial Entry",
+              style: TextStyle(color: Colors.white),
             ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => HomePage()),
-                // ModalRoute.withName('/'),
-              );
-            },
-          ),
-          actions: <Widget>[
-            IconButton(
+            leading: IconButton(
               icon: Icon(
-                Icons.check,
+                Icons.close,
                 color: Colors.white,
               ),
               onPressed: () {
-                if (_controller1.text.isEmpty) {
-                  Fluttertoast.showToast(msg: "Enter Company Name");
-                } else if (timeStartI == "-") {
-                  Fluttertoast.showToast(msg: "Start entry time");
-                } else {
-                  _callInsertMethodI();
-                }
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => HomePage()),
+                  ModalRoute.withName('/'),
+                );
               },
-            )
-          ],
-          iconTheme: IconThemeData(color: Colors.white),
-        ),
-        body: Container(
-            child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 10,
             ),
-            ListTile(
-              title: TextFormField(
-                controller: _controller1,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.business),
-                  labelText: "Company Name",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.check,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  if (_controller1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Company Name");
+                  } else if (timeStartI == "-") {
+                    Fluttertoast.showToast(msg: "Start Entry Time");
+                  } else {
+                    _callInsertMethodI();
+                  }
+                },
+              )
+            ],
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
+          body: Container(
+              child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                title: TextFormField(
+                  controller: _controller1,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.business),
+                    labelText: "Place of Business",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: dashboard5(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: dashboard6(),
-                  )
-                ],
+              Padding(
+                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: dashboard5(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: dashboard6(),
+                    )
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: salesIndustrialList(),
-            ),
-          ],
-        )));
+              Expanded(
+                child: salesIndustrialList(),
+              ),
+            ],
+          ))),
+    );
   }
 
   Material dashboard5() {
@@ -127,10 +144,22 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          setState(() {
-            var now1 = DateTime.now();
-            timeStartI = DateFormat("HH:mm:ss").format(now1).toString();
-          });
+          if (timeStartI == "-") {
+            if (_controller1.text.isNotEmpty) {
+              setState(() {
+                var now1 = DateTime.now();
+                entry_lat = latlong?.lat.toString() ?? "";
+                entry_longi = latlong?.lng.toString() ?? "";
+                datetimeStart = DateFormat("yyyy-MM-dd HH:mm:ss").format(now1);
+                timeStartI = DateFormat("HH:mm:ss").format(now1).toString();
+              });
+            } else {
+              Fluttertoast.showToast(
+                  msg: "Please Enter your Place of Business");
+            }
+          } else {
+            Fluttertoast.showToast(msg: "You can't change the Entry Time");
+          }
         },
         child: Center(
           child: Padding(
@@ -175,14 +204,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          if (timeStartI != "-") {
-            setState(() {
-              var now = DateTime.now();
-              timeEndI = DateFormat("HH:mm:ss").format(now).toString();
-            });
-          } else {
-            Fluttertoast.showToast(msg: "Start your entry time");
-          }
+          roundedAlertDialog();
         },
         child: Center(
           child: Padding(
@@ -237,7 +259,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                       listSalesIndustry[index]?.company_name ?? 'NA',
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 10,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
@@ -256,7 +278,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                               ),
                             ),
                             Text(
-                              listSalesIndustry[index]?.entry_time ?? 'NA',
+                              listSalesIndustry[index]?.entry_time ?? '-',
                               style: TextStyle(
                                 color: lwtColor,
                                 fontSize: 10,
@@ -277,7 +299,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                               ),
                             ),
                             Text(
-                              listSalesIndustry[index]?.exit_time ?? 'NA',
+                              listSalesIndustry[index]?.exit_time ?? '-',
                               style: TextStyle(
                                 color: lwtColor,
                                 fontSize: 10,
@@ -292,11 +314,22 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                     ),
                     trailing: IconButton(
                       icon: Icon(
-                        Icons.edit,
+                        listSalesIndustry[index].status.toString() == "1"
+                            ? Icons.edit
+                            : Icons.check,
                         color: lwtColor,
                         size: 25,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        listSalesIndustry[index].status.toString() == "1"
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        UpdateSalesInsutrialEntry(
+                                            listSalesIndustry[index])))
+                            : Container();
+                      },
                     ),
                   ),
                 )),
@@ -306,25 +339,38 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
 
   _callInsertMethodI() async {
     var nowTime = DateTime.now();
+    var data;
+    if (timeEndI == "-") {
+      data = 1;
+    } else {
+      data = 0;
+    }
+
     try {
       var response = await dio.post(ServicesApi.updateData,
           data: {
             "parameter1": "insertSalesEntryExitPoint",
             "parameter2": _controller1.text,
-            "parameter3": timeStartI,
-            "parameter4": timeEndI,
-            "parameter5": DateFormat("yyyy-MM-dd hh:mm:ss").format(nowTime),
-            "parameter6": userId
+            "parameter3": datetimeStart,
+            "parameter4": datetimeEnd,
+            "parameter5": DateFormat("yyyy-MM-dd HH:mm:ss").format(nowTime),
+            "parameter6": userId,
+            "parameter7": data,
+            "parameter8": entry_lat,
+            "parameter9": entry_longi,
+            "parameter10": exit_lati,
+            "parameter11": exit_longi
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var responseJson = json.decode(response.data);
-        getSalesIndustrialData(userId);
+        // var responseJson = json.decode(response.data);
+        // getSalesIndustrialData(userId);
         Fluttertoast.showToast(msg: "Sales Entry Successful.");
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => SalesIndustrialEntry()),
+          MaterialPageRoute(
+              builder: (BuildContext context) => SalesIndustrialEntry()),
           ModalRoute.withName('/'),
         );
         // return responseJson;
@@ -375,5 +421,51 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         throw Exception("Check your internet connection.");
       }
     }
+  }
+
+  roundedAlertDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text(
+              'Do you want to exit the business location?',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: new Text('No'),
+              ),
+              new CupertinoButton(
+                onPressed: () async {
+                  if (timeStartI != "-") {
+                    if (timeEndI == "-") {
+                      setState(() {
+                        var now = DateTime.now();
+                        exit_lati = latlong?.lat.toString() ?? "";
+                        exit_longi = latlong?.lng.toString() ?? "";
+                        datetimeEnd =
+                            DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+                        timeEndI =
+                            DateFormat("HH:mm:ss").format(now).toString();
+                      });
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: "You can't change the Exit Time");
+                    }
+                  } else {
+                    Fluttertoast.showToast(msg: "Start your entry time");
+                  }
+                  Navigator.pop(context);
+                },
+                child: new Text('Yes'),
+              ),
+            ],
+          );
+        });
   }
 }

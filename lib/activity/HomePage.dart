@@ -664,55 +664,64 @@ class _HomePageLocationState extends State<HomePageLocation> {
       color: Colors.white,
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.only(left:40.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: Text(
-                      "Industrial Day Entry",
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        color: Color(0xFF272D34),
-                        fontWeight: FontWeight.bold
+      child: InkWell(
+        onTap: () {
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => SalesIndustrialEntry()),
+            ModalRoute.withName('/'),
+          );
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.only(left: 40.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Text(
+                        "Work Visit",
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            color: Color(0xFF272D34),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(2.0),
-                    child: Text(
-                      listSalesIndustry?.length.toString() ?? "-",
-                      style: TextStyle(fontSize: 25.0, color: lwtColor),
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        listSalesIndustry?.length.toString() ?? "-",
+                        style: TextStyle(fontSize: 25.0, color: lwtColor),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left:20,right:2),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.visibility,
-                    color: lwtColor,
-                    size: 34,
-                  ),
-                  onPressed: () {
-                    var navigator = Navigator.of(context);
-                    navigator.pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              SalesIndustrialEntry()),
-                      ModalRoute.withName('/'),
-                    );
-                  },
+                  ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 2),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.visibility,
+                      color: lwtColor,
+                      size: 34,
+                    ),
+                    onPressed: () {
+                      var navigator = Navigator.of(context);
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                SalesIndustrialEntry()),
+                        ModalRoute.withName('/'),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
