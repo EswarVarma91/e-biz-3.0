@@ -915,7 +915,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            trlm[index].tra_from?.split("-")[0]??"",
+                            trlm[index].tra_from?.split("-")[0] ?? "",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -931,7 +931,7 @@ class _ApprovalsState extends State<Approvals> {
                             style: TextStyle(fontSize: 7, color: Colors.black),
                           ),
                           Text(
-                            trlm[index].tra_to?.split("-")[0]??"",
+                            trlm[index].tra_to?.split("-")[0] ?? "",
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold,
@@ -1438,7 +1438,9 @@ class _ApprovalsState extends State<Approvals> {
           ));
       if (response2.statusCode == 200 || response2.statusCode == 201) {
         setState(() {
-          trlm = (json.decode(response2.data) as List).map((a) => TravelRequestListModel.fromJson(a)).toList();
+          trlm = (json.decode(response2.data) as List)
+              .map((a) => TravelRequestListModel.fromJson(a))
+              .toList();
         });
         checkServices();
       }
@@ -1990,6 +1992,3 @@ class _ApprovalsState extends State<Approvals> {
     }
   }
 }
-
-
-

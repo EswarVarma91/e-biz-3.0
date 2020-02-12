@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -12,6 +13,7 @@ void main() {
     systemNavigationBarColor: Colors.white, //bottom bar color
     systemNavigationBarIconBrightness: Brightness.dark, //bottom bar icons
   ));
+
   runApp(MyApp());
 }
 
@@ -26,9 +28,9 @@ class MyApp extends StatelessWidget {
           primaryColor: lwtColor,
           fontFamily: 'Roboto'),
       darkTheme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: lwtColor,
-        fontFamily: 'Roboto'),
+          brightness: Brightness.light,
+          primaryColor: lwtColor,
+          fontFamily: 'Roboto'),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );

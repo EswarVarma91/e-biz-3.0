@@ -103,6 +103,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
               ListTile(
                 title: TextFormField(
                   controller: _controller1,
+                  maxLength: 100,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.business),
@@ -158,7 +159,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   msg: "Please Enter your Place of Business");
             }
           } else {
-            Fluttertoast.showToast(msg: "You can't change the Entry Time");
+            Fluttertoast.showToast(msg: "You have already entered the Entry Time");
           }
         },
         child: Center(
@@ -204,7 +205,16 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          roundedAlertDialog();
+          if (timeStartI != "-") {
+            if (timeEndI == "-") {
+              roundedAlertDialog();
+            } else {
+              Fluttertoast.showToast(msg: "You have already entered the Exit Time");
+            }
+          } else {
+            Fluttertoast.showToast(msg: "Please Start your entry time");
+          }
+          // roundedAlertDialog();
         },
         child: Center(
           child: Padding(
@@ -442,24 +452,13 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
               ),
               new CupertinoButton(
                 onPressed: () async {
-                  if (timeStartI != "-") {
-                    if (timeEndI == "-") {
-                      setState(() {
-                        var now = DateTime.now();
-                        exit_lati = latlong?.lat.toString() ?? "";
-                        exit_longi = latlong?.lng.toString() ?? "";
-                        datetimeEnd =
-                            DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
-                        timeEndI =
-                            DateFormat("HH:mm:ss").format(now).toString();
-                      });
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "You can't change the Exit Time");
-                    }
-                  } else {
-                    Fluttertoast.showToast(msg: "Start your entry time");
-                  }
+                  setState(() {
+                    var now = DateTime.now();
+                    exit_lati = latlong?.lat.toString() ?? "";
+                    exit_longi = latlong?.lng.toString() ?? "";
+                    datetimeEnd = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+                    timeEndI = DateFormat("HH:mm:ss").format(now).toString();
+                  });
                   Navigator.pop(context);
                 },
                 child: new Text('Yes'),

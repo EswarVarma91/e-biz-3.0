@@ -86,7 +86,7 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
                 ),
                 onPressed: () {
                   if (timeEndI == "-") {
-                    Fluttertoast.showToast(msg: "Start Exit Time");
+                    Fluttertoast.showToast(msg: "Please end your exit time");
                   } else {
                     _callInsertMethodU();
                   }
@@ -169,7 +169,12 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          roundedAlertDialog();
+          if (timeEndI == "-") {
+            roundedAlertDialog();
+          } else {
+            Fluttertoast.showToast(msg: "You have already entered the Exit Time");
+          }
+          // roundedAlertDialog();
         },
         child: Center(
           child: Padding(
@@ -226,19 +231,13 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
               ),
               new CupertinoButton(
                 onPressed: () async {
-                  if (timeEndI == "-") {
-                    setState(() {
-                      var now = DateTime.now();
-                      exit_lati = latlong?.lat.toString() ?? "";
-                      exit_longi = latlong?.lng.toString() ?? "";
-                      datetimeEnd =
-                          DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
-                      timeEndI = DateFormat("HH:mm:ss").format(now).toString();
-                    });
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "You can't change the Exit Time");
-                  }
+                  setState(() {
+                    var now = DateTime.now();
+                    exit_lati = latlong?.lat.toString() ?? "";
+                    exit_longi = latlong?.lng.toString() ?? "";
+                    datetimeEnd = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+                    timeEndI = DateFormat("HH:mm:ss").format(now).toString();
+                  });
                   Navigator.pop(context);
                 },
                 child: new Text('Yes'),
