@@ -330,8 +330,10 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
         MaterialPageRoute(
             builder: (BuildContext context) => Members(choosePerson)));
     var string = data.split(" USR_");
-    choosePerson = string[0];
-    resourceId = string[1];
+    setState(() {
+      choosePerson = string[0];
+      resourceId = string[1];
+    });
   }
 
   void CallTeamTaskApi() async {

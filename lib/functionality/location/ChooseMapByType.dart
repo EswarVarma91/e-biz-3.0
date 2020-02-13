@@ -258,19 +258,23 @@ class _ChooseMapByTypeState extends State<ChooseMapByType> {
     if (result == "1") {
       var data = await Navigator.push(context,
           MaterialPageRoute(builder: (BuildContext context) => Departments()));
+      setState(() {
+        userName = data.split("USR_")[0];
+        userId = data.split("USR_")[1];
+      });
 
-      userName = data.split("USR_")[0];
-      userId = data.split("USR_")[1];
-      print(data + " " + userName + " " + userId);
+      // print(data + " " + userName + " " + userId);
     } else if (result == "2") {
       var data = await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => ReferedBy("Users")));
 
-      userName = data.split("USR_")[0];
-      userId = data.split("USR_")[1];
-      print(data + " " + userName + " " + userId);
+      setState(() {
+        userName = data.split("USR_")[0];
+        userId = data.split("USR_")[1];
+      });
+      // print(data + " " + userName + " " + userId);
     }
   }
 }

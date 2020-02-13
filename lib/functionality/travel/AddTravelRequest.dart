@@ -777,9 +777,11 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       getUserRequestNo(travelNameId.toString());
     } else if (response.statusCode == 401) {
       pr.hide();
+      Navigator.pop(context);
       throw Exception("Incorrect data");
     } else if (response.statusCode == 500) {
       pr.hide();
+      Navigator.pop(context);
     }
   }
 
@@ -799,6 +801,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
           pushNotification(req_no.toString(), token);
         } else {
           pr.hide();
+          Navigator.pop(context);
           Fluttertoast.showToast(msg: "Travel Request Generated.");
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
@@ -809,6 +812,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
         }
       } else {
         pr.hide();
+        Navigator.pop(context);
         Fluttertoast.showToast(msg: "Travel Request Generated.");
         var navigator = Navigator.of(context);
         navigator.pushAndRemoveUntil(
@@ -819,9 +823,11 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       }
     } else if (response.statusCode == 401) {
       pr.hide();
+      Navigator.pop(context);
       throw (Exception);
     } else if (response.statusCode == 500) {
       pr.hide();
+      Navigator.pop(context);
     }
   }
 
@@ -849,11 +855,11 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
       'Authorization': "key=" + ServicesApi.FCM_KEY,
       'Content-Type': 'application/json',
     };
-    // todo - set the relevant values
-    http.Response r = await http.post(ServicesApi.fcm_Send,
+    await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);
     pr.hide();
+    Navigator.pop(context);
     Fluttertoast.showToast(msg: "Travel Request Generated.");
     var navigator = Navigator.of(context);
     navigator.pushAndRemoveUntil(
@@ -901,6 +907,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
                       TcomaplaintRefType,
                       TrequiredDateTime,
                       purposeB);
+                  Navigator.pop(context);
                 },
                 child: Text('Yes'),
               ),

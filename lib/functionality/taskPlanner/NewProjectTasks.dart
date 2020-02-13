@@ -384,8 +384,10 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
         MaterialPageRoute(
             builder: (BuildContext context) => Projects(chooseProject)));
     var string = data.split(" PROJ_");
-    chooseProject = string[0];
-    projectId = string[1];
+    setState(() {
+      chooseProject = string[0];
+      projectId = string[1];
+    });
   }
 
   void _navigateresourceMethod(BuildContext context) async {
@@ -398,8 +400,10 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
               builder: (BuildContext context) =>
                   Resources(chooseResource, projectId)));
       var string = data.split(" USR_");
-      chooseResource = string[0];
-      resourceId = string[1];
+      setState(() {
+        chooseResource = string[0];
+        resourceId = string[1];
+      });
     } else {
       Fluttertoast.showToast(msg: "Sorry..! You are not a project incharge.");
     }
@@ -463,7 +467,11 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
   void getFirebaseToken(String fullName, String taskName,
       String taskDescription, resourceId) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getUserToken", "parameter2": resourceId},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getUserToken",
+          "parameter2": resourceId
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

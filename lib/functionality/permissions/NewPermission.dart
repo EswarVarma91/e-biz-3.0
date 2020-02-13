@@ -542,14 +542,17 @@ class _NewPermissionState extends State<NewPermissions> {
         } else if (response.data.toString() ==
             '"Exceeded your permission hours"') {
               pr.hide();
+              Navigator.pop(context);
           Fluttertoast.showToast(
               msg: "Permission not allowed for more than 2 hours.");
         } else {
           pr.hide();
+          Navigator.pop(context);
           Fluttertoast.showToast(msg: response.data.toString());
         }
       } else if (response.statusCode == 401) {
         pr.hide();
+        Navigator.pop(context);
         throw Exception("Incorrect data");
       }
     } on DioError catch (exception) {
@@ -557,10 +560,12 @@ class _NewPermissionState extends State<NewPermissions> {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         pr.hide();
+        Navigator.pop(context);
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
+        Navigator.pop(context);
         throw Exception("Check your internet connection.");
       }
     }
@@ -636,6 +641,7 @@ class _NewPermissionState extends State<NewPermissions> {
             pushNotification(data, date, fromTime, toTime, purpose, uidd);
           } else {
             pr.hide();
+            Navigator.pop(context);
             Fluttertoast.showToast(msg: "Permission Applied");
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -645,6 +651,7 @@ class _NewPermissionState extends State<NewPermissions> {
           }
         } else {
           pr.hide();
+          Navigator.pop(context);
           Fluttertoast.showToast(msg: "Permission Applied");
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => Permissions()),
@@ -653,13 +660,16 @@ class _NewPermissionState extends State<NewPermissions> {
         }
       } else {
         pr.hide();
+        Navigator.pop(context);
         Fluttertoast.showToast(msg: "Permission Applied");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => Permissions()),
           ModalRoute.withName('/'),
         );
       }
-    } else if (response.statusCode == 401) {}
+    } else if (response.statusCode == 401) {
+      Navigator.pop(context);
+    }
   }
 
   void pushNotification(String to, String date, String fromTime, String toTime,

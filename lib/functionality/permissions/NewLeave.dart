@@ -507,7 +507,10 @@ class _NewLeaveState extends State<NewLeave> {
     var data = await Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => LeaveType()));
     List res = data.split(" ");
-    leaveType = res[0].toString();
+    setState(() {
+      leaveType = res[0].toString();
+    });
+
     if (leaveType == "SL") {
       leave_is_Cl = false;
       leave_is_Sl = true;
@@ -622,6 +625,7 @@ class _NewLeaveState extends State<NewLeave> {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       pr.hide();
+      Navigator.pop(context);
       Fluttertoast.showToast(msg: "Leave Generated Successfully");
       Navigator.push(context,
           MaterialPageRoute(builder: (BuildContext context) => Permissions()));

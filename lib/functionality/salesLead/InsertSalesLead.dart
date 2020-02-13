@@ -279,8 +279,10 @@ class _NewSalesLeadState extends State<NewSalesLead> {
         MaterialPageRoute(
             builder: (BuildContext context) => ReferedBy(result)));
     var string = data.split(" USR_");
-    result = string[0];
-    referalPerson = string[1];
+    setState(() {
+      result = string[0];
+      referalPerson = string[1];
+    });
   }
 
   bool validateMobile(String mobile) {
