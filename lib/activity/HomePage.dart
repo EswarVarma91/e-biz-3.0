@@ -67,6 +67,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   String empCode = "-",
       profilePic,
       deviceId,
+      mgmtCnt = "1",
       profilename = "-",
       fullname = "-",
       userId = "-",
@@ -78,7 +79,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       yearB = "         ";
   var dbHelper = DatabaseHelper();
   var now = DateTime.now();
-  List<SalesIndustrialEntryModel> listSalesIndustry = [];
+  String siecnt, msiecnt;
 
   List<AttendanceModel> atteModel = [];
   Future<List<AttendanceModel>> attList;
@@ -100,9 +101,12 @@ class _HomePageLocationState extends State<HomePageLocation> {
       fullname = preferences.getString("fullname");
       userId = preferences.getString("userId");
       profilePic = preferences.getString("picPath");
+      // mgmtCnt = preferences.getString("mgmtCnt");
+
       getPaidCount(empCode);
       getPendingCount(userId);
-      getSalesIndustrialData(userId);
+      getSalesIndustrialDataCount(userId);
+      getSalesIndustrialMangmentDataCount();
       // getCurrentDate();
       AttendanceModel attendanceModel =
           AttendanceModel(userId, "-", "-", "-", "-", "-", "-");
@@ -210,19 +214,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
     return Scrollbar(
       child: Stack(
         children: <Widget>[
-          // Container(
-          //   child: Center(
-          //     child: Padding(
-          //       padding: const EdgeInsets.only(left: 60, top: 260),
-          //       child: Image.asset(
-          //         'assets/images/ebiz.png',
-          //         color: lwtColor,
-          //         height: 120,
-          //         width: 120,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           Container(
             padding: EdgeInsets.only(bottom: 5, right: 5),
             alignment: Alignment.bottomRight,
@@ -262,13 +253,15 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     padding: const EdgeInsets.only(right: 5, left: 5),
                     child: dashboard6(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8, left: 8),
-                    child: salesIndustryEntry(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                  )
+                  mgmtCnt == "1"
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 8, left: 8),
+                          child: managmentSIEntry(),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(right: 8, left: 8),
+                          child: salesIndustryEntry(),
+                        ),
                 ],
                 staggeredTiles: [
                   StaggeredTile.extent(4, 100.0),
@@ -277,7 +270,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   StaggeredTile.extent(2, 80.0),
                   StaggeredTile.extent(2, 80.0),
                   StaggeredTile.extent(4, 80.0),
-                  // StaggeredTile.extent(2, 80.0),
                 ],
               ),
             ),
@@ -292,6 +284,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
       ),
     );
   }
+
+  _empty() {}
 
   Material dashboard1() {
     return Material(
@@ -618,10 +612,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
             Fluttertoast.showToast(
                 msg: "Choose your work status, to mark attendance.");
           }
-          // } else {
-          //   Fluttertoast.showToast(
-          //       msg: "Attendance accept through Bio-Metric only.");
-          // }
         },
         child: Center(
           child: Padding(
@@ -695,7 +685,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                     Padding(
                       padding: EdgeInsets.all(2.0),
                       child: Text(
-                        listSalesIndustry?.length.toString() ?? "-",
+                        siecnt?.toString() ?? "-",
                         style: TextStyle(fontSize: 25.0, color: lwtColor),
                       ),
                     ),
@@ -726,141 +716,76 @@ class _HomePageLocationState extends State<HomePageLocation> {
         ),
       ),
     );
-    // return Material(
-    //   color: Colors.white60,
-    //   elevation: 10.0,
-    //   borderRadius: BorderRadius.circular(20.0),
-    //   child: Container(
-    //       child: Column(
-    //     children: <Widget>[
-    //       Padding(
-    //         padding: const EdgeInsets.all(2.0),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: <Widget>[
-    //             Padding(
-    //               padding: const EdgeInsets.only(top:5,left:10),
-    //               child: Text(
-    //                 "Industrial Entry",
-    //                 style: TextStyle(
-    //                     color: lwtColor,
-    //                     fontWeight: FontWeight.normal,
-    //                     fontSize: 18),
-    //               ),
-    //             ),
-    //             Padding(
-    //               padding: const EdgeInsets.all(2.0),
-    //               child: IconButton(
-    //                 icon: Icon(
-    //                   Icons.edit,
-    //                   color: lwtColor,
-    //                   size: 24,
-    //                 ),
-    //                 onPressed: () {
-    //                   var navigator = Navigator.of(context);
-    //                   navigator.pushAndRemoveUntil(
-    //                     MaterialPageRoute(
-    //                         builder: (BuildContext context) =>
-    //                             SalesIndustrialEntry()),
-    //                     ModalRoute.withName('/'),
-    //                   );
-    //                 },
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //       // Expanded(
-    //       //   child: salesIndustrialList(),
-    //       // ),
-    //     ],
-    //   )),
-    // );
   }
 
-  // salesIndustrialList() {
-  //   return ListView.builder(
-  //       itemCount:
-  //           listSalesIndustry == null ? 0 : listSalesIndustry?.length ?? 0,
-  //       itemBuilder: (BuildContext context, int index) {
-  //         return Card(
-  //             elevation: 5.0,
-  //             margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-  //             child: InkWell(
-  //               child: Container(
-  //                   child: Padding(
-  //                 padding: const EdgeInsets.all(10.0),
-  //                 child: ListTile(
-  //                   title: Text(
-  //                     listSalesIndustry[index]?.company_name ?? 'NA',
-  //                     style: TextStyle(
-  //                         color: Colors.black,
-  //                         fontSize: 10,
-  //                         fontWeight: FontWeight.bold),
-  //                   ),
-  //                   subtitle: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: <Widget>[
-  //                       Padding(
-  //                         padding: EdgeInsets.only(top: 4),
-  //                       ),
-  //                       Row(
-  //                         children: <Widget>[
-  //                           Text(
-  //                             "Entry Time  : ",
-  //                             style: TextStyle(
-  //                               color: Colors.black54,
-  //                               fontSize: 10,
-  //                             ),
-  //                           ),
-  //                           Text(
-  //                             listSalesIndustry[index]?.entry_time ?? 'NA',
-  //                             style: TextStyle(
-  //                               color: lwtColor,
-  //                               fontSize: 10,
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                       Padding(
-  //                         padding: EdgeInsets.only(top: 2),
-  //                       ),
-  //                       Row(
-  //                         children: <Widget>[
-  //                           Text(
-  //                             "Exit Time    : ",
-  //                             style: TextStyle(
-  //                               color: Colors.black54,
-  //                               fontSize: 10,
-  //                             ),
-  //                           ),
-  //                           Text(
-  //                             listSalesIndustry[index]?.exit_time ?? 'NA',
-  //                             style: TextStyle(
-  //                               color: lwtColor,
-  //                               fontSize: 10,
-  //                             ),
-  //                           ),
-  //                         ],
-  //                       ),
-  //                       Padding(
-  //                         padding: EdgeInsets.only(top: 2),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                   trailing: IconButton(
-  //                     icon: Icon(
-  //                       Icons.edit,
-  //                       color: lwtColor,
-  //                       size: 25,
-  //                     ),
-  //                     onPressed: () {},
-  //                   ),
-  //                 ),
-  //               )),
-  //             ));
-  //       });
-  // }
+  Material managmentSIEntry() {
+    return Material(
+      color: Colors.white,
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(24.0),
+      child: InkWell(
+        onTap: () {
+          var navigator = Navigator.of(context);
+          navigator.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => SalesIndustrialEntry()),
+            ModalRoute.withName('/'),
+          );
+        },
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.only(left: 40.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: Text(
+                        "Work Visit",
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            color: Color(0xFF272D34),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(2.0),
+                      child: Text(
+                        msiecnt?.toString() ?? "-",
+                        style: TextStyle(fontSize: 25.0, color: lwtColor),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 2),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.visibility,
+                      color: lwtColor,
+                      size: 34,
+                    ),
+                    onPressed: () {
+                      var navigator = Navigator.of(context);
+                      navigator.pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                SalesIndustrialEntry()),
+                        ModalRoute.withName('/'),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   getPaidCount(String empCodee) async {
     try {
@@ -1168,12 +1093,12 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  getSalesIndustrialData(String user_id) async {
+  getSalesIndustrialDataCount(String user_id) async {
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
             "encryptedFields": ["string"],
-            "parameter1": "salesIndustrialDataById",
+            "parameter1": "salesIndustrialCount",
             "parameter2": user_id,
           },
           options: Options(
@@ -1181,11 +1106,11 @@ class _HomePageLocationState extends State<HomePageLocation> {
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
-          listSalesIndustry = (json.decode(response.data) as List)
-              .map((data) => new SalesIndustrialEntryModel.fromJson(data))
-              .toList();
-          // completedCount = listSalesIndustry?.length.toString() ?? '-';
-          // print(listSalesIndustry);
+          var res = json.decode(response.data);
+          PendingCountModel data = PendingCountModel.fromJson(res[0]);
+          setState(() {
+            siecnt = data.pendingCount.toString();
+          });
         });
       } else if (response.statusCode == 401) {
         throw Exception("Incorrect data");
@@ -1202,7 +1127,40 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  void insertDeviceID(String deviceId, String userId) async {
+  getSalesIndustrialMangmentDataCount() async {
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["string"],
+            "parameter1": "getSalesEntryCount",
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        setState(() {
+          var res = json.decode(response.data);
+          PendingCountModel data = PendingCountModel.fromJson(res[0]);
+          setState(() {
+            msiecnt = data.pendingCount.toString();
+          });
+        });
+      } else if (response.statusCode == 401) {
+        throw Exception("Incorrect data");
+      } else
+        throw Exception('Authentication Error');
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
+      }
+    }
+  }
+
+  insertDeviceID(String deviceId, String userId) async {
     var response = await dio.post(ServicesApi.insertDeviceid,
         data: {"deviceId": deviceId, "uId": userId},
         options: Options(contentType: ContentType.parse('application/json')));

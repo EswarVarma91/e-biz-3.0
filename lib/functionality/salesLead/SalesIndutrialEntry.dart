@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:Ebiz/activity/HomePage.dart';
+import 'package:Ebiz/functionality/salesLead/SearchSalesIndustrialEntry.dart';
 import 'package:Ebiz/functionality/salesLead/UpdateSalesInsutrialEntry.dart';
 import 'package:Ebiz/main.dart';
 import 'package:Ebiz/model/SalesIndustrialEntryModel.dart';
@@ -23,8 +24,7 @@ class SalesIndustrialEntry extends StatefulWidget {
 }
 
 class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
-  final _controller1 = TextEditingController();
-  String timeStartI = "-", timeEndI = "-";
+  String timeStartI = "-", timeEndI = "-",nameofBusiness="";
   String datetimeStart = "-", datetimeEnd = "-";
   static Dio dio = Dio(Config.options);
   String userId;
@@ -82,7 +82,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  if (_controller1.text.isEmpty) {
+                  if (nameofBusiness=="") {
                     Fluttertoast.showToast(msg: "Enter Company Name");
                   } else if (timeStartI == "-") {
                     Fluttertoast.showToast(msg: "Start Entry Time");
@@ -101,8 +101,21 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                 height: 10,
               ),
               ListTile(
+                onTap: () async {
+                  var data = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              SearchSalesIndustrialEntry("Place of Business")));
+                  if (data != null) {
+                    setState(() {
+                      nameofBusiness=data;
+                    });
+                  }
+                },
                 title: TextFormField(
-                  controller: _controller1,
+                  enabled: false,
+                  controller: TextEditingController(text: nameofBusiness),
                   maxLength: 100,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
@@ -115,7 +128,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -146,7 +159,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       child: InkWell(
         onTap: () {
           if (timeStartI == "-") {
-            if (_controller1.text.isNotEmpty) {
+            if (nameofBusiness!="") {
               setState(() {
                 var now1 = DateTime.now();
                 entry_lat = latlong?.lat.toString() ?? "";
@@ -159,7 +172,8 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   msg: "Please Enter your Place of Business");
             }
           } else {
-            Fluttertoast.showToast(msg: "You have already entered the Entry Time");
+            Fluttertoast.showToast(
+                msg: "You have already entered the Entry Time");
           }
         },
         child: Center(
@@ -209,7 +223,8 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
             if (timeEndI == "-") {
               roundedAlertDialog();
             } else {
-              Fluttertoast.showToast(msg: "You have already entered the Exit Time");
+              Fluttertoast.showToast(
+                  msg: "You have already entered the Exit Time");
             }
           } else {
             Fluttertoast.showToast(msg: "Please Start your entry time");
@@ -360,7 +375,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       var response = await dio.post(ServicesApi.updateData,
           data: {
             "parameter1": "insertSalesEntryExitPoint",
-            "parameter2": _controller1.text,
+            "parameter2": nameofBusiness,
             "parameter3": datetimeStart,
             "parameter4": datetimeEnd,
             "parameter5": DateFormat("yyyy-MM-dd HH:mm:ss").format(nowTime),
@@ -415,8 +430,6 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
           listSalesIndustry = (json.decode(response.data) as List)
               .map((data) => new SalesIndustrialEntryModel.fromJson(data))
               .toList();
-          // completedCount = listSalesIndustry?.length.toString() ?? '-';
-          // print(listSalesIndustry);
         });
       } else if (response.statusCode == 401) {
         throw Exception("Incorrect data");
