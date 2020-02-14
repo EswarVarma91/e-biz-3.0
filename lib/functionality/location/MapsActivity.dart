@@ -591,10 +591,10 @@ class _ViewMapState extends State<MapsActivity> {
                 double.parse(json.decode(response.data)[i]['longi'])),
             u_department: json.decode(response.data)[i]['u_department'],
             created_date: json.decode(response.data)[i]['created_date'],
-            u_profile_name: json
+            u_profile_name: _add(i).toString()+". "+json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1),
+                json.decode(response.data)[i]['u_profile_name'].substring(1) + " ",
             user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
@@ -795,4 +795,8 @@ class _ViewMapState extends State<MapsActivity> {
 
     return data.buffer.asUint8List();
   }
+}
+
+_add(int i) {
+  return i+1;
 }

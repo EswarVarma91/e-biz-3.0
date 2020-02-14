@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Ebiz/functionality/salesLead/ManagmentIndustrialEntry.dart';
 import 'package:Ebiz/functionality/salesLead/SalesIndutrialEntry.dart';
 import 'package:Ebiz/model/SalesIndustrialEntryModel.dart';
 import 'package:connectivity/connectivity.dart';
@@ -67,7 +68,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   String empCode = "-",
       profilePic,
       deviceId,
-      mgmtCnt = "1",
+      mgmtCnt ,
       profilename = "-",
       fullname = "-",
       userId = "-",
@@ -101,7 +102,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       fullname = preferences.getString("fullname");
       userId = preferences.getString("userId");
       profilePic = preferences.getString("picPath");
-      // mgmtCnt = preferences.getString("mgmtCnt");
+      mgmtCnt = preferences.getString("mgmtCnt");
 
       getPaidCount(empCode);
       getPendingCount(userId);
@@ -728,7 +729,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
             MaterialPageRoute(
-                builder: (BuildContext context) => SalesIndustrialEntry()),
+                builder: (BuildContext context) => ManagmentIndustrialEntry()),
             ModalRoute.withName('/'),
           );
         },
@@ -773,7 +774,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
                       navigator.pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
-                                SalesIndustrialEntry()),
+                                ManagmentIndustrialEntry()),
                         ModalRoute.withName('/'),
                       );
                     },
