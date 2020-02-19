@@ -474,7 +474,7 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: json.decode(response.data)[i]['created_date'] ?? " "),
+                snippet: _changeDateFormat(json.decode(response.data)[i]['created_date']) ?? " "),
             draggable: false,
           ));
 

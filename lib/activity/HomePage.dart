@@ -95,6 +95,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   getEmpCode() async {
     // deviceId = await DeviceId.getID;
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       empCode = preferences.getString("uEmpCode").toString();
