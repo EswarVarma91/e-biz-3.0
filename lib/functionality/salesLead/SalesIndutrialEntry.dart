@@ -24,7 +24,7 @@ class SalesIndustrialEntry extends StatefulWidget {
 }
 
 class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
-  String timeStartI = "-", timeEndI = "-",nameofBusiness="";
+  String timeStartI = "-", timeEndI = "-", nameofBusiness = "";
   String datetimeStart = "-", datetimeEnd = "-";
   static Dio dio = Dio(Config.options);
   String userId;
@@ -82,12 +82,13 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  if (nameofBusiness=="") {
+                  if (nameofBusiness == "") {
                     Fluttertoast.showToast(msg: "Enter Company Name");
                   } else if (timeStartI == "-") {
                     Fluttertoast.showToast(msg: "Start Entry Time");
                   } else {
-                    _callInsertMethodI();
+                    roundedCreateAlertDialog();
+                    // _callInsertMethodI();
                   }
                 },
               )
@@ -109,7 +110,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                               SearchSalesIndustrialEntry("Place of Business")));
                   if (data != null) {
                     setState(() {
-                      nameofBusiness=data;
+                      nameofBusiness = data;
                     });
                   }
                 },
@@ -159,7 +160,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       child: InkWell(
         onTap: () {
           if (timeStartI == "-") {
-            if (nameofBusiness!="") {
+            if (nameofBusiness != "") {
               setState(() {
                 var now1 = DateTime.now();
                 entry_lat = latlong?.lat.toString() ?? "";
@@ -390,8 +391,6 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // var responseJson = json.decode(response.data);
-        // getSalesIndustrialData(userId);
         Fluttertoast.showToast(msg: "Sales Entry Successful.");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
@@ -401,8 +400,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         // return responseJson;
       } else if (response.statusCode == 401) {
         throw Exception("Incorrect data");
-      } else
-        throw Exception('Authentication Error');
+      }
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -433,8 +431,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         });
       } else if (response.statusCode == 401) {
         throw Exception("Incorrect data");
-      } else
-        throw Exception('Authentication Error');
+      }
     } on DioError catch (exception) {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
@@ -472,6 +469,35 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                     datetimeEnd = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
                     timeEndI = DateFormat("HH:mm:ss").format(now).toString();
                   });
+                  Navigator.pop(context);
+                },
+                child: new Text('Yes'),
+              ),
+            ],
+          );
+        });
+  }
+
+  roundedCreateAlertDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: new Text(
+              'Generate a new request?',
+              style: TextStyle(fontSize: 16),
+            ),
+            actions: <Widget>[
+              new CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: new Text('No'),
+              ),
+              new CupertinoButton(
+                onPressed: () async {
+                  _callInsertMethodI();
                   Navigator.pop(context);
                 },
                 child: new Text('Yes'),

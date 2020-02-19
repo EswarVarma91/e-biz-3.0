@@ -75,10 +75,10 @@ PODS:
   - GoogleDataTransportCCTSupport (1.4.0):
     - GoogleDataTransport (~> 4.0)
     - nanopb (~> 0.3.901)
-  - GoogleMaps (2.7.0):
-    - GoogleMaps/Maps (= 2.7.0)
-  - GoogleMaps/Base (2.7.0)
-  - GoogleMaps/Maps (2.7.0):
+  - GoogleMaps (3.7.0):
+    - GoogleMaps/Maps (= 3.7.0)
+  - GoogleMaps/Base (3.7.0)
+  - GoogleMaps/Maps (3.7.0):
     - GoogleMaps/Base
   - GoogleUtilities/AppDelegateSwizzler (6.5.1):
     - GoogleUtilities/Environment
@@ -207,7 +207,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: d0560d915abf15e692e8538ba1d58442217b6aff
   GoogleDataTransport: 47fe3b8e1673e5187dfd615656a3c5034f150d69
   GoogleDataTransportCCTSupport: 36f69887fd212db6d7ef4dd45ba44523717a434e
-  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GoogleMaps: 55da829c68aa931f3ae982b9e341cc2f3d89c587
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   gps: b9dd5f2faf776a4ef3df65166a6702dd1cd21ff2
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
@@ -221,6 +221,6 @@ SPEC CHECKSUMS:
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
 
-PODFILE CHECKSUM: 9ec0b926d741f3b13993aceabf2687bc78d2468b
+PODFILE CHECKSUM: b70404c184fa4de578bd31c4cd74fed4a2aa2c4b
 
 COCOAPODS: 1.9.0.beta.3

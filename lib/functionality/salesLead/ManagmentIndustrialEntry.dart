@@ -9,7 +9,6 @@ import 'package:Ebiz/myConfig/ServicesApi.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class ManagmentIndustrialEntry extends StatefulWidget {
   @override
@@ -21,7 +20,6 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
   String nameofPerson = "", dateofSales = "";
   List<SalesIndustrialEntryModel> tcm, filtertcm = [];
   static Dio dio = Dio(Config.options);
-  bool _isloading = false;
   var result = "", referalId = "", totalHours = "";
 
   @override
@@ -111,12 +109,12 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
-                                      Text("Visited",
+                                      Text("Date",
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontSize: 12)),
                                       Text(
-                                        filtertcm[index].company_name,
+                                        filtertcm[index].created_date,
                                         style: TextStyle(
                                             color: lwtColor, fontSize: 12),
                                       )
@@ -142,7 +140,7 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                               color: Colors.grey,
                                               fontSize: 12)),
                                       Text(
-                                        filtertcm[index].entry_time,
+                                        filtertcm[index]?.entry_time ?? "",
                                         style: TextStyle(
                                             color: lwtColor, fontSize: 12),
                                       ),
@@ -158,14 +156,17 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                               color: Colors.black,
                                               fontSize: 12)),
                                       Padding(
-                                        padding: const EdgeInsets.only(left:8,right:8),
+                                        padding: const EdgeInsets.only(
+                                            left: 8, right: 8),
                                         child: Text(
-                                            _timeDiffernece(
-                                                filtertcm[index].entry_time,
-                                                filtertcm[index].exit_time,),
+                                            filtertcm[index].exit_time != null
+                                                ? _timeDiffernece(
+                                                    filtertcm[index].entry_time,
+                                                    filtertcm[index].exit_time,
+                                                  )
+                                                : "  --:--:--",
                                             style: TextStyle(
-                                                color: lwtColor,
-                                                fontSize: 15)),
+                                                color: lwtColor, fontSize: 15)),
                                       ),
                                     ],
                                   ),
@@ -178,10 +179,36 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                               color: Colors.grey,
                                               fontSize: 12)),
                                       Text(
-                                        filtertcm[index].exit_time,
+                                        filtertcm[index]?.exit_time ??
+                                            "--:--:--",
                                         style: TextStyle(
                                             color: lwtColor, fontSize: 12),
                                       )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Visited",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12)),
+                                      Text(
+                                        filtertcm[index]?.company_name ?? "",
+                                        style: TextStyle(
+                                            color: lwtColor, fontSize: 12),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -229,14 +256,11 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
       filtertcm.clear();
       getSalesIndustrialData(referalId);
     } else {
-      filtertcm = tcm;
+      getSalesEntryDataAll();
     }
   }
 
   getSalesIndustrialData(String user_id) async {
-    setState(() {
-      _isloading = true;
-    });
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -252,23 +276,13 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
           tcm = (json.decode(response.data) as List)
               .map((data) => new SalesIndustrialEntryModel.fromJson(data))
               .toList();
+          // tcm.removeWhere((element) => element.status==0);
           filtertcm = tcm;
-          _isloading = false;
         });
       } else if (response.statusCode == 401) {
-        setState(() {
-          _isloading = false;
-        });
         throw Exception("Incorrect data");
-      } else
-        setState(() {
-          _isloading = false;
-        });
-      throw Exception('Authentication Error');
+      }
     } on DioError catch (exception) {
-      setState(() {
-        _isloading = false;
-      });
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         throw Exception("Network Error");
@@ -280,9 +294,6 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
   }
 
   getSalesEntryDataAll() async {
-    setState(() {
-      _isloading = true;
-    });
     try {
       var response = await dio.post(ServicesApi.getData,
           data: {
@@ -298,22 +309,12 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
               .map((data) => new SalesIndustrialEntryModel.fromJson(data))
               .toList();
           filtertcm = tcm;
-          _isloading = false;
         });
       } else if (response.statusCode == 401) {
-        setState(() {
-          _isloading = false;
-        });
         throw Exception("Incorrect data");
       } else
-        setState(() {
-          _isloading = false;
-        });
-      throw Exception('Authentication Error');
+        throw Exception('Authentication Error');
     } on DioError catch (exception) {
-      setState(() {
-        _isloading = false;
-      });
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         throw Exception("Network Error");
@@ -329,9 +330,9 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
     var exit = DateFormat("HH:mm:ss").parse(exit_time.toString());
 
     var differ = exit.difference(entry);
-    var data= DateFormat("HH:mm:ss").parse(differ.toString());
+    var data = DateFormat("HH:mm:ss").parse(differ.toString());
     var response = data.toString().split(" ")[1].split(".")[0].toString();
-    print(response);
+    // print(response);
     return response;
   }
 }
