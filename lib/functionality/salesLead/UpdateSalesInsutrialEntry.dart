@@ -88,7 +88,11 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
                   if (timeEndI == "-") {
                     Fluttertoast.showToast(msg: "Please end your exit time");
                   } else {
+                    if(exit_lati!=null){
                     _callInsertMethodU();
+                    }else{
+                      Fluttertoast.showToast(msg: "Please turn on GPS");
+                    }
                   }
                 },
               )
@@ -170,7 +174,11 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
       child: InkWell(
         onTap: () {
           if (timeEndI == "-") {
-            roundedAlertDialog();
+            if(exit_lati!=null){
+              roundedAlertDialog();
+            }else{
+              Fluttertoast.showToast(msg: "Please turn on GPS");
+            }
           } else {
             Fluttertoast.showToast(msg: "You have already entered the Exit Time");
           }

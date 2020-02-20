@@ -87,8 +87,11 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   } else if (timeStartI == "-") {
                     Fluttertoast.showToast(msg: "Start Entry Time");
                   } else {
-                    roundedCreateAlertDialog();
-                    // _callInsertMethodI();
+                    if (entry_lat != null) {
+                      roundedCreateAlertDialog();
+                    } else {
+                      Fluttertoast.showToast(msg: "Please Turn on GPS");
+                    }
                   }
                 },
               )
@@ -161,13 +164,18 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         onTap: () {
           if (timeStartI == "-") {
             if (nameofBusiness != "") {
-              setState(() {
-                var now1 = DateTime.now();
-                entry_lat = latlong?.lat.toString() ?? "";
-                entry_longi = latlong?.lng.toString() ?? "";
-                datetimeStart = DateFormat("yyyy-MM-dd HH:mm:ss").format(now1);
-                timeStartI = DateFormat("HH:mm:ss").format(now1).toString();
-              });
+              if (entry_lat != null) {
+                setState(() {
+                  var now1 = DateTime.now();
+                  entry_lat = latlong?.lat.toString() ?? "";
+                  entry_longi = latlong?.lng.toString() ?? "";
+                  datetimeStart =
+                      DateFormat("yyyy-MM-dd HH:mm:ss").format(now1);
+                  timeStartI = DateFormat("HH:mm:ss").format(now1).toString();
+                });
+              } else {
+                Fluttertoast.showToast(msg: "Please turn on GPS");
+              }
             } else {
               Fluttertoast.showToast(
                   msg: "Please Enter your Place of Business");
@@ -222,7 +230,11 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         onTap: () {
           if (timeStartI != "-") {
             if (timeEndI == "-") {
-              roundedAlertDialog();
+              if (exit_lati != null) {
+                roundedAlertDialog();
+              } else {
+                Fluttertoast.showToast(msg: "Please turn on GPS");
+              }
             } else {
               Fluttertoast.showToast(
                   msg: "You have already entered the Exit Time");
