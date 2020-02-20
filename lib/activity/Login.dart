@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
-// import 'package:device_id/device_id.dart';
+import 'package:device_id/device_id.dart';
 import 'package:Ebiz/activity/HomePage.dart';
 import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -301,7 +301,7 @@ class _LoginState extends State<Login> {
   }
 
   _makePostRequest(String email, String password) async {
-    // deviceId = await DeviceId.getID;
+    deviceId = await DeviceId.getID;
     try {
       var response = await dio.post(ServicesApi.new_login_url,
           data: {"empCode": email, "password": password,},
