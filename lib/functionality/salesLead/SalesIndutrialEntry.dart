@@ -117,7 +117,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                 title: TextFormField(
                   enabled: false,
                   controller: TextEditingController(text: nameofBusiness),
-                  maxLength: 100,
+                  maxLength: 40,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.business),

@@ -207,7 +207,7 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                       Text(
                                         filtertcm[index]?.company_name ?? "",
                                         style: TextStyle(
-                                            color: lwtColor, fontSize: 12),
+                                            color: lwtColor, fontSize: 10),
                                       ),
                                     ],
                                   ),

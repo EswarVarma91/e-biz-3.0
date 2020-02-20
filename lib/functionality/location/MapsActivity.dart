@@ -474,7 +474,7 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: _changeDateFormat(json.decode(response.data)[i]['created_date']) ?? " "),
+                snippet: json.decode(response.data)[i]['created_date'] ?? " "),
             draggable: false,
           ));
 
@@ -489,7 +489,6 @@ class _ViewMapState extends State<MapsActivity> {
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
                 json.decode(response.data)[i]['u_profile_name'].substring(1),
-            user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
         if (listModel.length != 0) {
@@ -503,7 +502,6 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(17.6918918, 83.2011254),
             created_date: "",
             u_profile_name: "--",
-            user_id: "1",
           ));
           setState(() {
             locationList = listModel;
@@ -591,11 +589,10 @@ class _ViewMapState extends State<MapsActivity> {
                 double.parse(json.decode(response.data)[i]['longi'])),
             u_department: json.decode(response.data)[i]['u_department'],
             created_date: json.decode(response.data)[i]['created_date'],
-            u_profile_name: _add(i).toString()+". "+json
+            u_profile_name: json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1) + " ",
-            user_id: json.decode(response.data)[i]['user_id'],
+                json.decode(response.data)[i]['u_profile_name'].substring(1),
           ));
         }
         //   for(int i=0;i<list.length;i++){
@@ -617,7 +614,6 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(17.6918918, 83.2011254),
             created_date: "",
             u_profile_name: dataName,
-            user_id: "1",
           ));
           setState(() {
             locationList = listModel;
@@ -706,7 +702,6 @@ class _ViewMapState extends State<MapsActivity> {
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
                 json.decode(response.data)[i]['u_profile_name'].substring(1),
-            user_id: json.decode(response.data)[i]['user_id'],
           ));
         }
         if (listModel.length != 0) {
@@ -720,7 +715,6 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(17.6918918, 83.2011254),
             created_date: "",
             u_profile_name: "--",
-            user_id: "1",
           ));
           setState(() {
             locationList = listModel;
@@ -795,8 +789,4 @@ class _ViewMapState extends State<MapsActivity> {
 
     return data.buffer.asUint8List();
   }
-}
-
-_add(int i) {
-  return i+1;
 }

@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class LocationModel {
   int uloc_id;
   String u_department;
-  String user_id;
   String u_profile_name;
   String lati;
   String longi;
@@ -13,7 +12,6 @@ class LocationModel {
   LocationModel(
       {this.uloc_id,
       this.u_department,
-      this.user_id,
       this.u_profile_name,
       this.localCordinates,
       this.created_date});
