@@ -1,15 +1,17 @@
 class ServicesApi {
-  static String versionNew = "2.3";
+  static String versionNew = "2.4";
 
   static String fcm_Send = "https://fcm.googleapis.com/fcm/send";
   static String FCM_KEY = "AAAASa5BYMA:APA91bETvZbudrnnPOBaf6h395TagXNekYBGMtjJDycZ42_3mjxWEWccnpWpou3hBGsbQQbaSiJTCH1pA5VRo-2QsClDxq7V1wpOw1dNtu8V0Z5H66-NQpwGGnUSnXRlgzTGi584Z0WN";
 
   // static String basic_url = "http://192.168.2.5:8383/"; //dev
-  // static String basic_url = "http://192.168.2.3:8080/"; //test
-  static String basic_url = "http://www.e-biz.in:8083/"; //global
+  static String basic_url = "http://192.168.2.3:8080/"; //test
+  // static String basic_url = "http://www.e-biz.in:8083/"; //global
+
 
   static String hrms_Service = basic_url + "hrms.service/";
   static String new_login_url = hrms_Service + "encryption/getValidateMobileLogIn";
+  // static String new_login_url = "http://10.100.1.129:8080/hrms.service/" + "encryption/getValidateMobileLogIn";
 
   static String global_Service = "global.service/global/";
   static String att_Service = "att.service/hrms/";

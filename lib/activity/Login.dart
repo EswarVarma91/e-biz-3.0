@@ -304,7 +304,7 @@ class _LoginState extends State<Login> {
     deviceId = await DeviceId.getID;
     try {
       var response = await dio.post(ServicesApi.new_login_url,
-          data: {"empCode": email, "password": password,},
+          data: {"empCode": email, "password": password,"deviceId":deviceId},
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
         if ((json.decode(response.data)['cnt'] == 1)) {

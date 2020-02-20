@@ -117,7 +117,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         assert(token != null);
         insertToken(userId, token);
       });
-      insertDeviceID(deviceId, userId);
+      // insertDeviceID(deviceId, userId);
     });
   }
 
@@ -1162,16 +1162,16 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  insertDeviceID(String deviceId, String userId) async {
-    var response = await dio.post(ServicesApi.insertDeviceid,
-        data: {"deviceId": deviceId, "uId": userId},
-        options: Options(contentType: ContentType.parse('application/json')));
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      // print(token);
-    } else if (response.statusCode == 401) {
-      throw (Exception);
-    }
-  }
+  // insertDeviceID(String deviceId, String userId) async {
+  //   var response = await dio.post(ServicesApi.insertDeviceid,
+  //       data: {"deviceId": deviceId, "uId": userId},
+  //       options: Options(contentType: ContentType.parse('application/json')));
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     // print(token);
+  //   } else if (response.statusCode == 401) {
+  //     throw (Exception);
+  //   }
+  // }
 
   String checkPaidCount(String countP) {
     if (countP.split(".")[1] == "0") {
