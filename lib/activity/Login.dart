@@ -335,7 +335,7 @@ class _LoginState extends State<Login> {
         } else if (json.decode(response.data)['cnt'] == 0) {
           Fluttertoast.showToast(msg: "Invalid Credentials");
         } else{
-          Fluttertoast.showToast(msg: "This device is already registered with another account.");
+          Fluttertoast.showToast(msg: "This device/user is already registered.");
         }
 
         // print(response.data);
