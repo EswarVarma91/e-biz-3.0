@@ -124,6 +124,7 @@ PODS:
 
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - Firebase/Analytics
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
@@ -221,6 +222,10 @@ SPEC CHECKSUMS:
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: b70404c184fa4de578bd31c4cd74fed4a2aa2c4b
+=======
+PODFILE CHECKSUM: e9184d3723ccc40208e90189ee7ee274626c66db
+>>>>>>> 2a221ea018287e29b480805e245fc4f2a2fbf3b6
 
 COCOAPODS: 1.9.0.beta.3

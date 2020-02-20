@@ -95,6 +95,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   getEmpCode() async {
     // deviceId = await DeviceId.getID;
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       empCode = preferences.getString("uEmpCode").toString();
@@ -114,9 +115,9 @@ class _HomePageLocationState extends State<HomePageLocation> {
       dbHelper.save(attendanceModel);
       _firebaseMessaging.getToken().then((String token) {
         assert(token != null);
-        // insertToken(userId, token);
+        insertToken(userId, token);
       });
-      insertDeviceID(deviceId, userId);
+      // insertDeviceID(deviceId, userId);
     });
   }
 
@@ -1056,20 +1057,20 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  // insertToken(String uid, String token) async {
-  //   var response = await dio.post(ServicesApi.updateData,
-  //       data: {
-  //         "parameter1": "insertToken",
-  //         "parameter2": uid,
-  //         "parameter3": token
-  //       },
-  //       options: Options(contentType: ContentType.parse('application/json')));
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     // print(token);
-  //   } else if (response.statusCode == 401) {
-  //     throw (Exception);
-  //   }
-  // }
+  insertToken(String uid, String token) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "insertToken",
+          "parameter2": uid,
+          "parameter3": token
+        },
+        options: Options(contentType: ContentType.parse('application/json')));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      // print(token);
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
 
   String checkTimeAtt(String data, int status) {
     if (status == 1) {
