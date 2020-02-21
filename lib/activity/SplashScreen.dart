@@ -11,7 +11,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:open_appstore/open_appstore.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -154,7 +154,7 @@ class StateSplash extends State<SplashScreen> {
                 shadowColor: lwtColor,
                 child: CupertinoButton(
                   onPressed: () async {
-                    OpenAppstore.launch(
+                    LaunchReview.launch(
                         androidAppId: "ebiz.lotus.administrator.eaglebiz");
                   },
                   child: Text(
