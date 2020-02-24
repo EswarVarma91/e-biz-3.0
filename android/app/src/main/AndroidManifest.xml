@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.location.PROVIDERS_CHANGED"/>
 
 
 
@@ -35,6 +36,10 @@
             </intent-filter>
         </activity>
         <receiver android:name=".MyBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </receiver>
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>

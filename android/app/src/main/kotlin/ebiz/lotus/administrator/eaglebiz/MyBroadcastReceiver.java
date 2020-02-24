@@ -3,6 +3,7 @@ package ebiz.lotus.administrator.eaglebiz;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -59,6 +60,19 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         dbManager = new DBManager(context);
+
+        if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
+            LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+            boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            boolean isNetworkEnabled = lcm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+            if(isGpsEnabled){
+                Toast.makeText(context, "GPS : Enable", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(context, "GPS : Disabled", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         simpleLocation = new SimpleLocation(context);
         if (!simpleLocation.hasLocationEnabled()) {
             // simpleLocation.openSettings(context);
