@@ -33,7 +33,7 @@ dependencies:
   smooth_star_rating: ^1.0.3
   device_id: ^0.2.0
   data_connection_checker: ^0.3.4
-  gps: ^0.1.1
+  geolocation: ^1.1.2
 
 dev_dependencies:
   flutter_test:

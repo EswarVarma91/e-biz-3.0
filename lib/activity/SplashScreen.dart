@@ -75,7 +75,6 @@ class StateSplash extends State<SplashScreen> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         String data = json.decode(response.data)[0]["status"];
-
         if (data == ServicesApi.versionNew) {
           startTime();
         } else {

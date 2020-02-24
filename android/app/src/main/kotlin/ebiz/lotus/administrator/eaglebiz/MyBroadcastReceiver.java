@@ -61,7 +61,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         dbManager = new DBManager(context);
         simpleLocation = new SimpleLocation(context);
         if (!simpleLocation.hasLocationEnabled()) {
-//            context.SimpleLocation.openSettings(context);
+            // simpleLocation.openSettings(context);
         } else {
             latitude = simpleLocation.getLatitude();
             longitude = simpleLocation.getLongitude();

@@ -13,10 +13,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/geolocation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:location/location.dart';
-import 'package:gps/gps.dart';
 
 class SalesIndustrialEntry extends StatefulWidget {
   @override
@@ -30,9 +29,8 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
   String userId;
   String entry_lat, entry_longi, exit_lati, exit_longi;
   List<SalesIndustrialEntryModel> listSalesIndustry = [];
-  var currentLocation = LocationData;
-  var location = new Location();
-  GpsLatlng latlong;
+  LocationResult result;
+  GeolocationResult georesult;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -40,7 +38,79 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       userId = preferences.getString("userId");
       getSalesIndustrialData(userId);
     });
-    latlong = await Gps.currentGps();
+  }
+
+  locationSetState(String data) async {
+    if (data == "1") {
+      result = await Geolocation.lastKnownLocation();
+      StreamSubscription<LocationResult> subscription =
+          Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+              .listen((result) {
+        if (result.isSuccessful) {
+          setState(() {
+            entry_lat = result.location.latitude.toString();
+            entry_longi = result.location.longitude.toString();
+          });
+          if (timeStartI == "-") {
+            if (nameofBusiness != "") {
+              if (entry_lat != null) {
+                setState(() {
+                  var now1 = DateTime.now();
+                  datetimeStart =
+                      DateFormat("yyyy-MM-dd HH:mm:ss").format(now1);
+                  timeStartI = DateFormat("HH:mm:ss").format(now1).toString();
+                });
+              } else {
+                Fluttertoast.showToast(msg: "Please turn on GPS");
+              }
+            } else {
+              Fluttertoast.showToast(
+                  msg: "Please Enter your Place of Business");
+            }
+          } else {
+            Fluttertoast.showToast(
+                msg: "You have already entered the Entry Time");
+          }
+        }
+      });
+    } else if (data == "2") {
+      result = await Geolocation.lastKnownLocation();
+      StreamSubscription<LocationResult> subscription =
+          Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+              .listen((result) {
+        if (result.isSuccessful) {
+          setState(() {
+            exit_lati = result.location.latitude.toString();
+            exit_longi = result.location.longitude.toString();
+          });
+          if (timeStartI != "-") {
+            if (timeEndI == "-") {
+              if (exit_lati != null) {
+                roundedAlertDialog();
+              } else {
+                Fluttertoast.showToast(msg: "Please turn on GPS");
+              }
+            } else {
+              Fluttertoast.showToast(
+                  msg: "You have already entered the Exit Time");
+            }
+          } else {
+            Fluttertoast.showToast(msg: "Please Start your entry time");
+          }
+        }
+      });
+    }
+  }
+
+  askPermission(String result) async {
+    georesult = await Geolocation.requestLocationPermission(
+        permission: const LocationPermission(
+            android: LocationPermissionAndroid.fine,
+            ios: LocationPermissionIOS.always),
+        openSettingsIfDenied: true);
+    if (georesult.isSuccessful) {
+      locationSetState(result);
+    }
   }
 
   @override
@@ -87,11 +157,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   } else if (timeStartI == "-") {
                     Fluttertoast.showToast(msg: "Start Entry Time");
                   } else {
-                    if (entry_lat != null) {
-                      roundedCreateAlertDialog();
-                    } else {
-                      Fluttertoast.showToast(msg: "Please Turn on GPS");
-                    }
+                    roundedCreateAlertDialog();
                   }
                 },
               )
@@ -162,28 +228,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          if (timeStartI == "-") {
-            if (nameofBusiness != "") {
-              if (entry_lat != null) {
-                setState(() {
-                  var now1 = DateTime.now();
-                  entry_lat = latlong?.lat.toString() ?? "";
-                  entry_longi = latlong?.lng.toString() ?? "";
-                  datetimeStart =
-                      DateFormat("yyyy-MM-dd HH:mm:ss").format(now1);
-                  timeStartI = DateFormat("HH:mm:ss").format(now1).toString();
-                });
-              } else {
-                Fluttertoast.showToast(msg: "Please turn on GPS");
-              }
-            } else {
-              Fluttertoast.showToast(
-                  msg: "Please Enter your Place of Business");
-            }
-          } else {
-            Fluttertoast.showToast(
-                msg: "You have already entered the Entry Time");
-          }
+          locationSetState("1");
         },
         child: Center(
           child: Padding(
@@ -228,20 +273,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          if (timeStartI != "-") {
-            if (timeEndI == "-") {
-              if (exit_lati != null) {
-                roundedAlertDialog();
-              } else {
-                Fluttertoast.showToast(msg: "Please turn on GPS");
-              }
-            } else {
-              Fluttertoast.showToast(
-                  msg: "You have already entered the Exit Time");
-            }
-          } else {
-            Fluttertoast.showToast(msg: "Please Start your entry time");
-          }
+          locationSetState("2");
           // roundedAlertDialog();
         },
         child: Center(
@@ -476,8 +508,6 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                 onPressed: () async {
                   setState(() {
                     var now = DateTime.now();
-                    exit_lati = latlong?.lat.toString() ?? "";
-                    exit_longi = latlong?.lng.toString() ?? "";
                     datetimeEnd = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
                     timeEndI = DateFormat("HH:mm:ss").format(now).toString();
                   });

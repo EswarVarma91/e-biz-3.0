@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Ebiz/activity/Login.dart';
 import 'package:Ebiz/functionality/salesLead/ManagmentIndustrialEntry.dart';
 import 'package:Ebiz/functionality/salesLead/SalesIndutrialEntry.dart';
-import 'package:Ebiz/model/SalesIndustrialEntryModel.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:device_id/device_id.dart';
 import 'package:dio/dio.dart';
@@ -105,6 +105,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       profilePic = preferences.getString("picPath");
       mgmtCnt = preferences.getString("mgmtCnt");
 
+      getSessionTimeout(userId);
       getPaidCount(empCode);
       getPendingCount(userId);
       getSalesIndustrialDataCount(userId);
@@ -141,6 +142,57 @@ class _HomePageLocationState extends State<HomePageLocation> {
           _writeEnd("-");
         }
       }
+    }
+  }
+
+  getSessionTimeout(String userNo) async {
+    try {
+      var response = await dio.post(ServicesApi.getData,
+          data: {
+            "encryptedFields": ["string"],
+            "parameter1": "getSessionTimeout",
+            "parameter2": userNo,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+      int data = json.decode(response.data)[0]["cnt"];
+      if(data==0){
+        insertmobileSession(userId);
+      }
+      }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
+      } else {
+        return null;
+      }
+    }
+  }
+
+  insertmobileSession(String userNo) async{
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "insertMobileSession",
+          "parameter2": userNo,
+        },
+        options: Options(contentType: ContentType.parse('application/json')));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      SharedPreferences preferences =await SharedPreferences.getInstance();
+      preferences.clear();
+      var navigator = Navigator.of(context);
+                  navigator.pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Login()),
+                    ModalRoute.withName('/'),
+                  );
+    } else if (response.statusCode == 401) {
+      throw (Exception);
     }
   }
 

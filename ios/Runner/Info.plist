@@ -22,10 +22,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Your location is required for this app</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is required for this app</string>
+	<string>Reason why app needs location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Reason why app needs location</string>
+
+	<!-- additionally for iOS 9/10, if you need always permission -->
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Reason why app needs location</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

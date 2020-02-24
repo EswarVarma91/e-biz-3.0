@@ -1,6 +1,5 @@
+import 'dart:async';
 import 'dart:io';
-
-import 'package:Ebiz/activity/HomePage.dart';
 import 'package:Ebiz/functionality/salesLead/SalesIndutrialEntry.dart';
 import 'package:Ebiz/main.dart';
 import 'package:Ebiz/model/SalesIndustrialEntryModel.dart';
@@ -10,7 +9,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gps/gps.dart';
+import 'package:geolocation/geolocation.dart';
+
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +31,8 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
   String userId, exit_lati, exit_longi;
   List<SalesIndustrialEntryModel> listSalesIndustry = [];
   _UpdateSalesInsutrialEntryState(this.lsi);
-  GpsLatlng latlong;
+  LocationResult result;
+  GeolocationResult georesult;
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -41,7 +42,37 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
       timeStartI = lsi?.entry_time ?? "-";
       timeEndI = lsi?.exit_time ?? "-";
     });
-    latlong = await Gps.currentGps();
+  }
+
+  locationSetState() async {
+    result = await Geolocation.lastKnownLocation();
+    StreamSubscription<LocationResult> subscription =
+        Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+            .listen((result) {
+      if (result.isSuccessful) {
+        setState(() {
+          exit_lati = result.location.latitude.toString();
+          exit_longi = result.location.longitude.toString();
+        });
+        if (timeEndI == "-") {
+          if (exit_lati != null) {
+            roundedAlertDialog();
+          } else {
+            Fluttertoast.showToast(msg: "Please turn on GPS");
+          }
+        } else {
+          Fluttertoast.showToast(msg: "You have already entered the Exit Time");
+        }
+      }
+    });
+  }
+
+  askPermission() async {
+    georesult =
+        await Geolocation.requestLocationPermission(openSettingsIfDenied: true);
+    if (georesult.isSuccessful) {
+      locationSetState();
+    }
   }
 
   @override
@@ -88,11 +119,7 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
                   if (timeEndI == "-") {
                     Fluttertoast.showToast(msg: "Please end your exit time");
                   } else {
-                    if(exit_lati!=null){
                     _callInsertMethodU();
-                    }else{
-                      Fluttertoast.showToast(msg: "Please turn on GPS");
-                    }
                   }
                 },
               )
@@ -173,15 +200,8 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () {
-          if (timeEndI == "-") {
-            if(exit_lati!=null){
-              roundedAlertDialog();
-            }else{
-              Fluttertoast.showToast(msg: "Please turn on GPS");
-            }
-          } else {
-            Fluttertoast.showToast(msg: "You have already entered the Exit Time");
-          }
+          locationSetState();
+
           // roundedAlertDialog();
         },
         child: Center(
@@ -241,8 +261,6 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
                 onPressed: () async {
                   setState(() {
                     var now = DateTime.now();
-                    exit_lati = latlong?.lat.toString() ?? "";
-                    exit_longi = latlong?.lng.toString() ?? "";
                     datetimeEnd = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
                     timeEndI = DateFormat("HH:mm:ss").format(now).toString();
                   });
