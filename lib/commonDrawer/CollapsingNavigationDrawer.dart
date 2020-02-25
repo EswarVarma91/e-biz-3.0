@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:Ebiz/activity/HomePage.dart';
 import 'package:Ebiz/activity/Login.dart';
 import 'package:Ebiz/commonDrawer/CollapsingListTile.dart';
@@ -9,9 +12,15 @@ import 'package:Ebiz/functionality/salesLead/SalesLead.dart';
 import 'package:Ebiz/functionality/taskPlanner/TaskPlanner.dart';
 import 'package:Ebiz/functionality/travel/TravelRequestList.dart';
 import 'package:Ebiz/model/NavigationModel.dart';
+import 'package:Ebiz/myConfig/Config.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/geolocation.dart';
+import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
@@ -28,13 +37,16 @@ class CollapsingNavigationDrawer extends StatefulWidget {
 
 class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
     with SingleTickerProviderStateMixin {
-  var result;
+  var result, latiL, longiL;
   CollapsingNavigationDrawerState(this.result);
   double maxWidth = 210;
   double minWidth = 55;
   bool isCollapsed = false;
   int currentSelectedIndex = 0;
-  var downteam, profilename, hrCnt, salesCnt, travelCnt, managerCnt;
+  static Dio dio = Dio(Config.options);
+  var downteam, profilename, hrCnt, salesCnt, travelCnt, managerCnt, userId;
+  LocationResult lresult;
+  GeolocationResult georesult;
 
   List<NavigationModel> listMain = [];
 
@@ -135,6 +147,8 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       travelCnt = preferences.getString("travelCnt");
       salesCnt = preferences.getString("salesCnt");
       managerCnt = preferences.getString("mgmtCnt");
+      userId = preferences.getString("userId");
+
       if (managerCnt == "1") {
         if (result.toString() == "1") {
           listMain = navigationItems;
@@ -180,7 +194,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           }
         } else {
           if (result.toString() == "1") {
-            navigationItems.removeWhere((a) => a.title == "Tracking" );
+            navigationItems.removeWhere((a) => a.title == "Tracking");
             navigationItems.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItems;
           } else if (result.toString() == "2") {
@@ -188,49 +202,51 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
             navigationItemsSales.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsSales;
           } else if (result.toString() == "3") {
-            navigationItemsTask.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsTask.removeWhere((a) => a.title == "Tracking");
             navigationItemsTask.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsTask;
           } else if (result.toString() == "4") {
-            navigationItemsPermissions.removeWhere((a) => a.title == "Tracking");
-            navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
+            navigationItemsPermissions
+                .removeWhere((a) => a.title == "Tracking");
+            navigationItemsPermissions
+                .removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsPermissions;
           } else if (result.toString() == "7") {
-            navigationItemsTravel.removeWhere((a) => a.title == "Tracking" );
+            navigationItemsTravel.removeWhere((a) => a.title == "Tracking");
             navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsTravel;
           } else if (result.toString() == "8") {
-            navigationItemsHotels.removeWhere((a) => a.title == "Tracking" );
-            navigationItemsHotels.removeWhere((a) =>  a.title == "Approvals");
+            navigationItemsHotels.removeWhere((a) => a.title == "Tracking");
+            navigationItemsHotels.removeWhere((a) => a.title == "Approvals");
             listMain = navigationItemsHotels;
           }
         }
-      }else{
+      } else {
         if (result.toString() == "1") {
-            navigationItems.removeWhere((a) => a.title == "Tracking" );
-            navigationItems.removeWhere((a) => a.title == "Approvals");
-            listMain = navigationItems;
-          } else if (result.toString() == "2") {
-            navigationItemsSales.removeWhere((a) => a.title == "Tracking");
-            navigationItemsSales.removeWhere((a) => a.title == "Approvals");
-            listMain = navigationItemsSales;
-          } else if (result.toString() == "3") {
-            navigationItemsTask.removeWhere((a) => a.title == "Tracking" );
-            navigationItemsTask.removeWhere((a) => a.title == "Approvals");
-            listMain = navigationItemsTask;
-          } else if (result.toString() == "4") {
-            navigationItemsPermissions.removeWhere((a) => a.title == "Tracking");
-            navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
-            listMain = navigationItemsPermissions;
-          } else if (result.toString() == "7") {
-            navigationItemsTravel.removeWhere((a) => a.title == "Tracking" );
-            navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
-            listMain = navigationItemsTravel;
-          } else if (result.toString() == "8") {
-            navigationItemsHotels.removeWhere((a) => a.title == "Tracking" );
-            navigationItemsHotels.removeWhere((a) =>  a.title == "Approvals");
-            listMain = navigationItemsHotels;
-          }
+          navigationItems.removeWhere((a) => a.title == "Tracking");
+          navigationItems.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItems;
+        } else if (result.toString() == "2") {
+          navigationItemsSales.removeWhere((a) => a.title == "Tracking");
+          navigationItemsSales.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsSales;
+        } else if (result.toString() == "3") {
+          navigationItemsTask.removeWhere((a) => a.title == "Tracking");
+          navigationItemsTask.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsTask;
+        } else if (result.toString() == "4") {
+          navigationItemsPermissions.removeWhere((a) => a.title == "Tracking");
+          navigationItemsPermissions.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsPermissions;
+        } else if (result.toString() == "7") {
+          navigationItemsTravel.removeWhere((a) => a.title == "Tracking");
+          navigationItemsTravel.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsTravel;
+        } else if (result.toString() == "8") {
+          navigationItemsHotels.removeWhere((a) => a.title == "Tracking");
+          navigationItemsHotels.removeWhere((a) => a.title == "Approvals");
+          listMain = navigationItemsHotels;
+        }
       }
     });
   }
@@ -364,20 +380,76 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
               ),
               new CupertinoButton(
                 onPressed: () async {
-                  SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
-                  preferences.clear();
-                  var navigator = Navigator.of(context);
-                  navigator.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Login()),
-                    ModalRoute.withName('/'),
-                  );
+                  locationSetState(userId);
                 },
                 child: new Text('Yes'),
               ),
             ],
           );
         });
+  }
+
+  locationSetState(String userID) async {
+    lresult = await Geolocation.lastKnownLocation();
+    StreamSubscription<LocationResult> subscription =
+        Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+            .listen((result) {
+      if (result.isSuccessful) {
+        setState(() {
+          latiL = result.location.latitude.toString();
+          longiL = result.location.longitude.toString();
+        });
+        if (latiL != null) {
+          _logoutInsert(userID);
+        } else {
+          Fluttertoast.showToast(msg: "Please turn on gps");
+          openSettings();
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Please turn on gps");
+        openSettings();
+      }
+    });
+  }
+
+  openSettings() async {
+    bool isOpened = await PermissionHandler().openAppSettings();
+  }
+
+  _logoutInsert(String userID) async {
+    var now = DateTime.now();
+    try {
+      var response = await dio.post(ServicesApi.updateData,
+          data: {
+            "parameter1":"updateLogoutStatus",
+            "parameter2": userID,
+            "parameter3": "LOGOUT",
+            "parameter4": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
+            "parameter5": latiL,
+            "parameter6": longiL,
+          },
+          options: Options(
+            contentType: ContentType.parse('application/json'),
+          ));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.clear();
+        var navigator = Navigator.of(context);
+        navigator.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => Login()),
+          ModalRoute.withName('/'),
+        );
+      } else if (response.statusCode == 401) {
+        throw Exception("Incorrect data");
+      }
+    } on DioError catch (exception) {
+      if (exception == null ||
+          exception.toString().contains('SocketException')) {
+        throw Exception("Network Error");
+      } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
+          exception.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw Exception("Check your internet connection.");
+      }
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -13,8 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/geolocation.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -24,18 +28,28 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool _obscureText = true;
   bool _isLoading = false;
-  String deviceId;
+  String deviceId, latiL, longiL;
   List<LoginModel> loginList = [];
   static Dio dio = Dio(Config.options);
   var _controller1 = TextEditingController();
   var _controller2 = TextEditingController();
+  LocationResult result;
+  GeolocationResult georesult;
+  PermissionStatus _permissionStatus = PermissionStatus.unknown;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       new FlutterLocalNotificationsPlugin();
 
+  checkPermission() async {
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler()
+            .requestPermissions([PermissionGroup.locationAlways]);
+  }
+
   @override
   void initState() {
     super.initState();
+    checkPermission();
 
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -256,7 +270,7 @@ class _LoginState extends State<Login> {
                                 minWidth: 300.0,
                                 height: 42.0,
                                 onPressed: () async {
-                                  _loginmethod();
+                                  locationSetState();
                                 },
                                 child: Text('Login'.toUpperCase(),
                                     style: TextStyle(
@@ -288,6 +302,33 @@ class _LoginState extends State<Login> {
     );
   }
 
+  locationSetState() async {
+    result = await Geolocation.lastKnownLocation();
+    StreamSubscription<LocationResult> subscription =
+        Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+            .listen((result) {
+      if (result.isSuccessful) {
+        setState(() {
+          latiL = result.location.latitude.toString();
+          longiL = result.location.longitude.toString();
+        });
+        if (latiL != null) {
+          _loginmethod();
+        } else {
+          Fluttertoast.showToast(msg: "Please turn on gps");
+          openSettings();
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Please turn on gps");
+        openSettings();
+      }
+    });
+  }
+
+  openSettings() async {
+    bool isOpened = await PermissionHandler().openAppSettings();
+  }
+
   _loginmethod() async {
     String email = _controller1.text.toString();
     String password = _controller2.text.toString();
@@ -301,10 +342,19 @@ class _LoginState extends State<Login> {
   }
 
   _makePostRequest(String email, String password) async {
+    var now = DateTime.now();
     deviceId = await DeviceId.getID;
     try {
       var response = await dio.post(ServicesApi.new_login_url,
-          data: {"empCode": email, "password": password,"deviceId":deviceId},
+          data: {
+            "empCode": email,
+            "password": password,
+            "type": "LOGIN",
+            "deviceId": deviceId,
+            "dateTime": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
+            "latitude": latiL,
+            "longitude": longiL,
+          },
           options: Options(contentType: ContentType.parse("application/json")));
       if (response.statusCode == 200 || response.statusCode == 201) {
         if ((json.decode(response.data)['cnt'] == 1)) {
@@ -327,19 +377,16 @@ class _LoginState extends State<Login> {
             json.decode(response.data)['picPath'],
             json.decode(response.data)['mgmtCnt'],
           );
-
           var navigator = Navigator.of(context);
           navigator.pushAndRemoveUntil(
               MaterialPageRoute(builder: (BuildContext context) => HomePage()),
               ModalRoute.withName('/'));
         } else if (json.decode(response.data)['cnt'] == 0) {
           Fluttertoast.showToast(msg: "Invalid Credentials");
-        } else{
-          Fluttertoast.showToast(msg: "This device/user is already registered.");
+        } else {
+          Fluttertoast.showToast(
+              msg: "Please logout your active session.");
         }
-
-        // print(response.data);
-        // return response.data;
       } else if (response.statusCode == 401) {
         Fluttertoast.showToast(msg: "Please check you internet connection.");
         throw Exception("Please check you internet connection.");

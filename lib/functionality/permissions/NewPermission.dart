@@ -117,7 +117,7 @@ class _NewPermissionState extends State<NewPermissions> {
                 } else if (!totimeCheck.isAfter(fromtimeCheck)) {
                   Fluttertoast.showToast(msg: "Invalid Timings Selected.");
                 } else {
-                permissionSerivceCall();
+                  permissionSerivceCall();
                 }
               }
             },
@@ -458,7 +458,8 @@ class _NewPermissionState extends State<NewPermissions> {
         });
   }
 
-  _servicepermissionDataInsert() async{
+  _servicepermissionDataInsert() async {
+    Navigator.pop(context);
     pr.show();
     try {
       var response;
@@ -541,13 +542,13 @@ class _NewPermissionState extends State<NewPermissions> {
           // );
         } else if (response.data.toString() ==
             '"Exceeded your permission hours"') {
-              pr.hide();
-              Navigator.pop(context);
+          pr.hide();
+          // Navigator.pop(context);
           Fluttertoast.showToast(
               msg: "Permission not allowed for more than 2 hours.");
         } else {
           pr.hide();
-          Navigator.pop(context);
+          // Navigator.pop(context);
           Fluttertoast.showToast(msg: response.data.toString());
         }
       } else if (response.statusCode == 401) {
@@ -560,12 +561,12 @@ class _NewPermissionState extends State<NewPermissions> {
       if (exception == null ||
           exception.toString().contains('SocketException')) {
         pr.hide();
-        Navigator.pop(context);
+        // Navigator.pop(context);
         throw Exception("Network Error");
       } else if (exception.type == DioErrorType.RECEIVE_TIMEOUT ||
           exception.type == DioErrorType.CONNECT_TIMEOUT) {
         pr.hide();
-        Navigator.pop(context);
+        // Navigator.pop(context);
         throw Exception("Check your internet connection.");
       }
     }
@@ -625,7 +626,11 @@ class _NewPermissionState extends State<NewPermissions> {
   void getReportingLevelToken(String date, String fromTime, String toTime,
       fullname, String purpose, String uidd) async {
     var response = await dio.post(ServicesApi.getData,
-        data: {"encryptedFields": ["string"],"parameter1": "getReportingLevelToken", "parameter2": uidd},
+        data: {
+          "encryptedFields": ["string"],
+          "parameter1": "getReportingLevelToken",
+          "parameter2": uidd
+        },
         options: Options(contentType: ContentType.parse("application/json")));
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {

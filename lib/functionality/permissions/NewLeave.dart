@@ -582,6 +582,8 @@ class _NewLeaveState extends State<NewLeave> {
   }
 
   void _serviceDataRequestInsert() async {
+    Navigator.pop(context);
+    pr.show();
     var response;
     if (_color1 == true) {
       response = await dio.post(ServicesApi.insertLeave,
@@ -624,13 +626,13 @@ class _NewLeaveState extends State<NewLeave> {
     }
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      pr.hide();
-      Navigator.pop(context);
-      Fluttertoast.showToast(msg: "Leave Generated Successfully");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => Permissions()));
-      // getReportingLevelToken(
-      //     fromDateS, toDateS, fullname, _controller1.text, leaveType, uuid);
+      // pr.hide();
+      // Navigator.pop(context);
+      // Fluttertoast.showToast(msg: "Leave Generated Successfully");
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (BuildContext context) => Permissions()));
+      getReportingLevelToken(
+          fromDateS, toDateS, fullname, _controller1.text, leaveType, uuid);
     } else if (response.statusCode == 500) {
       pr.hide();
       Fluttertoast.showToast(msg: "Please try after some time.");
@@ -919,7 +921,6 @@ class _NewLeaveState extends State<NewLeave> {
       'Authorization': "key=" + ServicesApi.FCM_KEY,
       'Content-Type': 'application/json',
     };
-    // todo - set the relevant values
     await http.post(ServicesApi.fcm_Send,
         headers: headers, body: json.encode(message));
     // print(jsonDecode(r.body)["success"]);

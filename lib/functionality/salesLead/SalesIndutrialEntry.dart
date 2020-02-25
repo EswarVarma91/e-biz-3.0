@@ -31,6 +31,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
   List<SalesIndustrialEntryModel> listSalesIndustry = [];
   LocationResult result;
   GeolocationResult georesult;
+  TextEditingController _controller1 = new TextEditingController();
 
   getUserDetails() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -213,6 +214,25 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                title: TextFormField(
+                  enabled: false,
+                  controller: _controller1,
+                  maxLength: 40,
+                  maxLines: 2,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.business),
+                    labelText: "Purpose of visit",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+              ),
               Expanded(
                 child: salesIndustrialList(),
               ),
@@ -274,7 +294,6 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
       child: InkWell(
         onTap: () {
           locationSetState("2");
-          // roundedAlertDialog();
         },
         child: Center(
           child: Padding(
@@ -407,7 +426,8 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         });
   }
 
-  _callInsertMethodI() async {
+  _callInsertMethodI(String purpose) async {
+    Navigator.pop(context);
     var nowTime = DateTime.now();
     var data;
     if (timeEndI == "-") {
@@ -429,7 +449,8 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
             "parameter8": entry_lat,
             "parameter9": entry_longi,
             "parameter10": exit_lati,
-            "parameter11": exit_longi
+            "parameter11": exit_longi,
+            "parameter12": purpose
           },
           options: Options(
             contentType: ContentType.parse('application/json'),
@@ -526,7 +547,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: new Text(
+            title: Text(
               'Generate a new request?',
               style: TextStyle(fontSize: 16),
             ),
@@ -539,8 +560,12 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
               ),
               new CupertinoButton(
                 onPressed: () async {
-                  _callInsertMethodI();
-                  Navigator.pop(context);
+                  if (_controller1.text.isNotEmpty) {
+                    _callInsertMethodI(_controller1.text);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Please provide the purpose of visit.");
+                  }
                 },
                 child: new Text('Yes'),
               ),

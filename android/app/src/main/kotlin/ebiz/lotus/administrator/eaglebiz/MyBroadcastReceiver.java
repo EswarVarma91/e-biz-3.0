@@ -18,60 +18,67 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import ebiz.lotus.administrator.eaglebiz.database.DBManager;
-import ebiz.lotus.administrator.eaglebiz.model.LocationDataModel;
 import ebiz.lotus.administrator.eaglebiz.model.LocationModel;
 import im.delight.android.location.SimpleLocation;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
     private SimpleLocation simpleLocation;
-    String android_id;
+    String android_id,gpsCheck,netCheck;
     double latitude = 0.0, longitude = 0.0;
     DBManager dbManager;
+    String textType;
     List<LocationModel> listlocationData =new ArrayList<>();
     String hrms_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/location"; // global
     String hrms_offline_Service = "https://e-biz.in:9000/att.service/hrms/attendance/save/offline/location"; // global
-//String hrms_offline_Service = "http://10.100.1.32:8080/att.service/hrms/attendance/save/offline/location"; // global
+    String insertMobileSession = "http://10.100.1.129:8080/hrms.service/encryption/insertMobileSession"; // global
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onReceive(Context context, Intent intent) {
         dbManager = new DBManager(context);
 
-        if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
-            LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-            boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            boolean isNetworkEnabled = lcm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if(isGpsEnabled){
-                Toast.makeText(context, "GPS : Enable", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(context, "GPS : Disabled", Toast.LENGTH_SHORT).show();
+        try{
+            if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
+                LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+                boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                boolean isNetworkEnabled = lcm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                if(isGpsEnabled){
+                    Toast.makeText(context, "GPS ON", Toast.LENGTH_SHORT).show();
+                    mobileSession(gpsCheck,1,context);
+                }else{
+                    Toast.makeText(context, "GPS OFF", Toast.LENGTH_SHORT).show();
+                    mobileSession(gpsCheck,0,context);
+                }
+                if(isNetworkEnabled){
+                    Toast.makeText(context, "NET ON", Toast.LENGTH_SHORT).show();
+                    mobileSession(netCheck,1,context);
+                }else{
+                    Toast.makeText(context, "NET ON", Toast.LENGTH_SHORT).show();
+                    mobileSession(netCheck,0,context);
+                }
             }
+        }catch(NullPointerException e){
+
+        }catch(Exception e){
+
         }
+
 
         simpleLocation = new SimpleLocation(context);
         if (!simpleLocation.hasLocationEnabled()) {
@@ -100,12 +107,19 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                         dbManager.close();
                         //==================
 
-//                        String arrayaData = JSONArray.toJSONString(list);
-                       pushData(context,android_id,latitude,longitude,currentDateandTime);
+                        //%%%%%%
 
-                       if(listlocationData.size()!=0){
-                           pushDataOffline(context,listlocationData);
-                       }
+
+
+
+                        //%%%%%%
+
+//                        String arrayaData = JSONArray.toJSONString(list);
+                        pushData(context,android_id,latitude,longitude,currentDateandTime);
+
+                        if(listlocationData.size()!=0){
+                            pushDataOffline(context,listlocationData);
+                        }
                     }else{
 //                        Toast.makeText(context, "No Internet....", Toast.LENGTH_SHORT).show();
                         Log.d("Receiver","No Internet");
@@ -175,10 +189,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 try {
-//                    JSONObject jsonObject = new JSONObject();
-//                    jsonObject.put("ld", json);
-//                    Log.d("esko",jsonObject.toString());
-//                    jsonObject.put("createdDate", createdDate);
                     return json.getBytes("utf-8");
                 } catch (Exception ex) {
 
@@ -235,5 +245,71 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
         reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
         queue.add(reqQueue);
+    }
+
+    void mobileSession(String data, int res, Context context){
+
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currentDateandTime = sdf.format(new Date());
+
+        if(data.equals(gpsCheck)){
+            if(res==1){
+                textType = "GPS-ON";
+            }else if(res==0){
+                textType = "GPS-OFF";
+            }
+        }else if (data.equals(netCheck)){
+            if(res==1){
+                textType = "NET-ON";
+            }else if(res==0){
+                textType = "NET-ON";
+            }
+        }
+
+        //=============
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        final StringRequest reqQueue = new StringRequest(Request.Method.POST, insertMobileSession,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("eskoResponse : ", response);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.d("eskoError : ", volleyError.toString());
+            }
+        }) {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("latitude", latitude);
+                    jsonObject.put("longitude", longitude);
+                    jsonObject.put("deviceId", android_id);
+                    jsonObject.put("type",textType);
+                    jsonObject.put("dateTime",currentDateandTime);
+                    return jsonObject.toString().getBytes("utf-8");
+                } catch (Exception ex) {
+
+                }
+                return super.getBody();
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+        reqQueue.setRetryPolicy(new DefaultRetryPolicy(0, 0, 0));
+        queue.add(reqQueue);
+
+        //==========
+
+
+
     }
 }
