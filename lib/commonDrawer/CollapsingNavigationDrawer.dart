@@ -423,7 +423,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
           data: {
             "parameter1":"updateLogoutStatus",
             "parameter2": userID,
-            "parameter3": "LOGOUT",
+            "parameter3": "LOG-OUT",
             "parameter4": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
             "parameter5": latiL,
             "parameter6": longiL,

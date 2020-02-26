@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String _DEVICEID = "device_id";
     public static final String _LATI = "lati";
     public static final String _LONGI = "longi";
+    public static final String _BATTERY = "battery";
     public static final String _CREATED_DATE_TIME = "createdDateTime";
     // Database Information
     static final String DB_NAME = "ebiztrack.DB";
@@ -29,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + _DEVICEID + " TEXT, "
             + _LATI + " TEXT, "
             + _LONGI + " TEXT, "
+            + _BATTERY + " TEXT, "
             + _CREATED_DATE_TIME + " TEXT" + ")";
 
 

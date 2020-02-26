@@ -94,6 +94,31 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
+                                      Text("Visited",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12)),
+                                      Text(
+                                        filtertcm[index]?.company_name ?? "",
+                                        style: TextStyle(
+                                            color: lwtColor, fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
                                       Text("Name",
                                           style: TextStyle(
                                               color: Colors.grey,
@@ -125,7 +150,6 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                               SizedBox(
                                 height: 10,
                               ),
-
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -200,12 +224,12 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Text("Visited",
+                                      Text("Purpose",
                                           style: TextStyle(
                                               color: Colors.grey,
                                               fontSize: 12)),
                                       Text(
-                                        filtertcm[index]?.company_name ?? "",
+                                        filtertcm[index]?.purpose ?? "",
                                         style: TextStyle(
                                             color: lwtColor, fontSize: 10),
                                       ),
@@ -213,17 +237,31 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
                                   ),
                                 ],
                               ),
-
-                              // Padding(
-                              //   padding: EdgeInsets.only(bottom: 5, top: 5),
-                              //   child: Row(
-                              //     mainAxisAlignment: MainAxisAlignment.center,
-                              //     children: <Widget>[
-                              //       Text("Visited : ",style: TextStyle(color: Colors.grey,fontSize: 10),),
-                              //       Text(filtertcm[index].company_name,style: TextStyle(color: lwtColor,fontSize: 14),)
-                              //     ],
-                              //   ),
-                              // )
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text("Remarks ",
+                                          style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 12)),
+                                      Text(
+                                        filtertcm[index]?.remarks ?? "",
+                                        style: TextStyle(
+                                            color: lwtColor, fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         )),

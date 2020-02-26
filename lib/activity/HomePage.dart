@@ -31,7 +31,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocation/geolocation.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,7 +70,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   String empCode = "-",
       profilePic,
       deviceId,
-      mgmtCnt ,
+      mgmtCnt,
       profilename = "-",
       fullname = "-",
       userId = "-",
@@ -81,14 +83,15 @@ class _HomePageLocationState extends State<HomePageLocation> {
   var dbHelper = DatabaseHelper();
   var now = DateTime.now();
   String siecnt, msiecnt;
-
+  LocationResult lresult;
+  GeolocationResult georesult;
   List<AttendanceModel> atteModel = [];
   Future<List<AttendanceModel>> attList;
   Connectivity connectivity;
   static double lati = 0.0, longi = 0.0;
   StreamSubscription<ConnectivityResult> streamSubscription;
   StreamProvider<UserLocationModel> userlocationstrem;
-
+  String latiL, longiL;
   List<TaskListModel> tasklistModel = [];
   var userlocation;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
@@ -157,10 +160,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
             contentType: ContentType.parse('application/json'),
           ));
       if (response.statusCode == 200 || response.statusCode == 201) {
-      int data = json.decode(response.data)[0]["cnt"];
-      if(data==0){
-        insertmobileSession(userId);
-      }
+        int data = json.decode(response.data)[0]["cnt"];
+        if (data == 0) {
+          insertmobileSession(userId);
+        }
       }
     } on DioError catch (exception) {
       if (exception == null ||
@@ -175,7 +178,29 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  insertmobileSession(String userNo) async{
+  logoutSession(String userNo) async {
+    var response = await dio.post(ServicesApi.updateData,
+        data: {
+          "parameter1": "logoutSession",
+          "parameter2": userNo,
+          "parameter3": latiL,
+          "parameter4":longiL,
+        },
+        options: Options(contentType: ContentType.parse('application/json')));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.clear();
+      var navigator = Navigator.of(context);
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => Login()),
+        ModalRoute.withName('/'),
+      );
+    } else if (response.statusCode == 401) {
+      throw (Exception);
+    }
+  }
+
+  insertmobileSession(String userNo) async {
     var response = await dio.post(ServicesApi.updateData,
         data: {
           "parameter1": "insertMobileSession",
@@ -183,17 +208,37 @@ class _HomePageLocationState extends State<HomePageLocation> {
         },
         options: Options(contentType: ContentType.parse('application/json')));
     if (response.statusCode == 200 || response.statusCode == 201) {
-      SharedPreferences preferences =await SharedPreferences.getInstance();
-      preferences.clear();
-      var navigator = Navigator.of(context);
-                  navigator.pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Login()),
-                    ModalRoute.withName('/'),
-                  );
+      locationSetState(userId);
     } else if (response.statusCode == 401) {
       throw (Exception);
     }
+  }
+
+  locationSetState(String userID) async {
+    lresult = await Geolocation.lastKnownLocation();
+    StreamSubscription<LocationResult> subscription =
+        Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+            .listen((result) {
+      if (result.isSuccessful) {
+        setState(() {
+          latiL = result.location.latitude.toString();
+          longiL = result.location.longitude.toString();
+        });
+        if (latiL != null) {
+          logoutSession(userId);
+        } else {
+          Fluttertoast.showToast(msg: "Please turn on gps");
+          openSettings();
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Please turn on gps");
+        openSettings();
+      }
+    });
+  }
+
+  openSettings() async {
+    bool isOpened = await PermissionHandler().openAppSettings();
   }
 
   @override

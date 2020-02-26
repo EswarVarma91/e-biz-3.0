@@ -2,18 +2,27 @@ package ebiz.lotus.administrator.eaglebiz.model;
 
 public class LocationModel {
     String deviceId,date;
-    String latitude,longitude;
+    String latitude,longitude,battery;
 
     public LocationModel(){
 
     }
 
-    public LocationModel( String device_id, String lati, String longi, String creadted_date) {
+    public LocationModel( String device_id, String lati, String longi,String battery, String creadted_date) {
         this.deviceId=device_id;
         this.latitude=lati;
         this.longitude=longi;
+        this.battery=battery;
         this.date=creadted_date;
 
+    }
+
+    public String getBattery() {
+        return battery;
+    }
+
+    public void setBattery(String battery) {
+        this.battery = battery;
     }
 
     public String getDeviceId() {

@@ -349,7 +349,7 @@ class _LoginState extends State<Login> {
           data: {
             "empCode": email,
             "password": password,
-            "type": "LOGIN",
+            "type": "LOG_IN",
             "deviceId": deviceId,
             "dateTime": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
             "latitude": latiL,

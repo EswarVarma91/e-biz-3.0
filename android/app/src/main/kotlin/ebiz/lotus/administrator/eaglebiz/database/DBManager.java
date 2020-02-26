@@ -36,11 +36,12 @@ public class DBManager {
         dbHelper.close();
     }
 
-    public void insert(String device_id, String lati,String longi,String createdDate) {
+    public void insert(String device_id, String lati,String longi,String battery,String createdDate) {
         ContentValues contentValue = new ContentValues();
         contentValue.put(DatabaseHelper._DEVICEID, device_id);
         contentValue.put(DatabaseHelper._LATI, lati);
         contentValue.put(DatabaseHelper._LONGI, longi);
+        contentValue.put(DatabaseHelper._BATTERY, battery);
         contentValue.put(DatabaseHelper._CREATED_DATE_TIME, createdDate);
         database.insert(DatabaseHelper.TABLE_NAME, null, contentValue);
     }
@@ -60,7 +61,8 @@ public class DBManager {
                 locationDataModel.setDeviceId(cursor.getString(1));
                 locationDataModel.setLatitude(cursor.getString(2));
                 locationDataModel.setLongitude(cursor.getString(3));
-                locationDataModel.setDate(cursor.getString(4));
+                locationDataModel.setBattery(cursor.getString(4));
+                locationDataModel.setDate(cursor.getString(5));
                 locationList.add(locationDataModel);
             }while (cursor.moveToNext());
         }

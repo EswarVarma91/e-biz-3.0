@@ -483,12 +483,12 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
-            u_department: json.decode(response.data)[i]['u_department'],
-            created_date: json.decode(response.data)[i]['created_date'],
+            u_department: json.decode(response.data)[i]['u_department'] ,
+            created_date: json.decode(response.data)[i]['created_date'] ,
             u_profile_name: json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1),
+                json.decode(response.data)[i]['u_profile_name'].substring(1) +" 🔋"+json.decode(response.data)[i]['battery'] +"%",
           ));
         }
         if (listModel.length != 0) {
@@ -587,12 +587,12 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
-            u_department: json.decode(response.data)[i]['u_department'],
-            created_date: json.decode(response.data)[i]['created_date'],
+            u_department: json.decode(response.data)[i]['u_department'] ,
+            created_date: json.decode(response.data)[i]['created_date'] ,
             u_profile_name: json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1),
+                json.decode(response.data)[i]['u_profile_name'].substring(1) +" 🔋"+json.decode(response.data)[i]['battery'] +"%",
           ));
         }
         //   for(int i=0;i<list.length;i++){
@@ -696,12 +696,12 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
-            u_department: json.decode(response.data)[i]['u_department'],
+            u_department: json.decode(response.data)[i]['u_department'] ,
             created_date: json.decode(response.data)[i]['created_date'],
             u_profile_name: json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1),
+                json.decode(response.data)[i]['u_profile_name'].substring(1) +" 🔋"+json.decode(response.data)[i]['battery'] +"%",
           ));
         }
         if (listModel.length != 0) {

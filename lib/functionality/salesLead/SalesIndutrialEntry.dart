@@ -157,6 +157,8 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                     Fluttertoast.showToast(msg: "Enter Company Name");
                   } else if (timeStartI == "-") {
                     Fluttertoast.showToast(msg: "Start Entry Time");
+                  } else if (_controller1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Purpose");
                   } else {
                     roundedCreateAlertDialog();
                   }
@@ -198,6 +200,24 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                title: TextFormField(
+                  controller: _controller1,
+                  maxLength: 60,
+                  maxLines: 2,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.business),
+                    labelText: "Purpose of visit",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
                 child: Row(
@@ -212,25 +232,6 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
                       child: dashboard6(),
                     )
                   ],
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              ListTile(
-                title: TextFormField(
-                  enabled: false,
-                  controller: _controller1,
-                  maxLength: 40,
-                  maxLines: 2,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.business),
-                    labelText: "Purpose of visit",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
                 ),
               ),
               Expanded(

@@ -118,6 +118,8 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
                 onPressed: () {
                   if (timeEndI == "-") {
                     Fluttertoast.showToast(msg: "Please end your exit time");
+                  } else if (_controller1.text.isEmpty) {
+                    Fluttertoast.showToast(msg: "Enter Remarks");
                   } else {
                     _callInsertMethodU();
                   }
@@ -146,6 +148,24 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
                       child: dashboard6(),
                     )
                   ],
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                title: TextFormField(
+                  controller: _controller1,
+                  maxLength: 60,
+                  maxLines: 2,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.business),
+                    labelText: "Remarks",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -281,7 +301,8 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
             "parameter2": datetimeEnd,
             "parameter3": lsi.s_id,
             "parameter4": exit_lati,
-            "parameter5": exit_longi
+            "parameter5": exit_longi,
+            "parameter6": _controller1.text
           },
           options: Options(
             contentType: ContentType.parse('application/json'),

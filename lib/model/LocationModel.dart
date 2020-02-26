@@ -8,13 +8,14 @@ class LocationModel {
   String longi;
   LatLng localCordinates;
   String created_date;
+  String battery;
 
   LocationModel(
       {this.uloc_id,
       this.u_department,
       this.u_profile_name,
       this.localCordinates,
-      this.created_date});
+      this.created_date,this.battery});
 
   // factory LocationModel.fromJson(Map<String, dynamic> json) {
   //   return LocationModel(
