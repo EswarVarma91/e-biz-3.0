@@ -213,7 +213,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
       throw (Exception);
     }
   }
-
   locationSetState(String userID) async {
     lresult = await Geolocation.lastKnownLocation();
     StreamSubscription<LocationResult> subscription =
