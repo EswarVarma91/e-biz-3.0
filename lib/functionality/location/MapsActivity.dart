@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:Ebiz/main.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:Ebiz/functionality/location/ChooseMapByType.dart';
 import 'package:Ebiz/myConfig/ServicesApi.dart';
@@ -148,16 +149,38 @@ class _ViewMapState extends State<MapsActivity> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  locationList[index].u_profile_name,
-                                  style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      locationList[index].u_profile_name,
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    locationList[index].battery != null
+                                        ? Icon(
+                                            Icons.battery_alert,
+                                            color: lwtColor,
+                                            size: 18,
+                                          )
+                                        : Container(),
+                                    locationList[index].battery != null
+                                        ? Text(
+                                            locationList[index].battery ?? "",
+                                            style: TextStyle(
+                                                fontSize: 12.5,
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        : Container()
+                                  ],
                                 ),
                                 Text(
                                   locationList[index].u_department,
                                   style: TextStyle(
-                                      fontSize: 12.0,
+                                      fontSize: 10.0,
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Container(
@@ -167,11 +190,24 @@ class _ViewMapState extends State<MapsActivity> {
                                             locationList[index].created_date) ??
                                         " ",
                                     style: TextStyle(
-                                        fontSize: 11.0,
+                                        fontSize: 10.0,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                )
-                              ])
+                                ),
+                                // locationList[index].battery != null
+                                //     ? Container(
+                                //         width: 160.0,
+                                //         child: Text(
+                                //           locationList[index].battery ??
+                                //               "" + " %" ??
+                                //               " ",
+                                //           style: TextStyle(
+                                //               fontSize: 11.0,
+                                //               fontWeight: FontWeight.bold),
+                                //         ),
+                                //       )
+                                //     : Container()
+                              ]),
                         ])))),
           ])),
     );
@@ -474,22 +510,25 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: _changeDateFormat(json.decode(response.data)[i]['created_date']) ?? " "),
+                snippet: _changeDateFormat(
+                        json.decode(response.data)[i]['created_date']) ??
+                    " "),
             draggable: false,
           ));
+          // print(json.decode(response.data)[i]['u_profile_name'][0].toUpperCase() +json.decode(response.data)[i]['u_profile_name'].substring(1));
 
           listModel.add(LocationModel(
-            uloc_id: json.decode(response.data)[i]['uloc_id'],
-            localCordinates: LatLng(
-                double.parse(json.decode(response.data)[i]['lati']),
-                double.parse(json.decode(response.data)[i]['longi'])),
-            u_department: json.decode(response.data)[i]['u_department'] ,
-            created_date: json.decode(response.data)[i]['created_date'] ,
-            u_profile_name: json
-                    .decode(response.data)[i]['u_profile_name'][0]
-                    .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1) +" 🔋"+json.decode(response.data)[i]['battery'] +"%",
-          ));
+              uloc_id: json.decode(response.data)[i]['uloc_id'] ?? "",
+              localCordinates: LatLng(
+                  double.parse(json.decode(response.data)[i]['lati'] ?? 0.0),
+                  double.parse(json.decode(response.data)[i]['longi'])),
+              u_department: json.decode(response.data)[i]['u_department'],
+              created_date: json.decode(response.data)[i]['created_date'],
+              u_profile_name: json
+                      .decode(response.data)[i]['u_profile_name'][0]
+                      .toUpperCase() +
+                  json.decode(response.data)[i]['u_profile_name'].substring(1),
+              battery: json.decode(response.data)[i]['battery']));
         }
         if (listModel.length != 0) {
           setState(() {
@@ -578,7 +617,9 @@ class _ViewMapState extends State<MapsActivity> {
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1) +
                     " ",
-                snippet: _changeDateFormat(json.decode(response.data)[i]['created_date']) ?? " "),
+                snippet: _changeDateFormat(
+                        json.decode(response.data)[i]['created_date']) ??
+                    " "),
             draggable: false,
           ));
 
@@ -587,12 +628,13 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
-            u_department: json.decode(response.data)[i]['u_department'] ,
-            created_date: json.decode(response.data)[i]['created_date'] ,
+            u_department: json.decode(response.data)[i]['u_department'],
+            created_date: json.decode(response.data)[i]['created_date'],
             u_profile_name: json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1) +" 🔋"+json.decode(response.data)[i]['battery'] +"%",
+                json.decode(response.data)[i]['u_profile_name'].substring(1),
+            battery: json.decode(response.data)[i]['battery'],
           ));
         }
         //   for(int i=0;i<list.length;i++){
@@ -687,7 +729,9 @@ class _ViewMapState extends State<MapsActivity> {
                     json
                         .decode(response.data)[i]['u_profile_name']
                         .substring(1),
-                snippet: _changeDateFormat(json.decode(response.data)[i]['created_date']) ?? " "),
+                snippet: _changeDateFormat(
+                        json.decode(response.data)[i]['created_date']) ??
+                    " "),
             draggable: false,
           ));
 
@@ -696,12 +740,13 @@ class _ViewMapState extends State<MapsActivity> {
             localCordinates: LatLng(
                 double.parse(json.decode(response.data)[i]['lati']),
                 double.parse(json.decode(response.data)[i]['longi'])),
-            u_department: json.decode(response.data)[i]['u_department'] ,
+            u_department: json.decode(response.data)[i]['u_department'],
             created_date: json.decode(response.data)[i]['created_date'],
             u_profile_name: json
                     .decode(response.data)[i]['u_profile_name'][0]
                     .toUpperCase() +
-                json.decode(response.data)[i]['u_profile_name'].substring(1) +" 🔋"+json.decode(response.data)[i]['battery'] +"%",
+                json.decode(response.data)[i]['u_profile_name'].substring(1),
+            battery: json.decode(response.data)[i]['battery'],
           ));
         }
         if (listModel.length != 0) {
