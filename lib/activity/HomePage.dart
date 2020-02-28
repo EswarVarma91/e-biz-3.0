@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:Ebiz/activity/Login.dart';
+import 'package:Ebiz/functionality/notifications/NotificationScreen.dart';
 import 'package:Ebiz/functionality/salesLead/ManagmentIndustrialEntry.dart';
 import 'package:Ebiz/functionality/salesLead/SalesIndutrialEntry.dart';
 import 'package:connectivity/connectivity.dart';
@@ -184,7 +185,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           "parameter1": "logoutSession",
           "parameter2": userNo,
           "parameter3": latiL,
-          "parameter4":longiL,
+          "parameter4": longiL,
         },
         options: Options(contentType: ContentType.parse('application/json')));
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -213,6 +214,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       throw (Exception);
     }
   }
+
   locationSetState(String userID) async {
     lresult = await Geolocation.lastKnownLocation();
     StreamSubscription<LocationResult> subscription =
@@ -287,6 +289,37 @@ class _HomePageLocationState extends State<HomePageLocation> {
           ),
           automaticallyImplyLeading: false,
           actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 0),
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      NotificationScreen()));
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      top: 15,
+                      left: 26,
+                      child: Icon(
+                        Icons.brightness_1,
+                        color: Colors.red,
+                        size: 12.0,
+                      ),
+                    )
+                  ],
+                )),
             Padding(
               padding: EdgeInsets.only(right: 5),
               child: IconButton(

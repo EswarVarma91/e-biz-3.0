@@ -1,5 +1,5 @@
 class NotificationsModel {
-  String not_id;
+  int not_id;
   String ref_id;
   String notification_type;
   String senderName;
@@ -8,7 +8,7 @@ class NotificationsModel {
   String message;
   String created_by;
   String sender_id;
-  String status;
+  int status;
 
   NotificationsModel(
       this.not_id,
