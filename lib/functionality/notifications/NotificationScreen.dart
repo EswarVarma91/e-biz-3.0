@@ -92,8 +92,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   title: Padding(
                     padding: EdgeInsets.only(top: 0, bottom: 5, left: 0),
                     child: Text(
-                      _notificationsList[index].senderName[0].toUpperCase() +
-                          _notificationsList[index].senderName.substring(1),
+                      _notificationsList[index].senderName[0].toUpperCase()+
+                          _notificationsList[index].senderName.substring(1)??"",
                       style: TextStyle(
                         fontSize: 16.0,
                         color: _notificationsList[index].status== 0 ?  Colors.black : Colors.grey,
@@ -152,6 +152,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   String getDateMethod(String created_date, String selectType) {
+    if(created_date==null){}
     List<String> timeStamp = [];
     timeStamp = created_date.split(" ");
     var timeStampSplit = timeStamp[0].toString();
