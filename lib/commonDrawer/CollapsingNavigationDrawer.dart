@@ -149,7 +149,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       managerCnt = preferences.getString("mgmtCnt");
       userId = preferences.getString("userId");
 
-      if (managerCnt == "1") {
+      if ("1" == "1") {
         if (result.toString() == "1") {
           listMain = navigationItems;
         } else if (result.toString() == "2") {
