@@ -149,102 +149,100 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL,0);
                     scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE,0);
                     batteryPct= Math.round((level / (float) scale ) * 100);
-                    ConnectivityManager conMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-                    if(conMgr.getActiveNetworkInfo()!=null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-//                        Log.d("Receiver","Yes Internet");
-                        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                        String currentDateandTime = sdf.format(new Date());
-                        dbManager.open();
-                        listlocationData.addAll(dbManager.getAllLocationsData());
-                        dbManager.close();
+//                     ConnectivityManager conMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//                     if(conMgr.getActiveNetworkInfo()!=null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
+// //                        Log.d("Receiver","Yes Internet");
+                        // SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                        // String currentDateandTime = sdf.format(new Date());
+                        // dbManager.open();
+                        // listlocationData.addAll(dbManager.getAllLocationsData());
+                        // dbManager.close();
                         pushData(context,android_id,latitude,longitude,String.valueOf(batteryPct));
 
-                        if(listlocationData.size()!=0){
-                            pushDataOffline(context,listlocationData);
-                        }
-                    }else{
-//                        Toast.makeText(context, "No Internet....", Toast.LENGTH_SHORT).show();
-//                        Log.d("Receiver","No Internet");
-                        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                        String currentDateandTime = sdf.format(new Date());
-                        dbManager.open();
+                        // if(listlocationData.size()!=0){
+                        //     pushDataOffline(context,listlocationData);
+                        // }
+                    // }else{
+                    //     SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    //     String currentDateandTime = sdf.format(new Date());
+                    //     dbManager.open();
 
-                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                            LocalTime time1= LocalTime.now();
+                    //     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    //         LocalTime time1= LocalTime.now();
 
-                            LocalTime time2= LocalTime.of(8,50,0,0);
-                            LocalTime time3= LocalTime.of(19,0,0,0);
+                    //         LocalTime time2= LocalTime.of(8,50,0,0);
+                    //         LocalTime time3= LocalTime.of(19,0,0,0);
 
-                            DateFormat dateFormat= new SimpleDateFormat("HH:mm:ss");
+                    //         DateFormat dateFormat= new SimpleDateFormat("HH:mm:ss");
 
-                            java.util.Date date = new java.util.Date();
-                            String formattedDate = dateFormat.format(date);
+                    //         java.util.Date date = new java.util.Date();
+                    //         String formattedDate = dateFormat.format(date);
 
-                            String[] parts = formattedDate.split(":");
-                            Calendar cal = Calendar.getInstance();
-                            cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(parts[0]));
-                            cal.set(Calendar.MINUTE,Integer.parseInt(parts[1]));
-                            cal.set(Calendar.SECOND,Integer.parseInt(parts[2]));
+                    //         String[] parts = formattedDate.split(":");
+                    //         Calendar cal = Calendar.getInstance();
+                    //         cal.set(Calendar.HOUR_OF_DAY,Integer.parseInt(parts[0]));
+                    //         cal.set(Calendar.MINUTE,Integer.parseInt(parts[1]));
+                    //         cal.set(Calendar.SECOND,Integer.parseInt(parts[2]));
 
-                            if(cal.get(Calendar.DAY_OF_WEEK)!= Calendar.SUNDAY){
-                                if((time1.isBefore(time2)|| time1.equals(time2)) && (time1.isBefore(time3)|| time1.equals(time3))
-                                        || (time1.isAfter(time2) || time1.equals(time2))  && (time1.isAfter(time3) || time1.equals(time3))){
+                    //         if(cal.get(Calendar.DAY_OF_WEEK)!= Calendar.SUNDAY){
+                    //             if((time1.isBefore(time2)|| time1.equals(time2)) && (time1.isBefore(time3)|| time1.equals(time3))
+                    //                     || (time1.isAfter(time2) || time1.equals(time2))  && (time1.isAfter(time3) || time1.equals(time3))){
 
-                                }else{
-                                    dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),String.valueOf(batteryPct),currentDateandTime);
-                                }
-                            }else{
+                    //             }else{
+                    //                 // dbManager.insert(android_id,String.valueOf(latitude),String.valueOf(longitude),String.valueOf(batteryPct),currentDateandTime);
+                    //             }
+                    //         }else{
 
-                            }
-                        }
-                        dbManager.close();
-                    }
+                    //         }
+                    //     }
+                    //     dbManager.close();
+                    // }
                 }
             }
         }
     }
 
-    private void pushDataOffline(Context context, List<LocationModel> listlocationData) {
-        RequestQueue queue = Volley.newRequestQueue(context);
-        String json= new Gson().toJson(listlocationData);
-//        Log.d("esko",json);
+//     private void pushDataOffline(Context context, List<LocationModel> listlocationData) {
+//         RequestQueue queue = Volley.newRequestQueue(context);
+//         String json= new Gson().toJson(listlocationData);
+// //        Log.d("esko",json);
 
-        final StringRequest reqQueue = new StringRequest(Request.Method.POST, hrms_offline_Service,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("eskoResponse : ", response);
-                        dbManager.open();
-                        dbManager.deleteAll();
-                        dbManager.close();
-                        listlocationData.clear();
+//         final StringRequest reqQueue = new StringRequest(Request.Method.POST, hrms_offline_Service,
+//                 new Response.Listener<String>() {
+//                     @Override
+//                     public void onResponse(String response) {
+//                         Log.d("eskoResponse : ", response);
+//                         dbManager.open();
+//                         dbManager.deleteAll();
+//                         dbManager.close();
+//                         listlocationData.clear();
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("eskoError : ", volleyError.toString());
-            }
-        }) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return json.getBytes("utf-8");
-                } catch (Exception ex) {
+//                     }
+//                 }, new Response.ErrorListener() {
+//             @Override
+//             public void onErrorResponse(VolleyError volleyError) {
+//                 Log.d("eskoError : ", volleyError.toString());
+//             }
+//         }) {
+//             @Override
+//             public byte[] getBody() throws AuthFailureError {
+//                 try {
+//                     return json.getBytes("utf-8");
+//                 } catch (Exception ex) {
 
-                }
-                return super.getBody();
-            }
+//                 }
+//                 return super.getBody();
+//             }
 
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-        };
-        reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-        queue.add(reqQueue);
+//             @Override
+//             public String getBodyContentType() {
+//                 return "application/json";
+//             }
+//         };
+//         reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+//         queue.add(reqQueue);
 
-    }
+//     }
 
     private void pushData(Context context, String android_id, double latitude, double longitude, String battery) {
         RequestQueue queue = Volley.newRequestQueue(context);
