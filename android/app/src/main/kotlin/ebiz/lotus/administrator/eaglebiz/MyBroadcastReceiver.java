@@ -62,7 +62,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
             batteryPct = Math.round((level / (float) scale) * 100);
 
-            Toast.makeText(context, "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(context, "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
             pushData(context,android_id,latitude,longitude,batteryPct);
         } else {
 
