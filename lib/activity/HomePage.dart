@@ -531,7 +531,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () async {
-          if (workStatus == "-" || workStatus == "") {
+          if (workStatus == "-" || workStatus == "" || workStatus == null || workStatus == " ") {
             var data = await Navigator.push(
                 context,
                 MaterialPageRoute(
