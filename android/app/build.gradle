@@ -87,10 +87,6 @@ dependencies {
     implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
     implementation 'com.android.volley:volley:1.1.1'
-    implementation("com.squareup.okhttp3:okhttp:4.2.2")
-    implementation 'com.github.delight-im:Android-SimpleLocation:v1.0.1'
-    implementation 'com.github.quentin7b:android-location-tracker:3.2'
-    implementation 'com.google.code.gson:gson:2.8.6'
     
 }
 

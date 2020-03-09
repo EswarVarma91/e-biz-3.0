@@ -37,17 +37,16 @@
         </activity>
         <receiver android:name=".MyBroadcastReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
                 <action android:name="android.intent.action.BATTERY_CHANGED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver><receiver android:name=".Broadcastnetwork" >
-            <intent-filter>
-                <action android:name="android.location.PROVIDERS_CHANGED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+<!--        <receiver android:name=".Broadcastnetwork" >-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.location.PROVIDERS_CHANGED" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
     </application>
 </manifest>

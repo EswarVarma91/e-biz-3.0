@@ -24,12 +24,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import im.delight.android.location.SimpleLocation;
+
 
 public class Broadcastnetwork extends BroadcastReceiver {
     String android_id,textType;
     double latitude = 0.0, longitude = 0.0;
-    private SimpleLocation simpleLocation;
+
 
     String localAddress = "http://10.100.1.129:8080/";
     String devAddress = "http://192.168.2.5:8383/";
@@ -40,131 +40,131 @@ public class Broadcastnetwork extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        simpleLocation = new SimpleLocation(context);
-        if (!simpleLocation.hasLocationEnabled()) {
-            // simpleLocation.openSettings(context);
-        } else {
-            latitude = simpleLocation.getLatitude();
-            longitude = simpleLocation.getLongitude();
-//            android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-
-            if (android_id == null || android_id == "null" || android_id.isEmpty()) {
-            } else {
-                if (latitude == 0.0) {
-                    try{
-                        if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
-                            LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-                            boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                            boolean isNetworkEnabled = lcm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-                            if(isGpsEnabled){
-//                                Toast.makeText(context, "GPS ON", Toast.LENGTH_SHORT).show();
-                                mobileSession("gpsCheck",1,context);
-                            }else{
-//                                Toast.makeText(context, "GPS OFF", Toast.LENGTH_SHORT).show();
-                                mobileSession("gpsCheck",0,context);
-                            }
-                        }
-//                        ConnectivityManager conMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-//                        if(conMgr.getActiveNetworkInfo()!=null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
-//                            Toast.makeText(context, "NET_ON", Toast.LENGTH_SHORT).show();
-//                            mobileSession("netCheck",1,context);
-//                        }else{
-//                            Toast.makeText(context, "NET_OFF", Toast.LENGTH_SHORT).show();
-//                            mobileSession("netCheck",0,context);
-//                        }
-                    }catch(NullPointerException e){
-
-                    }catch(Exception e){
-
-                    }
-                } else {
-                    try{
-                        if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
-                            LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-                            boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+//        simpleLocation = new SimpleLocation(context);
+//        if (!simpleLocation.hasLocationEnabled()) {
+//            // simpleLocation.openSettings(context);
+//        } else {
+//            latitude = simpleLocation.getLatitude();
+//            longitude = simpleLocation.getLongitude();
+////            android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+//
+//            if (android_id == null || android_id == "null" || android_id.isEmpty()) {
+//            } else {
+//                if (latitude == 0.0) {
+//                    try{
+//                        if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
+//                            LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+//                            boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
 //                            boolean isNetworkEnabled = lcm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-                            if(isGpsEnabled){
-                                Toast.makeText(context, "GPS ON", Toast.LENGTH_SHORT).show();
-                                mobileSession("gpsCheck",1,context);
-                            }else{
-                                Toast.makeText(context, "GPS OFF", Toast.LENGTH_SHORT).show();
-                                mobileSession("gpsCheck",0,context);
-                            }
-//                            if(isNetworkEnabled){
-//                                Toast.makeText(context, "NET ON", Toast.LENGTH_SHORT).show();
-//                                mobileSession("netCheck",1,context);
+//                            if(isGpsEnabled){
+////                                Toast.makeText(context, "GPS ON", Toast.LENGTH_SHORT).show();
+//                                mobileSession("gpsCheck",1,context);
 //                            }else{
-//                                Toast.makeText(context, "NET ON", Toast.LENGTH_SHORT).show();
-//                                mobileSession("netCheck",0,context);
+////                                Toast.makeText(context, "GPS OFF", Toast.LENGTH_SHORT).show();
+//                                mobileSession("gpsCheck",0,context);
 //                            }
-                        }
-                    }catch(NullPointerException e){
-
-                    }catch(Exception e){
-
-                    }
-                }
-            }
-        }
-
-    }
-
-    void mobileSession(String data, int res, Context context){
-
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String currentDateandTime = sdf.format(new Date());
-
-        if(data.equals("gpsCheck")){
-            if(res==1){
-                textType = "GPS_ON";
-            }else if(res==0){
-                textType = "GPS_OFF";
-            }
-        }
-//        else if (data.equals("netCheck")){
-//            if(res==1){
-//                textType = "NET_ON";
-//            }else if(res==0){
-//                textType = "NET_OFF";
+//                        }
+////                        ConnectivityManager conMgr = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+////                        if(conMgr.getActiveNetworkInfo()!=null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()) {
+////                            Toast.makeText(context, "NET_ON", Toast.LENGTH_SHORT).show();
+////                            mobileSession("netCheck",1,context);
+////                        }else{
+////                            Toast.makeText(context, "NET_OFF", Toast.LENGTH_SHORT).show();
+////                            mobileSession("netCheck",0,context);
+////                        }
+//                    }catch(NullPointerException e){
+//
+//                    }catch(Exception e){
+//
+//                    }
+//                } else {
+//                    try{
+//                        if(LocationManager.PROVIDERS_CHANGED_ACTION.equals(intent.getAction())){
+//                            LocationManager lcm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+//                            boolean isGpsEnabled = lcm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+////                            boolean isNetworkEnabled = lcm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//                            if(isGpsEnabled){
+//                                Toast.makeText(context, "GPS ON", Toast.LENGTH_SHORT).show();
+//                                mobileSession("gpsCheck",1,context);
+//                            }else{
+//                                Toast.makeText(context, "GPS OFF", Toast.LENGTH_SHORT).show();
+//                                mobileSession("gpsCheck",0,context);
+//                            }
+////                            if(isNetworkEnabled){
+////                                Toast.makeText(context, "NET ON", Toast.LENGTH_SHORT).show();
+////                                mobileSession("netCheck",1,context);
+////                            }else{
+////                                Toast.makeText(context, "NET ON", Toast.LENGTH_SHORT).show();
+////                                mobileSession("netCheck",0,context);
+////                            }
+//                        }
+//                    }catch(NullPointerException e){
+//
+//                    }catch(Exception e){
+//
+//                    }
+//                }
 //            }
 //        }
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        final StringRequest reqQueue = new StringRequest(Request.Method.POST, insertMobileSession,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("eskoResponse : ", response);
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                Log.d("eskoError : ", volleyError.toString());
-            }
-        }) {
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("latitude", latitude);
-                    jsonObject.put("longitude", longitude);
-                    jsonObject.put("deviceId", android_id);
-                    jsonObject.put("type",textType);
-                    jsonObject.put("dateTime",currentDateandTime);
-                    return jsonObject.toString().getBytes("utf-8");
-                } catch (Exception ex) {
-
-                }
-                return super.getBody();
-            }
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-        };
-        reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
-        queue.add(reqQueue);
+//
+//    }
+//
+//    void mobileSession(String data, int res, Context context){
+//
+//        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//        String currentDateandTime = sdf.format(new Date());
+//
+//        if(data.equals("gpsCheck")){
+//            if(res==1){
+//                textType = "GPS_ON";
+//            }else if(res==0){
+//                textType = "GPS_OFF";
+//            }
+//        }
+////        else if (data.equals("netCheck")){
+////            if(res==1){
+////                textType = "NET_ON";
+////            }else if(res==0){
+////                textType = "NET_OFF";
+////            }
+////        }
+//
+//        RequestQueue queue = Volley.newRequestQueue(context);
+//        final StringRequest reqQueue = new StringRequest(Request.Method.POST, insertMobileSession,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.d("eskoResponse : ", response);
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                Log.d("eskoError : ", volleyError.toString());
+//            }
+//        }) {
+//            @Override
+//            public byte[] getBody() throws AuthFailureError {
+//                try {
+//                    JSONObject jsonObject = new JSONObject();
+//                    jsonObject.put("latitude", latitude);
+//                    jsonObject.put("longitude", longitude);
+//                    jsonObject.put("deviceId", android_id);
+//                    jsonObject.put("type",textType);
+//                    jsonObject.put("dateTime",currentDateandTime);
+//                    return jsonObject.toString().getBytes("utf-8");
+//                } catch (Exception ex) {
+//
+//                }
+//                return super.getBody();
+//            }
+//            @Override
+//            public String getBodyContentType() {
+//                return "application/json";
+//            }
+//        };
+//        reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
+//        queue.add(reqQueue);
     }
 }
