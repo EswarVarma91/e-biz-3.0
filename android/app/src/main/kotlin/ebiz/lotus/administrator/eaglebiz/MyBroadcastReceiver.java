@@ -63,9 +63,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             batteryPct = Math.round((level / (float) scale) * 100);
 
             // Toast.makeText(context, "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-            pushData(context,android_id,latitude,longitude,batteryPct);
+            if(latitude!=0.0) {
+                pushData(context, android_id, latitude, longitude, batteryPct);
+            }
         } else {
-
             locationTrack.showSettingsAlert();
         }
     }

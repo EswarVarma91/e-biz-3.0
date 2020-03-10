@@ -42,7 +42,12 @@ class MainActivity: FlutterActivity() {
             if (permissionsToRequest!!.size > 0) requestPermissions(permissionsToRequest!!.toTypedArray(), 900)
         }
 
+
+
         startAlert()
+        startService(Intent(this,MyService::class.java))
+
+
     }
 
     private fun findUnAskedPermissions(wanted: ArrayList<String>): ArrayList<String>? {
