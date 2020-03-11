@@ -652,7 +652,6 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   StartAttendanceModel am = StartAttendanceModel(
                       userId, timeStart, latiL.toString(), longiL.toString());
                   dbHelper.updateStart(am);
-
                   _insertStartTimeService(
                       timeStart,
                       latiL.toString(),
