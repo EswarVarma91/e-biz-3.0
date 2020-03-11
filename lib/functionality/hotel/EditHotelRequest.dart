@@ -340,7 +340,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
           "parameter3": checkIn,
           "parameter4": checkOut,
           "parameter5": profilename,
-          "parameter6": DateFormat("yyyy-MM-dd hh:mm:ss").format(now)
+          "parameter6": DateFormat("yyyy-MM-dd HH:mm:ss").format(now)
         },
         options: Options(contentType: ContentType.parse("application/json")));
 

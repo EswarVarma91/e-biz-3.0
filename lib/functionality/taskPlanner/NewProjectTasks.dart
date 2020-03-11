@@ -423,7 +423,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
           "projectId": projectId,
           "dpModifiedBy": profileName.toLowerCase(),
           "uId": resourceId,
-          "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+          "dpStartDate": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
           "dpTaskStartDateTime": startDate,
           "dpTaskEndDateTime": endDate
         },

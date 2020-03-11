@@ -474,7 +474,7 @@ class _NewTaskState extends State<NewMyTasks> {
             "actionMode": "insert",
             "dpCreatedBy": profileName.toString().toLowerCase(),
             "dpGivenBy": profileName.toLowerCase(),
-            "dpStartDate": DateFormat("yyyy-MM-dd hh:mm:ss").format(now),
+            "dpStartDate": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
             "dpTask": _controller1.text.toString(),
             "dpTaskDesc": _controller2.text.toString(),
             "dpType": "Office",

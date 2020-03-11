@@ -531,7 +531,10 @@ class _HomePageLocationState extends State<HomePageLocation> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () async {
-          if (workStatus == "-" || workStatus == "" || workStatus == null || workStatus == " ") {
+          if (workStatus == "-" ||
+              workStatus == "" ||
+              workStatus == null ||
+              workStatus == " ") {
             var data = await Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -632,39 +635,59 @@ class _HomePageLocationState extends State<HomePageLocation> {
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
-        onTap: () {
-          // if (workStatus != "At-Office") {
-          if (workStatus == "Tour" || workStatus == "At-Office") {
-            if (timeStart == "-") {
-              var now1 = DateTime.now();
+        onTap: () async {
+          var now1 = DateTime.now();
+          lresult = await Geolocation.lastKnownLocation();
+          StreamSubscription<LocationResult> subscription =
+              Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+                  .listen((result) {
+            if (result.isSuccessful) {
               setState(() {
-                if (userlocation != null) {
+                latiL = result.location.latitude.toString();
+                longiL = result.location.longitude.toString();
+              });
+              if (latiL != null) {
+                setState(() {
                   timeStart = DateFormat("HH:mm:ss").format(now1).toString();
                   StartAttendanceModel am = StartAttendanceModel(
-                      userId,
-                      timeStart,
-                      userlocation.latitude.toString(),
-                      userlocation.longitude.toString());
+                      userId, timeStart, latiL.toString(), longiL.toString());
                   dbHelper.updateStart(am);
 
                   _insertStartTimeService(
                       timeStart,
-                      userlocation.latitude.toString(),
-                      userlocation.longitude.toString(),
+                      latiL.toString(),
+                      longiL.toString(),
                       DateFormat("yyyy-MM-dd").format(now1).toString());
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Please Turn on GPS, to mark attendance., to mark attendance.");
-                }
-              });
+                });
+              } else {
+                Fluttertoast.showToast(msg: "Please turn on gps");
+                openSettings();
+              }
             } else {
-              Fluttertoast.showToast(msg: 'Day Start has already been marked');
+              Fluttertoast.showToast(msg: "Please turn on gps");
+              openSettings();
             }
-          } else {
-            Fluttertoast.showToast(
-                msg: "Choose your work status, to mark attendance.");
-          }
+          });
+          // if (workStatus != "At-Office") {
+          // if (workStatus == "Tour" || workStatus == "At-Office") {
+          //   if (timeStart == "-") {
+          //     var now1 = DateTime.now();
+          //     setState(() {
+          //       if (latiL != null) {
+          //
+          //       } else {
+          //         Fluttertoast.showToast(
+          //             msg:
+          //                 "Please Turn on GPS, to mark attendance., to mark attendance.");
+          //       }
+          //     });
+          //   } else {
+          //     Fluttertoast.showToast(msg: 'Day Start has already been marked');
+          //   }
+          // } else {
+          //   Fluttertoast.showToast(
+          //       msg: "Choose your work status, to mark attendance.");
+          // }
           // }
           // else {
           //   Fluttertoast.showToast(
@@ -713,33 +736,55 @@ class _HomePageLocationState extends State<HomePageLocation> {
       elevation: 14.0,
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
-        onTap: () {
-          // if (workStatus != "At-Office") {
-          if (workStatus == "Tour" || workStatus == "At-Office") {
-            if (timeStart == "-") {
-              Fluttertoast.showToast(
-                  msg: "Day Start need to be marked before marking day end.");
-            } else if (workStatus == "-" ||
-                workStatus == " " ||
-                workStatus == "") {
-              Fluttertoast.showToast(
-                  msg: "Choose your work status, to mark attendance.");
-            } else if (timeEnd == "-") {
+        onTap: () async {
+          var now1 = DateTime.now();
+          lresult = await Geolocation.lastKnownLocation();
+          StreamSubscription<LocationResult> subscription =
+              Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+                  .listen((result) {
+            if (result.isSuccessful) {
               setState(() {
-                if (userlocation != null) {
-                  roundedAlertDialog(userlocation);
-                } else {
-                  Fluttertoast.showToast(
-                      msg: "Please Turn on GPS, to mark attendance.");
-                }
+                latiL = result.location.latitude.toString();
+                longiL = result.location.longitude.toString();
               });
+              if (latiL != null) {
+                roundedAlertDialog(latiL,longiL);
+              } else {
+                Fluttertoast.showToast(msg: "Please turn on gps");
+                openSettings();
+              }
             } else {
-              Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
+              Fluttertoast.showToast(msg: "Please turn on gps");
+              openSettings();
             }
-          } else {
-            Fluttertoast.showToast(
-                msg: "Choose your work status, to mark attendance.");
-          }
+          });
+
+          // if (workStatus != "At-Office") {
+          // if (workStatus == "Tour" || workStatus == "At-Office") {
+          //   if (timeStart == "-") {
+          //     Fluttertoast.showToast(
+          //         msg: "Day Start need to be marked before marking day end.");
+          //   } else if (workStatus == "-" ||
+          //       workStatus == " " ||
+          //       workStatus == "") {
+          //     Fluttertoast.showToast(
+          //         msg: "Choose your work status, to mark attendance.");
+          //   } else if (timeEnd == "-") {
+          //     setState(() {
+          //       if (userlocation != null) {
+          //         roundedAlertDialog(userlocation);
+          //       } else {
+          //         Fluttertoast.showToast(
+          //             msg: "Please Turn on GPS, to mark attendance.");
+          //       }
+          //     });
+          //   } else {
+          //     Fluttertoast.showToast(msg: 'Day End marked sucessfully.');
+          //   }
+          // } else {
+          //   Fluttertoast.showToast(
+          //       msg: "Choose your work status, to mark attendance.");
+          // }
         },
         child: Center(
           child: Padding(
@@ -1105,7 +1150,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
     }
   }
 
-  roundedAlertDialog(userLocation) {
+  roundedAlertDialog(String lati,String longi) {
     var now1 = DateTime.now();
     showDialog(
         context: context,
@@ -1131,15 +1176,15 @@ class _HomePageLocationState extends State<HomePageLocation> {
                   EndAttendanceModel am = EndAttendanceModel(
                       userId,
                       timeEnd,
-                      userlocation.latitude.toString(),
-                      userlocation.longitude.toString());
+                      lati.toString(),
+                      longi.toString());
                   dbHelper.updateEnd(am);
 
                   ///LocationService
                   _insertEndTimeService(
                       timeEnd,
-                      userlocation.latitude.toString(),
-                      userlocation.longitude.toString(),
+                      lati.toString(),
+                      longi.toString(),
                       DateFormat("yyyy-MM-dd").format(now1).toString());
                   Navigator.of(context).pop();
                 },

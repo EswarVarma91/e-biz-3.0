@@ -216,7 +216,7 @@ class _ViewMapState extends State<MapsActivity> {
   _changeDateFormat(String _date) {
     if (_date != null && _date != "") {
       var __date =
-          intl.DateFormat("dd-MM-yyyy hh:mm:ss").format(DateTime.parse(_date));
+          intl.DateFormat("dd-MM-yyyy HH:mm:ss").format(DateTime.parse(_date));
       return __date;
     } else {
       return "--";

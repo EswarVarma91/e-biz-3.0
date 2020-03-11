@@ -361,7 +361,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
           "parameter3": trequiredDateTime,
           "parameter4": traidT,
           "parameter5": profilename,
-          "parameter6": DateFormat("yyyy-MM-dd hh:mm:ss").format(now)
+          "parameter6": DateFormat("yyyy-MM-dd HH:mm:ss").format(now)
         },
         options: Options(
           contentType: ContentType.parse('application/json'),
