@@ -736,7 +736,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
       borderRadius: BorderRadius.circular(24.0),
       child: InkWell(
         onTap: () async {
-          var now1 = DateTime.now();
+          // var now1 = DateTime.now();
           lresult = await Geolocation.lastKnownLocation();
           StreamSubscription<LocationResult> subscription =
               Geolocation.currentLocation(accuracy: LocationAccuracy.best)
