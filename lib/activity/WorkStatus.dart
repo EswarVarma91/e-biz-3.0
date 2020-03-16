@@ -27,8 +27,6 @@ class _WorkStatusState extends State<WorkStatus> {
   Future<List<AttendanceModel>> attList;
   String workStatus;
 
-
-
   getEmpCode() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
@@ -71,7 +69,6 @@ class _WorkStatusState extends State<WorkStatus> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -216,10 +213,8 @@ class _WorkStatusState extends State<WorkStatus> {
     if (response.statusCode == 200 || response.statusCode == 201) {
       Navigator.pop(context, s);
     } else if (response.statusCode == 401) {
+      Navigator.pop(context, s);
       throw Exception("Incorrect data");
-    } else
-      Fluttertoast.showToast(msg: "Check your internet connection.");
-//        Navigator.pop(context,s);
-    throw Exception('Authentication Error');
+    }
   }
 }

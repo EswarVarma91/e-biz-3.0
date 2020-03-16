@@ -45,7 +45,7 @@ class MainActivity: FlutterActivity() {
 
 
         startAlert()
-        startService(Intent(this,MyService::class.java))
+//     //   startService(Intent(this,MyService::class.java))
 
 
     }
