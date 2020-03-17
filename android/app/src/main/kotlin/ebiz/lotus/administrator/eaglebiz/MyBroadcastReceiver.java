@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -48,31 +49,36 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        dbManager = new DBManager(context);
-        android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        locationTrack = new LocationTrack(context);
 
-        if (locationTrack.canGetLocation()) {
-
-            double longitude = locationTrack.getLongitude();
-            double latitude = locationTrack.getLatitude();
-            IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-            batteryStatus = context.registerReceiver(null, intentFilter);
-            level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-            scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
-            batteryPct = Math.round((level / (float) scale) * 100);
-
-            // Toast.makeText(context, "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-            if(latitude!=0.0) {
-                pushData(context, android_id, latitude, longitude, batteryPct);
+        try{
+//            dbManager = new DBManager(context);
+            android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            locationTrack = new LocationTrack(context);
+            if (locationTrack.canGetLocation()) {
+                double longitude = locationTrack.getLongitude();
+                double latitude = locationTrack.getLatitude();
+                IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+                batteryStatus = context.registerReceiver(null, intentFilter);
+                level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+                scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
+                batteryPct = Math.round((level / (float) scale) * 100);
+                // Toast.makeText(context, "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+                if(latitude!=0.0) {
+                    pushData(context, android_id, latitude, longitude, batteryPct);
+                }
+            } else {
+                locationTrack.showSettingsAlert();
             }
-        } else {
-            locationTrack.showSettingsAlert();
+
+        }catch(WindowManager.BadTokenException ex){
+
         }
     }
 
     private void pushData(Context context, String android_id, double latitude, double longitude, float battery) {
-        queue = Volley.newRequestQueue(context);
+        try{
+
+            queue = Volley.newRequestQueue(context);
         final StringRequest reqQueue = new StringRequest(Request.Method.POST, hrms_Service,
                 new Response.Listener<String>() {
                     @Override
@@ -107,6 +113,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         };
         reqQueue.setRetryPolicy(new DefaultRetryPolicy(5 * DefaultRetryPolicy.DEFAULT_TIMEOUT_MS, 0, 0));
         queue.add(reqQueue);
+
+        }catch(WindowManager.BadTokenException ex){
+
+        }
 
 
     }
