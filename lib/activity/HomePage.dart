@@ -1017,6 +1017,8 @@ class _HomePageLocationState extends State<HomePageLocation> {
                 workStatus = "At-Office";
                 timeStart = checkTimeAtt(attData.in_time.toString(), 1);
                 timeEnd = checkTimeAtt(attData.out_time.toString(), 2);
+                // timeStart = attData.in_time.toString();
+                // timeEnd = attData.out_time.toString();
               });
               AttendanceGettingModel attendanceModel =
                   AttendanceGettingModel(userId, timeStart, timeEnd);
@@ -1283,7 +1285,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
         var now = DateTime.now();
         String time = DateFormat("HH").format(now);
         int hour = int.parse(time);
-        if (hour >= 22) {
+        if (hour >= 20) {
           return data;
         } else {
           return "-";
