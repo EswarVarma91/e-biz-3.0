@@ -104,9 +104,7 @@ class _ProjectSelectionState extends State<ProjectSelection> {
   getProjectList() async {
     var response = await dio.post(ServicesApi.getData,
         data: {"encryptedFields": ["string"],"parameter1": "getProjectList"},
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

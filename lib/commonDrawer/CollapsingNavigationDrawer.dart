@@ -427,10 +427,7 @@ class CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
             "parameter4": DateFormat("yyyy-MM-dd HH:mm:ss").format(now),
             "parameter5": latiL,
             "parameter6": longiL,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         preferences.clear();

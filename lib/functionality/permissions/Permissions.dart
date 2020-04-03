@@ -1133,9 +1133,7 @@ class _PermissionsState extends State<Permissions> {
       var leavesEmp = await dio.post(ServicesApi.getData,
 //          queryParameters: {"id": uuid},
           data: {"encryptedFields": ["string"],"parameter1": "GetEmpLeaves", "parameter2": uuid.toString()},
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (leavesEmp.statusCode == 200 || leavesEmp.statusCode == 201) {
         setState(() {
           leavesList = (json.decode(leavesEmp.data) as List)
@@ -1153,9 +1151,7 @@ class _PermissionsState extends State<Permissions> {
             "parameter1": "GetAllPermissionByUId",
             "parameter2": uuid.toString()
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (permissionsEmp.statusCode == 200 ||
           permissionsEmp.statusCode == 201) {
         setState(() {
@@ -1194,9 +1190,7 @@ class _PermissionsState extends State<Permissions> {
               "statusId": 0,
               "userId": ulpid
             },
-            options: Options(
-              contentType: ContentType.parse('application/json'),
-            ));
+            );
       } else if (i == 2) {
         response = await dio.post(ServicesApi.ChangePermissionStatus,
             data: {
@@ -1206,9 +1200,7 @@ class _PermissionsState extends State<Permissions> {
               "statusId": 0,
               "userId": ulpid
             },
-            options: Options(
-              contentType: ContentType.parse('application/json'),
-            ));
+            );
       }
 
       if (response.statusCode == 200 || response.statusCode == 201) {

@@ -452,10 +452,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
             "parameter10": exit_lati,
             "parameter11": exit_longi,
             "parameter12": purpose
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         Fluttertoast.showToast(msg: "Sales Entry Successful.");
         Navigator.of(context).pushAndRemoveUntil(
@@ -485,10 +482,7 @@ class _SalesIndustrialEntryState extends State<SalesIndustrialEntry> {
             "encryptedFields": ["string"],
             "parameter1": "salesIndustrialDataById",
             "parameter2": user_id,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           listSalesIndustry = (json.decode(response.data) as List)

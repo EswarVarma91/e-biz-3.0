@@ -484,9 +484,7 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpTaskStartDateTime": "",
             "dpTaskEndDateTime": ""
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data.toString() == '"Success"') {
@@ -526,9 +524,7 @@ class _NewTaskState extends State<NewMyTasks> {
             "dpTaskStartDateTime": "",
             "dpTaskEndDateTime": ""
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         //        var responseJson = json.decode(response.data);

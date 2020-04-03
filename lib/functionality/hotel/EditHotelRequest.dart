@@ -342,7 +342,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
           "parameter5": profilename,
           "parameter6": DateFormat("yyyy-MM-dd HH:mm:ss").format(now)
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridByhotelId(hotel_id.toString());
@@ -359,7 +359,7 @@ class _EditHotelRequestState extends State<EditHotelRequest> {
           "parameter1": "getTokenbyHotelId",
           "parameter2": hotel_id
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['hotel_req_no'];

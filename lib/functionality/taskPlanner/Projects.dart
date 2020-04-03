@@ -156,9 +156,7 @@ class _ProjectsState extends State<Projects> {
           "parameter1": "GetDRProjectNoByUId",
           "parameter2": uidd,
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

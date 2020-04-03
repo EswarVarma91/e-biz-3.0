@@ -475,10 +475,7 @@ class _NewPermissionState extends State<NewPermissions> {
               "vperfromTime": fromTime.toString(),
               "vpertoTime": toTime.toString(),
               "vuId": uidd
-            },
-            options: Options(
-              contentType: ContentType.parse('application/json'),
-            ));
+            },);
       } else if (personal == true) {
         typeP = "Personal";
         var data =
@@ -498,10 +495,7 @@ class _NewPermissionState extends State<NewPermissions> {
                       "vperfromTime": fromTime.toString(),
                       "vpertoTime": toTime.toString(),
                       "vuId": uidd
-                    },
-                    options: Options(
-                      contentType: ContentType.parse('application/json'),
-                    ));
+                    },);
               } else {
                 pr.hide();
                 Fluttertoast.showToast(
@@ -592,10 +586,7 @@ class _NewPermissionState extends State<NewPermissions> {
             "parameter3": selectedDate,
             "parameter4": fromTime,
             "parameter5": toTime
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         checkPermissionRestrictions = (json.decode(response.data) as List)
@@ -631,7 +622,7 @@ class _NewPermissionState extends State<NewPermissions> {
           "parameter1": "getReportingLevelToken",
           "parameter2": uidd
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {

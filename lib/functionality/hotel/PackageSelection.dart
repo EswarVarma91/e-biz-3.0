@@ -139,10 +139,7 @@ class _PackageSelectionState extends State<PackageSelection> {
         data: {
           "encryptedFields": ["fullname"],
           "parameter1": "getDownTeamRequestPackage"
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         dataCheck = (json.decode(response.data) as List)
@@ -162,10 +159,7 @@ class _PackageSelectionState extends State<PackageSelection> {
           "encryptedFields": ["string"],
           "parameter1": "getHotelUserId_Name",
           "parameter2": result,
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
     if (response.statusCode == 200 || response.statusCode == 201) {
       List list = [];
       String Users;

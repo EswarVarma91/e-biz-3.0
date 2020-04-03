@@ -136,9 +136,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           "parameter1": "getAllNotifications",
           "parameter2": uidd,
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
@@ -173,9 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           "parameter1": "updateNotificationStatus",
           "parameter2": not_id,
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+       );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getNotifications();

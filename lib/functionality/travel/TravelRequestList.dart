@@ -588,9 +588,7 @@ class _TravelRequestListState extends State<TravelRequestList> {
           "parameter1": "GetAllTravelRequests",
           "parameter2": uidd
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

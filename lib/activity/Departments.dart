@@ -113,10 +113,7 @@ class _DepartmentsState extends State<Departments> {
         data: {
           "encryptedFields": ["string"],
           "parameter1": "getDepartments"
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

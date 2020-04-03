@@ -1392,10 +1392,7 @@ class _ApprovalsState extends State<Approvals> {
             "encryptedFields": ["fullname"],
             "parameter1": "GetDownTeamPendLeavesByRLId",
             "parameter2": uidd.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           leaveList = (json.decode(response.data) as List)
@@ -1412,10 +1409,7 @@ class _ApprovalsState extends State<Approvals> {
             "encryptedFields": ["fullname"],
             "parameter1": "GetDownTeamPermissionsByRLId",
             "parameter2": uidd.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response1.statusCode == 200 || response1.statusCode == 201) {
         setState(() {
           permissionsList = (json.decode(response1.data) as List)
@@ -1432,10 +1426,7 @@ class _ApprovalsState extends State<Approvals> {
             "encryptedFields": ["string"],
             "parameter1": "getTravelRequestByDownTeam",
             "parameter2": uidd
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response2.statusCode == 200 || response2.statusCode == 201) {
         setState(() {
           trlm = (json.decode(response2.data) as List)
@@ -1450,10 +1441,7 @@ class _ApprovalsState extends State<Approvals> {
             "encryptedFields": ["string"],
             "parameter1": "getHotelRequestByDownTeam",
             "parameter2": uidd
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response3.statusCode == 200 || response3.statusCode == 201) {
         setState(() {
           hrlm = (json.decode(response3.data) as List)
@@ -1489,10 +1477,7 @@ class _ApprovalsState extends State<Approvals> {
             "noOfDays": leaveList.el_noofdays.toString(),
             "statusId": 3,
             "userId": leaveList.u_id
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // pr.hide();
@@ -1529,10 +1514,7 @@ class _ApprovalsState extends State<Approvals> {
             "noOfDays": leaveList.el_noofdays,
             "statusId": 2,
             "userId": leaveList.u_id
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         Fluttertoast.showToast(msg: "Leave has been Approved.");
         getUserLeavesToken(leaveList.el_from_date, leaveList.el_to_date,
@@ -1566,10 +1548,7 @@ class _ApprovalsState extends State<Approvals> {
             "statusId": 2,
             "tlApprovedBy": profilename,
             "userId": permissionModel.u_id
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // pr.hide();
@@ -1605,10 +1584,7 @@ class _ApprovalsState extends State<Approvals> {
             "remarks": "string",
             "statusId": 3,
             "userId": permissionModel.u_id
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // getPendingApprovals();
@@ -1637,7 +1613,7 @@ class _ApprovalsState extends State<Approvals> {
   cancelTravelRequestServiceCall(TravelRequestListModel trlm) async {
     var response = await dio.post(ServicesApi.updateTravelRequest,
         data: {"statusId": 2, "traId": trlm.tra_id, "modifiedBy": profilename},
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       Fluttertoast.showToast(msg: "Travel Request has been Rejected.");
       getUserTravelToken(trlm.reqNo, "Rejected", trlm.u_id.toString());
@@ -1649,7 +1625,7 @@ class _ApprovalsState extends State<Approvals> {
   approveTravelRequestServiceCall(TravelRequestListModel trlm) async {
     var response = await dio.post(ServicesApi.updateTravelRequest,
         data: {"statusId": 1, "traId": trlm.tra_id, "modifiedBy": profilename},
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       Fluttertoast.showToast(msg: "Travel Request has been Approved.");
       getUserTravelToken(trlm.reqNo, "Approved", trlm.u_id.toString());
@@ -1665,7 +1641,7 @@ class _ApprovalsState extends State<Approvals> {
           "hotelId": hrlm.hotel_id,
           "modifiedBy": profilename
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       Fluttertoast.showToast(msg: "Hotel Request has been Rejected.");
       getUserHotelToken(hrlm.hotel_ref_no, "Rejected", hrlm.u_id.toString());
@@ -1681,7 +1657,7 @@ class _ApprovalsState extends State<Approvals> {
           "hotelId": hrlm.hotel_id,
           "modifiedBy": profilename
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       Fluttertoast.showToast(msg: "Hotel Request has been Approved.");
       getUserHotelToken(hrlm.hotel_ref_no, "Approved", hrlm.u_id.toString());
@@ -1702,7 +1678,7 @@ class _ApprovalsState extends State<Approvals> {
           "parameter1": "getUserToken",
           "parameter2": puidd
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {
@@ -1777,7 +1753,7 @@ class _ApprovalsState extends State<Approvals> {
           "parameter1": "getUserToken",
           "parameter2": puidd
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {
@@ -1853,7 +1829,7 @@ class _ApprovalsState extends State<Approvals> {
           "parameter1": "getUserToken",
           "parameter2": puidd
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {
@@ -1921,7 +1897,7 @@ class _ApprovalsState extends State<Approvals> {
           "parameter1": "getUserToken",
           "parameter2": puidd
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {

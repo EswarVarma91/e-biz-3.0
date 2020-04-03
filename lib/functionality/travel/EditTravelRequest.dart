@@ -362,10 +362,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
           "parameter4": traidT,
           "parameter5": profilename,
           "parameter6": DateFormat("yyyy-MM-dd HH:mm:ss").format(now)
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
 
         // var response = await dio.post(ServicesApi.insert_travel,
@@ -400,7 +397,7 @@ class _EditTravelRequestState extends State<EditTravelRequest> {
   void getUseridBytraId(String tra_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {"encryptedFields": ["string"],"parameter1": "getTokenbytraId", "parameter2": tra_id},
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['tra_req_no'];

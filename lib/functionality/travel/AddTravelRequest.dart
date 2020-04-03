@@ -768,10 +768,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
           "reqDateTime": trequiredDateTime,
           "to": tto,
           "uId": travelNameId
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserRequestNo(travelNameId.toString());
@@ -791,8 +788,7 @@ class _AddTravelRequestState extends State<AddTravelRequest> {
           "encryptedFields": ["string"],
           "parameter1": "GetTokenTravelRequest",
           "parameter2": travelNameId
-        },
-        options: Options(contentType: ContentType.parse("application/json")));
+        },);
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['tra_req_no'];

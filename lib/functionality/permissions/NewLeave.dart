@@ -600,10 +600,7 @@ class _NewLeaveState extends State<NewLeave> {
             "empCode": empCode,
             "firstName": profilename,
             "totalEffectiveDates": effeDates,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
     } else {
       response = await dio.post(ServicesApi.insertLeave,
           data: {
@@ -619,10 +616,7 @@ class _NewLeaveState extends State<NewLeave> {
             "empCode": empCode,
             "firstName": profilename,
             "totalEffectiveDates": effeDates,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
     }
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -650,7 +644,7 @@ class _NewLeaveState extends State<NewLeave> {
           "userId": uuid,
           "haldayCount": _color1 ? 1 : 0
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       // int noofBeforeDays = json.decode(response.data)['NO_OF_BEFORE_DAYS'];
@@ -849,7 +843,7 @@ class _NewLeaveState extends State<NewLeave> {
           "parameter1": "getReportingLevelToken",
           "parameter2": uidd
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {

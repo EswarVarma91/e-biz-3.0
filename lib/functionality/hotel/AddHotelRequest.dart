@@ -545,10 +545,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
           "refType": TcomplaintRefType,
           "uId": TravelNameId,
           "hotelCreatedDate": DateFormat("yyyy-MM-dd").format(now)
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUserRequestNo(TravelNameId.toString());
@@ -568,7 +565,7 @@ class _AddHotelRequestState extends State<AddHotelRequest> {
           "parameter1": "GetTokenHotelRequest",
           "parameter2": travelNameId
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['hotel_ref_no'];

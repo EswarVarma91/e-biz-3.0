@@ -234,9 +234,7 @@ class _NewSalesLeadState extends State<NewSalesLead> {
             "srReferedBy": referalPerson,
             "srRequirement": _controller2.text.toString()
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();

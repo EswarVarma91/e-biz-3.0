@@ -919,9 +919,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
   getDataHotelrequestbytId(int hotel_id) async {
     Response response = await dio.post(ServicesApi.getData,
         data: {"encryptedFields": ["string"],"parameter1": "getHotelRequestsbyId", "parameter2": hotel_id},
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       // print(response.data);
       setState(() {
@@ -946,9 +944,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
           "parameter1": "getHotelRequestHistorybyId",
           "parameter2": hotel_id
         },
-        options: Options(
-          contentType: ContentType.parse("application/json"),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         hrbtidh = (json.decode(response.data) as List)
@@ -968,9 +964,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
           "hotelId": hotel_id,
           "hotelCancelReqBy": profilename
         },
-        options: Options(
-          contentType: ContentType.parse("application/json"),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       // var navigator = Navigator.of(context);
       // navigator.pushAndRemoveUntil(
@@ -998,7 +992,7 @@ class _ViewHotelRequestState extends State<ViewHotelRequest> {
     var response = await dio.post(ServicesApi.getData,
         data: {"encryptedFields": ["string"],
           "parameter1": "getTokenbyHotelId", "parameter2": hotel_id},
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {

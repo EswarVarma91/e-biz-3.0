@@ -122,10 +122,7 @@ class _MembersState extends State<Members> {
           "encryptedFields": ["u_first_name", "u_email"],
           "parameter1": "GetDownTeamByUId",
           "parameter2": uidd.toString(),
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

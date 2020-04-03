@@ -130,10 +130,7 @@ class _SearchSalesIndustrialEntryState
           "encryptedFields": ["string"],
           "parameter1": "getSalesEntryCompanyNames",
           "parameter2": comapnyName + "%"
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         tcm = (json.decode(response.data) as List)

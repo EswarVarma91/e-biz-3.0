@@ -477,7 +477,7 @@ class _ViewMapState extends State<MapsActivity> {
             "encryptedFields": ["u_profile_name"],
             "parameter1": "getUserLocation"
           },
-          options: Options(contentType: ContentType.parse("application/json")));
+         );
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
@@ -580,7 +580,7 @@ class _ViewMapState extends State<MapsActivity> {
             "parameter1": "getUserLocationByID",
             "parameter2": dataId
           },
-          options: Options(contentType: ContentType.parse("application/json")));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];
@@ -695,7 +695,7 @@ class _ViewMapState extends State<MapsActivity> {
             "parameter1": "getUserLocationByDepartment",
             "parameter2": dataId
           },
-          options: Options(contentType: ContentType.parse("application/json")));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         List list = json.decode(response.data) as List;
         List<LocationModel> listModel = [];

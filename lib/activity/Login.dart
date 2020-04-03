@@ -355,7 +355,7 @@ class _LoginState extends State<Login> {
             "latitude": latiL,
             "longitude": longiL,
           },
-          options: Options(contentType: ContentType.parse("application/json")));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         if ((json.decode(response.data)['cnt'] == 1)) {
           _writeData(

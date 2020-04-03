@@ -427,9 +427,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
           "dpTaskStartDateTime": startDate,
           "dpTaskEndDateTime": endDate
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getFirebaseToken(
@@ -448,9 +446,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
           "parameter2": uidd,
           "parameter3": projectId.toString()
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       List<RestrictPermissionsModel> dataCheck =
@@ -472,7 +468,7 @@ class _NewProjectTasksState extends State<NewProjectTasks> {
           "parameter1": "getUserToken",
           "parameter2": resourceId
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {

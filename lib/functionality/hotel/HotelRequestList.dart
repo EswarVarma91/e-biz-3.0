@@ -632,10 +632,7 @@ class _HotelRequestListState extends State<HotelRequestList> {
           "encryptedFields": ["string"],
           "parameter1": "getHotelRequests",
           "parameter2": uidd
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

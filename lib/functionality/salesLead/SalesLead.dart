@@ -299,10 +299,7 @@ class StateSalesLead extends State<SalesLead> {
           data: {
             "actionMode": "GetSaleRequestListByUserId",
             "refId": uidd.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           listpending = (json.decode(response.data) as List)
@@ -335,10 +332,7 @@ class StateSalesLead extends State<SalesLead> {
           data: {
             "actionMode": "GetClosedSaleRequestByUId",
             "refId": uidd.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           listcompleted = (json.decode(response.data) as List)

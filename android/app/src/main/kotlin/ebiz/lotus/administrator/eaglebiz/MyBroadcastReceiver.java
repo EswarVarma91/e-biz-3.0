@@ -44,7 +44,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     Intent batteryStatus;
     LocationTrack locationTrack;
 
-    String hrms_Service = globalAddesss + "att.service/hrms/attendance/save/location";
+    String hrms_Service = testAddress + "att.service/hrms/attendance/save/location";
     String hrms_offline_Service = globalAddesss + "att.service/hrms/attendance/save/offline/location";
 
     @Override

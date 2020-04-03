@@ -303,10 +303,7 @@ class _UpdateSalesInsutrialEntryState extends State<UpdateSalesInsutrialEntry> {
             "parameter4": exit_lati,
             "parameter5": exit_longi,
             "parameter6": _controller1.text
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         Fluttertoast.showToast(msg: "Sales Entry Updated");
         Navigator.of(context).pushAndRemoveUntil(

@@ -43,29 +43,8 @@ class HomePage extends StatefulWidget {
   HomePageState createState() => HomePageState();
 }
 
+
 class HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      // ignore: missing_return
-      onWillPop: () {
-        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-//        SystemNavigator.pop();
-      },
-      child: StreamProvider<UserLocationModel>(
-        builder: (context) => LocationService().locationStream,
-        child: HomePageLocation(),
-      ),
-    );
-  }
-}
-
-class HomePageLocation extends StatefulWidget {
-  @override
-  _HomePageLocationState createState() => _HomePageLocationState();
-}
-
-class _HomePageLocationState extends State<HomePageLocation> {
   String paidCount = '', taskPending = "-", shortcut = "no action set";
   static Dio dio = Dio(Config.options);
   String empCode = "-",
@@ -91,7 +70,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   Connectivity connectivity;
   static double lati = 0.0, longi = 0.0;
   StreamSubscription<ConnectivityResult> streamSubscription;
-  StreamProvider<UserLocationModel> userlocationstrem;
+  // StreamProvider<UserLocationModel> userlocationstrem;
   String latiL, longiL;
   List<TaskListModel> tasklistModel = [];
   var userlocation;
@@ -157,9 +136,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter1": "getSessionTimeout",
             "parameter2": userNo,
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         int data = json.decode(response.data)[0]["cnt"];
         if (data == 0) {
@@ -187,7 +164,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           "parameter3": latiL,
           "parameter4": longiL,
         },
-        options: Options(contentType: ContentType.parse('application/json')));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.clear();
@@ -207,7 +184,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           "parameter1": "insertMobileSession",
           "parameter2": userNo,
         },
-        options: Options(contentType: ContentType.parse('application/json')));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       locationSetState(userId);
     } else if (response.statusCode == 401) {
@@ -274,13 +251,13 @@ class _HomePageLocationState extends State<HomePageLocation> {
 
   @override
   Widget build(BuildContext context) {
-    userlocation = Provider.of<UserLocationModel>(context);
-    setState(() {
-      if (userlocation != null) {
-        lati = userlocation.latitude;
-        longi = userlocation.longitude;
-      }
-    });
+    // userlocation = Provider.of<UserLocationModel>(context);
+    // setState(() {
+    //   if (userlocation != null) {
+    //     lati = userlocation.latitude;
+    //     longi = userlocation.longitude;
+    //   }
+    // });
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -963,9 +940,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter1": "getPaidCount",
             "parameter2": empCodee.toString(),
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         PaidCountModel data = PaidCountModel.fromJson(res[0]);
@@ -999,9 +974,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter2": userId,
             "parameter3": DateFormat("yyyy-MM-dd").format(now).toString(),
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         AttendanceServiceModel attData =
@@ -1091,9 +1064,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter3": workStatus,
             "parameter6": DateFormat("yyyy-MM-dd").format(now).toString(),
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         // print(res.toString());
@@ -1125,9 +1096,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter5": timeStarta.toString(),
             "parameter6": datest,
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         // print(res.toString());
@@ -1159,9 +1128,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter5": timeEnda.toString(),
             "parameter6": dateen,
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         // print(res.toString());
@@ -1231,9 +1198,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter1": "getPendingCount",
             "parameter2": userIdd.toString(),
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         var res = json.decode(response.data);
         PendingCountModel data = PendingCountModel.fromJson(res[0]);
@@ -1263,7 +1228,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
           "parameter2": uid,
           "parameter3": token
         },
-        options: Options(contentType: ContentType.parse('application/json')));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       // print(token);
     } else if (response.statusCode == 401) {
@@ -1302,9 +1267,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "parameter1": "salesIndustrialCount",
             "parameter2": user_id,
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           var res = json.decode(response.data);
@@ -1335,9 +1298,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
             "encryptedFields": ["string"],
             "parameter1": "getSalesEntryCount",
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           var res = json.decode(response.data);
@@ -1364,7 +1325,7 @@ class _HomePageLocationState extends State<HomePageLocation> {
   // insertDeviceID(String deviceId, String userId) async {
   //   var response = await dio.post(ServicesApi.insertDeviceid,
   //       data: {"deviceId": deviceId, "uId": userId},
-  //       options: Options(contentType: ContentType.parse('application/json')));
+  //       );
   //   if (response.statusCode == 200 || response.statusCode == 201) {
   //     // print(token);
   //   } else if (response.statusCode == 401) {

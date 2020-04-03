@@ -352,9 +352,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           "dpTaskStartDateTime": startDate,
           "dpTaskEndDateTime": endDate
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       getFirebaseToken(
@@ -373,7 +371,7 @@ class _NewTeamTasksState extends State<NewTeamTasks> {
           "parameter1": "getUserToken",
           "parameter2": resourceId
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != null) {
         setState(() {

@@ -1142,9 +1142,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
   void getDataTravelrequestbytId(int tra_id) async {
     Response response = await dio.post(ServicesApi.getData,
         data: {"encryptedFields": ["string"],"parameter1": "GetTravelRequestById", "parameter2": tra_id},
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       // print(response.data);
       setState(() {
@@ -1169,9 +1167,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
           "parameter1": "GetTicketHistoryByRequestId",
           "parameter2": tra_id
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       // print(response.data);
       setState(() {
@@ -1191,10 +1187,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
           "traCancelReqBy": profilename,
           "traCancelReqRemarks": "",
           "traId": tra_id
-        },
-        options: Options(
-          contentType: ContentType.parse("application/json"),
-        ));
+        },);
     if (response.statusCode == 200 || response.statusCode == 201) {
       getUseridBytraId(tra_id);
     } else if (response.statusCode == 401) {
@@ -1208,7 +1201,7 @@ class _ViewTravelRequestState extends State<ViewTravelRequest> {
   void getUseridBytraId(int tra_id) async {
     var response = await dio.post(ServicesApi.getData,
         data: {"encryptedFields": ["string"],"parameter1": "getTokenbytraId", "parameter2": tra_id},
-        options: Options(contentType: ContentType.parse("application/json")));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data != "null" || response.data != null) {
         var req_no = json.decode(response.data)[0]['tra_req_no'];

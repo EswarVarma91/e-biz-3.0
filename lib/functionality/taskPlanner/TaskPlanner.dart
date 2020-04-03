@@ -1193,9 +1193,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
             "parameter1": "GetAllSelfTasks",
             "parameter2": uiddd.toString()
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           list11 = (json.decode(response.data) as List)
@@ -1213,9 +1211,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
             "parameter1": "GetAllTeamTasks",
             "parameter2": uiddd.toString()
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           list33 = (json.decode(response.data) as List)
@@ -1233,9 +1229,7 @@ class _TaskPlannerState extends State<TaskPlanner> {
             "parameter2": uiddd.toString(),
             "parameter3": profilename.toLowerCase()
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           list22 = (json.decode(response.data) as List)

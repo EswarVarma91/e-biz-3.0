@@ -240,10 +240,7 @@ class _EditSalesLeadState extends State<EditSalesLead> {
             "srNo": srNo,
             "srPhoneNo": contactMobile.text,
             "srRequirement": requirement.text
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         pr.hide();

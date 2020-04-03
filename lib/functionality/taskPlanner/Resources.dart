@@ -120,9 +120,7 @@ class _ResourcesState extends State<Resources> {
           "parameter1": "GetProjectTeamByProjId",
           "parameter2": rId
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

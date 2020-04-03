@@ -194,10 +194,7 @@ class _WorkStatusState extends State<WorkStatus> {
             "parameter2": empCode.toString(),
             "parameter3": currDate.toString(),
             "parameter4": "Tour"
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
     } else if (s == "2") {
       response = await dio.post(ServicesApi.updateData,
           data: {
@@ -205,10 +202,7 @@ class _WorkStatusState extends State<WorkStatus> {
             "parameter2": empCode.toString(),
             "parameter3": currDate.toString(),
             "parameter4": "Working"
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
     }
     if (response.statusCode == 200 || response.statusCode == 201) {
       Navigator.pop(context, s);

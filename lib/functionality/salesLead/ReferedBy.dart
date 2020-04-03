@@ -116,10 +116,7 @@ class _ReferedByState extends State<ReferedBy> {
         data: {
           "encryptedFields": ["u_first_name"],
           "parameter1": "GetAllEmps"
-        },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        },);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {

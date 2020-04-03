@@ -151,9 +151,7 @@ class _TravelSelectionState extends State<TravelSelection> {
           "parameter1": "getTrainCodes",
           "parameter2": _controllerCodes.text + "%"
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         tcm = (json.decode(response.data) as List)
@@ -172,9 +170,7 @@ class _TravelSelectionState extends State<TravelSelection> {
           "parameter1": "getAirportCodes",
           "parameter2": _controllerCodes.text + "%"
         },
-        options: Options(
-          contentType: ContentType.parse('application/json'),
-        ));
+        );
     if (response.statusCode == 200 || response.statusCode == 201) {
       setState(() {
         tcm = (json.decode(response.data) as List)

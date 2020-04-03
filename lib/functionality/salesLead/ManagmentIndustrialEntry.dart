@@ -305,10 +305,7 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
             "encryptedFields": ["fullName"],
             "parameter1": "salesIndustrialDataById",
             "parameter2": user_id,
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           tcm = (json.decode(response.data) as List)
@@ -337,10 +334,7 @@ class _ManagmentIndustrialEntryState extends State<ManagmentIndustrialEntry> {
           data: {
             "encryptedFields": ["fullName"],
             "parameter1": "getSalesEntryData",
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           tcm = (json.decode(response.data) as List)

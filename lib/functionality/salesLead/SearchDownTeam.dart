@@ -239,10 +239,7 @@ class _SearchDownTeamState extends State<SearchDownTeam> {
           data: {
             "actionMode": "GetSaleRequestListByUserId",
             "refId": resourceId.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           listpending = (json.decode(response.data) as List)
@@ -276,10 +273,7 @@ class _SearchDownTeamState extends State<SearchDownTeam> {
           data: {
             "actionMode": "GetClosedSaleRequestByUId",
             "refId": resourceId.toString()
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
       if (response.statusCode == 200 || response.statusCode == 201) {
         setState(() {
           listcompleted = (json.decode(response.data) as List)

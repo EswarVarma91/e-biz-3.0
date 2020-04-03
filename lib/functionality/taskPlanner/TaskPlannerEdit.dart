@@ -221,9 +221,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
             "feedback": reason,
             "dpStatus": mainStatus
           },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          );
       if (response.statusCode == 200 || response.statusCode == 201) {
         getdayPlanbyId(mainStatus.toString(), dp_id.toString());
       } else if (response.statusCode == 401) {
@@ -258,7 +256,7 @@ class _TaskPlannerEditState extends State<TaskPlannerEdit> {
           "parameter1": "getdayPlanbyId",
           "parameter2": dp_id
         },
-        options: Options(contentType: ContentType.parse("application/json")));
+       );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (response.data == null) {

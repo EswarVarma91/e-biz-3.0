@@ -68,10 +68,7 @@ class StateSplash extends State<SplashScreen> {
           data: {
             "encryptedFields": ["string"],
             "parameter1": "getMobileVersion"
-          },
-          options: Options(
-            contentType: ContentType.parse('application/json'),
-          ));
+          },);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         String data = json.decode(response.data)[0]["status"];
